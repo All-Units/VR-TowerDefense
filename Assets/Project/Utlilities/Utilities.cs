@@ -64,7 +64,11 @@ public static class Utilities
 
         return precise;
     }
-    
+
+    public static string preciseVector3IntString(this Vector3 vector, int round = -1)
+    {
+        return ((Vector3)Vector3Int.RoundToInt(vector)).preciseVector3String(round);
+    }
     /// <summary>
     /// Prints a formatted Vector 3 string, to an arbitrary precision
     /// </summary>
@@ -87,7 +91,6 @@ public static class Utilities
             
             precise = $"({x}, {y}, {z})";
         }
-
 
         return precise;
     }

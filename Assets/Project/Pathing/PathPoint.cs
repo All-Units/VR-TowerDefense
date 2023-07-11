@@ -5,6 +5,7 @@ using UnityEngine;
 public class PathPoint : MonoBehaviour
 {
     [SerializeField] public PathPoint nextPoint;
+    [SerializeField] public PathPoint prevPoint;
 
     public PathPoint GetNext() => nextPoint;
     public Vector3 GetPoint() => transform.position;
@@ -13,10 +14,15 @@ public class PathPoint : MonoBehaviour
     {
         var position = transform.position;
 
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawSphere(position, .5f);
+        if (nextPoint == null)
+        {
+            Gizmos.color = Color.cyan;
+            Gizmos.DrawSphere(position, .5f);
+        }
         
+
         var next = nextPoint;
+        var start = next;
         while (next)
         {
             Gizmos.color = Color.magenta;
@@ -27,6 +33,8 @@ public class PathPoint : MonoBehaviour
             Gizmos.DrawSphere(position, .5f);
 
             next = next.nextPoint;
+            if (next == start)
+                break;
         }
     }
 
@@ -41,7 +49,9 @@ public class PathPoint : MonoBehaviour
 
             var newPoint = new GameObject(selected.name.IterateSuffix());
             var pp = newPoint.AddComponent<PathPoint>();
-            pp.nextPoint = pathPoint;
+            pathPoint.nextPoint = pp;
+            pp.prevPoint = pathPoint;
+            pp.nextPoint = null;
             newPoint.transform.SetParent(selected.transform.parent);
             newPoint.transform.position = selected.transform.position;
             newPoints.Add(newPoint);
