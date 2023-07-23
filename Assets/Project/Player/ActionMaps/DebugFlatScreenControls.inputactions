@@ -1,0 +1,71 @@
+{
+    "name": "DebugFlatScreenControls",
+    "maps": [
+        {
+            "name": "Tower Placement",
+            "id": "5f3286f8-f42d-433f-9150-b25667b3a209",
+            "actions": [
+                {
+                    "name": "StartPlacement",
+                    "type": "Button",
+                    "id": "231a1f48-2d2c-472f-94e7-095e932e5733",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "PlaceTower",
+                    "type": "Button",
+                    "id": "c77e3226-7ea9-4cf8-802e-b0c5fbc73151",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press(behavior=1)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "b8e10d24-0f69-4de2-84fe-b14a36006e03",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Fly Camera",
+                    "action": "StartPlacement",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "52e5a4e1-a4c0-4051-a00d-acac601bf3d3",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Fly Camera",
+                    "action": "PlaceTower",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": [
+        {
+            "name": "Fly Camera",
+            "bindingGroup": "Fly Camera",
+            "devices": [
+                {
+                    "devicePath": "<Mouse>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        }
+    ]
+}
