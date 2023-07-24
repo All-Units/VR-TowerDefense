@@ -11,6 +11,7 @@ public class BasicEnemy : MonoBehaviour
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float targetTolerance = 1f;
     [SerializeField] private float rotateDamping = 1f;
+    [SerializeField] private AudioSource _audioSource;
     private Rigidbody _rb;
 
     public PathPoint nextWaypoint;
@@ -21,6 +22,7 @@ public class BasicEnemy : MonoBehaviour
     private Animator _anim;
 
     public float damage;
+    public string equipment = "";
 
     #region UnityEvents
 
@@ -60,7 +62,8 @@ public class BasicEnemy : MonoBehaviour
         if (other.CompareTag("Tower"))
         {
             currentTarget = other.GetComponent<Tower>();
-            StartCoroutine(_attackLoop());
+            attacking = true;
+            _anim.SetTrigger(_getAttackAnimString());
         }
     }
 
@@ -89,6 +92,7 @@ public class BasicEnemy : MonoBehaviour
             else
             {
                 reachedEnd = true;
+                Victory();
             }
             
             
@@ -112,36 +116,44 @@ public class BasicEnemy : MonoBehaviour
     }
     
     bool attacking = false;
-    IEnumerator _attackLoop()
+    
+    /// <summary>
+    /// When the enemy's attack impacts the tower
+    /// </summary>
+    public void Impact()
     {
-        if (attacking)
-            yield break;
-        attacking = true;
-        _anim.SetTrigger("attack");
         
-        float attackTime = 4.57f;
-        print("Started attack");
-        while (true)
+        if (currentTarget == null)
         {
-            if (currentTarget == null)
-            {
-                currentTarget = null;
-                _anim.SetTrigger("run");
-                break;
-            }
-            if (currentTarget.TakeDamage(damage))
-            {
-                print("Killed tower, resuming run");
-                Destroy(currentTarget.gameObject);
-                currentTarget = null;
-                _anim.SetTrigger("run");
-                break;
-            }
-                
-            yield return new WaitForSeconds(attackTime);
-            attackTime = _anim.GetCurrentAnimatorStateInfo(0).length;
+            currentTarget = null;
+            attacking = false;
+            _anim.SetTrigger("run");
+            return;
         }
-        attacking = false;
+        _audioSource.Play();
+        print("Hitting tower!");
+        if (currentTarget.TakeDamage(damage))
+        {
+            print("Killed tower, resuming run");
+            Destroy(currentTarget.gameObject);
+            currentTarget = null;
+            _anim.SetTrigger("run");
+            attacking = false;
+        }
+    }
+
+    void Victory()
+    {
+        _zeroVelocity();
+        _anim.SetTrigger("victory");
+    }
+
+    private string _getAttackAnimString()
+    {
+        string s = "attack";
+        if (equipment.Contains("sword"))
+            s += "sword";
+        return s;
     }
 
     #endregion
