@@ -1,17 +1,25 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(SphereCollider))]
 public class RadialTargetingSystem : MonoBehaviour
 {
-    private readonly List<Enemy> _targetsInRange = new();
+    public List<Enemy> _targetsInRange = new();
     [SerializeField] private SphereCollider _collider;
 
     private void Awake()
     {
         if(_collider == null)
             _collider = GetComponent<SphereCollider>();
+        
+        Enemy.OnDeath += OnTargetDeath;
+    }
+
+    private void OnDestroy()
+    {
+        Enemy.OnDeath -= OnTargetDeath;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -19,13 +27,12 @@ public class RadialTargetingSystem : MonoBehaviour
         if(other.TryGetComponent(out Enemy e))
         {
             _targetsInRange.Add(e);
-            e.healthController.OnDeath += OnTargetDeath;
         }
     }
 
-    private void OnTargetDeath()
+    private void OnTargetDeath(Enemy e)
     {
-        _targetsInRange.RemoveAll(t=> t == null);
+        _targetsInRange.Remove(e);
     }
 
     private void OnTriggerExit(Collider other)
@@ -33,7 +40,6 @@ public class RadialTargetingSystem : MonoBehaviour
         if(other.TryGetComponent(out Enemy e))
         {
             _targetsInRange.Remove(e);
-            e.healthController.OnDeath -= OnTargetDeath;
         }    
     }
 
@@ -44,6 +50,7 @@ public class RadialTargetingSystem : MonoBehaviour
     
     public Enemy GetOldestTarget()
     {
+        _targetsInRange.RemoveAll(e => !e);
         return _targetsInRange.OrderBy(t => t.spawnTime).FirstOrDefault();
     }
 

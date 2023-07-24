@@ -25,6 +25,7 @@ public class ArrowTower : Tower
         if (_currentCooldown <= 0)
         {
             if (!targetingSystem.HasTarget()) return;
+            
             Fire();
         }
         else
