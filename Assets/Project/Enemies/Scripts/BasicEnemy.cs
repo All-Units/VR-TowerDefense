@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BasicEnemy : MonoBehaviour
+public class BasicEnemy : Enemy
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float targetTolerance = 1f;
@@ -20,7 +20,7 @@ public class BasicEnemy : MonoBehaviour
 
     private Animator _anim;
 
-    public float damage;
+    public int damage;
 
     #region UnityEvents
 
@@ -60,10 +60,20 @@ public class BasicEnemy : MonoBehaviour
         if (other.CompareTag("Tower"))
         {
             currentTarget = other.GetComponent<Tower>();
+            currentTarget.healthController.OnDeath += OnTargetDeath;
             StartCoroutine(_attackLoop());
         }
     }
 
+
+    #endregion
+
+    #region LifeCycle
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
 
     #endregion
     
@@ -129,19 +139,20 @@ public class BasicEnemy : MonoBehaviour
                 _anim.SetTrigger("run");
                 break;
             }
-            if (currentTarget.TakeDamage(damage))
-            {
-                print("Killed tower, resuming run");
-                Destroy(currentTarget.gameObject);
-                currentTarget = null;
-                _anim.SetTrigger("run");
-                break;
-            }
-                
+
+            currentTarget.healthController.TakeDamage(damage);
+            
             yield return new WaitForSeconds(attackTime);
             attackTime = _anim.GetCurrentAnimatorStateInfo(0).length;
         }
         attacking = false;
+    }
+
+    private void OnTargetDeath()
+    {
+        print("Killed tower, resuming run");
+        currentTarget = null;
+        _anim.SetTrigger("run");
     }
 
     #endregion

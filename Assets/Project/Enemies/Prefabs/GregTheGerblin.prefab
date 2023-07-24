@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 460609481080356566}
   - component: {fileID: 1082082296216967521}
   - component: {fileID: 8278373682310228770}
+  - component: {fileID: 6812066425755246883}
   m_Layer: 3
   m_Name: GregTheGerblin
   m_TagString: Untagged
@@ -127,6 +128,37 @@ CapsuleCollider:
   m_Height: 5
   m_Direction: 2
   m_Center: {x: 0, y: 0.52, z: 0.36}
+--- !u!114 &6812066425755246883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2265877983507758802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eae91ddbcc274c0aad737eded9ced4e7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 1
+  onTakeDamage:
+    m_PersistentCalls:
+      m_Calls: []
+  onDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1082082296216967521}
+        m_TargetAssemblyTypeName: BasicEnemy, Project
+        m_MethodName: Die
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1001 &2991109095889503434
 PrefabInstance:
   m_ObjectHideFlags: 0
