@@ -7,16 +7,8 @@ public class MapTile : MonoBehaviour
 {
     public TilesSO tile_list;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private bool canBePlacedOn = true;
+    public Tower currentTower = null;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
+    public bool selectable => canBePlacedOn && currentTower == null;
 }

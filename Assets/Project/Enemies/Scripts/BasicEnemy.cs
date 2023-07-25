@@ -6,7 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class BasicEnemy : MonoBehaviour
+public class BasicEnemy : Enemy
 {
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float targetTolerance = 1f;
@@ -21,7 +21,7 @@ public class BasicEnemy : MonoBehaviour
 
     private Animator _anim;
 
-    public float damage;
+    public int damage;
     public string equipment = "";
 
     #region UnityEvents
@@ -62,11 +62,22 @@ public class BasicEnemy : MonoBehaviour
         if (other.CompareTag("Tower"))
         {
             currentTarget = other.GetComponent<Tower>();
+            currentTarget.healthController.OnDeath += OnTargetDeath;
+            StartCoroutine(_attackLoop());
             attacking = true;
             _anim.SetTrigger(_getAttackAnimString());
         }
     }
 
+
+    #endregion
+
+    #region LifeCycle
+
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
 
     #endregion
     
@@ -140,6 +151,30 @@ public class BasicEnemy : MonoBehaviour
             _anim.SetTrigger("run");
             attacking = false;
         }
+    IEnumerator _attackLoop()
+    {
+        if (attacking)
+            yield break;
+        attacking = true;
+        _anim.SetTrigger("attack");
+        
+        float attackTime = 4.57f;
+        print("Started attack");
+        while (true)
+        {
+            if (currentTarget == null)
+            {
+                currentTarget = null;
+                _anim.SetTrigger("run");
+                break;
+            }
+
+            currentTarget.healthController.TakeDamage(damage);
+            
+            yield return new WaitForSeconds(attackTime);
+            attackTime = _anim.GetCurrentAnimatorStateInfo(0).length;
+        }
+        attacking = false;
     }
 
     void Victory()
@@ -154,6 +189,13 @@ public class BasicEnemy : MonoBehaviour
         if (equipment.Contains("sword"))
             s += "sword";
         return s;
+    }
+
+    private void OnTargetDeath()
+    {
+        print("Killed tower, resuming run");
+        currentTarget = null;
+        _anim.SetTrigger("run");
     }
 
     #endregion
