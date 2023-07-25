@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5a0d04b79d38ab4ab21028a65c34543, type: 3}
   m_Name: tile_list
   m_EditorClassIdentifier: 
+  listName: 
   tiles:
   - {fileID: 919132149155446097, guid: 6a57d87c07289bf4b8ab96f82d75b520, type: 3}
   - {fileID: 919132149155446097, guid: 59937b8d5bf103147834069faf46978f, type: 3}
@@ -72,5 +73,4 @@ MonoBehaviour:
   - {fileID: 919132149155446097, guid: b661cabb5334c3648a016413d7d86097, type: 3}
   - {fileID: 919132149155446097, guid: 76ecb6c76cdf1e4478e411dcc461592e, type: 3}
   - {fileID: 919132149155446097, guid: 49cfffd2eac163949ad78ecb87681ae7, type: 3}
-  pathTiles: []
-  cliffTiles: []
+  - {fileID: 919132149155446097, guid: a97e79f61b1bc754ea429deb8545eb3c, type: 3}

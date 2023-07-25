@@ -13,12 +13,23 @@ public class EnemySpawner : MonoBehaviour
     public float enemySpawnDelay = 1f;
 
     [SerializeField] private TextAsset levelCSV;
+
+    private static List<EnemySpawner> _spawners = new List<EnemySpawner>();
+
+    private static IEnumerator waveLoop = null;
     // Start is called before the first frame update
     void Start()
     {
         parseCSV();
         //SpawnEnemy(enemyPrefabs.GetRandom());
-        StartCoroutine(WaveLoop());
+        if (waveLoop == null)
+        {
+            print("Spawned one (and only one) spawner!");
+            waveLoop = WaveLoop();
+            StartCoroutine(waveLoop);
+        }
+        
+        _spawners.Add(this);
     }
 
     // Update is called once per frame
@@ -32,9 +43,10 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemy(GameObject enemyPrefab)
     {
-        GameObject enemy = Instantiate(enemyPrefab, enemyParent);
-        enemy.transform.position = _spawnPoint.transform.position;
-        enemy.GetComponent<BasicEnemy>().nextWaypoint = _spawnPoint;
+        EnemySpawner spawner = _spawners.GetRandom();
+        GameObject enemy = Instantiate(enemyPrefab, spawner.enemyParent);
+        enemy.transform.position = spawner._spawnPoint.transform.position;
+        enemy.GetComponent<BasicEnemy>().nextWaypoint = spawner._spawnPoint;
     }
     [SerializeField]
     private List<GameObject> orderedPrefabs = new List<GameObject>();
@@ -75,11 +87,13 @@ public class EnemySpawner : MonoBehaviour
     private int wave_i = 0;
     IEnumerator WaveLoop()
     {
+        yield return new WaitForEndOfFrame();
         List<int> wave = waveTotals[wave_i];
         List<int> available = new List<int>();
         for (int i = 0; i < orderedPrefabs.Count; i++)
         {
-            available.Add(i);
+            if (wave[i] != 0)
+                available.Add(i);
         }
 
         while (available.Count != 0)
@@ -92,7 +106,6 @@ public class EnemySpawner : MonoBehaviour
             if (count == 0)
                 available.Remove(i);
             GameObject prefab = orderedPrefabs[i];
-            print($"Spawning {prefab.name}");
             SpawnEnemy(prefab);
             yield return new WaitForSeconds(enemySpawnDelay);
 

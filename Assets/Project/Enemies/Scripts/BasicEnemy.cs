@@ -61,11 +61,12 @@ public class BasicEnemy : Enemy
         //Our enemy just encountered a tower
         if (other.CompareTag("Tower"))
         {
+            print("Encountered tower, killing");
             currentTarget = other.GetComponent<Tower>();
             currentTarget.healthController.OnDeath += OnTargetDeath;
-            StartCoroutine(_attackLoop());
-            attacking = true;
+            _zeroVelocity();
             _anim.SetTrigger(_getAttackAnimString());
+            attacking = true;
         }
     }
 
@@ -127,13 +128,13 @@ public class BasicEnemy : Enemy
     }
     
     bool attacking = false;
-    
+
     /// <summary>
     /// When the enemy's attack impacts the tower
     /// </summary>
     public void Impact()
     {
-        
+
         if (currentTarget == null)
         {
             currentTarget = null;
@@ -141,9 +142,11 @@ public class BasicEnemy : Enemy
             _anim.SetTrigger("run");
             return;
         }
+
         _audioSource.Play();
         print("Hitting tower!");
-        if (currentTarget.TakeDamage(damage))
+        currentTarget.healthController.TakeDamage(damage);
+        if (false)
         {
             print("Killed tower, resuming run");
             Destroy(currentTarget.gameObject);
@@ -151,6 +154,8 @@ public class BasicEnemy : Enemy
             _anim.SetTrigger("run");
             attacking = false;
         }
+    }
+
     IEnumerator _attackLoop()
     {
         if (attacking)
@@ -196,6 +201,7 @@ public class BasicEnemy : Enemy
         print("Killed tower, resuming run");
         currentTarget = null;
         _anim.SetTrigger("run");
+        attacking = false;
     }
 
     #endregion

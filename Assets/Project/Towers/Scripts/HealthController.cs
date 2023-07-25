@@ -16,6 +16,7 @@ public class HealthController : MonoBehaviour
     private void Start()
     {
         _currentHealth = maxHealth;
+        OnDeath += _onDeath;
     }
 
     /// <summary>
@@ -36,4 +37,10 @@ public class HealthController : MonoBehaviour
             onDeath?.Invoke();
         }
     }
+
+    void _onDeath()
+    {
+        Destroy(gameObject, 0.01f);
+    }
+    
 }

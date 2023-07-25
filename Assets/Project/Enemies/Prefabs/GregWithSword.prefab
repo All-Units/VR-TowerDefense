@@ -115,7 +115,7 @@ PrefabInstance:
     - target: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Name
-      value: GregWithSword Variant
+      value: GregWithSword
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -172,6 +172,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6812066425755246883, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: maxHealth
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 7606125985548500940, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
@@ -185,8 +190,31 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 1265173436320946792}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2685240705921726875, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1409521718087094977}
   m_SourcePrefab: {fileID: 100100000, guid: 13567c604ffbd9a40b98745c330550f9, type: 3}
+--- !u!1 &719968955204432846 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2685240705921726875, guid: 13567c604ffbd9a40b98745c330550f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 3224071294457137749}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1409521718087094977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719968955204432846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd4dc2af61f82b244a174bd695265ae7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  HasHit: 0
 --- !u!4 &2056195496491495767 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3474282102911204098, guid: 13567c604ffbd9a40b98745c330550f9,

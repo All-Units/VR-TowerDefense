@@ -20,7 +20,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
         var placeTowerModeActivateAction = GetInputAction(placeTowerModeActivate);
         if (placeTowerModeActivateAction != null)
         {
-            Debug.Log("Found Action!");
+            //Debug.Log("Found Action!");
             placeTowerModeActivateAction.performed += OnStartPlacement;
             placeTowerModeActivateAction.canceled += OnPlaceTower;
         }
@@ -51,16 +51,15 @@ public class XRControllerTowerPlacer : MonoBehaviour
 
     public void OnStartPlacement(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("Starting Placement!");
+        //Debug.Log("Starting Placement!");
         _placing = true;
     }
 
     public void OnPlaceTower(InputAction.CallbackContext callbackContext)
     {
-        Debug.Log("Placing Tower!");
-
         if(selectedTile)
             TowerSpawnManager.Instance.PlaceTower(towerToPlace, selectedTile.transform.position);
+       
         _placing = false;
     }
     

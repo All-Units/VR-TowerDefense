@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
         if(isDestroying)return;
         
         var colliderGameObject = other.collider.gameObject;
-        Debug.Log($"Colliding with {colliderGameObject}!", colliderGameObject);
+        //Debug.Log($"Colliding with {colliderGameObject}!", colliderGameObject);
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);

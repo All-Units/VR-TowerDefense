@@ -39,6 +39,7 @@ namespace Project.Towers.Scripts
 
         public void PlaceTower(Tower_SO towerDTO, Vector3 targetPos)
         {
+            print("Instantiating tower");
             var tower = Instantiate(towerDTO.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             
