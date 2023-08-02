@@ -1,35 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-
 public class EnemySpawner : MonoBehaviour
 {
-    [SerializeField] private List<GameObject> enemyPrefabs;
-    [SerializeField]
-    private SpawnPoint _spawnPoint;
-    [SerializeField]
-    private Transform enemyParent;
-
+    [Header("Wave variables")]
     public float enemySpawnDelay = 1f;
+    [Tooltip("The number of seconds between rounds")]
+    [SerializeField] private int waveDelay = 20;
+    [SerializeField] private List<GameObject> enemyPrefabs;
+
+    [SerializeField] private GameObject nextRoundCounterPanel;
 
     [SerializeField] private TextAsset levelCSV;
 
-    private static List<EnemySpawner> _spawners = new List<EnemySpawner>();
+    private List<SpawnPoint> _spawnPoints = new List<SpawnPoint>();
+    private WaveCounterDisplay _counterDisplay;
 
-    private static IEnumerator waveLoop = null;
+
     // Start is called before the first frame update
     void Start()
     {
         parseCSV();
-        //SpawnEnemy(enemyPrefabs.GetRandom());
-        if (waveLoop == null)
-        {
-            print("Spawned one (and only one) spawner!");
-            waveLoop = WaveLoop();
-            StartCoroutine(waveLoop);
-        }
-        
-        _spawners.Add(this);
+        _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
+        StartCoroutine(WaveLoop());
+        _counterDisplay = GetComponent<WaveCounterDisplay>();
     }
 
     // Update is called once per frame
@@ -43,14 +38,17 @@ public class EnemySpawner : MonoBehaviour
 
     public void SpawnEnemy(GameObject enemyPrefab)
     {
-        EnemySpawner spawner = _spawners.GetRandom();
-        GameObject enemy = Instantiate(enemyPrefab, spawner.enemyParent);
-        enemy.transform.position = spawner._spawnPoint.transform.position;
-        enemy.GetComponent<BasicEnemy>().nextWaypoint = spawner._spawnPoint;
+        SpawnPoint point = _spawnPoints.GetRandom();
+        GameObject enemy = Instantiate(enemyPrefab, point.enemyParent);
+        enemy.transform.position = point.transform.position;
+        enemy.GetComponent<BasicEnemy>().nextWaypoint = point;
     }
     [SerializeField]
     private List<GameObject> orderedPrefabs = new List<GameObject>();
     private List<List<int>> waveTotals = new List<List<int>>();
+    /// <summary>
+    /// Loads the given CSV into a readable wave format, ie list(s) of ints
+    /// </summary>
     void parseCSV()
     {
         string[] lines = levelCSV.text.Split("\n");
@@ -63,7 +61,6 @@ public class EnemySpawner : MonoBehaviour
         bool first = true;
         foreach (var line in lines)
         {
-            print($"Parsed line {line}");
             if (first)
             {
                 first = false;
@@ -75,7 +72,6 @@ public class EnemySpawner : MonoBehaviour
             foreach (string i in split)
             {
                 int j = int.Parse(i);
-                print($"{j}");
                 count.Add(j);
             }
                 
@@ -87,7 +83,11 @@ public class EnemySpawner : MonoBehaviour
     private int wave_i = 0;
     IEnumerator WaveLoop()
     {
+        
         yield return new WaitForEndOfFrame();
+        if (wave_i >= waveTotals.Count)
+            yield break;
+        print($"Started wave {wave_i + 1}");
         List<int> wave = waveTotals[wave_i];
         List<int> available = new List<int>();
         for (int i = 0; i < orderedPrefabs.Count; i++)
@@ -110,16 +110,36 @@ public class EnemySpawner : MonoBehaviour
             yield return new WaitForSeconds(enemySpawnDelay);
 
         }
-        print("Finished wave");
-        yield break;
-        do
+        //We have finished spawning this wave
+        
+        //Wait until it's finished to spawn another
+        while (enemiesRemaining() != 0)
         {
-            //Choose a random one of the enemies in our wave to spawn
-            int i = Random.Range(0, orderedPrefabs.Count - 1);
-            //If there are none left to spawn, choose again
-            while (wave[i] == 0)
-                i = Random.Range(0, orderedPrefabs.Count - 1);
-        } while (enemyParent.childCount > 0);
-        yield break;
+            yield return new WaitForSeconds(2f);
+        }
+        wave_i++;
+        if (wave_i >= waveTotals.Count)
+            yield break;
+        _counterDisplay.SetPanelVisibility(true);
+        for (int i = 0; i < waveDelay; i++)
+        {
+            _counterDisplay.SetText($"{waveDelay - i}s");
+            yield return new WaitForSeconds(1);
+        }
+        _counterDisplay.SetPanelVisibility(false);
+        
+        StartCoroutine(WaveLoop());
+
     }
+    /// <summary>
+    /// How many enemies are left
+    /// </summary>
+    int enemiesRemaining()
+    {
+        int c = 0;
+        foreach (var spawn in _spawnPoints)
+            c += spawn.enemyParent.childCount;
+        return c;
+    }
+    
 }

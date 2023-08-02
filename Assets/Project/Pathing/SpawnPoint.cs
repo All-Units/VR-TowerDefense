@@ -6,6 +6,7 @@ using UnityEngine;
 public class SpawnPoint : PathPoint
 {
     [SerializeField] private SpawnPointData data;
+    public Transform enemyParent;
     public SpawnPointData GetData() => data;
     
     protected override void OnDrawGizmos()

@@ -13,8 +13,11 @@ public class HealthController : MonoBehaviour
     public UnityEvent<int> onTakeDamage;
     public UnityEvent onDeath;
 
+    [SerializeField] private float deathDelay = 1.4f;
+    private Animator _anim;
     private void Start()
     {
+        _anim = GetComponentInChildren<Animator>();
         _currentHealth = maxHealth;
         OnDeath += _onDeath;
     }
@@ -25,7 +28,7 @@ public class HealthController : MonoBehaviour
     /// <param name="dmg"></param>
     public void TakeDamage(int dmg)
     {
-        Debug.Log("Taking Damage!");
+        //Debug.Log("Taking Damage!");
         
         _currentHealth -= dmg;
         OnTakeDamage?.Invoke(_currentHealth);
@@ -38,9 +41,31 @@ public class HealthController : MonoBehaviour
         }
     }
 
+    public bool isDead = false;
     void _onDeath()
     {
-        Destroy(gameObject, 0.01f);
+        if (isDead)
+            return;
+        isDead = true;
+        //Destroy all colliders / RBs
+        foreach (var col in GetComponentsInChildren<Collider>())Destroy(col);
+        foreach (var rb in GetComponentsInChildren<Rigidbody>())
+        {
+            try
+            {
+                Destroy(rb);
+            }
+            catch{}
+        }    
+        
+        if (_anim)
+        {
+            _anim.SetTrigger("death");
+            Destroy(gameObject, deathDelay);
+        }
+        else
+            Destroy(gameObject, 0.01f);
+
     }
     
 }

@@ -9,6 +9,8 @@ public class EnemyAnimEvents : MonoBehaviour
     /// </summary>
     public int HasHit;
     private BasicEnemy enemy;
+    
+    [SerializeField] AudioClipController _ac;
 
     // Start is called before the first frame update
     void Start()
@@ -22,5 +24,10 @@ public class EnemyAnimEvents : MonoBehaviour
     public void Impact(float f)
     {
         enemy.Impact();
+    }
+
+    public void Footstep()
+    {
+        _ac.PlayClip();
     }
 }

@@ -11,7 +11,8 @@ public class BasicEnemy : Enemy
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float targetTolerance = 1f;
     [SerializeField] private float rotateDamping = 1f;
-    [SerializeField] private AudioSource _audioSource;
+    [SerializeField] private AudioClipController hitSFXController;
+    [SerializeField] private AudioClipController footstepSFXController;
     private Rigidbody _rb;
 
     public PathPoint nextWaypoint;
@@ -23,34 +24,45 @@ public class BasicEnemy : Enemy
 
     public int damage;
     public string equipment = "";
+    
+    private HealthController _hc;
 
     #region UnityEvents
 
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
+        _hc = GetComponent<HealthController>();
         _anim = GetComponentInChildren<Animator>();
         Vector3 dir = nextWaypoint.nextPoint.transform.position - nextWaypoint.transform.position;
         dir.y = 0f;
         transform.rotation = Quaternion.LookRotation(dir);
     }
-    
+
+    private bool movedLastFrame = false;
     // Update is called once per frame
     void Update()
     {
+        if (_hc.isDead) return;
         //If we have a valid target, attack them and do not move
         if (attacking)
         {
-            _zeroVelocity();
+            movedLastFrame = false;
+            footstepSFXController.Stop();
+            _MoveToAttack();
             return;
         }
         //If we're at the end, do not move
         if (reachedEnd)
         {
+            movedLastFrame = false;
+            footstepSFXController.Stop();
             _zeroVelocity();
             return;
         }
-
+        if (movedLastFrame == false)
+            footstepSFXController.PlayClip();
+        movedLastFrame = true;
         _moveLoop();
 
 
@@ -63,7 +75,8 @@ public class BasicEnemy : Enemy
         {
             print("Encountered tower, killing");
             currentTarget = other.GetComponent<Tower>();
-            currentTarget.healthController.OnDeath += OnTargetDeath;
+            if (currentTarget)
+                currentTarget.healthController.OnDeath += OnTargetDeath;
             _zeroVelocity();
             _anim.SetTrigger(_getAttackAnimString());
             attacking = true;
@@ -77,7 +90,7 @@ public class BasicEnemy : Enemy
 
     public void Die()
     {
-        Destroy(gameObject);
+        reachedEnd = true;
     }
 
     #endregion
@@ -115,16 +128,41 @@ public class BasicEnemy : Enemy
         {
             _rb.velocity = Vector3.Normalize(nextPos - pos) * moveSpeed;
         }
+        _rotateTowards(pos, nextPos);
         
+    }
+
+    void _MoveToAttack()
+    {
+        if (attacking == false || currentTarget == null)
+            return;
+        Vector3 pos = transform.position;
+        Vector3 target = currentTarget.transform.position;
+        _rotateTowards(pos, target);
+        if (Vector3.Distance(pos, target) > 1)
+            _rb.velocity = Vector3.Normalize(target - pos) * moveSpeed;
+        else
+        {
+            _zeroVelocity();
+        }
+        
+    }
+    void _zeroVelocity()
+    {
+        _rb.velocity = Vector3.zero;
+    }
+    /// <summary>
+    /// Rotates us towards the given target
+    /// </summary>
+    /// <param name="pos">our current position</param>
+    /// <param name="nextPos">current target's position</param>
+    void _rotateTowards(Vector3 pos, Vector3 nextPos)
+    {
         //Rotate to face our next target
         Vector3 dir = nextPos - pos;
         dir.y = 0f;
         var rot = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotateDamping * Time.deltaTime);
-    }
-    void _zeroVelocity()
-    {
-        _rb.velocity = Vector3.zero;
     }
     
     bool attacking = false;
@@ -143,43 +181,9 @@ public class BasicEnemy : Enemy
             return;
         }
 
-        _audioSource.Play();
-        print("Hitting tower!");
+        hitSFXController.PlayClip();
         currentTarget.healthController.TakeDamage(damage);
-        if (false)
-        {
-            print("Killed tower, resuming run");
-            Destroy(currentTarget.gameObject);
-            currentTarget = null;
-            _anim.SetTrigger("run");
-            attacking = false;
-        }
-    }
-
-    IEnumerator _attackLoop()
-    {
-        if (attacking)
-            yield break;
-        attacking = true;
-        _anim.SetTrigger("attack");
-        
-        float attackTime = 4.57f;
-        print("Started attack");
-        while (true)
-        {
-            if (currentTarget == null)
-            {
-                currentTarget = null;
-                _anim.SetTrigger("run");
-                break;
-            }
-
-            currentTarget.healthController.TakeDamage(damage);
-            
-            yield return new WaitForSeconds(attackTime);
-            attackTime = _anim.GetCurrentAnimatorStateInfo(0).length;
-        }
-        attacking = false;
+       
     }
 
     void Victory()
@@ -198,9 +202,9 @@ public class BasicEnemy : Enemy
 
     private void OnTargetDeath()
     {
-        print("Killed tower, resuming run");
         currentTarget = null;
-        _anim.SetTrigger("run");
+        if (_anim)
+            _anim.SetTrigger("run");
         attacking = false;
     }
 
