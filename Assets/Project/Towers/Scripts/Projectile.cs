@@ -16,8 +16,8 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        if(isDestroying)return;
-        
+        if (isDestroying) return;
+
         var colliderGameObject = other.collider.gameObject;
         //Debug.Log($"Colliding with {colliderGameObject}!", colliderGameObject);
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
@@ -28,6 +28,5 @@ public class Projectile : MonoBehaviour
         isDestroying = true;
         Destroy(gameObject);
     }
-    
-    
 }
+
