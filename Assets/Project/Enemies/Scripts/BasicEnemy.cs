@@ -91,6 +91,7 @@ public class BasicEnemy : Enemy
     public void Die()
     {
         reachedEnd = true;
+        Destroy(gameObject);
     }
 
     #endregion

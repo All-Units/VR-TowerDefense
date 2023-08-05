@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 619308174058264511}
   - component: {fileID: 3071368436360838454}
   - component: {fileID: 1382009744870101265}
+  - component: {fileID: 7097409660520499029}
   m_Layer: 0
   m_Name: Cannon_Projectile
   m_TagString: Untagged
@@ -32,8 +33,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.2, y: 0.2, z: 0.2}
   m_ConstrainProportionsScale: 1
-  m_Children:
-  - {fileID: 5303180231715832169}
+  m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -117,11 +117,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 337958517151354589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c4ba8bba61a47dc9118ea49199ddd4b, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
-  speed: 40
+  damage: 10
+  speed: 20
+  splashRadius: 3
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -144,51 +145,19 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 1
+  m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
---- !u!1 &8261072543040784952
-GameObject:
+--- !u!96 &7097409660520499029
+TrailRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5303180231715832169}
-  - component: {fileID: 1799223390144156937}
-  m_Layer: 0
-  m_Name: Line
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5303180231715832169
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8261072543040784952}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 6604673010518652709}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &1799223390144156937
-LineRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8261072543040784952}
+  m_GameObject: {fileID: 337958517151354589}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -202,7 +171,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -3963241562183589234, guid: 99bd5ebdc11f68c46ab845df0cab9825, type: 3}
+  - {fileID: -3963241562183589234, guid: 24f2cfecefbd65b4889450216d986b20, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -223,18 +192,17 @@ LineRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Positions:
-  - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  m_Time: 0.11
+  m_PreviewTimeScale: 1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 0.14338996
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 1
+        value: 0.23015875
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -242,13 +210,13 @@ LineRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.63139933
-        value: 0.04761906
-        inSlope: -4.973764
-        outSlope: -4.973764
+        time: 0.83276445
+        value: 0
+        inSlope: -0.4567745
+        outSlope: -0.4567745
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.19459465
+        inWeight: 0.22950815
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -284,13 +252,14 @@ LineRenderer:
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
-    numCapVertices: 34
+    numCapVertices: 18
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 1}
     shadowBias: 0.5
     generateLightingData: 0
+  m_MinVertexDistance: 0.1
   m_MaskInteraction: 0
-  m_UseWorldSpace: 1
-  m_Loop: 0
+  m_Autodestruct: 1
+  m_Emitting: 1
   m_ApplyActiveColorSpace: 1

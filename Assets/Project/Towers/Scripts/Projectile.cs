@@ -6,7 +6,7 @@ public class Projectile : MonoBehaviour
     private Rigidbody rb;
     public float speed = 20f;
 
-    private bool isDestroying = false;
+    protected bool isDestroying = false;
 
     private void Awake()
     {
@@ -18,8 +18,14 @@ public class Projectile : MonoBehaviour
     {
         if (isDestroying) return;
 
+        OnCollision(other);
+    }
+
+    protected virtual void OnCollision(Collision other)
+    {
+
         var colliderGameObject = other.collider.gameObject;
-        //Debug.Log($"Colliding with {colliderGameObject}!", colliderGameObject);
+
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);
@@ -29,4 +35,3 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject);
     }
 }
-
