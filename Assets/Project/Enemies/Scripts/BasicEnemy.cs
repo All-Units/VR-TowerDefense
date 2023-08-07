@@ -18,9 +18,10 @@ public class BasicEnemy : Enemy
     public PathPoint nextWaypoint;
     public Tower currentTarget;
     private bool hasTarget = false;
+    [SerializeField]
     private bool reachedEnd = false;
 
-    private Animator _anim;
+    public Animator _anim;
 
     public int damage;
     public string equipment = "";
@@ -34,6 +35,8 @@ public class BasicEnemy : Enemy
         _rb = GetComponent<Rigidbody>();
         _hc = GetComponent<HealthController>();
         _anim = GetComponentInChildren<Animator>();
+        if (nextWaypoint == null)
+            Debug.Log($"{gameObject.name} was null ", gameObject);
         Vector3 dir = nextWaypoint.nextPoint.transform.position - nextWaypoint.transform.position;
         dir.y = 0f;
         transform.rotation = Quaternion.LookRotation(dir);
@@ -96,14 +99,16 @@ public class BasicEnemy : Enemy
     #endregion
     
     #region HelperFunctions
-
+    public float distanceToTarget;
     void _moveLoop()
     {
         //Cache our pos, target pos, and distance to target
         Vector3 pos = transform.position;
         Vector3 nextPos = nextWaypoint.transform.position;
+        pos.y = 0f;
+        nextPos.y = 0f;
         float distance = Vector3.Distance(pos, nextPos);
-        
+        distanceToTarget = distance;
         //If we've reached our current target
         if (distance <= targetTolerance)
         {
@@ -164,7 +169,7 @@ public class BasicEnemy : Enemy
         var rot = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotateDamping * Time.deltaTime);
     }
-    
+    [SerializeField]
     bool attacking = false;
 
     /// <summary>

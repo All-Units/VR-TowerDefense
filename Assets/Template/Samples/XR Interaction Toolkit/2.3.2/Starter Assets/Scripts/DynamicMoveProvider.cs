@@ -10,6 +10,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
     /// </summary>
     public class DynamicMoveProvider : ActionBasedContinuousMoveProvider
     {
+        public bool CanMove = true;
         /// <summary>
         /// Defines which transform the XR Origin's movement direction is relative to.
         /// </summary>
@@ -117,7 +118,10 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             // This is the same check as the base method.
             if (input == Vector2.zero)
                 return Vector3.zero;
-
+            
+            //If someone else is taking control of movement, cannot move
+            if (CanMove == false)
+                return Vector3.zero;
             // Initialize the Head Transform if necessary, getting the Camera from XR Origin
             if (m_HeadTransform == null)
             {
