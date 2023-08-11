@@ -19,7 +19,7 @@ public class HealthController : MonoBehaviour
     {
         _anim = GetComponentInChildren<Animator>();
         _currentHealth = maxHealth;
-        OnDeath += _onDeath;
+        // OnDeath += _onDeath;
     }
 
     /// <summary>
@@ -28,9 +28,9 @@ public class HealthController : MonoBehaviour
     /// <param name="dmg"></param>
     public void TakeDamage(int dmg)
     {
-        //Debug.Log("Taking Damage!");
-        
         _currentHealth -= dmg;
+        Debug.Log($"Taking Damage! {gameObject.name} {_currentHealth}");
+
         OnTakeDamage?.Invoke(_currentHealth);
         onTakeDamage?.Invoke(_currentHealth);
 
@@ -42,7 +42,7 @@ public class HealthController : MonoBehaviour
     }
 
     public bool isDead = false;
-    void _onDeath()
+    /*void _onDeath()
     {
         if (isDead)
             return;
@@ -66,6 +66,6 @@ public class HealthController : MonoBehaviour
         else
             Destroy(gameObject, 0.01f);
 
-    }
+    }*/
     
 }
