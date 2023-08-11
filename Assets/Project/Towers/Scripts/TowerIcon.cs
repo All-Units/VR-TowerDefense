@@ -14,9 +14,9 @@ public class TowerIcon : MonoBehaviour
 
     private static TowerIcon currentlySelected;
 
-    private void OnTriggerEnter(Collider other)
+    
+    public void Select()
     {
-        print("Entering!");
         if (currentlySelected != null)
             currentlySelected.OnDeselect();
         currentlySelected = this;
