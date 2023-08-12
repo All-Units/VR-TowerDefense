@@ -12,6 +12,8 @@ public class ArrowTower : Tower
     [SerializeField] private Transform firePoint;
     [SerializeField] private Transform pivotPoint;
 
+    [Header("VFX")] [SerializeField] private GameObject vfx;
+
     protected override void Awake()
     {
         base.Awake();
@@ -21,7 +23,22 @@ public class ArrowTower : Tower
     private void Update()
     {
         if(targetingSystem.HasTarget())
+        {
             AimAtTarget();
+            if (vfx)
+            {
+                if(vfx.activeSelf == false)
+                    vfx.SetActive(true);
+            }
+        }
+        else
+        {
+            if (vfx)
+            {
+                if (vfx.activeSelf)
+                    vfx.SetActive(false);
+            }
+        }
         
         if (_currentCooldown <= 0)
         {
