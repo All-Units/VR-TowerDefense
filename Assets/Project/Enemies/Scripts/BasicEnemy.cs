@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 
 public class BasicEnemy : Enemy
 {
+    [SerializeField] private int killValue;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float targetTolerance = 1f;
     [SerializeField] private float rotateDamping = 1f;
@@ -93,6 +94,7 @@ public class BasicEnemy : Enemy
 
     public void Die()
     {
+        CurrencyManager.instance.CurrentMoney += killValue;
         reachedEnd = true;
         Destroy(gameObject);
     }
