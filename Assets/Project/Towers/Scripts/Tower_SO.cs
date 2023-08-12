@@ -5,4 +5,9 @@ using UnityEngine;
     {
         public GameObject ghostObject;
         public Tower towerPrefab;
+        public GameObject iconPrefab;
+        public int cost;
+
+        public string name;
+        public string description;
     }
