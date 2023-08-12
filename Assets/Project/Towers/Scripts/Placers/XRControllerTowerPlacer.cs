@@ -43,7 +43,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
 
             if (tile != selectedTile && tile.selectable)
             {
-                TowerSpawnManager.Instance.PlaceGhost(towerToPlace, tile.transform.position);
+                TowerSpawnManager.Instance.PlaceGhost(tile.transform.position);
                 selectedTile = tile;
             }
         }
@@ -58,7 +58,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
     public void OnPlaceTower(InputAction.CallbackContext callbackContext)
     {
         if(selectedTile)
-            TowerSpawnManager.Instance.PlaceTower(towerToPlace, selectedTile.transform.position);
+            TowerSpawnManager.Instance.PlaceTower(selectedTile.transform.position);
        
         _placing = false;
     }

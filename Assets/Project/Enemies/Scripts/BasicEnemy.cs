@@ -8,6 +8,7 @@ using UnityEngine.Serialization;
 
 public class BasicEnemy : Enemy
 {
+    [SerializeField] private int killValue;
     [SerializeField] private float moveSpeed = 5f;
     [SerializeField] private float targetTolerance = 1f;
     [SerializeField] private float rotateDamping = 1f;
@@ -91,8 +92,14 @@ public class BasicEnemy : Enemy
 
     #region LifeCycle
 
+    private bool addedToMoney = false;
     public void Die()
     {
+        if (addedToMoney == false)
+        {
+            CurrencyManager.instance.CurrentMoney += killValue;
+            addedToMoney = true;
+        }
         reachedEnd = true;
         Destroy(gameObject);
     }
