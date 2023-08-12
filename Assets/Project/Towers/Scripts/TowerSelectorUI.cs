@@ -6,10 +6,12 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
+using Quaternion = System.Numerics.Quaternion;
 
 public class TowerSelectorUI : MonoBehaviour
 {
     [Header("Input")]
+    [Tooltip("To enable/disable player movement")]
     [SerializeField] private DynamicMoveProvider playerMover;
     [SerializeField] private InputActionReference navigateControl;
     [SerializeField] private InputActionReference grip;
@@ -19,7 +21,8 @@ public class TowerSelectorUI : MonoBehaviour
     [SerializeField] private GameObject dividingLine;
     [SerializeField] private GameObject towerIconPrefab;
     [SerializeField] private Transform towerIconsParent;
-    [SerializeField] private List<Sprite> towerPrefabs = new List<Sprite>();
+    [SerializeField] private Transform cameraPos;
+    
     [SerializeField] private float angleOffset = -45f;
     [Tooltip("How quickly a tap must be released to be considered a tap / hold")]
     [SerializeField] private float toggleTapTime;
@@ -29,17 +32,20 @@ public class TowerSelectorUI : MonoBehaviour
     [SerializeField] private Transform cylinderParent;
 
     [SerializeField] private float height = 4f;
-    [SerializeField] private float radius = 3f;
+    [SerializeField] private float distanceFromPlayer = 4f;
+    [SerializeField] private float yOffset = -1f;
     [SerializeField] private float towerScale = 0.3f;
+    [SerializeField] private float rotateSpeed = 10f;
     [SerializeField] private List<GameObject> towers = new List<GameObject>();
     
     [SerializeField]
     private List<TowerIcon> _icons = new List<TowerIcon>();
-    private int current_icon_i = 0;
+    private int current_icon_i = -1;
     private void Awake()
     {
         FillCylinder();
-        _icons[current_icon_i].Select();
+        current_icon_i = -1;
+        //_icons[current_icon_i].Select();
         selectPanel.SetActive(false);
     }
 
@@ -56,7 +62,7 @@ public class TowerSelectorUI : MonoBehaviour
         grip.action.canceled -= LeftHandGrip;
         OnCloseSelector();
     }
-
+    #region OnOpenCloseSelector
     private float lastOpenTime;
     /// <summary>
     /// Logic when the player changes grip in the left hand
@@ -80,6 +86,9 @@ public class TowerSelectorUI : MonoBehaviour
             OnCloseSelector();
         }
     }
+    
+
+    
     /// <summary>
     /// Logic when opening the tower select panel
     /// </summary>
@@ -89,6 +98,17 @@ public class TowerSelectorUI : MonoBehaviour
         selectPanel.SetActive(true);
         //Disable player movement
         playerMover.CanMove = false;
+        PositionTowerSelector();
+    }
+    
+    void PositionTowerSelector()
+    {
+        Vector3 pos = cameraPos.position;
+        Vector3 dir = cameraPos.forward;
+        dir.y = yOffset;
+        dir *= distanceFromPlayer;
+        pos += dir;
+        selectPanel.transform.position = pos;
     }
     
     void OnCloseSelector()
@@ -98,35 +118,35 @@ public class TowerSelectorUI : MonoBehaviour
         //Reenable player movement
         playerMover.CanMove = true;
     }
+    #endregion
     public void OnLook(InputAction.CallbackContext obj)
     {
         PointArrow(obj.ReadValue<Vector2>());
     }
 
-    public float deg;
-    public int i;
+    private float _deg;
+    /// <summary>
+    /// Which index of the towers prefab list is currently selected
+    /// </summary>
+    private int _i;
     void PointArrow(Vector2 dir)
     {
-        float degrees = Mathf.Atan2(dir.y, dir.x) * (180f / Mathf.PI);
+        //Legacy, based on direction of joystick
+        //float degrees = Mathf.Atan2(dir.y, dir.x) * (180f / Mathf.PI);
         
-        degrees += angleOffset;
+        float degrees = cylinderParent.localEulerAngles.y;
+
+        degrees += (dir.x * rotateSpeed * Time.deltaTime);
+        
         cylinderParent.localEulerAngles = new Vector3(0f, degrees, 0f);
-        deg = cylinderParent.localEulerAngles.y;
-        i = (int)((360f - deg) / arc);
-        if (i != current_icon_i)
+        _deg = cylinderParent.localEulerAngles.y;
+        _i = (int)((360f - _deg) / arc);
+        if (_i != current_icon_i)
         {
-            current_icon_i = i;
-            SelectTower(i);
+            current_icon_i = _i;
+            SelectTower(_i);
         }
-        /*
-        pointerTransform.localEulerAngles = new Vector3(0f, 0f, degrees);
-        deg = pointerTransform.localEulerAngles.z;
-        i = (int)((360f - deg) / arc);
-        if (i != current_icon_i)
-        {
-            current_icon_i = i;
-            SelectTower(i);
-        }*/
+        
     }
 
     public void SelectTower(int i)
@@ -137,7 +157,23 @@ public class TowerSelectorUI : MonoBehaviour
         _icons[i].Select();
     }
     float arc => (360f / towers.Count);
-    /// <summary>
+    
+
+    void FillCylinder()
+    {
+        for (int i = 0; i < towers.Count; i++)
+        {
+            GameObject tower = Instantiate(towers[i], cylinderParent);
+            tower.transform.localScale = Vector3.one * towerScale;
+            float degrees = arc * i + (arc / 2f);
+            tower.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
+            //tower.transform.Translate(new Vector3(0f, ((float)i / towers.Count) * height, 0f));
+            _icons.Add(tower.GetComponentInChildren<TowerIcon>());
+        }
+    }
+    /*2D Tower Select Legacy
+     [SerializeField] private List<Sprite> towerPrefabs = new List<Sprite>();
+     /// <summary>
     /// Populates the tower select wheel
     /// </summary>
     void FillWheel()
@@ -160,17 +196,15 @@ public class TowerSelectorUI : MonoBehaviour
             }
         }
     }
-
-    void FillCylinder()
-    {
-        for (int i = 0; i < towers.Count; i++)
+    
+    
+        pointerTransform.localEulerAngles = new Vector3(0f, 0f, degrees);
+        deg = pointerTransform.localEulerAngles.z;
+        i = (int)((360f - deg) / arc);
+        if (i != current_icon_i)
         {
-            GameObject tower = Instantiate(towers[i], cylinderParent);
-            tower.transform.localScale = Vector3.one * towerScale;
-            float degrees = arc * i + (arc / 2f);
-            tower.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
-            //tower.transform.Translate(new Vector3(0f, ((float)i / towers.Count) * height, 0f));
-            _icons.Add(tower.GetComponentInChildren<TowerIcon>());
+            current_icon_i = i;
+            SelectTower(i);
         }
-    }
+     */
 }

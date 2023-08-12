@@ -10,6 +10,8 @@ public class TowerIcon : MonoBehaviour
     private void Start()
     {
         selectedSprite.SetActive(false);
+        if (currentlySelected == null)
+            Select();
     }
 
     private static TowerIcon currentlySelected;
