@@ -115,12 +115,17 @@ PrefabInstance:
     - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: moveSpeed
-      value: 6
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Name
       value: GregWithSword
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.98
       objectReference: {fileID: 0}
     - target: {fileID: 6042510218290352424, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -140,17 +145,17 @@ PrefabInstance:
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.5
+      value: 0.7
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -200,6 +205,11 @@ PrefabInstance:
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6812066425755246883, guid: 13567c604ffbd9a40b98745c330550f9,

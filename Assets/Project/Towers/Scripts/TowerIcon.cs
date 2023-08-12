@@ -1,11 +1,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Project.Towers.Scripts;
+using TMPro;
 using UnityEngine;
 
 public class TowerIcon : MonoBehaviour
 {
     [SerializeField] private GameObject selectedSprite;
+    [SerializeField] public TextMeshProUGUI nameText;
+    [SerializeField] private TextMeshProUGUI descriptionText;
+
+    public Tower_SO towerSO;
 
     private void Start()
     {
@@ -23,6 +29,7 @@ public class TowerIcon : MonoBehaviour
             currentlySelected.OnDeselect();
         currentlySelected = this;
         selectedSprite.SetActive(true);
+        TowerSpawnManager.SetTower(towerSO);
     }
 
     void OnDeselect()

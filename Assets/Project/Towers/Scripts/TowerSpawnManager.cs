@@ -11,39 +11,46 @@ namespace Project.Towers.Scripts
         [SerializeField] private Transform towersRoot;
 
         public static TowerSpawnManager Instance;
+        private Tower_SO currentTower;
 
-        private void Start()
+        private void Awake()
         {
             Instance = this;
         }
 
-        public void PlaceGhost(Tower_SO towerDTO, Vector3 targetPos)
+        public void PlaceGhost(Vector3 targetPos)
         {
-            if (ghostObjects.ContainsKey(towerDTO) == false)
+            if (ghostObjects.ContainsKey(currentTower) == false)
             {
-                ghostObjects.Add(towerDTO, Instantiate(towerDTO.ghostObject, ghostsRoot));
+                ghostObjects.Add(currentTower, Instantiate(currentTower.ghostObject, ghostsRoot));
             }
             
-            ghostObjects[towerDTO].transform.position = targetPos;
-            if(ghostObjects[towerDTO].activeSelf == false)
-                ghostObjects[towerDTO].SetActive(true);
+            ghostObjects[currentTower].transform.position = targetPos;
+            if(ghostObjects[currentTower].activeSelf == false)
+                ghostObjects[currentTower].SetActive(true);
         }
 
-        public void HideGhost(Tower_SO towerDTO)
+        public void HideGhost()
         {
-            if (ghostObjects.TryGetValue(towerDTO, out var ghost))
-            {
-                ghost.SetActive(false);
-            }
+            foreach (Transform tower in ghostsRoot)
+                tower.gameObject.SetActive(false);
+            
         }
 
-        public void PlaceTower(Tower_SO towerDTO, Vector3 targetPos)
+        public void PlaceTower(Vector3 targetPos)
         {
             //print("Instantiating tower");
-            var tower = Instantiate(towerDTO.towerPrefab, targetPos, Quaternion.identity);
+            var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             
-            HideGhost(towerDTO);
+            HideGhost();
+        }
+
+        public static void SetTower(Tower_SO towerDTO)
+        {
+            Instance.HideGhost();
+            Instance.currentTower = towerDTO;
+            print($"Set current tower to {towerDTO.name}");
         }
     }
 }

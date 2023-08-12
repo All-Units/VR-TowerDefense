@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Project.Towers.Scripts;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -36,7 +37,7 @@ public class TowerSelectorUI : MonoBehaviour
     [SerializeField] private float yOffset = -1f;
     [SerializeField] private float towerScale = 0.3f;
     [SerializeField] private float rotateSpeed = 10f;
-    [SerializeField] private List<GameObject> towers = new List<GameObject>();
+    [SerializeField] private List<Tower_SO> towers = new List<Tower_SO>();
     
     [SerializeField]
     private List<TowerIcon> _icons = new List<TowerIcon>();
@@ -47,6 +48,14 @@ public class TowerSelectorUI : MonoBehaviour
         current_icon_i = -1;
         //_icons[current_icon_i].Select();
         selectPanel.SetActive(false);
+        StartCoroutine(_delaySelect());
+    }
+
+    IEnumerator _delaySelect()
+    {
+        yield return null;
+        yield return null;
+        SelectTower(0);
     }
 
     private void OnEnable()
@@ -163,12 +172,15 @@ public class TowerSelectorUI : MonoBehaviour
     {
         for (int i = 0; i < towers.Count; i++)
         {
-            GameObject tower = Instantiate(towers[i], cylinderParent);
+            GameObject tower = Instantiate(towers[i].iconPrefab, cylinderParent);
             tower.transform.localScale = Vector3.one * towerScale;
             float degrees = arc * i + (arc / 2f);
             tower.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
             //tower.transform.Translate(new Vector3(0f, ((float)i / towers.Count) * height, 0f));
-            _icons.Add(tower.GetComponentInChildren<TowerIcon>());
+            TowerIcon icon = tower.GetComponentInChildren<TowerIcon>();
+            icon.towerSO = towers[i];
+            icon.nameText.text = towers[i].name;
+            _icons.Add(icon);
         }
     }
     /*2D Tower Select Legacy
