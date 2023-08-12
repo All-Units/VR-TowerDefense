@@ -92,9 +92,14 @@ public class BasicEnemy : Enemy
 
     #region LifeCycle
 
+    private bool addedToMoney = false;
     public void Die()
     {
-        CurrencyManager.instance.CurrentMoney += killValue;
+        if (addedToMoney == false)
+        {
+            CurrencyManager.instance.CurrentMoney += killValue;
+            addedToMoney = true;
+        }
         reachedEnd = true;
         Destroy(gameObject);
     }
