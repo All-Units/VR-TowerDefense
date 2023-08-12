@@ -42,8 +42,10 @@ public class TowerSelectorUI : MonoBehaviour
     [SerializeField]
     private List<TowerIcon> _icons = new List<TowerIcon>();
     private int current_icon_i = -1;
+    public static TowerSelectorUI instance;
     private void Awake()
     {
+        instance = this;
         FillCylinder();
         current_icon_i = -1;
         //_icons[current_icon_i].Select();
@@ -181,6 +183,14 @@ public class TowerSelectorUI : MonoBehaviour
             icon.towerSO = towers[i];
             icon.nameText.text = towers[i].name;
             _icons.Add(icon);
+        }
+    }
+
+    public static void UpdateAllTowers()
+    {
+        foreach (TowerIcon tower in instance._icons)
+        {
+            tower.SetCanAfford();
         }
     }
     /*2D Tower Select Legacy

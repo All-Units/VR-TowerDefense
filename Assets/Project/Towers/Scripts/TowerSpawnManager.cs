@@ -39,7 +39,9 @@ namespace Project.Towers.Scripts
 
         public void PlaceTower(Vector3 targetPos)
         {
-            //print("Instantiating tower");
+            if (CurrencyManager.TryCanAfford(currentTower) == false)
+                return;
+            TowerSelectorUI.UpdateAllTowers();
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             
