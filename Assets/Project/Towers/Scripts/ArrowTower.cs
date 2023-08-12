@@ -10,6 +10,7 @@ public class ArrowTower : Tower
     private float _currentCooldown;
     [SerializeField] private Projectile projectile;
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform pivotPoint;
 
     protected override void Awake()
     {
@@ -38,7 +39,7 @@ public class ArrowTower : Tower
     {
         var oldestTarget = targetingSystem.GetOldestTarget();
         if(oldestTarget)
-            firePoint.LookAt(oldestTarget.transform);
+            pivotPoint.LookAt(oldestTarget.transform);
     }
 
     private void Fire()
