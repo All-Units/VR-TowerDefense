@@ -115,11 +115,26 @@ public class TowerSelectorUI : MonoBehaviour
     void PositionTowerSelector()
     {
         Vector3 pos = cameraPos.position;
+        Vector3 start = pos;
         Vector3 dir = cameraPos.forward;
-        dir.y = yOffset;
+        
         dir *= distanceFromPlayer;
+        dir.y = yOffset;
         pos += dir;
+        
+        if (Physics.Raycast(pos + Vector3.up * 6, Vector3.down, out RaycastHit hit))
+        {
+            float y = hit.collider.transform.position.y;
+            y += yOffset;
+            pos.y = y;
+        }
         selectPanel.transform.position = pos;
+        start -= pos;
+        start.y = 0f;
+        start = start.normalized;
+        float degrees = Mathf.Atan2(start.x, start.z) * (180f / Mathf.PI);
+        selectPanel.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
+
     }
     
     void OnCloseSelector()
@@ -193,7 +208,9 @@ public class TowerSelectorUI : MonoBehaviour
             tower.SetCanAfford();
         }
     }
-    /*2D Tower Select Legacy
+    /*/// <summary>
+          /// 2D Tower Select Legacy
+          /// </summary>
      [SerializeField] private List<Sprite> towerPrefabs = new List<Sprite>();
      /// <summary>
     /// Populates the tower select wheel
