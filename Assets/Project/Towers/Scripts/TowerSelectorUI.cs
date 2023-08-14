@@ -110,16 +110,32 @@ public class TowerSelectorUI : MonoBehaviour
         //Disable player movement
         playerMover.CanMove = false;
         PositionTowerSelector();
+        UpdateAllTowers();
     }
     
     void PositionTowerSelector()
     {
         Vector3 pos = cameraPos.position;
+        Vector3 start = pos;
         Vector3 dir = cameraPos.forward;
-        dir.y = yOffset;
+        
         dir *= distanceFromPlayer;
+        dir.y = yOffset;
         pos += dir;
+        
+        if (Physics.Raycast(pos + Vector3.up * 6, Vector3.down, out RaycastHit hit))
+        {
+            float y = hit.collider.transform.position.y;
+            y += yOffset;
+            pos.y = y;
+        }
         selectPanel.transform.position = pos;
+        start -= pos;
+        start.y = 0f;
+        start = start.normalized;
+        float degrees = Mathf.Atan2(start.x, start.z) * (180f / Mathf.PI);
+        selectPanel.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
+
     }
     
     void OnCloseSelector()
@@ -174,18 +190,30 @@ public class TowerSelectorUI : MonoBehaviour
     {
         for (int i = 0; i < towers.Count; i++)
         {
-            GameObject tower = Instantiate(towers[i].iconPrefab, cylinderParent);
+            Tower_SO t = towers[i];
+            GameObject tower = Instantiate(t.iconPrefab, cylinderParent);
             tower.transform.localScale = Vector3.one * towerScale;
             float degrees = arc * i + (arc / 2f);
             tower.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
             //tower.transform.Translate(new Vector3(0f, ((float)i / towers.Count) * height, 0f));
             TowerIcon icon = tower.GetComponentInChildren<TowerIcon>();
-            icon.towerSO = towers[i];
-            icon.nameText.text = towers[i].name;
+            icon.towerSO = t;
+            icon.nameText.text = t.name;
+            icon.descriptionText.text = $"Cost: <color=green>{t.cost}gp</color>\n" +
+                                        $"{t.description}";
             _icons.Add(icon);
         }
     }
 
+    public static void DelayUpdateTowers()
+    {
+        instance.StartCoroutine(instance.delayUpdate());
+    }
+    IEnumerator delayUpdate()
+    {
+        yield return null;
+        UpdateAllTowers();
+    }
     public static void UpdateAllTowers()
     {
         foreach (TowerIcon tower in instance._icons)
@@ -193,7 +221,9 @@ public class TowerSelectorUI : MonoBehaviour
             tower.SetCanAfford();
         }
     }
-    /*2D Tower Select Legacy
+    /*/// <summary>
+          /// 2D Tower Select Legacy
+          /// </summary>
      [SerializeField] private List<Sprite> towerPrefabs = new List<Sprite>();
      /// <summary>
     /// Populates the tower select wheel
