@@ -17,7 +17,6 @@ public class CurrencyManager : MonoBehaviour
         {
             _cash = value;
             currencyDisplay.text = $"{_cash} gold";
-            
         }
     }
 

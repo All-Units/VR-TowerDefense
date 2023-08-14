@@ -2493,7 +2493,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5525161189010124864}
-  - component: {fileID: 5365670705637775363}
   m_Layer: 0
   m_Name: CylinderTowerSelect
   m_TagString: Untagged
@@ -2519,27 +2518,6 @@ Transform:
   m_Father: {fileID: 1590325144611909964}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &5365670705637775363
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4723375059487656272}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 0.7, z: 0}
 --- !u!1 &4977386009872971755
 GameObject:
   m_ObjectHideFlags: 0
@@ -2642,7 +2620,7 @@ MonoBehaviour:
   cylinderParent: {fileID: 8849954825954563615}
   height: 2
   distanceFromPlayer: 4
-  yOffset: -0.1
+  yOffset: 0.3
   towerScale: 0.3
   rotateSpeed: 150
   towers:
@@ -4451,7 +4429,6 @@ GameObject:
   - component: {fileID: 7358456133278357800}
   - component: {fileID: 3606670957869156211}
   - component: {fileID: 355565610790170662}
-  - component: {fileID: 6659562508779649520}
   m_Layer: 0
   m_Name: Pointer
   m_TagString: Untagged
@@ -4524,27 +4501,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &6659562508779649520
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7863849489054842263}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8045892469519978517
 GameObject:
   m_ObjectHideFlags: 0

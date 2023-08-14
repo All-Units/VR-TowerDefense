@@ -9,7 +9,7 @@ public class TowerIcon : MonoBehaviour
 {
     [SerializeField] private GameObject selectedSprite;
     [SerializeField] public TextMeshProUGUI nameText;
-    [SerializeField] private TextMeshProUGUI descriptionText;
+    [SerializeField] public TextMeshProUGUI descriptionText;
     [SerializeField] private MeshRenderer _mr;
     [SerializeField] private Material ghostMat;
     private Material[] baseMats;

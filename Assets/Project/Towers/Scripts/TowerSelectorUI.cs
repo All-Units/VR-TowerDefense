@@ -110,6 +110,7 @@ public class TowerSelectorUI : MonoBehaviour
         //Disable player movement
         playerMover.CanMove = false;
         PositionTowerSelector();
+        UpdateAllTowers();
     }
     
     void PositionTowerSelector()
@@ -189,18 +190,30 @@ public class TowerSelectorUI : MonoBehaviour
     {
         for (int i = 0; i < towers.Count; i++)
         {
-            GameObject tower = Instantiate(towers[i].iconPrefab, cylinderParent);
+            Tower_SO t = towers[i];
+            GameObject tower = Instantiate(t.iconPrefab, cylinderParent);
             tower.transform.localScale = Vector3.one * towerScale;
             float degrees = arc * i + (arc / 2f);
             tower.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
             //tower.transform.Translate(new Vector3(0f, ((float)i / towers.Count) * height, 0f));
             TowerIcon icon = tower.GetComponentInChildren<TowerIcon>();
-            icon.towerSO = towers[i];
-            icon.nameText.text = towers[i].name;
+            icon.towerSO = t;
+            icon.nameText.text = t.name;
+            icon.descriptionText.text = $"Cost: <color=green>{t.cost}gp</color>\n" +
+                                        $"{t.description}";
             _icons.Add(icon);
         }
     }
 
+    public static void DelayUpdateTowers()
+    {
+        instance.StartCoroutine(instance.delayUpdate());
+    }
+    IEnumerator delayUpdate()
+    {
+        yield return null;
+        UpdateAllTowers();
+    }
     public static void UpdateAllTowers()
     {
         foreach (TowerIcon tower in instance._icons)
