@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -32,7 +30,7 @@ public class PullInteraction : XRBaseInteractable
         pullingInteractor = null;
         pullAmount = 0f;
         notch.transform.localPosition =
-            new Vector3(notch.transform.localPosition.x, 0, notch.transform.localPosition.z);
+            new Vector3(notch.transform.localPosition.x, notch.transform.localPosition.y, 0);
         UpdateString();
     }
 

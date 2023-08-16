@@ -1,8 +1,7 @@
-﻿using System;
-using Project.Towers.Scripts;
+﻿using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.Serialization;
 
 public class XRControllerTowerPlacer : MonoBehaviour
 {
