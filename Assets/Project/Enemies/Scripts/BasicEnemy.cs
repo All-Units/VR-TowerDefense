@@ -116,6 +116,10 @@ public class BasicEnemy : Enemy
         pos.y = 0f;
         nextPos.y = 0f;
         float distance = Vector3.Distance(pos, nextPos);
+        float distanceToGoal = Vector3.Distance(pos, nextWaypoint.goal.position);
+        //If we are closer to goal than the current waypoint, skip it
+        while (nextWaypoint.nextPoint && distanceToGoal < nextWaypoint.DistanceToGoal)
+            nextWaypoint = nextWaypoint.nextPoint;
         distanceToTarget = distance;
         //If we've reached our current target
         if (distance <= targetTolerance)

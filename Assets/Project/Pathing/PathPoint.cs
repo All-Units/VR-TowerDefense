@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -6,6 +7,19 @@ public class PathPoint : MonoBehaviour
 {
     [SerializeField] public PathPoint nextPoint;
     [SerializeField] public PathPoint prevPoint;
+    public Vector3 position;
+    public float DistanceToGoal = float.PositiveInfinity;
+    [HideInInspector] public PathPoint goal;
+    private void Awake()
+    {
+        position = transform.position;
+        goal = nextPoint;
+        if (goal == null)
+            goal = this;
+        while (goal && goal.nextPoint != null)
+            goal = goal.nextPoint;
+        DistanceToGoal = Vector3.Distance(position, goal.transform.position);
+    }
 
     public PathPoint GetNext() => nextPoint;
     public Vector3 GetPoint() => transform.position;

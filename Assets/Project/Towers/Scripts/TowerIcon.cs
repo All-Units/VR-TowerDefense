@@ -41,7 +41,7 @@ public class TowerIcon : MonoBehaviour
     {
         if (currentlySelected != null)
             currentlySelected.OnDeselect();
-        TowerSelectorUI.UpdateAllTowers();
+        TowerSelectorItem.UpdateAllTowers();
         currentlySelected = this;
         selectedSprite.SetActive(true);
         TowerSpawnManager.SetTower(towerSO);
