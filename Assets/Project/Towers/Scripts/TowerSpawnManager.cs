@@ -20,7 +20,8 @@ namespace Project.Towers.Scripts
 
         public static void RefreshGhost()
         {
-            if (lastPos.y < -100000)
+            bool ghostOpen = Instance.ghostObjects[Instance.currentTower].activeSelf == false;
+            if (lastPos.y < -100000 || ghostOpen)
                 return;
             print($"Refreshing ghost, last pos was {lastPos}");
             Instance.PlaceGhost(lastPos);

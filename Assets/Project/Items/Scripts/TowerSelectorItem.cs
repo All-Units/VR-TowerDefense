@@ -37,6 +37,8 @@ public class TowerSelectorItem : BaseItem
     [SerializeField] private float yOffset = -1f;
     [SerializeField] private float towerScale = 0.3f;
     [SerializeField] private float rotateSpeed = 10f;
+    [SerializeField] private float timeToSnap = 1f;
+    [SerializeField] private int snapScale = 90;
     [SerializeField] private List<Tower_SO> towers = new List<Tower_SO>();
     
     [SerializeField]
@@ -109,34 +111,9 @@ public class TowerSelectorItem : BaseItem
         selectPanel.SetActive(true);
         //Disable player movement
         playerMover.CanMove = false;
-        PositionTowerSelector();
         UpdateAllTowers();
     }
     
-    void PositionTowerSelector()
-    {
-        Vector3 pos = cameraPos.position;
-        Vector3 start = pos;
-        Vector3 dir = cameraPos.forward;
-        
-        dir *= distanceFromPlayer;
-        dir.y = yOffset;
-        pos += dir;
-        
-        if (Physics.Raycast(pos + Vector3.up * 6, Vector3.down, out RaycastHit hit))
-        {
-            float y = hit.collider.transform.position.y;
-            y += yOffset;
-            pos.y = y;
-        }
-        selectPanel.transform.position = pos;
-        start -= pos;
-        start.y = 0f;
-        start = start.normalized;
-        float degrees = Mathf.Atan2(start.x, start.z) * (180f / Mathf.PI);
-        selectPanel.transform.localEulerAngles = new Vector3(0f, degrees, 0f);
-
-    }
     
     void OnCloseSelector()
     {
@@ -148,10 +125,12 @@ public class TowerSelectorItem : BaseItem
     #endregion
     public void OnLook(InputAction.CallbackContext obj)
     {
-        PointArrow(obj.ReadValue<Vector2>());
+        Vector2 dir = obj.ReadValue<Vector2>().normalized;
+        PointArrow(dir);
     }
 
     private float _deg;
+    private bool isSnapping = false;
     /// <summary>
     /// Which index of the towers prefab list is currently selected
     /// </summary>
@@ -164,8 +143,42 @@ public class TowerSelectorItem : BaseItem
         float degrees = cylinderParent.localEulerAngles.y;
 
         degrees += (dir.x * rotateSpeed * Time.deltaTime);
-        
+        //If there is input on the y axis, and we haven't snapped recently
+        if (Math.Abs(dir.y) >= 0.9 && isSnapping == false)
+        {
+            StartCoroutine(snapSelector(Math.Sign(dir.y)));
+            return;
+        }
         cylinderParent.localEulerAngles = new Vector3(0f, degrees, 0f);
+        _select_i();
+        
+    }
+
+    IEnumerator snapSelector(int ySign)
+    {
+        float _waitedTime = 0f;
+        var startDeg = cylinderParent.localEulerAngles;
+        while (_waitedTime <= timeToSnap)
+        {
+            //Our target is the snap scale past our current angle, in the direction of input
+            float end = startDeg.y + (snapScale * ySign);
+            
+            //We're lerping between our start angle, and the target
+            float deg = Mathf.LerpAngle(startDeg.y, end, _waitedTime / timeToSnap);
+            Vector3 angle = startDeg;
+            angle.y = deg;
+            cylinderParent.localEulerAngles = angle;
+            yield return null;
+            _waitedTime += Time.deltaTime;
+        }
+        print($"Degrees started at {startDeg}, ended at {cylinderParent.localEulerAngles.y}");
+        _select_i();
+        isSnapping = false;
+
+    }
+
+    void _select_i()
+    {
         _deg = cylinderParent.localEulerAngles.y;
         _i = (int)((360f - _deg) / arc);
         if (_i != current_icon_i)
@@ -173,7 +186,6 @@ public class TowerSelectorItem : BaseItem
             current_icon_i = _i;
             SelectTower(_i);
         }
-        
     }
 
     public void SelectTower(int i)
