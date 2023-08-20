@@ -44,7 +44,7 @@ public class ArrowSpawner : MonoBehaviour
     private IEnumerator DelaySpawn()
     {
         _arrowNotched = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.1f);
         _currentArrow = Instantiate(arrow, notch.transform);
     }
 }
