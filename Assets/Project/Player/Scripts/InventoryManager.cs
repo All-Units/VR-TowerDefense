@@ -1,28 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private InputActionReference openLeftInv;
-    [SerializeField] private InputActionReference openRightInv;
-    [SerializeField] private List<InputActionReference> openInventoryActions = new List<InputActionReference>();
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void OpenLeftInventory()
-    {
-        
-    }
     
+    public static InventoryManager instance;
+    private Dictionary<whichHand, Inventory> invByHand = new Dictionary<whichHand, Inventory>();
+    private void Awake()
+    {
+        instance = this;
+    }
+
+   
 }

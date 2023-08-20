@@ -45,16 +45,15 @@ public class TowerSelectorItem : BaseItem
     private int current_icon_i = -1;
     public static TowerSelectorItem instance;
 
-    private Inventory _currentInventory;
     private void Awake()
     {
+        base.Awake();
         instance = this;
         FillCylinder();
         current_icon_i = -1;
         //_icons[current_icon_i].Select();
         selectPanel.SetActive(false);
         StartCoroutine(_delaySelect());
-        _currentInventory = GetComponentInParent<Inventory>();
     }
 
     IEnumerator _delaySelect()
@@ -64,11 +63,13 @@ public class TowerSelectorItem : BaseItem
         SelectTower(0);
     }
 
+    private bool inittedInv = false;
     private void OnEnable()
     {
-        if (_inventory == null) _inventory = GetComponentInParent<Inventory>();
-        print($"Grip null? {grip == null}");
-        print($"Grip action null? {grip.action == null}");
+        print($"inv null? {_inventory == null}");
+        //Do nothing until we have an inventory
+        if (_inventory == null)return;
+        inittedInv = true;
         grip.action.started += LeftHandGrip;
         grip.action.canceled += LeftHandGrip;
         
@@ -76,9 +77,12 @@ public class TowerSelectorItem : BaseItem
 
     private void OnDisable()
     {
+        OnCloseSelector(false);
+        if (inittedInv == false) return;
+        
         grip.action.started -= LeftHandGrip;
         grip.action.canceled -= LeftHandGrip;
-        OnCloseSelector(false);
+        
     }
     #region OnOpenCloseSelector
     private float lastOpenTime;
@@ -91,7 +95,6 @@ public class TowerSelectorItem : BaseItem
     {
         if (Time.time - lastGripTime <= toggleTapTime)
         {
-            print("Interaction was too recent, ignoring");
             return;
         }
 
@@ -99,19 +102,16 @@ public class TowerSelectorItem : BaseItem
         bool open = selectPanel.activeInHierarchy;
         if (obj.phase == InputActionPhase.Started && open == false)
         {
-            print($"Opening");
             lastOpenTime = Time.time;
             OnOpenSelector();
             
         }
         else if (obj.phase == InputActionPhase.Canceled && Time.time - lastOpenTime > toggleTapTime)
         {
-            print($"Closing tower because phase was canceled and last opened {Time.time - lastOpenTime}");
             OnCloseSelector();
         }
         else if (obj.phase == InputActionPhase.Started && open)
         {
-            print("Closing because pressed again and we were open");
             OnCloseSelector();
         }
     }
@@ -126,7 +126,7 @@ public class TowerSelectorItem : BaseItem
         stick.action.performed += OnLook;
         selectPanel.SetActive(true);
         //Add a movement lock
-        _inventory.PlaceMovementLock(gameObject);
+        base._inventory.PlaceLock(gameObject);
         
         UpdateAllTowers();
     }
@@ -134,11 +134,12 @@ public class TowerSelectorItem : BaseItem
     
     void OnCloseSelector(bool removeLock = true)
     {
-        stick.action.performed -= OnLook;
+        if (inittedInv)
+            stick.action.performed -= OnLook;
         selectPanel.SetActive(false);
         //Reenable player movement, if it was enabled before
         if (removeLock)
-            _inventory.RemoveMovementLock(gameObject);
+            base._inventory.RemoveLock(gameObject);
 
 
     }
@@ -157,7 +158,7 @@ public class TowerSelectorItem : BaseItem
     private int _i;
     void PointArrow(Vector2 dir)
     {
-        if (_currentInventory.IsOpen)
+        if (_inventory.IsOpen)
             return;
         //Legacy, based on direction of joystick
         //float degrees = Mathf.Atan2(dir.y, dir.x) * (180f / Mathf.PI);

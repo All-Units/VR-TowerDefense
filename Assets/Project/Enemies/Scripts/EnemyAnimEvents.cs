@@ -21,18 +21,18 @@ public class EnemyAnimEvents : MonoBehaviour
         var controller = enemy._anim.runtimeAnimatorController;
         foreach (var ssm in ((AnimatorController)controller).layers)
         {
-            print($"Root state machine: {ssm.name}");
+            //print($"Root state machine: {ssm.name}");
             foreach (var state in ssm.stateMachine.stateMachines)
             {
-                print($"Sub : {state.stateMachine.name} state?");
+                //print($"Sub : {state.stateMachine.name} state?");
             }
         }
         var sm = ((AnimatorController)controller).layers[0].stateMachine;
         
-        print($"Root state machine: {sm.name}");
+        //print($"Root state machine: {sm.name}");
         foreach (var state in sm.stateMachines)
         {
-            print($"{state.stateMachine.name} state?");
+            //print($"{state.stateMachine.name} state?");
         }
         var states = sm.states;
     }

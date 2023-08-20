@@ -467,11 +467,13 @@ MonoBehaviour:
   iconsParent: {fileID: 1688453445717121967}
   dividingLinesParent: {fileID: 2514102386519145855}
   itemsParent: {fileID: 0}
+  _locker: {fileID: 0}
   angleOffset: -90
   Items:
   - {fileID: 11400000, guid: 656516db4c34e504ca5b85601bb9b1d9, type: 2}
   - {fileID: 11400000, guid: 6c676e9325558cd4e93c3f5541784829, type: 2}
-  acbm: {fileID: 0}
+  interactorGO: {fileID: 0}
+  interactionManager: {fileID: 0}
 --- !u!114 &694407547765573855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2274,13 +2276,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d675655e31397fc41bfc2d4390beb121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  openLeftInv: {fileID: -4865417013158564184, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  openRightInv: {fileID: 8179633155596226558, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  openInventoryActions:
-  - {fileID: -4865417013158564184, guid: c348712bda248c246b8c49b3db54643f, type: 3}
-  - {fileID: 8179633155596226558, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &5923384273098748771
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public enum whichHand
@@ -14,25 +15,29 @@ public enum whichHand
 }
 public class Inventory : MonoBehaviour
 {
+    #region PublicVariables
     public whichHand hand = whichHand.left;
+    [Header("Input References")]
     [SerializeField] public InputActionReference openInventory;
     [SerializeField] public InputActionReference stick;
     [SerializeField] public InputActionReference grip;
     [SerializeField] public InputActionReference trigger;
+    
+    [Header("GameObject references")]
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private Transform arrowParent;
     [SerializeField] private Transform iconsParent;
     [SerializeField] private Transform dividingLinesParent;
     [SerializeField] private Transform itemsParent;
+    [SerializeField] private MovementLocker _locker;
     [SerializeField] private float angleOffset = 90f;
     [SerializeField] private List<Item_SO> Items = new List<Item_SO>();
+    public GameObject interactorGO;
+    public XRInteractionManager interactionManager;
+    #endregion
 
 
-    /// <summary>
-    /// Can enable / disable movement
-    /// </summary>
-    public ActionBasedControllerManager acbm;
-
+    #region UnityEvents
     // Start is called before the first frame update
     void Start()
     {
@@ -57,7 +62,12 @@ public class Inventory : MonoBehaviour
         
     }
 
-    public bool IsOpen => inventoryPanel.activeInHierarchy;
+    
+
+    #endregion
+
+
+    #region ControlFunctions
     void _onOpenInventory(InputAction.CallbackContext obj)
     {
         if (IsOpen)
@@ -68,18 +78,21 @@ public class Inventory : MonoBehaviour
         }
         
     }
-
+    
     void _onOpen()
     {
-        inventoryPanel.SetActive(true);
-        PlaceMovementLock(gameObject);
+        _selectCurrentAngle();
+        inventoryPanel.SetActive(true); 
+        PlaceLock(gameObject);
         stick.action.performed += PointArrow;
     }
+
+    
 
     void _onClose()
     {
         inventoryPanel.SetActive(false);
-        RemoveMovementLock(gameObject);
+        RemoveLock(gameObject);
         stick.action.performed -= PointArrow;
     }
 
@@ -92,8 +105,17 @@ public class Inventory : MonoBehaviour
         Vector3 euler = arrowParent.localEulerAngles;
         euler.z = degrees;
         arrowParent.localEulerAngles = euler;
-        float deg = arrowParent.localEulerAngles.z;
-        int i = (int)((360f - deg) / arc);
+        _selectCurrentAngle();
+    }
+    #endregion
+
+    #region HelperFunctions
+
+    private void _selectCurrentAngle(float angle = float.NegativeInfinity)
+    {
+        if (angle < -10000f)
+            angle = arrowParent.localEulerAngles.z;
+        int i = (int)((360f - angle) / arc);
         if (i != current_icon_i)
         {
             int old = current_icon_i;
@@ -101,30 +123,50 @@ public class Inventory : MonoBehaviour
             SelectItem(i, old);
         }
     }
+    public void PlaceLock(GameObject go)
+    {
+        _locker.PlaceMovementLock(go);
+    }
+
+    public void RemoveLock(GameObject go)
+    {
+        _locker.RemoveMovementLock(go);
+    }
     public void SelectItem(int i, int old)
     {
         //Ignore i's out of bounds (likely from float -> int conversion errors)
         if (i >= Items.Count || i < 0) return;
-        old = Mathf.Clamp(old, 0, itemsParent.childCount);
+        old = Mathf.Clamp(old, 0, spawnedItems.Count - 1);
         _itemIcons[i].OnSelect();
-        itemsParent.GetChild(i).gameObject.SetActive(true);
-        itemsParent.GetChild(old).gameObject.SetActive(false);
+        GameObject active = spawnedItems[i];
+        active.SetActive(true);
+        print($"Trying to turn off {old}");
+        var off = spawnedItems[old];
+        off.SetActive(false);
+        
+        SelectGO(active);
+        
+        
     }
 
     private float arc => (360f / (float)Items.Count);
     private Dictionary<Item_SO, float> anglesByItem = new Dictionary<Item_SO, float>();
     private List<ItemIcon> _itemIcons = new List<ItemIcon>();
+    private List<GameObject> spawnedItems = new List<GameObject>();
     void FillWheel()
     {
         for (int i = 0; i < Items.Count; i++)
         {
             Item_SO item = Items[i];
             GameObject icon = Instantiate(item.itemIconPrefab, iconsParent);
-
-            GameObject spawnedItem = Instantiate(item.itemPrefab.gameObject, itemsParent);
+            
+            GameObject spawnedItem = Instantiate(item.itemPrefab.gameObject);
             BaseItem baseItem = spawnedItem.GetComponent<BaseItem>();
             baseItem._inventory = this;
+            print($"Set inventory on {spawnedItem.gameObject.name}");
+            baseItem.enabled = true;
             
+            spawnedItems.Add(spawnedItem);
             spawnedItem.SetActive(false);
 
             
@@ -142,57 +184,39 @@ public class Inventory : MonoBehaviour
             }
         }
     }
+    public bool IsOpen => inventoryPanel.activeInHierarchy;
+
+    public void SelectGO(GameObject go)
+    {
+        IXRSelectInteractable table = go.GetComponentInChildren<IXRSelectInteractable>();
+        IXRSelectInteractor tor = interactorGO.GetComponentInChildren<IXRSelectInteractor>();
+        
+        interactionManager.SelectEnter(tor, table);
+    }
+
+    void DeselectGO(GameObject go)
+    {
+        
+        IXRSelectInteractable table = go.GetComponentInChildren<IXRSelectInteractable>();
+        IXRSelectInteractor tor = interactorGO.GetComponentInChildren<IXRSelectInteractor>();
+        interactionManager.SelectExit(tor, table);
+    }
     
+    #endregion
+    
+    
+
+    
+    #region Legacy
     /// <summary>
-    /// Places a movement lock, depending on the hand the item resides in
+    /// Need to massively refactor
     /// </summary>
-    public virtual void PlaceMovementLock(GameObject caller)
-    {
-        if (hand == whichHand.left)
-            PlaceMovementLockLeft();
-        else 
-            PlaceMovementLockRight(caller);
-    }
-    /// <summary>
-    /// Removes the correct movement lock from the correct hand
-    /// </summary>
-    public virtual void RemoveMovementLock(GameObject caller)
-    {
-        if (hand == whichHand.left)
-            RemoveMovementLockLeft();
-        else RemoveMovementLockRight(caller);
-    }
+    
 
-    public virtual void PlaceMovementLockLeft()
-    {
-        DynamicMoveProvider.AddMovementLock();
-    }
-
-    private HashSet<GameObject> lockedObjs = new HashSet<GameObject>();
-    public virtual void PlaceMovementLockRight(GameObject caller)
-    {
-        //If the object calling the lock is not already locking movement
-        if (lockedObjs.Contains(caller) == false)
-        {
-            acbm.FreezeMovement();
-            lockedObjs.Add(caller); 
-            //print($"Freezing movement");
-        }
-        //Else do nothing
-    }
-
-    public virtual void RemoveMovementLockLeft()
-    {
-        DynamicMoveProvider.RemoveMovementLock();
-    }
-
-    public virtual void RemoveMovementLockRight(GameObject caller)
-    {
-        //Only do anything if the obj is locked
-        if (lockedObjs.Contains(caller))
-        {
-            acbm.EnableLocomotionActions();
-            lockedObjs.Remove(caller);
-        }
-    }
+    
+    
+    
+    
+    
+    #endregion
 }

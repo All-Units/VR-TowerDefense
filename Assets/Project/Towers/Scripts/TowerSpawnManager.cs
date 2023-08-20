@@ -22,7 +22,6 @@ namespace Project.Towers.Scripts
         {
             if (lastPos.y < -100000 || _isGhostOpen())
                 return;
-            print($"Refreshing ghost, last pos was {lastPos}");
             Instance.PlaceGhost(lastPos);
         }
 
@@ -75,7 +74,6 @@ namespace Project.Towers.Scripts
         {
             Instance.HideGhost();
             Instance.currentTower = towerDTO;
-            print($"Set current tower to {towerDTO.name}");
         }
     }
 }
