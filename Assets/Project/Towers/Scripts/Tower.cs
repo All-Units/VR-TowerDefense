@@ -1,6 +1,7 @@
 using System;
 using Project.Towers.Scripts;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(HealthController))]
 public class Tower : MonoBehaviour
@@ -17,5 +18,14 @@ public class Tower : MonoBehaviour
     private void OnDestroy()
     {
         TowerSpawnManager._towersByPos.Remove(transform.position);
+    }
+
+    public virtual void Selected()
+    {
+        Debug.LogError($"No Override implemented for Selected() on {gameObject}", gameObject);
+    }    
+    public virtual void Deselected()
+    {
+        Debug.LogError($"No Override implemented for Deselected() on {gameObject}", gameObject);
     }
 }

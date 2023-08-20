@@ -12,11 +12,12 @@ public class ArrowTower : Tower
     [SerializeField] private Transform pivotPoint;
 
     [Header("VFX")] [SerializeField] private GameObject vfx;
-
+    [SerializeField] private GameObject SelectedVfx;
     protected override void Awake()
     {
         base.Awake();
         targetingSystem.SetRadius(radius);
+        SelectedVfx.SetActive(false);
     }
 
     private void Update()
@@ -62,6 +63,16 @@ public class ArrowTower : Tower
     {
         var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
         _currentCooldown = shotCooldown;
+    }
+
+    public override void Selected()
+    {
+        SelectedVfx.SetActive(true);
+    }
+
+    public override void Deselected()
+    {
+        SelectedVfx.SetActive(false);
     }
 
     #region Debugging

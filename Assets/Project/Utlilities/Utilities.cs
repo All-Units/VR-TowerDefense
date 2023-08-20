@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -142,7 +143,7 @@ public static class Utilities
         Object.DestroyImmediate(component);
     }
     /// <summary>
-    /// Gets all of the items in the folder contained in root. Starts at Application.path,
+    /// [NYE] Gets all of the items in the folder contained in root. Starts at Application.path,
     /// which includes /Assets/
     /// </summary>
     /// <param name="root">The root folder to search.</param>
@@ -192,5 +193,12 @@ public static class Utilities
         }
 
         return str;
+    }
+    
+    public static InputAction GetInputAction(InputActionReference actionReference)
+    {
+#pragma warning disable IDE0031 // Use null propagation -- Do not use for UnityEngine.Object types
+        return actionReference != null ? actionReference.action : null;
+#pragma warning restore IDE0031
     }
 }
