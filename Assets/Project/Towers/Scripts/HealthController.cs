@@ -29,7 +29,7 @@ public class HealthController : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         _currentHealth -= dmg;
-        Debug.Log($"Taking Damage! {gameObject.name} {_currentHealth}");
+        //Debug.Log($"Taking Damage! {gameObject.name} {_currentHealth}");
 
         OnTakeDamage?.Invoke(_currentHealth);
         onTakeDamage?.Invoke(_currentHealth);

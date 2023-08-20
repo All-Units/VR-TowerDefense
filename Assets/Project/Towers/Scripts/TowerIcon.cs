@@ -35,7 +35,7 @@ public class TowerIcon : MonoBehaviour
             _ghosts.Add(ghostMat);
         ghostMats = _ghosts.ToArray();
     }
-    private static TowerIcon currentlySelected;
+    private static TowerIcon currentlySelected = null;
 
     
     public void Select()

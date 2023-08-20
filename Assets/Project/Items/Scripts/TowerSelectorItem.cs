@@ -5,6 +5,7 @@ using Project.Towers.Scripts;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using Quaternion = System.Numerics.Quaternion;
@@ -14,8 +15,6 @@ public class TowerSelectorItem : BaseItem
     [Header("Input")]
     [Tooltip("To enable/disable player movement")]
     [SerializeField] private DynamicMoveProvider playerMover;
-    [SerializeField] private InputActionReference navigateControl;
-    [SerializeField] private InputActionReference grip;
     [Header("References")]
     [SerializeField] private GameObject selectPanel;
     [SerializeField] private RectTransform pointerTransform;
@@ -45,6 +44,8 @@ public class TowerSelectorItem : BaseItem
     private List<TowerIcon> _icons = new List<TowerIcon>();
     private int current_icon_i = -1;
     public static TowerSelectorItem instance;
+
+    private Inventory _currentInventory;
     private void Awake()
     {
         instance = this;
@@ -53,6 +54,7 @@ public class TowerSelectorItem : BaseItem
         //_icons[current_icon_i].Select();
         selectPanel.SetActive(false);
         StartCoroutine(_delaySelect());
+        _currentInventory = GetComponentInParent<Inventory>();
     }
 
     IEnumerator _delaySelect()
@@ -64,6 +66,9 @@ public class TowerSelectorItem : BaseItem
 
     private void OnEnable()
     {
+        if (_inventory == null) _inventory = GetComponentInParent<Inventory>();
+        print($"Grip null? {grip == null}");
+        print($"Grip action null? {grip.action == null}");
         grip.action.started += LeftHandGrip;
         grip.action.canceled += LeftHandGrip;
         
@@ -73,54 +78,69 @@ public class TowerSelectorItem : BaseItem
     {
         grip.action.started -= LeftHandGrip;
         grip.action.canceled -= LeftHandGrip;
-        OnCloseSelector();
+        OnCloseSelector(false);
     }
     #region OnOpenCloseSelector
     private float lastOpenTime;
+    private float lastGripTime;
     /// <summary>
     /// Logic when the player changes grip in the left hand
     /// </summary>
     /// <param name="obj"></param>
     void LeftHandGrip(InputAction.CallbackContext obj)
     {
+        if (Time.time - lastGripTime <= toggleTapTime)
+        {
+            print("Interaction was too recent, ignoring");
+            return;
+        }
+
+        lastGripTime = Time.time;
         bool open = selectPanel.activeInHierarchy;
         if (obj.phase == InputActionPhase.Started && open == false)
         {
+            print($"Opening");
             lastOpenTime = Time.time;
             OnOpenSelector();
             
         }
         else if (obj.phase == InputActionPhase.Canceled && Time.time - lastOpenTime > toggleTapTime)
         {
+            print($"Closing tower because phase was canceled and last opened {Time.time - lastOpenTime}");
             OnCloseSelector();
         }
         else if (obj.phase == InputActionPhase.Started && open)
         {
+            print("Closing because pressed again and we were open");
             OnCloseSelector();
         }
     }
-    
 
-    
+
+
     /// <summary>
     /// Logic when opening the tower select panel
     /// </summary>
     void OnOpenSelector()
     {
-        navigateControl.action.performed += OnLook;
+        stick.action.performed += OnLook;
         selectPanel.SetActive(true);
-        //Disable player movement
-        playerMover.CanMove = false;
+        //Add a movement lock
+        _inventory.PlaceMovementLock(gameObject);
+        
         UpdateAllTowers();
     }
     
     
-    void OnCloseSelector()
+    void OnCloseSelector(bool removeLock = true)
     {
-        navigateControl.action.performed -= OnLook;
+        stick.action.performed -= OnLook;
         selectPanel.SetActive(false);
-        //Reenable player movement
-        playerMover.CanMove = true;
+        //Reenable player movement, if it was enabled before
+        if (removeLock)
+            _inventory.RemoveMovementLock(gameObject);
+
+
     }
     #endregion
     public void OnLook(InputAction.CallbackContext obj)
@@ -137,6 +157,8 @@ public class TowerSelectorItem : BaseItem
     private int _i;
     void PointArrow(Vector2 dir)
     {
+        if (_currentInventory.IsOpen)
+            return;
         //Legacy, based on direction of joystick
         //float degrees = Mathf.Atan2(dir.y, dir.x) * (180f / Mathf.PI);
         
@@ -158,6 +180,7 @@ public class TowerSelectorItem : BaseItem
     {
         float _waitedTime = 0f;
         var startDeg = cylinderParent.localEulerAngles;
+        snapScale = (int)arc;
         while (_waitedTime <= timeToSnap)
         {
             //Our target is the snap scale past our current angle, in the direction of input
@@ -171,7 +194,6 @@ public class TowerSelectorItem : BaseItem
             yield return null;
             _waitedTime += Time.deltaTime;
         }
-        print($"Degrees started at {startDeg}, ended at {cylinderParent.localEulerAngles.y}");
         _select_i();
         isSnapping = false;
 

@@ -19,10 +19,13 @@ public class XRControllerTowerPlacer : MonoBehaviour
 
     [SerializeField] private Material validColor;
     [SerializeField] private Material invalidColor;
-    
+
+    private BaseItem parentItem;
     private void Start()
     {
-        var placeTowerModeActivateAction = GetInputAction(placeTowerModeActivate);
+        parentItem = GetComponentInParent<BaseItem>();
+        //var placeTowerModeActivateAction = GetInputAction(placeTowerModeActivate);
+        var placeTowerModeActivateAction = GetInputAction(parentItem.trigger);
         if (placeTowerModeActivateAction != null)
         {
             //Debug.Log("Found Action!");
