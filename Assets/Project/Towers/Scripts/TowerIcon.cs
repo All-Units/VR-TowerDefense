@@ -12,6 +12,7 @@ public class TowerIcon : MonoBehaviour
     [SerializeField] public TextMeshProUGUI descriptionText;
     [SerializeField] private MeshRenderer _mr;
     [SerializeField] private Material ghostMat;
+    [SerializeField] private GameObject displayCanvas;
     private Material[] baseMats;
     private Material[] ghostMats;
 
@@ -19,10 +20,10 @@ public class TowerIcon : MonoBehaviour
 
     private void Start()
     {
-        selectedSprite.SetActive(false);
+        OnDeselect();
         if (currentlySelected == null)
             Select();
-
+        
        SetMaterials();
     }
 
@@ -41,15 +42,17 @@ public class TowerIcon : MonoBehaviour
     {
         if (currentlySelected != null)
             currentlySelected.OnDeselect();
-        TowerSelectorUI.UpdateAllTowers();
+        TowerSelectorItem.UpdateAllTowers();
         currentlySelected = this;
         selectedSprite.SetActive(true);
         TowerSpawnManager.SetTower(towerSO);
+        displayCanvas.SetActive(true);
     }
 
     void OnDeselect()
     {
         selectedSprite.SetActive(false);
+        displayCanvas.SetActive(false);
     }
 
     public void SetCanAfford()

@@ -7,12 +7,18 @@ public class XRControllerTowerPlacer : MonoBehaviour
 {
     [SerializeField] private Tower_SO towerToPlace;
     [SerializeField] private LayerMask layerMask;
+    [SerializeField] private LineRenderer _lr;
+    [SerializeField] private Transform firePoint;
     private MapTile selectedTile = null;
     private bool _placing = false;
+    [SerializeField] private float width = 0.5f;
     
     [SerializeField]
     [Tooltip("The reference to the action to start the teleport aiming mode for this controller.")]
     InputActionReference placeTowerModeActivate;
+
+    [SerializeField] private Material validColor;
+    [SerializeField] private Material invalidColor;
     
     private void Start()
     {
@@ -27,15 +33,17 @@ public class XRControllerTowerPlacer : MonoBehaviour
 
     private void Update()
     {
+        clearRay();
         if(_placing == false) return;
-
         SelectATile();
     }
 
     private void SelectATile()
     {
-        var firePointTransform = transform;
-        var ray = new Ray(firePointTransform.position, firePointTransform.forward);
+        var firePointTransform = firePoint;
+        Vector3 pos = firePointTransform.position;
+        Vector3 forward = firePointTransform.forward;
+        var ray = new Ray(pos, forward);
         if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
         {
             var tile = hit.transform.GetComponent<MapTile>();
@@ -45,7 +53,35 @@ public class XRControllerTowerPlacer : MonoBehaviour
                 TowerSpawnManager.Instance.PlaceGhost(tile.transform.position);
                 selectedTile = tile;
             }
+            DrawRay(pos, hit.transform.position);
+            if (TowerSpawnManager.CouldAffordCurrentTower == false)
+                TowerSpawnManager.Instance.HideGhost();
         }
+        else
+        {
+            selectedTile = null;
+            TowerSpawnManager.Instance.HideGhost();
+            DrawRay(pos, forward * 100f, false);
+        }
+        
+    }
+
+    void clearRay()
+    {
+        _lr.SetPosition(0, Vector3.zero);
+        _lr.SetPosition(1, Vector3.zero);
+    }
+    void DrawRay(Vector3 start, Vector3 end, bool valid = true)
+    {
+        if (valid && TowerSpawnManager.CouldAffordCurrentTower)
+            _lr.material = validColor;
+        else
+            _lr.material = invalidColor;
+        _lr.SetPosition(0, start);
+        _lr.SetPosition(1, end);
+        _lr.startWidth = width;
+        _lr.endWidth = width;
+
     }
 
     public void OnStartPlacement(InputAction.CallbackContext callbackContext)

@@ -1,4 +1,5 @@
 using System;
+using Project.Towers.Scripts;
 using UnityEngine;
 
 [RequireComponent(typeof(HealthController))]
@@ -11,5 +12,10 @@ public class Tower : MonoBehaviour
     {
         if(healthController == null)
             healthController = GetComponent<HealthController>();
+    }
+
+    private void OnDestroy()
+    {
+        TowerSpawnManager._towersByPos.Remove(transform.position);
     }
 }
