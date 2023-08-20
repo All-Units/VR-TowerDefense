@@ -9,9 +9,12 @@ public class PullInteraction : XRBaseInteractable
     public Transform start, end;
     public GameObject notch;
     public float pullAmount { get; private set; } = 0.0f;
+    private float pullIncrement = 0.1f;
 
     private LineRenderer _lineRenderer;
     private IXRSelectInteractor pullingInteractor = null;
+
+    public AnimationCurve curve;
 
     protected override void Awake()
     {
@@ -29,6 +32,8 @@ public class PullInteraction : XRBaseInteractable
         PullActionReleased?.Invoke(pullAmount);
         pullingInteractor = null;
         pullAmount = 0f;
+        pullIncrement = 0.1f;
+        
         notch.transform.localPosition =
             new Vector3(notch.transform.localPosition.x, notch.transform.localPosition.y, 0);
         UpdateString();
@@ -42,10 +47,14 @@ public class PullInteraction : XRBaseInteractable
             if (isSelected)
             {
                 var pullPosition = pullingInteractor.transform.position;
+                var prevPull = pullAmount;
                 pullAmount = CalculatePull(pullPosition);
                 
                 UpdateString();
+                if(pullAmount >= pullIncrement || pullAmount <= pullIncrement - 0.1f)
+                    HapticFeedback();
             }
+            
         }
     }
 
@@ -65,5 +74,24 @@ public class PullInteraction : XRBaseInteractable
         var linePosition = Vector3.forward * Mathf.Lerp(start.transform.localPosition.z, end.transform.localPosition.z, pullAmount);
         notch.transform.localPosition = new Vector3(notch.transform.localPosition.x, notch.transform.localPosition.y, linePosition.z + 0.2f);
         _lineRenderer.SetPosition(1, linePosition + new Vector3(0,0, 0.2f));
+    }
+
+    private void HapticFeedback()
+    {
+        if (pullingInteractor != null)
+        {
+            var currentController = pullingInteractor.transform.gameObject.GetComponentInParent<ActionBasedController>();
+            Debug.Log($"{currentController}, on {pullingInteractor.transform.gameObject}",
+                pullingInteractor.transform.gameObject);
+            currentController.SendHapticImpulse(curve.Evaluate(pullAmount), 0.1f);
+            if (pullAmount >= pullIncrement)
+            {
+                pullIncrement += .1f;
+            }
+            else
+            {
+                pullIncrement -= .1f;
+            }
+        }
     }
 }

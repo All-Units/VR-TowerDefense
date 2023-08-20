@@ -5,6 +5,7 @@ public class Arrow : MonoBehaviour
 {
     public int damage;
     public float speed = 10f;
+    public float rotSpeed = 5f;
 
     private Rigidbody _rigidbody;
     private bool _inAir = false;
@@ -40,7 +41,7 @@ public class Arrow : MonoBehaviour
         yield return new WaitForFixedUpdate();
         while (_inAir)
         {
-            var newRot = Quaternion.LookRotation(_rigidbody.velocity, transform.up);
+            var newRot = Quaternion.LookRotation(_rigidbody.velocity * rotSpeed, transform.up);
             transform.rotation = newRot;
             yield return null;
         }
