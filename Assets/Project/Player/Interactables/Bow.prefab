@@ -290,6 +290,30 @@ MonoBehaviour:
   start: {fileID: 3744586579261433126}
   end: {fileID: 4527344069824260384}
   notch: {fileID: 5284656267465529716}
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &397359700003206952
 GameObject:
   m_ObjectHideFlags: 0
@@ -1651,7 +1675,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4668
+  m_VersionIndex: 4671
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

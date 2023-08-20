@@ -20,7 +20,7 @@ public class BasicEnemy : Enemy
     public Tower currentTarget;
     private bool hasTarget = false;
     [SerializeField]
-    private bool reachedEnd = false;
+    public bool reachedEnd = false;
 
     public Animator _anim;
 
@@ -37,7 +37,11 @@ public class BasicEnemy : Enemy
         _hc = GetComponent<HealthController>();
         _anim = GetComponentInChildren<Animator>();
         if (nextWaypoint == null)
+        {
             Debug.Log($"{gameObject.name} was null ", gameObject);
+            return;
+        }   
+        
         Vector3 dir = nextWaypoint.nextPoint.transform.position - nextWaypoint.transform.position;
         dir.y = 0f;
         transform.rotation = Quaternion.LookRotation(dir);
@@ -68,8 +72,6 @@ public class BasicEnemy : Enemy
             footstepSFXController.PlayClip();
         movedLastFrame = true;
         _moveLoop();
-
-
     }
     
     private void OnTriggerEnter(Collider other)
@@ -95,7 +97,7 @@ public class BasicEnemy : Enemy
     private bool addedToMoney = false;
     public void Die()
     {
-        if (addedToMoney == false)
+        if (addedToMoney == false && CurrencyManager.instance)
         {
             CurrencyManager.instance.CurrentMoney += killValue;
             addedToMoney = true;

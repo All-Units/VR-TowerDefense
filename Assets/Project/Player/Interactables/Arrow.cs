@@ -9,6 +9,7 @@ public class Arrow : MonoBehaviour
     private Rigidbody _rigidbody;
     private bool _inAir = false;
     private bool _isDestroying = false;
+    [SerializeField] private ParticleSystem particles;
 
     private void Awake()
     {
@@ -28,6 +29,7 @@ public class Arrow : MonoBehaviour
         PullInteraction.PullActionReleased -= PullInteractionOnPullActionReleased;
         gameObject.transform.parent = null;
         _inAir = true;
+        particles.gameObject.SetActive(true);
         SetPhysics(true);
 
         var force = transform.forward * obj * speed;
@@ -59,12 +61,17 @@ public class Arrow : MonoBehaviour
         }
 
         _isDestroying = true;
+        particles.transform.SetParent(null);
+        particles.Stop();
+
         Destroy(gameObject);
+        Destroy(particles, 2f);
     }
 
     private void Stop()
     {
         _inAir = false;
+        particles.gameObject.SetActive(false);
         SetPhysics(false);
     }
 
