@@ -81,8 +81,7 @@ public class PullInteraction : XRBaseInteractable
         if (pullingInteractor != null)
         {
             var currentController = pullingInteractor.transform.gameObject.GetComponentInParent<ActionBasedController>();
-            Debug.Log($"{currentController}, on {pullingInteractor.transform.gameObject}",
-                pullingInteractor.transform.gameObject);
+            //Debug.Log($"{currentController}, on {pullingInteractor.transform.gameObject}", pullingInteractor.transform.gameObject);
             currentController.SendHapticImpulse(curve.Evaluate(pullAmount), 0.1f);
             if (pullAmount >= pullIncrement)
             {

@@ -87,7 +87,6 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForEndOfFrame();
         if (wave_i >= waveTotals.Count)
             yield break;
-        print($"Started wave {wave_i + 1}");
         List<int> wave = waveTotals[wave_i];
         List<int> available = new List<int>();
         for (int i = 0; i < orderedPrefabs.Count; i++)

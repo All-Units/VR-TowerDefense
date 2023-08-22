@@ -20,11 +20,18 @@ namespace Project.Towers.Scripts
 
         public static void RefreshGhost()
         {
-            bool ghostOpen = Instance.ghostObjects[Instance.currentTower].activeSelf == false;
-            if (lastPos.y < -100000 || ghostOpen)
+            if (lastPos.y < -100000 || _isGhostOpen())
                 return;
-            print($"Refreshing ghost, last pos was {lastPos}");
             Instance.PlaceGhost(lastPos);
+        }
+
+        private static bool _isGhostOpen()
+        {
+            foreach (Transform t in Instance.ghostsRoot)
+            {
+                if (t.gameObject.activeInHierarchy) return true;
+            }
+            return false;
         }
 
         private static Vector3 lastPos = Vector3.negativeInfinity;
@@ -67,7 +74,6 @@ namespace Project.Towers.Scripts
         {
             Instance.HideGhost();
             Instance.currentTower = towerDTO;
-            print($"Set current tower to {towerDTO.name}");
         }
     }
 }

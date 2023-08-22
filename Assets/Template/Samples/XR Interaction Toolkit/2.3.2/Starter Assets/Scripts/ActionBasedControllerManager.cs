@@ -308,6 +308,32 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             DisableAction(m_SnapTurn);
         }
 
+        private Dictionary<InputActionReference, bool> _couldMove = new Dictionary<InputActionReference, bool>();
+        private List<InputActionReference> movements => new List<InputActionReference>() {
+            m_Move, m_TeleportModeActivate, m_TeleportModeCancel, m_Turn, m_SnapTurn };
+        /// <summary>
+        /// Record the state of each movement action, then disable
+        /// </summary>
+        public void FreezeMovement()
+        {
+            foreach (var movement in movements)
+            {
+                bool couldMove = (GetInputAction(movement) != null && GetInputAction(movement).enabled);
+                if (_couldMove.ContainsKey(movement) == false)
+                    _couldMove.Add(movement, couldMove);
+                //else _couldMove[movement] = couldMove;
+                DisableAction(movement);
+            }
+        }
+
+        public void EnableLocomotionActions()
+        {
+            foreach (var mvmt in _couldMove)
+            {
+                SetEnabled(mvmt.Key, mvmt.Value);
+            }
+        }
+
         static void SetEnabled(InputActionReference actionReference, bool enabled)
         {
             if (enabled)

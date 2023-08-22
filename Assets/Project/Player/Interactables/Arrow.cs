@@ -50,7 +50,7 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log($"Hit {other.gameObject}", other.gameObject);
+        //Debug.Log($"Hit {other.gameObject}", other.gameObject);
         if (_isDestroying) return;
         
         var colliderGameObject = other.collider.gameObject;

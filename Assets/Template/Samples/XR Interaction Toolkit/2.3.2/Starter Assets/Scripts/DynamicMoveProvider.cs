@@ -10,6 +10,22 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
     /// </summary>
     public class DynamicMoveProvider : ActionBasedContinuousMoveProvider
     {
+        public static DynamicMoveProvider instance;
+
+        public static void AddMovementLock()
+        {
+            instance.CanMove = false;
+            instance.locksOnMovement++;
+        }
+
+        public static void RemoveMovementLock()
+        {
+            if (instance.locksOnMovement > 0)
+                instance.locksOnMovement--;
+            if (instance.locksOnMovement == 0)
+                instance.CanMove = true;
+        }
+        private int locksOnMovement = 0;
         public bool CanMove = true;
         /// <summary>
         /// Defines which transform the XR Origin's movement direction is relative to.
@@ -109,6 +125,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             m_CombinedTransform.localRotation = Quaternion.identity;
 
             forwardSource = m_CombinedTransform;
+            instance = this;
         }
 
         /// <inheritdoc />
