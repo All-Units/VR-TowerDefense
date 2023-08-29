@@ -163,7 +163,6 @@ public class Inventory : MonoBehaviour
             GameObject spawnedItem = Instantiate(item.itemPrefab.gameObject);
             BaseItem baseItem = spawnedItem.GetComponent<BaseItem>();
             baseItem._inventory = this;
-            print($"Set inventory on {spawnedItem.gameObject.name}");
             baseItem.enabled = true;
             
             spawnedItems.Add(spawnedItem);
@@ -188,18 +187,40 @@ public class Inventory : MonoBehaviour
 
     public void SelectGO(GameObject go)
     {
-        IXRSelectInteractable table = go.GetComponentInChildren<IXRSelectInteractable>();
+        var table = go.GetComponentInChildren<IXRSelectInteractable>();
         IXRSelectInteractor tor = interactorGO.GetComponentInChildren<IXRSelectInteractor>();
+        print($"Manually selecting {go.name}. Currently selected is {tor.firstInteractableSelected}");
+        var current = tor.firstInteractableSelected;
+        if (current != null)
+            interactionManager.SelectExit(tor, current);
+        BaseItem item = go.GetComponentInChildren<BaseItem>();
+        if (item.CannotDrop)
+            interactionManager.SelectEnter(tor, table);
         
-        interactionManager.SelectEnter(tor, table);
     }
 
-    void DeselectGO(GameObject go)
+    public void DeselectGO(GameObject go)
     {
+        IXRSelectInteractor tor = interactorGO.GetComponentInChildren<IXRSelectInteractor>();
+        if (tor.firstInteractableSelected != null)
+        {
+            print($"We had an interactable, so stopping that");
+            interactionManager.SelectExit(tor, tor.firstInteractableSelected);
+        }
+        //StartCoroutine(_cycleDrop(go));
+        return;
         
+    }
+
+    IEnumerator _cycleDrop(GameObject go)
+    {
+        yield return null;
         IXRSelectInteractable table = go.GetComponentInChildren<IXRSelectInteractable>();
         IXRSelectInteractor tor = interactorGO.GetComponentInChildren<IXRSelectInteractor>();
+        interactionManager.SelectEnter(tor, table);
+        yield return null;
         interactionManager.SelectExit(tor, table);
+        print($"Manually dropped {go.name}");
     }
     
     #endregion
