@@ -38,6 +38,9 @@ namespace CartoonFX
         [SerializeField] float lifetimeMultiplier = 1f;
         [Range(-90f, 90f)] [SerializeField] float rotation = -5f;
         [SerializeField] float sortingFudgeOffset = 0.1f;
+        
+        [Header("Dane Overrides")]
+        [SerializeField] float _delay = 1f;
 #pragma warning disable 0649
         [SerializeField] CFXR_ParticleTextFontAsset font;
 #pragma warning restore 0649
@@ -327,7 +330,7 @@ namespace CartoonFX
 
                         if (cumulativeDelay)
                         {
-                            mainModule.startDelay = delay * i;
+                            mainModule.startDelay = ((delay * i) + _delay);
                             mainModule.startLifetime = Mathf.LerpUnclamped(baseLifetime, baseLifetime + (delay * (text.Length - i)), compensateLifetime / lifetimeMultiplier);
                         }
                         else
