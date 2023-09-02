@@ -92,6 +92,7 @@ public class TowerSelectorItem : BaseItem
     /// <param name="obj"></param>
     void LeftHandGrip(InputAction.CallbackContext obj)
     {
+        return;
         if (Time.time - lastGripTime <= toggleTapTime)
         {
             return;

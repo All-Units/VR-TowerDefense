@@ -7,8 +7,15 @@ public class InventoryCollider : MonoBehaviour
 {
     public Transform waistPoint;
     public GameObject table;
+    public ParticleSystem starsParticles;
     public Rigidbody rb;
     public float waitTime = 1f;
+
+    private void Start()
+    {
+        starsParticles.gameObject.SetActive(false);
+        table.SetActive(false);
+    }
 
     private void Update()
     {
@@ -23,18 +30,37 @@ public class InventoryCollider : MonoBehaviour
     {
         if (inInventoryCollider)
         {
-            table.SetActive(true);
-            StartCoroutine(_waitThenDeactivate());
-            isGrabbed = false;
-            _resetSphere();
+            OpenInventory();
+            return;
         }
         StartCoroutine(_waitThenReturn());
     }
 
     IEnumerator _waitThenDeactivate()
     {
-        yield return new WaitForSeconds(6f);
+        yield return new WaitForSeconds(0.8f);
+        table.SetActive(true);
+        yield return new WaitForSeconds(9f);
         table.SetActive(false);
+        currentOpener = null;
+    }
+
+    private IEnumerator currentOpener = null;
+    void OpenInventory()
+    {
+        GameObject particles = Instantiate(starsParticles.gameObject, null);
+        particles.transform.position = starsParticles.transform.position;
+        particles.SetActive(true);
+        if (currentOpener != null)
+        {
+            StopCoroutine(currentOpener);
+        }
+        currentOpener = _waitThenDeactivate();
+        StartCoroutine(currentOpener);
+        isGrabbed = false;
+        _resetSphere();
+
+        
     }
 
     private bool isGrabbed = false;
