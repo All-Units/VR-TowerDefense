@@ -147,8 +147,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dfd46d13264294813c6a6ef438760b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
-  speed: 20
+  damage: 8
+  speed: 25
   particles: {fileID: 7375297172013159069}
 --- !u!1 &4275468087354583269
 GameObject:
@@ -1573,7 +1573,7 @@ TrailRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.07547168
+        value: 0.026291348
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1581,8 +1581,8 @@ TrailRenderer:
         inWeight: 0.33333334
         outWeight: 0.33333334
       - serializedVersion: 3
-        time: 0.7709497
-        value: 0.0000000037252903
+        time: 0.7674161
+        value: 0
         inSlope: -0.14684166
         outSlope: -0.14684166
         tangentMode: 0

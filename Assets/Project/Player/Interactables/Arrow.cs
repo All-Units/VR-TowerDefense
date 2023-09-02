@@ -1,5 +1,7 @@
 ﻿using System.Collections;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Diagnostics;
 
 public class Arrow : MonoBehaviour
 {
@@ -50,11 +52,11 @@ public class Arrow : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        //Debug.Log($"Hit {other.gameObject}", other.gameObject);
+        Debug.Log($"Hit {other.gameObject}", other.gameObject);
         if (_isDestroying) return;
         
         var colliderGameObject = other.collider.gameObject;
-
+        
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);

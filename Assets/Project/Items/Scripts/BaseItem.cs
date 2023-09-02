@@ -23,8 +23,9 @@ public class BaseItem : MonoBehaviour
     }
 
     void _selectExited(SelectExitEventArgs args)
-    {
+    { 
         if (CannotDrop == false) return;
-        _inventory.SelectGO(gameObject);
+        if(_inventory) 
+            _inventory.SelectGO(gameObject);
     }
 }

@@ -1,4 +1,4 @@
-﻿using UnityEditor;
+﻿using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -32,6 +32,23 @@ public class XRControllerTowerController : MonoBehaviour
         {
             confirmSelectAction.performed += OnConfirm;
         }
+        
+        PlayerStateController.OnStateChange += PlayerStateControllerOnStateChange;
+    }
+
+    private void PlayerStateControllerOnStateChange(PlayerState arg1, PlayerState arg2)
+    {
+        switch (arg2)
+        {
+            case PlayerState.IDLE:
+                lineRenderer.enabled = true;
+                break;
+            case PlayerState.TOWER_CONTROL:
+                lineRenderer.enabled = false;
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(arg2), arg2, null);
+        }
     }
 
     private void Update()
@@ -43,23 +60,25 @@ public class XRControllerTowerController : MonoBehaviour
             return;
         }
 
-        SelectATower();
+        if(PlayerStateController.instance.state == PlayerState.IDLE) 
+            SelectATower();
     }
 
     private void SelectATower()
     {
         var firePointTransform = transform;
         var ray = new Ray(firePointTransform.position, firePointTransform.forward);
-        Debug.DrawRay(firePointTransform.position, firePointTransform.forward, Color.magenta);
         
         if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
         {
             var tower = hit.transform.GetComponent<Tower>();
-            if(_selectedTower != tower && _selectedTower)
-                _selectedTower.Deselected();
-            _selectedTower = tower;
-            _selectedTower.Selected();
-            // lineRenderer.SetPosition(1, hit.point);
+            if (tower)
+            {
+                if(_selectedTower != tower && _selectedTower)
+                    _selectedTower.Deselected();
+                _selectedTower = tower;
+                _selectedTower.Selected();
+            }
         }
         
         lineRenderer.SetPosition(1, firePointTransform.position + firePointTransform.forward * 100);

@@ -2278,6 +2278,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d675655e31397fc41bfc2d4390beb121, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerTransform: {fileID: 0}
+  playerLeftHand: {fileID: 0}
+  bow: {fileID: 0}
 --- !u!114 &32765627271416333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2290,6 +2293,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b97892a77f3e3df41a6c753830de2559, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerGameObject: {fileID: 0}
+  normalScale: 1
+  towerControlScale: 0
+  teleportationProvider: {fileID: 0}
 --- !u!1 &5923384273098748771
 GameObject:
   m_ObjectHideFlags: 0

@@ -17,7 +17,7 @@ public class BasicEnemy : Enemy
     private Rigidbody _rb;
 
     public PathPoint nextWaypoint;
-    public Tower currentTarget;
+    public IEnemyTargetable currentTarget;
     private bool hasTarget = false;
     [SerializeField]
     public bool reachedEnd = false;
@@ -80,9 +80,9 @@ public class BasicEnemy : Enemy
         if (other.CompareTag("Tower"))
         {
             print("Encountered tower, killing");
-            currentTarget = other.GetComponent<Tower>();
-            if (currentTarget)
-                currentTarget.healthController.OnDeath += OnTargetDeath;
+            currentTarget = other.GetComponent<IEnemyTargetable>();
+            if (currentTarget != null)
+                currentTarget.GetHealthController().OnDeath += OnTargetDeath;
             _zeroVelocity();
             _anim.SetTrigger(_getAttackAnimString());
             attacking = true;
@@ -156,7 +156,7 @@ public class BasicEnemy : Enemy
         if (attacking == false || currentTarget == null)
             return;
         Vector3 pos = transform.position;
-        Vector3 target = currentTarget.transform.position;
+        Vector3 target = currentTarget.GetPosition();
         _rotateTowards(pos, target);
         if (Vector3.Distance(pos, target) > 1)
             _rb.velocity = Vector3.Normalize(target - pos) * moveSpeed;
@@ -201,8 +201,7 @@ public class BasicEnemy : Enemy
         }
 
         hitSFXController.PlayClip();
-        currentTarget.healthController.TakeDamage(damage);
-       
+        currentTarget.GetHealthController().TakeDamage(damage);
     }
 
     void Victory()
