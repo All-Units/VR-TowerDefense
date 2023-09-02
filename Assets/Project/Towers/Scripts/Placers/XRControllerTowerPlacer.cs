@@ -23,9 +23,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
     private BaseItem parentItem;
     private void Start()
     {
-        parentItem = GetComponentInParent<BaseItem>();
-        //var placeTowerModeActivateAction = GetInputAction(placeTowerModeActivate);
-        var placeTowerModeActivateAction = GetInputAction(parentItem.trigger);
+        var placeTowerModeActivateAction = placeTowerModeActivate.action;
         if (placeTowerModeActivateAction != null)
         {
             //Debug.Log("Found Action!");

@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2733377274699148101}
-  - component: {fileID: 1630583104811647258}
   - component: {fileID: 5073592653485724487}
   - component: {fileID: 6905881108178166216}
   m_Layer: 0
@@ -34,44 +33,8 @@ Transform:
   - {fileID: 6231040153541765811}
   - {fileID: 8289010912026060319}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1630583104811647258
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 755513933244778382}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49695a439f88783439095518fc15afd0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _inventory: {fileID: 0}
-  playerMover: {fileID: 0}
-  selectPanel: {fileID: 7622174019240885506}
-  pointerTransform: {fileID: 0}
-  dividingLine: {fileID: 0}
-  towerIconPrefab: {fileID: 3025466706872580609, guid: 81cb48af1387c8049820f68a1e8547d8,
-    type: 3}
-  towerIconsParent: {fileID: 0}
-  cameraPos: {fileID: 0}
-  angleOffset: 90
-  toggleTapTime: 0.5
-  cylinderParent: {fileID: 9126460903588744566}
-  height: 2
-  distanceFromPlayer: 4
-  yOffset: 0.6
-  towerScale: 0.3
-  rotateSpeed: 200
-  timeToSnap: 0.3
-  snapScale: 90
-  towers:
-  - {fileID: 11400000, guid: fc8cf58176b9007489e6a505c8c258e0, type: 2}
-  - {fileID: 11400000, guid: 17279f9f65fa3f84094c607dffee5ad6, type: 2}
-  - {fileID: 11400000, guid: c1485a6ce47756940a2021ac2fb8c4e9, type: 2}
-  _icons: []
 --- !u!54 &5073592653485724487
 Rigidbody:
   m_ObjectHideFlags: 0
