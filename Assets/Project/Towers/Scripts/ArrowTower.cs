@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ArrowTower : Tower
 {
@@ -11,31 +12,38 @@ public class ArrowTower : Tower
     [SerializeField] private Transform firePoint;
     [SerializeField] private Transform pivotPoint;
 
-    [Header("VFX")] [SerializeField] private GameObject vfx;
+    [FormerlySerializedAs("vfx")] [Header("VFX")] 
+    [SerializeField] private GameObject attackVFX;
+    [FormerlySerializedAs("SelectedVfx")] [SerializeField] private GameObject selectedVfx;
+    [SerializeField] private GameObject turretModel;
+    [SerializeField] private GameObject playerPlatform;
 
     protected override void Awake()
     {
         base.Awake();
         targetingSystem.SetRadius(radius);
+        selectedVfx.SetActive(false);
     }
 
     private void Update()
     {
+        if(isPlayerControlled) return;
+        
         if(targetingSystem.HasTarget())
         {
             AimAtTarget();
-            if (vfx)
+            if (attackVFX)
             {
-                if(vfx.activeSelf == false)
-                    vfx.SetActive(true);
+                if(attackVFX.activeSelf == false)
+                    attackVFX.SetActive(true);
             }
         }
         else
         {
-            if (vfx)
+            if (attackVFX)
             {
-                if (vfx.activeSelf)
-                    vfx.SetActive(false);
+                if (attackVFX.activeSelf)
+                    attackVFX.SetActive(false);
             }
         }
         
@@ -62,6 +70,34 @@ public class ArrowTower : Tower
     {
         var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
         _currentCooldown = shotCooldown;
+    }
+
+    public override void Selected()
+    {
+        selectedVfx.SetActive(true);
+    }
+
+    public override void Deselected()
+    {
+        selectedVfx.SetActive(false);
+    }
+
+    public override void PlayerTakeControl()
+    {
+        base.PlayerTakeControl();
+        
+        // Hide turret
+        turretModel.SetActive(false);
+        playerPlatform.SetActive(true);
+    }
+
+    public override void PlayerReleaseControl()
+    {
+        base.PlayerReleaseControl();
+        
+        // Show turret
+        turretModel.SetActive(true);
+        playerPlatform.SetActive(false);
     }
 
     #region Debugging
