@@ -1,6 +1,10 @@
+
+
 using System;
 using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class PathPoint : MonoBehaviour
@@ -23,6 +27,7 @@ public class PathPoint : MonoBehaviour
 
     public PathPoint GetNext() => nextPoint;
     public Vector3 GetPoint() => transform.position;
+#if UNITY_EDITOR
 
     protected virtual void OnDrawGizmos()
     {
@@ -82,4 +87,5 @@ public class PathPoint : MonoBehaviour
         var newPoint = new GameObject("New Path Point");
         newPoint.AddComponent<PathPoint>();
     }
+#endif
 }
