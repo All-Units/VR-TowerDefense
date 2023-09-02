@@ -5,6 +5,8 @@ using UnityObject = UnityEngine.Object;
 
 namespace UnityEditor.XR.Content.Interaction.Analytics
 {
+#if UNITY_EDITOR
+
     /// <summary>
     /// Editor for <see cref="XrcSceneAnalytics"/> that makes it easy to spot missing analytics objects by validating
     /// object reference properties in all components in the same GameObject.
@@ -39,4 +41,5 @@ namespace UnityEditor.XR.Content.Interaction.Analytics
             }
         }
     }
+#endif
 }

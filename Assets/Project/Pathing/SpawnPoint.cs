@@ -1,6 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
+
 using UnityEditor;
+#endif
 using UnityEngine;
 
 public class SpawnPoint : PathPoint
@@ -8,7 +11,8 @@ public class SpawnPoint : PathPoint
     [SerializeField] private SpawnPointData data;
     public Transform enemyParent;
     public SpawnPointData GetData() => data;
-    
+#if UNITY_EDITOR
+
     protected override void OnDrawGizmos()
     {
         var position = transform.position;
@@ -94,4 +98,5 @@ public class SpawnPoint : PathPoint
         var newPoint = new GameObject("New Spawn Point");
         newPoint.AddComponent<SpawnPoint>();
     }
+#endif
 }

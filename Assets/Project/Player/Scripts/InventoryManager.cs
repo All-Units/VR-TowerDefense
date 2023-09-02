@@ -15,6 +15,7 @@ public class InventoryManager : MonoBehaviour
     {
         instance = this;
     }
+    
 
     public void SpawnBow()
     {

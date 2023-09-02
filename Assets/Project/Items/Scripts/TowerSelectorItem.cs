@@ -66,7 +66,6 @@ public class TowerSelectorItem : BaseItem
     private bool inittedInv = false;
     private void OnEnable()
     {
-        print($"inv null? {_inventory == null}");
         //Do nothing until we have an inventory
         if (_inventory == null)return;
         inittedInv = true;

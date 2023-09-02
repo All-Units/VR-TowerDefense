@@ -10,6 +10,8 @@ public class BaseItem : MonoBehaviour
 {
     public Inventory _inventory;
     public bool CannotDrop = true;
+    public bool dropImmediately = false;
+    
     public InputActionReference primaryButton => _inventory.openInventory;
     public InputActionReference stick => _inventory.stick;
     public InputActionReference grip => _inventory.grip;
@@ -18,14 +20,28 @@ public class BaseItem : MonoBehaviour
 
     protected void Awake()
     {
-        XRBaseInteractable interactor = GetComponent<XRBaseInteractable>();
-        interactor.selectExited.AddListener(_selectExited);
+        XRBaseInteractable table = GetComponent<XRBaseInteractable>();
+        if (CannotDrop)
+            table.selectExited.AddListener(_selectExited);
+        else
+        {
+            table.selectEntered.AddListener(_selectEntered);
+        }
+    }
+
+    private void OnEnable()
+    {
+        //if (dropImmediately && _inventory != null)
+        //    _inventory.DeselectGO(gameObject);
+    }
+
+    void _selectEntered(SelectEnterEventArgs args)
+    {
+        //_inventory.DeselectGO(gameObject);
     }
 
     void _selectExited(SelectExitEventArgs args)
-    { 
-        if (CannotDrop == false) return;
-        if(_inventory) 
-            _inventory.SelectGO(gameObject);
+    {
+        _inventory.SelectGO(gameObject);
     }
 }
