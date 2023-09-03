@@ -61,7 +61,6 @@ public class PlayerStateController : MonoBehaviour
         var playerControlPoint = tower.GetPlayerControlPoint();
         
         TeleportPlayerToPoint(playerControlPoint);
-        InventoryManager.instance.SpawnBow();
 
         SetPlayerState(PlayerState.TOWER_CONTROL);
     }

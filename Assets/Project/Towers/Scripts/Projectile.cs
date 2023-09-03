@@ -8,6 +8,8 @@ public class Projectile : MonoBehaviour
 
     protected bool isDestroying = false;
 
+    public bool willBurn;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -29,6 +31,12 @@ public class Projectile : MonoBehaviour
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);
+            if(willBurn)
+            {
+                var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
+                if(statusEffectController)
+                    statusEffectController.StartBurn();
+            }
         }
 
         isDestroying = true;

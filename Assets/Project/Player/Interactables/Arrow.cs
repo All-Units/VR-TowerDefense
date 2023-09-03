@@ -66,7 +66,7 @@ public class Arrow : MonoBehaviour
         particles.transform.SetParent(null);
         particles.Stop();
 
-        Destroy(gameObject);
+        Destroy(gameObject, 2.1f);
         Destroy(particles, 2f);
     }
 
