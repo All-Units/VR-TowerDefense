@@ -21,15 +21,31 @@ public class XRControllerTowerPlacer : MonoBehaviour
     [SerializeField] private Material invalidColor;
 
     private BaseItem parentItem;
+
+    public Inventory2 inv;
+    public void Pickup()
+    {
+        inv.trigger.action.performed += OnStartPlacement;
+        inv.trigger.action.canceled += OnPlaceTower;
+    }
+
+    public void Drop()
+    {
+        inv.trigger.action.performed -= OnStartPlacement;
+        inv.trigger.action.canceled -= OnPlaceTower;
+        
+    }
     private void Start()
     {
+        TowerSpawnManager.SetTower(towerToPlace);
+        /*
         var placeTowerModeActivateAction = placeTowerModeActivate.action;
         if (placeTowerModeActivateAction != null)
         {
             //Debug.Log("Found Action!");
             placeTowerModeActivateAction.performed += OnStartPlacement;
             placeTowerModeActivateAction.canceled += OnPlaceTower;
-        }
+        }*/
     }
 
     private void Update()
@@ -87,7 +103,6 @@ public class XRControllerTowerPlacer : MonoBehaviour
 
     public void OnStartPlacement(InputAction.CallbackContext callbackContext)
     {
-        //Debug.Log("Starting Placement!");
         _placing = true;
     }
 

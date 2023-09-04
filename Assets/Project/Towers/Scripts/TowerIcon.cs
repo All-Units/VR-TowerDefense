@@ -20,11 +20,14 @@ public class TowerIcon : MonoBehaviour
 
     private void Start()
     {
-        OnDeselect();
-        if (currentlySelected == null)
-            Select();
+        FillText();
+    }
+
+    void FillText()
+    {
+        nameText.text = towerSO.name;
+        descriptionText.text = $"{towerSO.description}\nCost:{towerSO.cost} gp";
         
-       SetMaterials();
     }
 
     void SetMaterials()

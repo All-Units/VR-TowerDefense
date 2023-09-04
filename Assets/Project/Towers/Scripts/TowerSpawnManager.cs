@@ -61,7 +61,6 @@ namespace Project.Towers.Scripts
             if (CurrencyManager.TryCanAfford(currentTower) == false)
                 return;
             if (_towersByPos.ContainsKey(targetPos)) return;
-            TowerSelectorItem.UpdateAllTowers();
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             Tower t = tower.GetComponentInChildren<Tower>();
