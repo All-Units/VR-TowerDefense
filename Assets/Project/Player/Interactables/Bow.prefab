@@ -1653,7 +1653,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 4671
+  m_VersionIndex: 4674
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1760,7 +1760,7 @@ MeshCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
 --- !u!1 &4476642399064999199
@@ -1776,7 +1776,8 @@ GameObject:
   - component: {fileID: 8450296128140810317}
   - component: {fileID: 238493064099585661}
   - component: {fileID: 6464035761890773751}
-  - component: {fileID: 4070317787029741368}
+  - component: {fileID: 5674749527134106095}
+  - component: {fileID: 8357894361382093595}
   m_Layer: 9
   m_Name: Bow
   m_TagString: Untagged
@@ -1793,8 +1794,8 @@ Transform:
   m_GameObject: {fileID: 4476642399064999199}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 95183376278355465}
   - {fileID: 377376445840777918}
@@ -1803,7 +1804,7 @@ Transform:
   - {fileID: 3335821918122711733}
   - {fileID: 6314432927697993683}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!54 &3993401456027248386
 Rigidbody:
@@ -1828,8 +1829,8 @@ Rigidbody:
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
   m_UseGravity: 1
-  m_IsKinematic: 1
-  m_Interpolate: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!114 &8450296128140810317
@@ -1882,7 +1883,19 @@ MonoBehaviour:
       m_Calls: []
   m_SelectEntered:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4476642399064999199}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_SelectExited:
     m_PersistentCalls:
       m_Calls: []
@@ -1997,7 +2010,7 @@ MonoBehaviour:
   m_TwoHandedRotationMode: 1
   m_AllowTwoHandedScaling: 0
   m_ThresholdMoveRatioForScale: 0.1
-  m_ClampScaling: 1
+  m_ClampScaling: 0
   m_MinimumScaleRatio: 0.25
   m_MaximumScaleRatio: 2
   m_ScaleMultiplier: 0.25
@@ -2015,7 +2028,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   arrow: {fileID: 337958517151354589, guid: 94b3ecd7fd8f9964d9a0ef328a3541d2, type: 3}
   notch: {fileID: 5284656267465529716}
---- !u!114 &4070317787029741368
+--- !u!114 &5674749527134106095
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2024,11 +2037,33 @@ MonoBehaviour:
   m_GameObject: {fileID: 4476642399064999199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f5c75f0119ccb6d44979ab94b9327c92, type: 3}
+  m_Script: {fileID: 11500000, guid: 5fec5cbad5a17694d9e9376000981295, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _inventory: {fileID: 0}
-  CannotDrop: 1
+  inventoryParent: {fileID: 0}
+  grabber: {fileID: 8450296128140810317}
+  waitBeforeResetTime: 4
+--- !u!65 &8357894361382093595
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4476642399064999199}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.08066169, y: 0.33876905, z: 0.06503437}
+  m_Center: {x: -0.0066888146, y: -0.013854072, z: 0.19382408}
 --- !u!1 &5059958566716327240
 GameObject:
   m_ObjectHideFlags: 0

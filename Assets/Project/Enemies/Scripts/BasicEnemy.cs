@@ -79,7 +79,7 @@ public class BasicEnemy : Enemy
         //Our enemy just encountered a tower
         if (other.CompareTag("Tower"))
         {
-            print("Encountered tower, killing");
+            //print("Encountered tower, killing");
             currentTarget = other.GetComponent<IEnemyTargetable>();
             if (currentTarget != null)
                 currentTarget.GetHealthController().OnDeath += OnTargetDeath;
