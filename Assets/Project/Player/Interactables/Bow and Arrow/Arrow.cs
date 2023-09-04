@@ -19,6 +19,8 @@ public class Arrow : MonoBehaviour
         PullInteraction.PullActionReleased += PullInteractionOnPullActionReleased;
 
         Stop();
+        
+        Destroy(gameObject, 5f);
     }
 
     private void OnDestroy()
@@ -66,8 +68,7 @@ public class Arrow : MonoBehaviour
         particles.transform.SetParent(null);
         particles.Stop();
 
-        Destroy(gameObject, 2.1f);
-        Destroy(particles, 2f);
+        Destroy(gameObject);
     }
 
     private void Stop()
