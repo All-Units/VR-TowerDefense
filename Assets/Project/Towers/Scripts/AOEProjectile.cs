@@ -5,6 +5,8 @@ public class AOEProjectile : Projectile
     public float splashRadius = 5;
     public GameObject hitParticles;
 
+    [SerializeField] private AnimationCurve damageDropOff;
+
     protected override void OnCollision(Collision other)
     {
         var hits = Physics.OverlapSphere(other.collider.transform.position, splashRadius, LayerMask.GetMask("Enemy"));
@@ -15,7 +17,9 @@ public class AOEProjectile : Projectile
 
             if (colliderGameObject.TryGetComponent(out HealthController healthController))
             {
-                healthController.TakeDamage(damage);
+                var distance = Vector3.Distance(colliderGameObject.transform.position, transform.position);
+                var radius = distance/splashRadius;
+                healthController.TakeDamage(Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius))));
             }
         }
 

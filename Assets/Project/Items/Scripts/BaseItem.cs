@@ -42,6 +42,7 @@ public class BaseItem : MonoBehaviour
 
     void _selectExited(SelectExitEventArgs args)
     {
-        _inventory.SelectGO(gameObject);
+        if(_inventory)
+            _inventory.SelectGO(gameObject);
     }
 }

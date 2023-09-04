@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public enum PlayerState
 {
@@ -25,6 +26,7 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private float normalScale = 1f;
     [SerializeField] private float towerControlScale;
     [SerializeField] private TeleportationProvider teleportationProvider;
+    [SerializeField] private DynamicMoveProvider dynamicMoveProvider;
     
     private Tower _currentControlledTower;
 
@@ -63,6 +65,8 @@ public class PlayerStateController : MonoBehaviour
         TeleportPlayerToPoint(playerControlPoint);
 
         SetPlayerState(PlayerState.TOWER_CONTROL);
+        dynamicMoveProvider.CanMove = false;
+        dynamicMoveProvider.useGravity = false;
     }
 
     public static void ReleaseControlOfTower()
@@ -81,6 +85,8 @@ public class PlayerStateController : MonoBehaviour
         prevTower.PlayerReleaseControl();
         
         SetPlayerState(PlayerState.IDLE);
+        dynamicMoveProvider.CanMove = true;
+        dynamicMoveProvider.useGravity = true;
     }
     
     private void TeleportPlayerToPoint(Transform playerControlPoint)

@@ -1,13 +1,19 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum StatusEffectType
+{
+    Burn,
+    Freeze,
+    Poison
+}
 
 public class StatusEffectController : MonoBehaviour
 {
     public GameObject burnedVFX;
 
-    private Coroutine burnCoroutine = null;
+    private Coroutine _burnCoroutine = null;
     private HealthController _healthController;
 
     private void Awake()
@@ -15,34 +21,55 @@ public class StatusEffectController : MonoBehaviour
         _healthController = GetComponentInParent<HealthController>();
     }
 
-    public void StartBurn()
+    #region Burn Effect
+
+    public void ApplyBurn()
     {
-        if (burnCoroutine == null)
+        if (_burnCoroutine == null)
         {
-            burnCoroutine = StartCoroutine(BurnEffect());
+            _burnCoroutine = StartCoroutine(BurnEffect());
         }
         else
         {
-            burnCountdown = 5f;
+            _burnCountdown = 5f;
         }
     }
 
 
-    private float burnCountdown = 0;
+    private float _burnCountdown = 0;
     private IEnumerator BurnEffect()
     {
-        burnCountdown = 5f;
+        _burnCountdown = 5f;
         burnedVFX.SetActive(true);
 
-        while (burnCountdown > 0)
+        while (_burnCountdown > 0)
         {
             _healthController.TakeDamage(1);
             var startTime = Time.time;
             yield return new WaitForSeconds(1f);
-            burnCountdown -= Time.time - startTime;
+            _burnCountdown -= Time.time - startTime;
         }
         
         burnedVFX.SetActive(false);
-        burnCoroutine = null;
+        _burnCoroutine = null;
+    }
+
+    #endregion
+
+
+    public void ApplyStatus(StatusEffectType effectType)
+    {
+        switch (effectType)
+        {
+            case StatusEffectType.Burn:
+                ApplyBurn();
+                break;
+            case StatusEffectType.Freeze:
+                break;
+            case StatusEffectType.Poison:
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(effectType), effectType, null);
+        }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRControllerTowerController : MonoBehaviour
 {
@@ -17,6 +19,9 @@ public class XRControllerTowerController : MonoBehaviour
     private InputActionReference controlTowerConfirmActionReference;
 
     [SerializeField] private LineRenderer lineRenderer;
+    public XRDirectInteractor playerHand;
+
+    
     
     private void Start()
     {
@@ -88,7 +93,8 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void OnStartSelection(InputAction.CallbackContext callbackContext)
     {
-        _selecting = true;
+        if(playerHand.interactablesSelected.Any() == false)
+            _selecting = true;
     }
 
     private void OnEndSelectMode(InputAction.CallbackContext callbackContext)
@@ -106,6 +112,8 @@ public class XRControllerTowerController : MonoBehaviour
         {
             _selectedTower.Deselected();
             PlayerStateController.TakeControlOfTower(_selectedTower);
+            _selectedTower = null;
+            _selecting = false;
         }    
     }
 

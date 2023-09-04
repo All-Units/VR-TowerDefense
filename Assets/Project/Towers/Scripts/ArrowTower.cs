@@ -1,6 +1,13 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
+using UnityEngine.XR.Interaction.Toolkit;
 
+public enum PlayerItemType
+{
+    Bow,
+    Staff,
+    Cannon
+}
 public class ArrowTower : Tower
 {
     [SerializeField] private float radius = 5f;
@@ -18,6 +25,8 @@ public class ArrowTower : Tower
     [SerializeField] private GameObject turretModel;
     [SerializeField] private GameObject playerPlatform;
 
+    [SerializeField] private PlayerItemType playerItemType;
+    
     protected override void Awake()
     {
         base.Awake();
@@ -89,6 +98,8 @@ public class ArrowTower : Tower
         // Hide turret
         turretModel.SetActive(false);
         playerPlatform.SetActive(true);
+
+        InventoryManager.instance.GivePlayerItem(playerItemType);
     }
 
     public override void PlayerReleaseControl()
@@ -98,6 +109,8 @@ public class ArrowTower : Tower
         // Show turret
         turretModel.SetActive(true);
         playerPlatform.SetActive(false);
+        
+        InventoryManager.instance.ReleaseAllItems();
     }
 
     #region Debugging
