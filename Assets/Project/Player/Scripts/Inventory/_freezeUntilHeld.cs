@@ -57,6 +57,7 @@ public class _freezeUntilHeld : MonoBehaviour
         if (_isHeld == false) return;
         if (other.CompareTag("TowerTip"))
         {
+            _isHeld = false;
             _selector.SelectTower(icon.towerSO);
         }
     }

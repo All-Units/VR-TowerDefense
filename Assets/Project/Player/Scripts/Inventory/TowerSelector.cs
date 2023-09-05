@@ -14,12 +14,14 @@ public class TowerSelector : InventoryItem
 
     [SerializeField] private float openInvTime = 0.5f;
     [SerializeField] private Image fillInvImage;
+    [SerializeField] private Image bgInvImage;
     public GameObject inventoryPlatform;
     public GameObject currentTowerIcon;
 
     private void Start()
     {
         inventoryPlatform.SetActive(false);
+        bgInvImage.gameObject.SetActive(false);
     }
     public override void OnPickup(SelectEnterEventArgs args)
     {
@@ -55,6 +57,7 @@ public class TowerSelector : InventoryItem
     IEnumerator _openInv()
     {
         float t = 0f;
+        bgInvImage.gameObject.SetActive(true);
         //Fill the circle until it's full, or the button is released
         while (t < openInvTime && isPrimaryHeld)
         {
@@ -63,7 +66,7 @@ public class TowerSelector : InventoryItem
             fillInvImage.fillAmount = fill;
             yield return null;
         }
-
+        bgInvImage.gameObject.SetActive(false);
         //The inventory is to be opened
         if (t >= openInvTime)
         {

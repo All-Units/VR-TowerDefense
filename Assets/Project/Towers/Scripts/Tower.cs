@@ -32,11 +32,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Selected()
     {
-        Debug.LogError($"No Override implemented for Selected() on {gameObject}", gameObject);
+        //Debug.LogError($"No Override implemented for Selected() on {gameObject}", gameObject);
     }    
     public virtual void Deselected()
     {
-        Debug.LogError($"No Override implemented for Deselected() on {gameObject}", gameObject);
+        //Debug.LogError($"No Override implemented for Deselected() on {gameObject}", gameObject);
     }
     
     public virtual void PlayerTakeControl()

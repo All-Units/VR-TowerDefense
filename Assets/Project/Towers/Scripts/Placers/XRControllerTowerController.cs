@@ -21,6 +21,7 @@ public class XRControllerTowerController : MonoBehaviour
     [SerializeField] private LineRenderer lineRenderer;
     public XRDirectInteractor playerHand;
 
+    [SerializeField] private TowerTakeoverItem _takeoverItem;
     
     
     private void Start()
@@ -59,7 +60,8 @@ public class XRControllerTowerController : MonoBehaviour
     private void Update()
     {
         lineRenderer.SetPosition(0, transform.position);
-        if(_selecting == false)
+        //Do nothing if we aren't held
+        if(_selecting == false || _takeoverItem.isGrabbed == false)
         {
             lineRenderer.SetPosition(1, transform.position);
             return;
@@ -69,9 +71,13 @@ public class XRControllerTowerController : MonoBehaviour
             SelectATower();
     }
 
+    public Inventory2 inv;
+
     private void SelectATower()
     {
         var firePointTransform = transform;
+        if (inv != null)
+            firePointTransform = inv.transform;
         var ray = new Ray(firePointTransform.position, firePointTransform.forward);
         
         if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
@@ -84,9 +90,27 @@ public class XRControllerTowerController : MonoBehaviour
                 _selectedTower = tower;
                 _selectedTower.Selected();
             }
+            //We hit something that isn't a tower
+            else
+            {
+                _deselectCurrent();
+            }
+        }
+        else
+        {
+            _deselectCurrent();
         }
         
         lineRenderer.SetPosition(1, firePointTransform.position + firePointTransform.forward * 100);
+    }
+
+    void _deselectCurrent()
+    {
+        if (_selectedTower != null)
+        {
+            _selectedTower.Deselected();
+            _selectedTower = null;
+        }
     }
 
     #region Action Event Listeners
@@ -104,6 +128,24 @@ public class XRControllerTowerController : MonoBehaviour
             _selectedTower.Deselected();
             _selecting = false;
         }
+    }
+
+    public void StartSelection(InputAction.CallbackContext context)
+    {
+        _selecting = true;
+    }
+
+    public void EndSelection(InputAction.CallbackContext context)
+    {
+        if (_selectedTower != null)
+        {
+            _selectedTower.Deselected();
+            PlayerStateController.TakeControlOfTower(_selectedTower);
+            _selectedTower = null;
+        }
+        
+        _selecting = false;
+        
     }
 
     private void OnConfirm(InputAction.CallbackContext obj)

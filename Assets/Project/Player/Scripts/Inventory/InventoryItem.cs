@@ -42,7 +42,7 @@ public class InventoryItem : MonoBehaviour
         if (isHeld == false && currentWaiting == null)
         {
             Vector3 pos = transform.localPosition;
-            if (Vector3.Distance(pos, startPos) > 0.01f)
+            if (Vector3.Distance(pos, startPos) > 0f)
                 Reset();
         }
     }
