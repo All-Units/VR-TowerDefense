@@ -11,6 +11,7 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<GameObject> enemyPrefabs;
 
     [SerializeField] private GameObject nextRoundCounterPanel;
+    [SerializeField] private GameObject YouWinPanel;
 
     [SerializeField] private TextAsset levelCSV;
 
@@ -81,12 +82,21 @@ public class EnemySpawner : MonoBehaviour
     }
 
     private int wave_i = 0;
+
+    void _win()
+    {
+        PlayerStateController.StartWin();
+        YouWinPanel.SetActive(true);
+    }
     IEnumerator WaveLoop()
     {
         
         yield return new WaitForEndOfFrame();
         if (wave_i >= waveTotals.Count)
+        {
+            _win();
             yield break;
+        }
         List<int> wave = waveTotals[wave_i];
         List<int> available = new List<int>();
         for (int i = 0; i < orderedPrefabs.Count; i++)
@@ -118,7 +128,10 @@ public class EnemySpawner : MonoBehaviour
         }
         wave_i++;
         if (wave_i >= waveTotals.Count)
+        {
+            _win();
             yield break;
+        }
         _counterDisplay.SetPanelVisibility(true);
         for (int i = 0; i < waveDelay; i++)
         {
@@ -128,8 +141,9 @@ public class EnemySpawner : MonoBehaviour
         _counterDisplay.SetPanelVisibility(false);
         
         StartCoroutine(WaveLoop());
-
     }
+    
+    
     /// <summary>
     /// How many enemies are left
     /// </summary>

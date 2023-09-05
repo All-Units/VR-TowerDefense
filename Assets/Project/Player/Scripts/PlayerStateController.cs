@@ -1,5 +1,8 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
@@ -128,5 +131,16 @@ public class PlayerStateController : MonoBehaviour
             Debug.LogError($"No Player State Controller Detected!");
 
         return instance != null;
+    }
+
+    public static void StartWin()
+    {
+        instance.StartCoroutine(instance._winLogic());
+    }
+
+    IEnumerator _winLogic()
+    {
+        yield return new WaitForSeconds(6f);
+        SceneManager.LoadSceneAsync(0);
     }
 }
