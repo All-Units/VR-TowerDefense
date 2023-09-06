@@ -14,6 +14,8 @@ public class _freezeUntilHeld : MonoBehaviour
     public TowerSelector _selector;
 
     [SerializeField] private TowerIcon icon;
+
+    [SerializeField] private float waitTime = 4f;
     // Start is called before the first frame update
     void Start()
     {
@@ -24,8 +26,12 @@ public class _freezeUntilHeld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (enteredTip) return;
-        if (_isHeld == false)
+        if (enteredTip)
+        {
+            transform.position = new Vector3(0f, -1000f, 0f);
+            return;
+        }
+        if (_isHeld == false && Time.time - lastDropTime >= waitTime)
         {
             if (mirrorPoint.gameObject.activeInHierarchy)
             {
@@ -45,11 +51,16 @@ public class _freezeUntilHeld : MonoBehaviour
     void StartSelected(SelectEnterEventArgs args)
     {
         _isHeld = true;
+        enteredTip = false;
     }
 
+    private float lastDropTime = 0f;
     void EndSelected(SelectExitEventArgs args)
     {
         _isHeld = false;
+        enteredTip = false;
+        lastDropTime = Time.time;
+        icon.gameObject.SetActive(true);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -57,8 +68,9 @@ public class _freezeUntilHeld : MonoBehaviour
         if (_isHeld == false) return;
         if (other.CompareTag("TowerTip"))
         {
-            _isHeld = false;
+            enteredTip = true;
             _selector.SelectTower(icon.towerSO);
+            icon.gameObject.SetActive(false);
         }
     }
 }

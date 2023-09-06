@@ -33,7 +33,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
     {
         inv.trigger.action.performed -= OnStartPlacement;
         inv.trigger.action.canceled -= OnPlaceTower;
-        
+        Close();
     }
     private void Start()
     {
@@ -104,6 +104,13 @@ public class XRControllerTowerPlacer : MonoBehaviour
     public void OnStartPlacement(InputAction.CallbackContext callbackContext)
     {
         _placing = true;
+    }
+
+    public void Close()
+    {
+        _placing = false;
+        clearRay();
+        
     }
 
     public void OnPlaceTower(InputAction.CallbackContext callbackContext)

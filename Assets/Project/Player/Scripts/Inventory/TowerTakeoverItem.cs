@@ -32,7 +32,7 @@ public class TowerTakeoverItem : MonoBehaviour
             if (_mr == null) _mr = GetComponent<MeshRenderer>();
             _mr.enabled = true;
             table.enabled = true;
-            if (isGrabbed == false)
+            if (isGrabbed == false && Time.time - lastDropTime >= waitTime)
             {
                 if (transform.parent != mirrorPoint)
                     transform.parent = mirrorPoint;
@@ -52,11 +52,11 @@ public class TowerTakeoverItem : MonoBehaviour
         inv.trigger.action.started += _controller.StartSelection;
         inv.trigger.action.canceled += _controller.EndSelection;
     }
-
+    private float lastDropTime = 0f;
     void EndGrab(SelectExitEventArgs args)
     {
-        
         isGrabbed = false;
+        lastDropTime = Time.time;
         _controller.inv = null;
         inv.trigger.action.started -= _controller.StartSelection;
         inv.trigger.action.canceled -= _controller.EndSelection;

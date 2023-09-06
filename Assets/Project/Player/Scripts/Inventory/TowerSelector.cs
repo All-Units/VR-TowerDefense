@@ -41,6 +41,9 @@ public class TowerSelector : InventoryItem
         inv.primaryButton.action.started -= PrimaryPressed;
         inv.primaryButton.action.canceled -= PrimaryReleased;
         placer.Drop();
+        _CloseInventory();
+        
+        
     }
 
     private bool isPrimaryHeld = false;
@@ -70,11 +73,20 @@ public class TowerSelector : InventoryItem
         //The inventory is to be opened
         if (t >= openInvTime)
         {
-            OpenInventory();
+            //If the inventory is closed, open it
+            if (inventoryPlatform.activeInHierarchy == false)
+                OpenInventory();
+            else _CloseInventory();
         }
 
         fillInvImage.fillAmount = 0f;
 
+    }
+
+    private void _CloseInventory()
+    {
+        inventoryPlatform.SetActive(false);
+        currentTowerIcon.SetActive(true);
     }
 
     public void OpenInventory()
