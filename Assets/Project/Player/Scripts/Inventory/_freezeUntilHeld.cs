@@ -31,7 +31,7 @@ public class _freezeUntilHeld : MonoBehaviour
             transform.position = new Vector3(0f, -1000f, 0f);
             return;
         }
-        if (_isHeld == false && Time.time - lastDropTime >= waitTime)
+        if (_isHeld == false && (Time.time - lastDropTime >= waitTime || lastDropTime == 0f))
         {
             if (mirrorPoint.gameObject.activeInHierarchy)
             {

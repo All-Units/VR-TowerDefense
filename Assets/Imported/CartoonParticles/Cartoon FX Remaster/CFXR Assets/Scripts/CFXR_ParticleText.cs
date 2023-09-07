@@ -41,6 +41,9 @@ namespace CartoonFX
         
         [Header("Dane Overrides")]
         [SerializeField] float _delay = 1f;
+        [SerializeField] float _speed = 1f;
+        [SerializeField] bool _facesView = true;
+        [SerializeField] bool _looping = false;
 #pragma warning disable 0649
         [SerializeField] CFXR_ParticleTextFontAsset font;
 #pragma warning restore 0649
@@ -314,6 +317,7 @@ namespace CartoonFX
 #endif
 
                         var mainModule = ps.main;
+                        //ps.
                         mainModule.startSizeXMultiplier = baseScaleX * ratio;
                         mainModule.startSizeYMultiplier = baseScaleY * ratio;
                         mainModule.startSizeZMultiplier = baseScaleZ * ratio;
@@ -327,7 +331,8 @@ namespace CartoonFX
                         customData.enabled = true;
                         customData.SetColor(ParticleSystemCustomData.Custom1, color1);
                         customData.SetColor(ParticleSystemCustomData.Custom2, color2);
-
+                        mainModule.simulationSpeed = _speed;
+                        
                         if (cumulativeDelay)
                         {
                             mainModule.startDelay = ((delay * i) + _delay);
@@ -352,6 +357,9 @@ namespace CartoonFX
                         particleRenderer.enabled = true;
                         particleRenderer.pivot = new Vector3(basePivot.x + position, basePivot.y, basePivot.z);
                         particleRenderer.sortingFudge += i * sortingFudgeOffset;
+                        if (_facesView)
+                            particleRenderer.alignment = ParticleSystemRenderSpace.Local;
+                        mainModule.loop = _looping;
                     }
                 }
             }

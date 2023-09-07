@@ -11,7 +11,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] private List<GameObject> enemyPrefabs;
 
     [SerializeField] private GameObject nextRoundCounterPanel;
-    [SerializeField] private GameObject YouWinPanel;
 
     [SerializeField] private TextAsset levelCSV;
 
@@ -85,8 +84,7 @@ public class EnemySpawner : MonoBehaviour
 
     void _win()
     {
-        PlayerStateController.StartWin();
-        YouWinPanel.SetActive(true);
+        GameStateManager.WinGame();
     }
     IEnumerator WaveLoop()
     {
@@ -94,6 +92,7 @@ public class EnemySpawner : MonoBehaviour
         yield return new WaitForEndOfFrame();
         if (wave_i >= waveTotals.Count)
         {
+            print($"FIRST WIN LOGIC");
             _win();
             yield break;
         }
@@ -129,6 +128,7 @@ public class EnemySpawner : MonoBehaviour
         wave_i++;
         if (wave_i >= waveTotals.Count)
         {
+            print($"SECOND WIN LOGIC");
             _win();
             yield break;
         }

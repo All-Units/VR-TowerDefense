@@ -21,7 +21,8 @@ public class TowerSelector : InventoryItem
     private void Start()
     {
         inventoryPlatform.SetActive(false);
-        bgInvImage.gameObject.SetActive(false);
+        if (bgInvImage)
+            bgInvImage.gameObject.SetActive(false);
     }
     public override void OnPickup(SelectEnterEventArgs args)
     {

@@ -133,14 +133,4 @@ public class PlayerStateController : MonoBehaviour
         return instance != null;
     }
 
-    public static void StartWin()
-    {
-        instance.StartCoroutine(instance._winLogic());
-    }
-
-    IEnumerator _winLogic()
-    {
-        yield return new WaitForSeconds(6f);
-        SceneManager.LoadSceneAsync(0);
-    }
 }

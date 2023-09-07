@@ -9,7 +9,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     protected bool isPlayerControlled = false;
     [SerializeField] private Transform playerControlPosition;
     [SerializeField] private Transform playerReleasePosition;
-
+    [SerializeField] private GameObject deathParticles;
 
     #region Unity Interface
 
@@ -18,6 +18,9 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     {
         if(healthController == null)
             healthController = GetComponent<HealthController>();
+        healthController.onDeath.AddListener(Die);
+        if (deathParticles)
+            deathParticles.SetActive(false);
     }
 
     private void OnDestroy()
@@ -60,7 +63,15 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     }
 
     #endregion
-    
+
+    public virtual void Die()
+    {
+        deathParticles.SetActive(true);
+        deathParticles.transform.parent = null;
+        Destroy(deathParticles, 5f);
+        Destroy(gameObject,.01f);
+        print($"Killing {gameObject.name} Tower!");
+    }
 
     #region IEnemyTargetable Interface
 
