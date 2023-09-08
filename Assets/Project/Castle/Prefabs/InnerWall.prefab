@@ -138,7 +138,7 @@ Transform:
   - {fileID: 7233924949543984684}
   - {fileID: 4983099340841087160}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7619956676313555630
 GameObject:
@@ -1047,11 +1047,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: abfd25251f0dee74c875dcf010d66c33,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6604564727886306331}
+      addedObject: {fileID: 1308869354902065890}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: abfd25251f0dee74c875dcf010d66c33,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1308869354902065890}
+      addedObject: {fileID: 8083088100814687952}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: abfd25251f0dee74c875dcf010d66c33,
         type: 3}
       insertIndex: -1
@@ -1069,19 +1069,6 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 3839791449565227256}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6604564727886306331
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4145779147415213481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80ee72f07c1b520469dc5f9a2ba672ba, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  healthController: {fileID: 0}
 --- !u!64 &1308869354902065890
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1104,6 +1091,20 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -5415139871672434210, guid: abfd25251f0dee74c875dcf010d66c33, type: 3}
+--- !u!114 &8083088100814687952
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4145779147415213481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d22f5d48f6d79084c9a4967c6a05a5fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFinalGate: 0
+  _controller: {fileID: 0}
 --- !u!114 &4104366419860790839
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1117,6 +1118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  _currentHealth: 10
   onTakeDamage:
     m_PersistentCalls:
       m_Calls: []
