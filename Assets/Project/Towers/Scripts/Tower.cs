@@ -25,7 +25,9 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     private void OnDestroy()
     {
-        TowerSpawnManager._towersByPos.Remove(transform.position);
+        Vector3 pos = transform.position;
+        TowerSpawnManager._towersByPos.Remove(pos);
+        Minimap.instance.DestroyTowerAt(pos);
     }
 
     #endregion

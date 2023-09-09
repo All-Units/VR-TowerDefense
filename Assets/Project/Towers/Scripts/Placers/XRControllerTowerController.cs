@@ -47,10 +47,12 @@ public class XRControllerTowerController : MonoBehaviour
         switch (arg2)
         {
             case PlayerState.IDLE:
-                lineRenderer.enabled = true;
+                if (lineRenderer)
+                    lineRenderer.enabled = true;
                 break;
             case PlayerState.TOWER_CONTROL:
-                lineRenderer.enabled = false;
+                if (lineRenderer)
+                    lineRenderer.enabled = false;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(arg2), arg2, null);

@@ -6,6 +6,7 @@ using UnityEngine;
         public GameObject ghostObject;
         public Tower towerPrefab;
         public GameObject iconPrefab;
+        public GameObject minimapPrefab;
         public int cost;
 
         public string name;

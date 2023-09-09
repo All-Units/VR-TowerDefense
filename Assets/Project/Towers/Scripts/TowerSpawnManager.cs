@@ -64,8 +64,9 @@ namespace Project.Towers.Scripts
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             Tower t = tower.GetComponentInChildren<Tower>();
-            _towersByPos.Add(t.transform.position, t);
-            
+            Vector3 pos = t.transform.position;
+            _towersByPos.Add(pos, t);
+            Minimap.instance.SpawnTowerAt(pos, currentTower);
             HideGhost();
         }
 
