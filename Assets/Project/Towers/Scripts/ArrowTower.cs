@@ -83,6 +83,7 @@ public class ArrowTower : Tower
 
     public override void Selected()
     {
+        base.Selected();
         selectedVfx.SetActive(true);
     }
 
