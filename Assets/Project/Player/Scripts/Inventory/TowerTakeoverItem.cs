@@ -15,24 +15,29 @@ public class TowerTakeoverItem : MonoBehaviour
     {
         table.selectEntered.AddListener(StartGrab);
         table.selectExited.AddListener(EndGrab);
+        startRot = transform.localRotation;
     }
 
-    private MeshRenderer _mr;
+    private Quaternion startRot;
+    public MeshRenderer _mr;
     // Update is called once per frame
     void Update()
     {
         if (PlayerStateController.instance.state == PlayerState.TOWER_CONTROL)
         {
-            if (_mr == null) _mr = GetComponent<MeshRenderer>();
-            _mr.enabled = false;
+            if (_mr == null) _mr = GetComponentInChildren<MeshRenderer>();
+            _mr.gameObject.SetActive(false);
+            //_mr.enabled = false;
             table.enabled = false;
         }
         else
         {
-            if (_mr == null) _mr = GetComponent<MeshRenderer>();
-            _mr.enabled = true;
+            if (_mr == null) _mr = GetComponentInChildren<MeshRenderer>();
+            _mr.gameObject.SetActive(true);
+            //_mr.enabled = true;
             table.enabled = true;
-            if (isGrabbed == false && Time.time - lastDropTime >= waitTime)
+            bool hitTime = (Time.time - lastDropTime >= waitTime) || lastDropTime == 0f;
+            if (isGrabbed == false && hitTime)
             {
                 if (transform.parent != mirrorPoint)
                     transform.parent = mirrorPoint;
@@ -86,5 +91,6 @@ public class TowerTakeoverItem : MonoBehaviour
         transform.parent = mirrorPoint;
         transform.localPosition = Vector3.zero;
         rb.velocity = Vector3.zero;
+        transform.localRotation = startRot;
     }
 }

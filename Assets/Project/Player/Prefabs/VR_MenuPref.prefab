@@ -64517,6 +64517,8 @@ MonoBehaviour:
   bow: {fileID: 2007922591582073913}
   magicStaff: {fileID: 1045712888015542492}
   handCannon: {fileID: 4091156295676580706}
+  leftHandParent: {fileID: 0}
+  rightHandParent: {fileID: 0}
 --- !u!114 &32765627271416333
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72609,9 +72611,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e0522e79237bb47801e70cb26363d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waistPoint: {fileID: 6452089178047127351}
   table: {fileID: 7349018135323229693}
+  waistPoint: {fileID: 6452089178047127351}
+  tableModel: {fileID: 0}
   starsParticles: {fileID: 421868238046194201}
+  starPoint: {fileID: 0}
   rb: {fileID: 5488021210320901896}
   waitTime: 1
 --- !u!1 &7741293503546901383
@@ -78280,6 +78284,7 @@ MonoBehaviour:
   mirrorPoint: {fileID: 2754697940911735642}
   waitTime: 3
   _controller: {fileID: 3416631735021658037}
+  _mr: {fileID: 0}
   isGrabbed: 0
 --- !u!114 &3416631735021658037
 MonoBehaviour:
