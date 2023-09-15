@@ -23,11 +23,17 @@ public class Tower : MonoBehaviour, IEnemyTargetable
             deathParticles.SetActive(false);
     }
 
+    [HideInInspector]
+    public bool removeFromDict = true;
     private void OnDestroy()
     {
         Vector3 pos = transform.position;
-        TowerSpawnManager._towersByPos.Remove(pos);
-        Minimap.instance.DestroyTowerAt(pos);
+        if (removeFromDict)
+        {
+            TowerSpawnManager._towersByPos.Remove(pos);
+            Minimap.instance.DestroyTowerAt(pos);
+        }
+        
     }
 
     #endregion

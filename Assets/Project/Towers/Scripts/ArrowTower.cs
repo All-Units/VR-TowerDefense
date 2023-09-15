@@ -99,6 +99,7 @@ public class ArrowTower : Tower
         turretModel.SetActive(false);
         playerPlatform.SetActive(true);
 
+        print($"Called override of {gameObject.name} for Arrow tower");
         InventoryManager.instance.GivePlayerItem(playerItemType);
     }
 

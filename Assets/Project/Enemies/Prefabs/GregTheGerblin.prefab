@@ -109,6 +109,8 @@ MonoBehaviour:
   rotateDamping: 4
   hitSFXController: {fileID: 6042510218290352424}
   footstepSFXController: {fileID: 9214176077498672626}
+  headPrefab: {fileID: 6783450005584412200, guid: 65b0d3ab7760a524189a2ebdd7c69dae,
+    type: 3}
   nextWaypoint: {fileID: 0}
   reachedEnd: 0
   _anim: {fileID: 0}
@@ -152,6 +154,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 8
+  _currentHealth: 10
   onTakeDamage:
     m_PersistentCalls:
       m_Calls:

@@ -65,7 +65,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
         {
             var tile = hit.transform.GetComponent<MapTile>();
 
-            if (tile != selectedTile && tile.selectable)
+            if (tile && tile != selectedTile && tile.selectable)
             {
                 TowerSpawnManager.Instance.PlaceGhost(tile.transform.position);
                 selectedTile = tile;

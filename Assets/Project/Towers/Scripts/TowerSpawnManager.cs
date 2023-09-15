@@ -58,16 +58,35 @@ namespace Project.Towers.Scripts
         public static Dictionary<Vector3, Tower> _towersByPos = new Dictionary<Vector3, Tower>();
         public void PlaceTower(Vector3 targetPos)
         {
-            if (CurrencyManager.TryCanAfford(currentTower) == false)
+            if (CurrencyManager.CanAfford(currentTower) == false)
                 return;
             if (_towersByPos.ContainsKey(targetPos)) return;
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             Tower t = tower.GetComponentInChildren<Tower>();
             Vector3 pos = t.transform.position;
+            if (_towersByPos.ContainsKey(pos))
+            {
+                print($"Already a tower at {pos}");
+                t.removeFromDict = false;
+                Destroy(tower.gameObject);
+                HideGhost();
+                return;
+            }
             _towersByPos.Add(pos, t);
             Minimap.instance.SpawnTowerAt(pos, currentTower);
+            CurrencyManager.PayFor(currentTower.cost);
             HideGhost();
+        }
+
+        public static void ClearAllTowers()
+        {
+            foreach (var t in _towersByPos)
+            {
+                Destroy(t.Value.gameObject);
+            }
+
+            _towersByPos = new Dictionary<Vector3, Tower>();
         }
 
         public static void SetTower(Tower_SO towerDTO)

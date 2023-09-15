@@ -28,7 +28,7 @@ public class InventoryItem : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Awake()
+    protected virtual void Awake()
     {
         grabber.selectEntered.AddListener(OnPickup);
         grabber.selectExited.AddListener(OnDrop);

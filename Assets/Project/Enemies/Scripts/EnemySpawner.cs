@@ -17,6 +17,10 @@ public class EnemySpawner : MonoBehaviour
     private List<SpawnPoint> _spawnPoints = new List<SpawnPoint>();
     private WaveCounterDisplay _counterDisplay;
 
+    public Dictionary<BasicEnemy, Transform> enemies = new Dictionary<BasicEnemy, Transform>();
+
+    public static EnemySpawner instance;
+    public bool IsStressTest = false;
 
     // Start is called before the first frame update
     void Start()
@@ -25,6 +29,7 @@ public class EnemySpawner : MonoBehaviour
         _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
         StartCoroutine(WaveLoop());
         _counterDisplay = GetComponent<WaveCounterDisplay>();
+        instance = this;
     }
 
     // Update is called once per frame
@@ -34,6 +39,25 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnEnemy(enemyPrefabs.GetRandom());
         }
+        UpdateAllEnemyPositions();
+    }
+
+    void UpdateAllEnemyPositions()
+    {
+        foreach (var e in enemies)
+        {
+            var enemy = e.Key;
+            var head = e.Value;
+            head.localPosition = enemy.transform.position * 0.02f;
+            Vector3 rot = head.localEulerAngles;
+            rot.y = enemy.transform.localEulerAngles.y;
+            head.localEulerAngles = rot;
+        }
+    }
+
+    public static void SpawnRandom()
+    {
+        instance.SpawnEnemy(instance.enemyPrefabs.GetRandom());
     }
 
     public void SpawnEnemy(GameObject enemyPrefab)
@@ -41,7 +65,25 @@ public class EnemySpawner : MonoBehaviour
         SpawnPoint point = _spawnPoints.GetRandom();
         GameObject enemy = Instantiate(enemyPrefab, point.enemyParent);
         enemy.transform.position = point.transform.position;
-        enemy.GetComponent<BasicEnemy>().nextWaypoint = point;
+        var e = enemy.GetComponent<BasicEnemy>();
+        SpawnHead(e);
+        e.nextWaypoint = point;
+    }
+
+    void SpawnHead(BasicEnemy enemy)
+    {
+        GameObject head = Instantiate(enemy.headPrefab, Minimap.Zero);
+        enemies.Add(enemy, head.transform);
+        head.transform.localPosition = enemy.transform.position * 0.02f;
+    }
+
+    public static void RemoveEnemy(BasicEnemy enemy)
+    {
+        if (instance.enemies.ContainsKey(enemy))
+        {
+            Destroy(instance.enemies[enemy].gameObject);
+            instance.enemies.Remove(enemy);
+        }
     }
     [SerializeField]
     private List<GameObject> orderedPrefabs = new List<GameObject>();
@@ -66,6 +108,9 @@ public class EnemySpawner : MonoBehaviour
                 first = false;
                 continue;
             }
+            if (line.Trim() == "")
+                continue;
+            
 
             string[] split = line.Split(",");
             List<int> count = new List<int>();
@@ -88,7 +133,7 @@ public class EnemySpawner : MonoBehaviour
     }
     IEnumerator WaveLoop()
     {
-        
+        if (IsStressTest) yield break;
         yield return new WaitForEndOfFrame();
         if (wave_i >= waveTotals.Count)
         {

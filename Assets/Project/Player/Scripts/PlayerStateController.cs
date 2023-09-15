@@ -90,6 +90,7 @@ public class PlayerStateController : MonoBehaviour
         SetPlayerState(PlayerState.IDLE);
         dynamicMoveProvider.CanMove = true;
         dynamicMoveProvider.useGravity = true;
+        InventoryManager.instance.ReleaseAllItems();
     }
     
     private void TeleportPlayerToPoint(Transform playerControlPoint)
@@ -106,6 +107,12 @@ public class PlayerStateController : MonoBehaviour
         teleportationProvider.QueueTeleportRequest(request);
 
         teleportationProvider.beginLocomotion += SetPlayerScale;
+    }
+
+    public void TeleportPlayerToPenthouse()
+    {
+        Transform t = TeleportPoints.Penthouse;
+        TeleportPlayerToPoint(t);
     }
 
     private void SetPlayerScale(LocomotionSystem obj)

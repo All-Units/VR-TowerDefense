@@ -19,6 +19,9 @@ public class InventoryManager : MonoBehaviour
     public XRGrabInteractable handCannon;
     private XRInteractionManager _manager;
 
+    [SerializeField] private GameObject leftHandParent;
+    [SerializeField] private GameObject rightHandParent;
+
     private void Awake()
     {
         instance = this;
@@ -73,20 +76,35 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
+    private List<XRBaseInteractor> _tors = new List<XRBaseInteractor>();
     public void ReleaseAllItems()
     {
-        ReleaseAllSelected(playerRightHand);
-        ReleaseAllSelected(playerLeftHand);
+        //ReleaseAllSelected(playerRightHand);
+        //ReleaseAllSelected(playerLeftHand);
+        if (_tors.Count == 0)
+        {
+            _tors = _tors.Concat(leftHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
+            _tors = _tors.Concat(rightHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
+        }
+
+        foreach (var tor in _tors)
+        {
+            ReleaseAllSelected(tor);
+        }
     }
 
+    
     private void ReleaseAllSelected(XRBaseInteractor interactor)
     {
+        
         var selectedInteractables = interactor.interactablesSelected.ToArray();
 
+        bool dropped = false;
         foreach (var selectedInteractable in selectedInteractables)
         {
             _manager.SelectExit(interactor, selectedInteractable);
         }
+        
     }
 
     public bool RightHandFull() => playerRightHand.interactablesSelected.Any();

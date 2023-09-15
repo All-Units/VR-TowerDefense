@@ -61,8 +61,12 @@ public class CurrencyManager : MonoBehaviour
             instance.CurrentMoney -= tower.cost;
             return true;
         }
-
         return false;
+    }
+
+    public static void PayFor(int cost)
+    {
+        instance.CurrentMoney -= cost;
     }
     
 }
