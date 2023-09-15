@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -193,6 +194,63 @@ public static class Utilities
         }
 
         return str;
+    }
+
+        public static void SetLayerRecursive(this GameObject go, int layer)
+    {
+        go.layer = layer;
+        foreach (Transform t in go.transform)
+        {
+            t.gameObject.SetLayerRecursive(layer);
+        }
+    }
+
+    public static void DestroyChildren(this Transform p)
+    {
+        var oldChildren = (from Transform t in p.transform select t.gameObject).ToList();
+
+        while (oldChildren.Count > 0)
+        {
+            var child = oldChildren[0];
+            oldChildren.RemoveAt(0);
+            child.transform.parent = null;
+            Object.Destroy(child);
+        }
+    }
+    
+    public static float Remap (this float value, float from1, float to1, float from2, float to2) {
+        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+    }
+
+    public static bool InRange(this Array array, int idx)
+    {
+        return (idx >= 0 && idx < array.Length);
+    }
+
+    public static bool InRange(this IList list, int idx)
+    {
+        return (idx >= 0 && idx < list.Count);
+    }
+
+    public static int Factorial(this int v)
+    {
+        var n = v;
+        var ret = 1;
+        while (n >= 1)
+        {
+            ret *= n;
+            n--;
+        }
+
+        return ret;
+    }
+    
+    public static Vector3 RandomPointInside(this Bounds bounds) {
+        return new Vector3(
+            UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
+            UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
+            UnityEngine.Random.Range(bounds.min.z, bounds.max.z)
+        );
     }
     
     public static InputAction GetInputAction(InputActionReference actionReference)

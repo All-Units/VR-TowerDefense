@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public enum PlayerItemType
 {
@@ -8,14 +7,20 @@ public enum PlayerItemType
     Staff,
     Cannon
 }
+public class TowerStats : ScriptableObject
+ {
+     public float radius = 5f;
+     public float shotCooldown = 1f;
+     public Projectile projectile;
+ }
 public class ArrowTower : Tower
 {
-    [SerializeField] private float radius = 5f;
+    [SerializeField] private TowerStats stats;
+    
     [SerializeField] private RadialTargetingSystem targetingSystem;
 
-    [SerializeField] private float shotCooldown = 1f;
     private float _currentCooldown;
-    [SerializeField] private Projectile projectile;
+
     [SerializeField] private Transform firePoint;
     [SerializeField] private Transform pivotPoint;
 
@@ -30,7 +35,7 @@ public class ArrowTower : Tower
     protected override void Awake()
     {
         base.Awake();
-        targetingSystem.SetRadius(radius);
+        targetingSystem.SetRadius(stats.radius);
         selectedVfx.SetActive(false);
     }
 
@@ -77,8 +82,8 @@ public class ArrowTower : Tower
 
     private void Fire()
     {
-        var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
-        _currentCooldown = shotCooldown;
+        var go = Instantiate(stats.projectile, firePoint.position, firePoint.rotation);
+        _currentCooldown = stats.shotCooldown;
     }
 
     public override void Selected()
@@ -119,7 +124,7 @@ public class ArrowTower : Tower
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(targetingSystem.transform.position, radius);
+        Gizmos.DrawWireSphere(targetingSystem.transform.position, stats.radius);
         
         Gizmos.color = targetingSystem.HasTarget() ? Color.red : Color.blue;
 
@@ -128,3 +133,4 @@ public class ArrowTower : Tower
 
     #endregion
 }
+
