@@ -1,5 +1,7 @@
+using System;
 using Project.Towers.Scripts;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(HealthController))]
 public class Tower : MonoBehaviour, IEnemyTargetable
@@ -10,6 +12,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     [SerializeField] private Transform playerControlPosition;
     [SerializeField] private Transform playerReleasePosition;
     [SerializeField] private GameObject deathParticles;
+
+    public Tower_SO dto;
+
+    public static event Action<Tower> OnTowerSpawn;
+    public static event Action<Tower> OnTowerDestroy; 
 
     #region Unity Interface
 
@@ -43,11 +50,10 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Selected()
     {
-        //Debug.LogError($"No Override implemented for Selected() on {gameObject}", gameObject);
+        BubbleMenuController.Open(this);
     }    
     public virtual void Deselected()
     {
-        //Debug.LogError($"No Override implemented for Deselected() on {gameObject}", gameObject);
     }
     
     public virtual void PlayerTakeControl()
@@ -94,5 +100,4 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         }
 
     #endregion
-
 }

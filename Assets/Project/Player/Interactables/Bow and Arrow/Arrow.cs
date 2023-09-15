@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.Diagnostics;
 
 public class Arrow : MonoBehaviour
 {
@@ -12,6 +10,7 @@ public class Arrow : MonoBehaviour
     private bool _inAir = false;
     private bool _isDestroying = false;
     [SerializeField] private ParticleSystem particles;
+    public StatusModifier statusModifier;
 
     private void Awake()
     {
@@ -62,6 +61,13 @@ public class Arrow : MonoBehaviour
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);
+            
+            if(statusModifier)
+            {
+                var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
+                if(statusEffectController)
+                    statusModifier.ApplyStatus(statusEffectController);
+            }
         }
 
         _isDestroying = true;

@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 
     [CreateAssetMenu(menuName = "SO/Tower", fileName = "New Tower")]
@@ -11,4 +13,15 @@ using UnityEngine;
 
         public string name;
         public string description;
+
+        [SerializeField] private List<TowerUpgrade> upgrades = new List<TowerUpgrade>();
+
+        public List<TowerUpgrade> GetUpgrades() => upgrades;
     }
+
+[Serializable]
+public struct TowerUpgrade
+{
+    public Tower_SO upgrade;
+    public int cost;
+}
