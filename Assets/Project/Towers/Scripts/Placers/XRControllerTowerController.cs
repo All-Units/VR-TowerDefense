@@ -16,7 +16,11 @@ public class XRControllerTowerController : MonoBehaviour
     
     [SerializeField]
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
-    private InputActionReference controlTowerConfirmActionReference;
+    private InputActionReference controlTowerConfirmActionReference; 
+    
+    [SerializeField]
+    [Tooltip("The reference to the action to confirm tower takeover selection.")]
+    private InputActionReference openTowerMenuActionReference;
 
     [SerializeField] private LineRenderer lineRenderer;
     public XRDirectInteractor playerHand;
@@ -37,6 +41,12 @@ public class XRControllerTowerController : MonoBehaviour
         if (confirmSelectAction != null)
         {
             confirmSelectAction.performed += OnConfirm;
+        }       
+        
+        var openTowerMenuAction = Utilities.GetInputAction(openTowerMenuActionReference);
+        if (openTowerMenuAction != null)
+        {
+            openTowerMenuAction.performed += OpenTowerMenuActionOnPerformed;
         }
         
         PlayerStateController.OnStateChange += PlayerStateControllerOnStateChange;
@@ -113,6 +123,12 @@ public class XRControllerTowerController : MonoBehaviour
             _selectedTower.Deselected();
             _selectedTower = null;
         }
+    }
+
+    private void OpenTowerMenuActionOnPerformed(InputAction.CallbackContext obj)
+    {
+        if(_selectedTower)
+            BubbleMenuController.Open(_selectedTower);
     }
 
     #region Action Event Listeners

@@ -63,6 +63,9 @@ public class TowerTakeoverItem : MonoBehaviour
         StartCoroutine(_waitThenReturn());
         inv = null;
     }
+
+    #region Drop Logic
+
     IEnumerator _waitThenReturn()
     {
         yield return new WaitForSeconds(waitTime);
@@ -87,4 +90,6 @@ public class TowerTakeoverItem : MonoBehaviour
         transform.localPosition = Vector3.zero;
         rb.velocity = Vector3.zero;
     }
+    
+    #endregion
 }

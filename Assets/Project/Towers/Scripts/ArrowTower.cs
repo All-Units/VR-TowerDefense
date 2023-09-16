@@ -7,12 +7,7 @@ public enum PlayerItemType
     Staff,
     Cannon
 }
-public class TowerStats : ScriptableObject
- {
-     public float radius = 5f;
-     public float shotCooldown = 1f;
-     public Projectile projectile;
- }
+
 public class ArrowTower : Tower
 {
     [SerializeField] private TowerStats stats;
