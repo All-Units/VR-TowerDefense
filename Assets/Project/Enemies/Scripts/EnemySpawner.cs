@@ -21,14 +21,16 @@ public class EnemySpawner : MonoBehaviour
 
     public static EnemySpawner instance;
     public bool IsStressTest = false;
+    [SerializeField] private float firstRoundDelay = 5f;
 
     // Start is called before the first frame update
     void Start()
     {
         parseCSV();
         _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
-        StartCoroutine(WaveLoop());
         _counterDisplay = GetComponent<WaveCounterDisplay>();
+        StartCoroutine(WaveLoop());
+        
         instance = this;
     }
 
@@ -131,9 +133,23 @@ public class EnemySpawner : MonoBehaviour
     {
         GameStateManager.WinGame();
     }
+
+    private bool run = false;
     IEnumerator WaveLoop()
     {
         if (IsStressTest) yield break;
+        if (run == false)
+        {
+            yield return new WaitForSeconds(0.2f);
+            run = true;
+            _counterDisplay.SetPanelVisibility(true);
+            for (int i = 0; i < (int)firstRoundDelay; i++)
+            {
+                _counterDisplay.SetText($"{(int)firstRoundDelay - i}s");
+                yield return new WaitForSeconds(1);
+            }
+            _counterDisplay.SetPanelVisibility(false);
+        }
         yield return new WaitForEndOfFrame();
         if (wave_i >= waveTotals.Count)
         {

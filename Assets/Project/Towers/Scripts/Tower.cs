@@ -30,12 +30,20 @@ public class Tower : MonoBehaviour, IEnemyTargetable
             deathParticles.SetActive(false);
     }
 
+    [HideInInspector] public bool removeFromDict = true;
     private void OnDestroy()
     {
         Vector3 pos = transform.position;
         TowerSpawnManager._towersByPos.Remove(pos);
         if(Minimap.instance)
             Minimap.instance.DestroyTowerAt(pos);
+        TowerSpawnManager._towersByPos.Remove(pos);
+        Minimap.instance.DestroyTowerAt(pos);
+        if (removeFromDict)
+        {
+            TowerSpawnManager._towersByPos.Remove(pos);
+            Minimap.instance.DestroyTowerAt(pos);
+        }
     }
 
     #endregion
@@ -75,11 +83,24 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Die()
     {
+        if (isPlayerControlled)
+        {
+            PlayerStateController.ReleaseControlOfTower();
+            PlayerStateController.instance.TeleportPlayerToPenthouse();
+            PlayerReleaseControl();
+            InventoryManager.instance.ReleaseAllItems();
+        }
+        if (deathParticles == null)
+        {
+            GameObject g = gameObject;
+            Debug.LogError($"{g.name} had no death particles", g);
+            return;
+            
+        }
         deathParticles.SetActive(true);
         deathParticles.transform.parent = null;
         Destroy(deathParticles, 5f);
         Destroy(gameObject,.01f);
-        print($"Killing {gameObject.name} Tower!");
     }
 
     #region IEnemyTargetable Interface

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Project.Towers.Scripts
 {
@@ -12,6 +13,7 @@ namespace Project.Towers.Scripts
         public static bool CouldAffordCurrentTower => CurrencyManager.CouldAfford(Instance.currentTower);
         public static TowerSpawnManager Instance;
         private Tower_SO currentTower;
+        public static Tower_SO GetCurrentTower => Instance.currentTower;
 
         private void Awake()
         {
@@ -89,10 +91,12 @@ namespace Project.Towers.Scripts
             _towersByPos = new Dictionary<Vector3, Tower>();
         }
 
+        public static UnityEvent OnTowerSet = new UnityEvent();
         public static void SetTower(Tower_SO towerDTO)
         {
             Instance.HideGhost();
             Instance.currentTower = towerDTO;
+            OnTowerSet.Invoke();
         }
     }
 }

@@ -22,6 +22,11 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject leftHandParent;
     [SerializeField] private GameObject rightHandParent;
 
+    [SerializeField] private float _inventoryYOffset = -.3f;
+    [SerializeField] private Transform playerCamera;
+    public static float InventoryY => instance.playerCamera.position.y + instance._inventoryYOffset;
+    
+
     private void Awake()
     {
         instance = this;
@@ -33,6 +38,7 @@ public class InventoryManager : MonoBehaviour
 
     public void SpawnBow()
     {
+        resetItem(bow);
         playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
 
@@ -41,12 +47,14 @@ public class InventoryManager : MonoBehaviour
 
     public void SpawnMagicStaff()
     {
+        resetItem(magicStaff);
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, magicStaff);
     }
 
     public void SpawnHandCannon()
     {
+        resetItem(handCannon);
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, handCannon);
     }
@@ -74,6 +82,12 @@ public class InventoryManager : MonoBehaviour
             default:
                 throw new ArgumentOutOfRangeException(nameof(playerItemType), playerItemType, null);
         }
+    }
+
+    void resetItem(XRGrabInteractable go)
+    {
+        ItemScaler scaler = go.GetComponent<ItemScaler>();
+        scaler.ResetScale();
     }
 
     private List<XRBaseInteractor> _tors = new List<XRBaseInteractor>();

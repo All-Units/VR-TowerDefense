@@ -17,6 +17,7 @@ public class TowerSelector : InventoryItem
     [SerializeField] private Image bgInvImage;
     public GameObject inventoryPlatform;
     public GameObject currentTowerIcon;
+    public GameObject currentTowerPrice;
 
     private void Start()
     {
@@ -42,7 +43,7 @@ public class TowerSelector : InventoryItem
         inv.primaryButton.action.started -= PrimaryPressed;
         inv.primaryButton.action.canceled -= PrimaryReleased;
         placer.Drop();
-        _CloseInventory();
+        CloseInventory();
         
         
     }
@@ -77,23 +78,25 @@ public class TowerSelector : InventoryItem
             //If the inventory is closed, open it
             if (inventoryPlatform.activeInHierarchy == false)
                 OpenInventory();
-            else _CloseInventory();
+            else CloseInventory();
         }
 
         fillInvImage.fillAmount = 0f;
 
     }
 
-    private void _CloseInventory()
+    public void CloseInventory()
     {
         inventoryPlatform.SetActive(false);
         currentTowerIcon.SetActive(true);
+        currentTowerPrice.SetActive(true);
     }
 
     public void OpenInventory()
     {
         inventoryPlatform.SetActive(true);
         currentTowerIcon.SetActive(false);
+        currentTowerPrice.SetActive(false);
     }
 
     private Dictionary<Tower_SO, GameObject> iconsByDTO = new Dictionary<Tower_SO, GameObject>();

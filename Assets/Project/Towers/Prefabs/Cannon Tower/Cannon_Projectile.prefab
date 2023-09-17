@@ -122,9 +122,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   speed: 20
+  statusModifier: {fileID: 0}
   splashRadius: 3
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
+  damageDropOff:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0.004573574
+      value: 0.99475145
+      inSlope: -2.790245
+      outSlope: -2.790245
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.11060789
+    - serializedVersion: 3
+      time: 1
+      value: 0.025829673
+      inSlope: -0.0012240435
+      outSlope: -0.0012240435
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.23943877
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0

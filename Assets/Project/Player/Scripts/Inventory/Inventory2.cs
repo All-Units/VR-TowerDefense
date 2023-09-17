@@ -4,27 +4,49 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class Inventory2 : MonoBehaviour
 {
+    public whichHand whichHand = whichHand.left;
     public HashSet<IXRSelectInteractor> tors = new HashSet<IXRSelectInteractor>();
     public InputActionReference primaryButton;
+    public InputActionReference SecondaryButton;
     public InputActionReference trigger;
+    
     private void Awake()
     {
         tors = GetComponentsInChildren<IXRSelectInteractor>().ToHashSet();
+        if (whichHand == whichHand.left)
+        {
+            SecondaryButton.action.started += SecondaryPressed;
+            SecondaryButton.action.canceled += SecondaryReleased;
+        }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    private void OnDestroy()
     {
+        if (whichHand == whichHand.left)
+        {
+            SecondaryButton.action.started -= SecondaryPressed;
+            SecondaryButton.action.canceled -= SecondaryReleased;
+        }
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void SecondaryPressed(InputAction.CallbackContext obj)
     {
-        
+        BasicPauseMenu.instance.IsSecondaryHeld = true;
+        BasicPauseMenu.StartPauseFill();
     }
+    private void SecondaryReleased(InputAction.CallbackContext obj)
+    {
+        BasicPauseMenu.instance.IsSecondaryHeld = false;
+    }
+
+    
+
+   
+    
 }

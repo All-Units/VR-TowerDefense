@@ -50,7 +50,7 @@ public class Minimap : MonoBehaviour
         }
         else
         {
-            print($"No tower at {pos}");
+            //print($"No tower at {pos}");
         }
     }
 
@@ -64,7 +64,7 @@ public class Minimap : MonoBehaviour
     public static void SetActive(bool active)
     {
         if (instance == null) return;
-        if (instance.child == null) Debug.LogError($"No child on minimap, set on?{active}");
+        //if (instance.child == null) Debug.LogError($"No child on minimap, set on?{active}");
         if (instance.child == null) return;
         instance.child.SetActive(active);
     }

@@ -49,7 +49,7 @@ public class TowerSelectPointController : MonoBehaviour
             return;
         }
         PlayerStateController.TakeControlOfTower(originTower);
-        print($"Selected {towerDTO.name}");
+        //print($"Selected {towerDTO.name}");
     }
 
     void _HoverEnter(HoverEnterEventArgs args)

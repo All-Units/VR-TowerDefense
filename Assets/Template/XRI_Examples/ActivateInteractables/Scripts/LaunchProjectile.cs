@@ -23,6 +23,7 @@ namespace UnityEngine.XR.Content.Interaction
 
             if (newObject.TryGetComponent(out Rigidbody rigidBody))
                 ApplyForce(rigidBody);
+            Destroy(newObject, 15f);
         }
 
         void ApplyForce(Rigidbody rigidBody)

@@ -91,10 +91,13 @@ public class TowerTakeoverItem : MonoBehaviour
     private Rigidbody _rb;
     void _resetSphere()
     {
-        transform.parent = mirrorPoint;
-        transform.localPosition = Vector3.zero;
+        Transform t = transform;
+        t.parent = mirrorPoint;
+        Vector3 pos = mirrorPoint.position;
+        pos.y = InventoryManager.InventoryY;
+        t.position = pos;
         rb.velocity = Vector3.zero;
-        transform.localRotation = startRot;
+        t.localRotation = startRot;
     }
     
     #endregion

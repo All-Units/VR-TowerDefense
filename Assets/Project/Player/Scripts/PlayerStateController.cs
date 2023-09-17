@@ -44,7 +44,7 @@ public class PlayerStateController : MonoBehaviour
         var prevState = state;
         state = newState;
         
-        Debug.Log($"Setting Player State! {prevState.ToString()} => {state.ToString()}");
+        //Debug.Log($"Setting Player State! {prevState.ToString()} => {state.ToString()}");
         OnStateChange?.Invoke(prevState, state);
     }
 

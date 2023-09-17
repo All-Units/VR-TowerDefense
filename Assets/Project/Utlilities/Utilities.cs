@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
@@ -259,4 +260,23 @@ public static class Utilities
         return actionReference != null ? actionReference.action : null;
 #pragma warning restore IDE0031
     }
+    #if UNITY_EDITOR
+    [MenuItem("Castle Tools/Go To DaneMainScene %#d")]
+    public static void GoToDaneScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map01_02.unity");
+        }
+    }
+    [MenuItem("Castle Tools/Go To Main Menu %#m")]
+    public static void GoToMainMenu()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/MainMenu.unity");
+        }
+    }
+    
+    #endif
 }

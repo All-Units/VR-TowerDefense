@@ -99,11 +99,13 @@ public class InventoryCollider : MonoBehaviour
 
     void _resetSphere()
     {
-        transform.parent = waistPoint;
-        transform.localPosition = Vector3.zero;
+        Transform t = transform;
+        t.parent = waistPoint;
+        Vector3 pos = waistPoint.position;
+        pos.y = InventoryManager.InventoryY;
         rb.velocity = Vector3.zero;
-        transform.localRotation = startRot;
-        
+        t.localRotation = startRot;
+        t.position = pos;
     }
 
     private bool inInventoryCollider = false;
