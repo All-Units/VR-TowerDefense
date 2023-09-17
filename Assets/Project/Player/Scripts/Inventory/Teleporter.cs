@@ -23,12 +23,14 @@ public class Teleporter : MonoBehaviour
 
     public void TeleportToSafety()
     {
-        TeleportPlayerToPoint(penthouse);
+        PlayerStateController.instance.TeleportPlayerToPenthouse();
+        //TeleportPlayerToPoint(penthouse);
     }
 
     public void TeleportToFrontlines()
     {
-        TeleportPlayerToPoint(frontlines);
+        PlayerStateController.instance.TeleportPlayerToWar();
+        //TeleportPlayerToPoint(frontlines);
     }
     
     private void TeleportPlayerToPoint(Transform playerControlPoint)

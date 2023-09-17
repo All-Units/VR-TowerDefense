@@ -18,13 +18,26 @@ public class Minimap : MonoBehaviour
     {
         instance = this;
         child = transform.GetChild(0).gameObject;
+        SpawnAllExisting();
         child.SetActive(false);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+
+    void SpawnAllExisting()
+    {
+        var towers = TowerSpawnManager.Instance.GetComponentsInChildren<Tower>();
+        foreach (var tower in towers)
+        {
+            Vector3 pos = tower.transform.position;
+            TowerSpawnManager._towersByPos.Add(pos, tower);
+            SpawnTowerAt(pos, tower.dto);
+        }
     }
 
     private Dictionary<Vector3, GameObject> towersByPos = new Dictionary<Vector3, GameObject>();

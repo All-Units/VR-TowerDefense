@@ -30,13 +30,20 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private float towerControlScale;
     [SerializeField] private TeleportationProvider teleportationProvider;
     [SerializeField] private DynamicMoveProvider dynamicMoveProvider;
+
+    public GameObject penthouse;
+    public GameObject penthouseInterior;
     
     private Tower _currentControlledTower;
+    [SerializeField] private bool StartInPenthouse = false;
 
     private void Awake()
     {
         instance = this;
         SetPlayerState(PlayerState.IDLE);
+        ActivatePenthouseExterior();
+        if (StartInPenthouse)
+            TeleportPlayerToPenthouse();
     }
 
     public void SetPlayerState(PlayerState newState)
@@ -51,7 +58,7 @@ public class PlayerStateController : MonoBehaviour
     public static void TakeControlOfTower(Tower tower)
     {
         if(IsInstanced() == false) return;
-        
+        ActivatePenthouseExterior();
         instance.SetPlayerToTower(tower);
     }
 
@@ -111,8 +118,18 @@ public class PlayerStateController : MonoBehaviour
 
     public void TeleportPlayerToPenthouse()
     {
+        ActivatePenthouseExterior(false);
         Transform t = TeleportPoints.Penthouse;
         TeleportPlayerToPoint(t);
+        
+    }
+
+    public void TeleportPlayerToWar()
+    {
+        ActivatePenthouseExterior();
+        Transform t = TeleportPoints.FrontOfGate;
+        TeleportPlayerToPoint(t);
+        
     }
 
     private void SetPlayerScale(LocomotionSystem obj)
@@ -138,6 +155,18 @@ public class PlayerStateController : MonoBehaviour
             Debug.LogError($"No Player State Controller Detected!");
 
         return instance != null;
+    }
+
+    
+    /// <summary>
+    /// Turns on or off the exterior of the Mages Tower
+    /// </summary>
+    /// <param name="exterior">If true, exterior on / interior off</param>
+    public static void ActivatePenthouseExterior(bool exterior = true)
+    {
+        instance.penthouse.SetActive(exterior);
+        //Set the interior to the inverse of the exterior
+        instance.penthouseInterior.SetActive(!exterior);
     }
 
 }
