@@ -8,6 +8,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -215,7 +216,7 @@ public static class Utilities
             var child = oldChildren[0];
             oldChildren.RemoveAt(0);
             child.transform.parent = null;
-            Object.Destroy(child);
+            Object.DestroyImmediate(child);
         }
     }
     
@@ -267,6 +268,14 @@ public static class Utilities
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
             EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map01_02.unity");
+        }
+    }
+    [MenuItem("Castle Tools/Go To DaneSecondScene %#e")]
+    public static void GoToDaneSecondScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map03.unity");
         }
     }
     [MenuItem("Castle Tools/Go To Main Menu %#m")]
