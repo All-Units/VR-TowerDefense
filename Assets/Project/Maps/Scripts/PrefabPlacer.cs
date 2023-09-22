@@ -20,6 +20,11 @@ class PrefabPlacerEditor : Editor
         {
             p.PlaceObjects();
         }
+
+        if (GUILayout.Button(($"Toggle colliders")))
+        {
+            p.ToggleColliders();
+        }
         base.OnInspectorGUI();
     }
 
@@ -51,6 +56,13 @@ public class PrefabPlacer : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void ToggleColliders()
+    {
+        var cols = GetComponentsInChildren<Collider>();
+        foreach (var col in cols)
+            col.enabled = !col.enabled;
     }
 
     private Vector3 down;

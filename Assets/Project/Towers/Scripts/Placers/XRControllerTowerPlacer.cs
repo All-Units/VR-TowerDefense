@@ -9,7 +9,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private LineRenderer _lr;
     [SerializeField] private Transform firePoint;
-    private MapTile selectedTile = null;
+    //private MapTile selectedTile = null;
     private bool _placing = false;
     [SerializeField] private float width = 0.5f;
     
@@ -55,6 +55,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
         SelectATile();
     }
 
+    private Vector3 lastTowerPos = Vector3.negativeInfinity;
     private void SelectATile()
     {
         var firePointTransform = firePoint;
@@ -63,20 +64,23 @@ public class XRControllerTowerPlacer : MonoBehaviour
         var ray = new Ray(pos, forward);
         if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
         {
-            var tile = hit.transform.GetComponent<MapTile>();
+            //var tile = hit.transform.GetComponent<MapTile>();
 
-            if (tile && tile != selectedTile && tile.selectable)
+            bool valid = true;//hit.transform.root.GetChild(0).CompareTag("Castle") == false;
+            valid = valid && (hit.transform.gameObject.layer == 7);
+            Vector3 hitPos = hit.point;
+            if (valid && lastTowerPos != hitPos)// && tile != selectedTile && tile.selectable
             {
-                TowerSpawnManager.Instance.PlaceGhost(tile.transform.position);
-                selectedTile = tile;
+                TowerSpawnManager.Instance.PlaceGhost(hitPos);
+                lastTowerPos = hitPos;
             }
-            DrawRay(pos, hit.transform.position);
+            DrawRay(pos, hit.point);
             if (TowerSpawnManager.CouldAffordCurrentTower == false)
                 TowerSpawnManager.Instance.HideGhost();
         }
         else
         {
-            selectedTile = null;
+            lastTowerPos = Vector3.negativeInfinity;
             TowerSpawnManager.Instance.HideGhost();
             DrawRay(pos, forward * 100f, false);
         }
@@ -115,8 +119,11 @@ public class XRControllerTowerPlacer : MonoBehaviour
 
     public void OnPlaceTower(InputAction.CallbackContext callbackContext)
     {
-        if(selectedTile)
-            TowerSpawnManager.Instance.PlaceTower(selectedTile.transform.position);
+        if (lastTowerPos.y > -100000f)
+        {
+            print($"Placing tower at {lastTowerPos}");
+            TowerSpawnManager.Instance.PlaceTower(lastTowerPos);
+        }
        
         _placing = false;
     }

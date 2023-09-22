@@ -15,6 +15,7 @@ namespace Project.Towers.Scripts
         private Tower_SO currentTower;
         public static Tower_SO GetCurrentTower => Instance.currentTower;
 
+        public float yOffset = -0.1f;
         private void Awake()
         {
             Instance = this;
@@ -60,13 +61,23 @@ namespace Project.Towers.Scripts
         public static Dictionary<Vector3, Tower> _towersByPos = new Dictionary<Vector3, Tower>();
         public void PlaceTower(Vector3 targetPos)
         {
+            targetPos.y += yOffset;
+            print($"Started placing tower");
             if (CurrencyManager.CanAfford(currentTower) == false)
+            {
+                print($"Returning because POOR");
                 return;
-            if (_towersByPos.ContainsKey(targetPos)) return;
+            }
+            if (_towersByPos.ContainsKey(targetPos))
+            {
+                print($"Returning because contained in dict already");
+                return;
+            }
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             Tower t = tower.GetComponentInChildren<Tower>();
             Vector3 pos = t.transform.position;
+            print($"Spawned tower");
             if (_towersByPos.ContainsKey(pos))
             {
                 print($"Already a tower at {pos}");
@@ -76,7 +87,7 @@ namespace Project.Towers.Scripts
                 return;
             }
             _towersByPos.Add(pos, t);
-            Minimap.instance.SpawnTowerAt(pos, currentTower);
+            //Minimap.instance.SpawnTowerAt(pos, currentTower);
             CurrencyManager.PayFor(currentTower.cost);
             HideGhost();
         }
