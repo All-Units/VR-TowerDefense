@@ -75,8 +75,12 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Die()
     {
-        deathParticles.SetActive(true);
-        deathParticles.transform.parent = null;
+        if (deathParticles)
+        {
+            deathParticles.SetActive(true);
+            deathParticles.transform.parent = null;
+        }
+
         Destroy(deathParticles, 5f);
         Destroy(gameObject,.01f);
         print($"Killing {gameObject.name} Tower!");

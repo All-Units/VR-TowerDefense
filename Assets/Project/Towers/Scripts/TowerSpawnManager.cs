@@ -63,17 +63,55 @@ namespace Project.Towers.Scripts
             if (_towersByPos.ContainsKey(targetPos)) return;
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
-            Tower t = tower.GetComponentInChildren<Tower>();
+            
+            // Todo refactor needed
+            Tower t = tower.GetComponentInChildren<Tower>(); 
             Vector3 pos = t.transform.position;
             _towersByPos.Add(pos, t);
             Minimap.instance.SpawnTowerAt(pos, currentTower);
+            // End refactor needed
+            
             HideGhost();
+        }        
+        
+        public void PlaceTowerSpecific(Tower_SO targetTower, Vector3 targetPos)
+        {
+            var tower = Instantiate(targetTower.towerPrefab, targetPos, Quaternion.identity);
+            tower.transform.SetParent(towersRoot);
+            
+            // Todo refactor needed
+            Tower t = tower.GetComponentInChildren<Tower>(); 
+            Vector3 pos = t.transform.position;
+            _towersByPos.Add(pos, t);
+            Minimap.instance.SpawnTowerAt(pos, currentTower);
+            // End refactor needed
         }
 
         public static void SetTower(Tower_SO towerDTO)
         {
             Instance.HideGhost();
             Instance.currentTower = towerDTO;
+        }
+
+        public static void UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
+        {
+            if (Instance)
+                Instance._UpgradeTower(towerToUpgrade, upgrade);
+        }
+
+        private void _UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
+        {
+            var pos = towerToUpgrade.transform.position;
+            RemoveTower(towerToUpgrade);
+            PlaceTowerSpecific(upgrade, pos);
+        }
+
+        private void RemoveTower(Tower towerToRemove)
+        {
+            Tower t = towerToRemove.GetComponentInChildren<Tower>(); 
+            Vector3 pos = t.transform.position;
+            _towersByPos.Remove(pos);
+            Destroy(towerToRemove.gameObject);
         }
     }
 }
