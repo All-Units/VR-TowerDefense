@@ -94,7 +94,7 @@ public class TowerTakeoverItem : MonoBehaviour
         Transform t = transform;
         t.parent = mirrorPoint;
         Vector3 pos = mirrorPoint.position;
-        pos.y = InventoryManager.InventoryY;
+        //pos.y = InventoryManager.InventoryY;
         t.position = pos;
         rb.velocity = Vector3.zero;
         t.localRotation = startRot;

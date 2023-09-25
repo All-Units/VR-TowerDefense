@@ -22,9 +22,6 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject leftHandParent;
     [SerializeField] private GameObject rightHandParent;
 
-    [SerializeField] private float _inventoryYOffset = -.3f;
-    [SerializeField] private Transform playerCamera;
-    public static float InventoryY => instance.playerCamera.position.y + instance._inventoryYOffset;
     
 
     private void Awake()

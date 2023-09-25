@@ -5,6 +5,8 @@ using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
 
+
+#if UNITY_EDITOR
 [CustomEditor(typeof(TeleportFloorPlacer))]
 class TeleportPlacerEditor : Editor
 {
@@ -18,6 +20,8 @@ class TeleportPlacerEditor : Editor
         base.OnInspectorGUI();
     }
 }
+
+#endif
 public class TeleportFloorPlacer : MonoBehaviour
 {
     public GameObject floorPrefab;
@@ -53,7 +57,6 @@ public class TeleportFloorPlacer : MonoBehaviour
         _center = Vector3Int.RoundToInt(_center);
         if (_center == _lastCenter)
             return;
-        print($"needed to update position");
         _lastCenter = _center;
         transform.position = _center;
         for (int i = distanceFromCenter * -1; i < distanceFromCenter; i++)
@@ -74,20 +77,8 @@ public class TeleportFloorPlacer : MonoBehaviour
         pos.z += j;
         pos.y += .5f;
         Transform t = GetTile(i, j);
-        if (false && Physics.Raycast(pos, Vector3.down, out hit, 10f, ignore))
-        {
-            pos.y = hit.point.y;
-            if (hit.collider.gameObject.layer != 7)
-            {
-                pos.y = -1000f;
-                Debug.Log($"Hit {hit.collider.gameObject.name}, moving down", hit.collider.gameObject);
-            }
-
-            t.rotation = hit.transform.rotation;
-        }
         if (Physics.Raycast(pos + new Vector3(0f, 100f, 0f), Vector3.down, out hit, Mathf.Infinity, ignore, QueryTriggerInteraction.Ignore))
         {
-            print($"Needed to use higher elevation to hit anything");
             pos.y = hit.point.y;
             if (hit.collider.gameObject.layer != 7)
             {

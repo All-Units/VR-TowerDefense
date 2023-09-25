@@ -82,7 +82,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
         {
             lastTowerPos = Vector3.negativeInfinity;
             TowerSpawnManager.Instance.HideGhost();
-            DrawRay(pos, forward * 100f, false);
+            DrawRay(pos, pos + (forward * 100f), false);
         }
         
     }

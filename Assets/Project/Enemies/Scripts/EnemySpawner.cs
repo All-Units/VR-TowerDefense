@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Wave variables")]
@@ -23,6 +26,15 @@ public class EnemySpawner : MonoBehaviour
     public bool IsStressTest = false;
     [SerializeField] private float firstRoundDelay = 5f;
 
+
+    public static UnityEvent OnRoundStarted = new UnityEvent();
+    public static UnityEvent OnRoundEnded = new UnityEvent();
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,7 +43,6 @@ public class EnemySpawner : MonoBehaviour
         _counterDisplay = GetComponent<WaveCounterDisplay>();
         StartCoroutine(WaveLoop());
         
-        instance = this;
     }
 
     // Update is called once per frame
@@ -127,6 +138,8 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    public static int CurrentWave => instance.wave_i + 1;
+    public static int MaxWaves => instance.waveTotals.Count;
     private int wave_i = 0;
 
     void _win()
@@ -165,6 +178,7 @@ public class EnemySpawner : MonoBehaviour
                 available.Add(i);
         }
 
+        OnRoundStarted.Invoke();
         while (available.Count != 0)
         {
             //Choose a random index from available
@@ -186,6 +200,7 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
         }
+        OnRoundEnded.Invoke();
         wave_i++;
         if (wave_i >= waveTotals.Count)
         {

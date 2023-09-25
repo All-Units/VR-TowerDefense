@@ -102,7 +102,7 @@ public class InventoryCollider : MonoBehaviour
         Transform t = transform;
         t.parent = waistPoint;
         Vector3 pos = waistPoint.position;
-        pos.y = InventoryManager.InventoryY;
+        //pos.y = InventoryManager.InventoryY;
         rb.velocity = Vector3.zero;
         t.localRotation = startRot;
         t.position = pos;
