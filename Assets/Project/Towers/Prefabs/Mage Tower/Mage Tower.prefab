@@ -218,8 +218,9 @@ MonoBehaviour:
   healthController: {fileID: 5764481117411547575}
   playerControlPosition: {fileID: 6208005074393136047}
   playerReleasePosition: {fileID: 2335260489334345643}
-  deathParticles: {fileID: 0}
+  deathParticles: {fileID: 754336113746814313}
   dto: {fileID: 11400000, guid: c1485a6ce47756940a2021ac2fb8c4e9, type: 2}
+  removeFromDict: 1
   stats: {fileID: 11400000, guid: edfa8bfa8db27f94a848d1a70d127842, type: 2}
   targetingSystem: {fileID: 6674742477994217249}
   firePoint: {fileID: 5189835444252146732}
@@ -827,6 +828,12 @@ PrefabInstance:
 --- !u!4 &754336113746814312 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5985634496115995772, guid: fadb33cba6bb7a04aa9680ca0e3472af,
+    type: 3}
+  m_PrefabInstance: {fileID: 6442063291214844180}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &754336113746814313 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5985634496115995773, guid: fadb33cba6bb7a04aa9680ca0e3472af,
     type: 3}
   m_PrefabInstance: {fileID: 6442063291214844180}
   m_PrefabAsset: {fileID: 0}

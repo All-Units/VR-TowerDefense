@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Project.Towers.Scripts
 {
@@ -12,7 +13,9 @@ namespace Project.Towers.Scripts
         public static bool CouldAffordCurrentTower => CurrencyManager.CouldAfford(Instance.currentTower);
         public static TowerSpawnManager Instance;
         private Tower_SO currentTower;
+        public static Tower_SO GetCurrentTower => Instance.currentTower;
 
+        public float yOffset = -0.1f;
         private void Awake()
         {
             Instance = this;
@@ -58,19 +61,39 @@ namespace Project.Towers.Scripts
         public static Dictionary<Vector3, Tower> _towersByPos = new Dictionary<Vector3, Tower>();
         public void PlaceTower(Vector3 targetPos)
         {
-            if (CurrencyManager.TryCanAfford(currentTower) == false)
+            targetPos.y += yOffset;
+            print($"Started placing tower");
+            if (CurrencyManager.CanAfford(currentTower) == false)
+            {
+                print($"Returning because POOR");
                 return;
-            if (_towersByPos.ContainsKey(targetPos)) return;
+            }
+            if (_towersByPos.ContainsKey(targetPos))
+            {
+                print($"Returning because contained in dict already");
+                return;
+            }
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             
             // Todo refactor needed
             Tower t = tower.GetComponentInChildren<Tower>(); 
             Vector3 pos = t.transform.position;
+            print($"Spawned tower");
+            if (_towersByPos.ContainsKey(pos))
+            {
+                print($"Already a tower at {pos}");
+                t.removeFromDict = false;
+                Destroy(tower.gameObject);
+                HideGhost();
+                return;
+            }
             _towersByPos.Add(pos, t);
             Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
             
+            //Minimap.instance.SpawnTowerAt(pos, currentTower);
+            CurrencyManager.PayFor(currentTower.cost);
             HideGhost();
         }        
         
@@ -87,10 +110,22 @@ namespace Project.Towers.Scripts
             // End refactor needed
         }
 
+        public static void ClearAllTowers()
+        {
+            foreach (var t in _towersByPos)
+            {
+                Destroy(t.Value.gameObject);
+            }
+
+            _towersByPos = new Dictionary<Vector3, Tower>();
+        }
+
+        public static UnityEvent OnTowerSet = new UnityEvent();
         public static void SetTower(Tower_SO towerDTO)
         {
             Instance.HideGhost();
             Instance.currentTower = towerDTO;
+            OnTowerSet.Invoke();
         }
 
         public static void UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)

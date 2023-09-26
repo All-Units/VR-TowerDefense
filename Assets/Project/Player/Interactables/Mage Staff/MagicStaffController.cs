@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -13,6 +14,7 @@ public class MagicStaffController : MonoBehaviour
     [SerializeField] private float maxChargeTime = 2f;
 
     [SerializeField] private GameObject spellVFX;
+    
 
     public void BeginCharging()
     {

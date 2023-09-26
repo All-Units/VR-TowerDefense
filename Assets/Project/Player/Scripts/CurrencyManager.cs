@@ -3,22 +3,25 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager instance;
     public int StartingMoney = 10;
+    public static int CurrentCash => instance.CurrentMoney;
+    public static string CurrentCashString => instance.CurrentMoney.ToString();
     public int CurrentMoney {
-        get
-        {
-            return _cash;
-        }
+        get => _cash;
         set
         {
             _cash = value;
             currencyDisplay.text = $"{_cash} gold";
+            OnChangeMoneyAmount?.Invoke();
         }
     }
+
+    public static UnityEvent OnChangeMoneyAmount = new UnityEvent();
 
     private int _cash;
     public TextMeshProUGUI currencyDisplay;
@@ -61,8 +64,12 @@ public class CurrencyManager : MonoBehaviour
             instance.CurrentMoney -= tower.cost;
             return true;
         }
-
         return false;
+    }
+
+    public static void PayFor(int cost)
+    {
+        instance.CurrentMoney -= cost;
     }
     
 }

@@ -19,6 +19,11 @@ public class InventoryManager : MonoBehaviour
     public XRGrabInteractable handCannon;
     private XRInteractionManager _manager;
 
+    [SerializeField] private GameObject leftHandParent;
+    [SerializeField] private GameObject rightHandParent;
+
+    
+
     private void Awake()
     {
         instance = this;
@@ -30,6 +35,7 @@ public class InventoryManager : MonoBehaviour
 
     public void SpawnBow()
     {
+        resetItem(bow);
         playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
 
@@ -38,12 +44,14 @@ public class InventoryManager : MonoBehaviour
 
     public void SpawnMagicStaff()
     {
+        resetItem(magicStaff);
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, magicStaff);
     }
 
     public void SpawnHandCannon()
     {
+        resetItem(handCannon);
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, handCannon);
     }
@@ -73,20 +81,41 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void ReleaseAllItems()
+    void resetItem(XRGrabInteractable go)
     {
-        ReleaseAllSelected(playerRightHand);
-        ReleaseAllSelected(playerLeftHand);
+        ItemScaler scaler = go.GetComponent<ItemScaler>();
+        scaler.ResetScale();
     }
 
+    private List<XRBaseInteractor> _tors = new List<XRBaseInteractor>();
+    public void ReleaseAllItems()
+    {
+        //ReleaseAllSelected(playerRightHand);
+        //ReleaseAllSelected(playerLeftHand);
+        if (_tors.Count == 0)
+        {
+            _tors = _tors.Concat(leftHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
+            _tors = _tors.Concat(rightHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
+        }
+
+        foreach (var tor in _tors)
+        {
+            ReleaseAllSelected(tor);
+        }
+    }
+
+    
     private void ReleaseAllSelected(XRBaseInteractor interactor)
     {
+        
         var selectedInteractables = interactor.interactablesSelected.ToArray();
 
+        bool dropped = false;
         foreach (var selectedInteractable in selectedInteractables)
         {
             _manager.SelectExit(interactor, selectedInteractable);
         }
+        
     }
 
     public bool RightHandFull() => playerRightHand.interactablesSelected.Any();

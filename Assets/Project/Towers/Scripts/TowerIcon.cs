@@ -21,14 +21,23 @@ public class TowerIcon : MonoBehaviour
     private void Start()
     {
         FillText();
+        CurrencyManager.OnChangeMoneyAmount.AddListener(_RefreshCanAfford);
     }
 
     void FillText()
     {
         nameText.text = towerSO.name;
-        descriptionText.text = $"{towerSO.description}\nCost:{towerSO.cost} gp";
+        string color = CurrencyManager.CanAfford(towerSO) ? "green" : "red";
+        string coloredCost = $"<color={color}>Cost:{towerSO.cost} gp</color>";
+        descriptionText.text = $"{towerSO.description}\n{coloredCost}";
         
     }
+
+    private void _RefreshCanAfford()
+    {
+        FillText();
+    }
+
 
     void SetMaterials()
     {

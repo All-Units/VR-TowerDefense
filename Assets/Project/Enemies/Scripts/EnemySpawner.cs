@@ -1,7 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+
 public class EnemySpawner : MonoBehaviour
 {
     [Header("Wave variables")]
@@ -17,14 +20,29 @@ public class EnemySpawner : MonoBehaviour
     private List<SpawnPoint> _spawnPoints = new List<SpawnPoint>();
     private WaveCounterDisplay _counterDisplay;
 
+    public Dictionary<BasicEnemy, Transform> enemies = new Dictionary<BasicEnemy, Transform>();
+
+    public static EnemySpawner instance;
+    public bool IsStressTest = false;
+    [SerializeField] private float firstRoundDelay = 5f;
+
+
+    public static UnityEvent OnRoundStarted = new UnityEvent();
+    public static UnityEvent OnRoundEnded = new UnityEvent();
+
+    private void Awake()
+    {
+        instance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
     {
         parseCSV();
         _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
-        StartCoroutine(WaveLoop());
         _counterDisplay = GetComponent<WaveCounterDisplay>();
+        StartCoroutine(WaveLoop());
+        
     }
 
     // Update is called once per frame
@@ -34,6 +52,25 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnEnemy(enemyPrefabs.GetRandom());
         }
+        UpdateAllEnemyPositions();
+    }
+
+    void UpdateAllEnemyPositions()
+    {
+        foreach (var e in enemies)
+        {
+            var enemy = e.Key;
+            var head = e.Value;
+            head.localPosition = enemy.transform.position * 0.02f;
+            Vector3 rot = head.localEulerAngles;
+            rot.y = enemy.transform.localEulerAngles.y;
+            head.localEulerAngles = rot;
+        }
+    }
+
+    public static void SpawnRandom()
+    {
+        instance.SpawnEnemy(instance.enemyPrefabs.GetRandom());
     }
 
     public void SpawnEnemy(GameObject enemyPrefab)
@@ -41,7 +78,25 @@ public class EnemySpawner : MonoBehaviour
         SpawnPoint point = _spawnPoints.GetRandom();
         GameObject enemy = Instantiate(enemyPrefab, point.enemyParent);
         enemy.transform.position = point.transform.position;
-        enemy.GetComponent<BasicEnemy>().nextWaypoint = point;
+        var e = enemy.GetComponent<BasicEnemy>();
+        SpawnHead(e);
+        e.nextWaypoint = point;
+    }
+
+    void SpawnHead(BasicEnemy enemy)
+    {
+        GameObject head = Instantiate(enemy.headPrefab, Minimap.Zero);
+        enemies.Add(enemy, head.transform);
+        head.transform.localPosition = enemy.transform.position * 0.02f;
+    }
+
+    public static void RemoveEnemy(BasicEnemy enemy)
+    {
+        if (instance.enemies.ContainsKey(enemy))
+        {
+            Destroy(instance.enemies[enemy].gameObject);
+            instance.enemies.Remove(enemy);
+        }
     }
     [SerializeField]
     private List<GameObject> orderedPrefabs = new List<GameObject>();
@@ -66,6 +121,9 @@ public class EnemySpawner : MonoBehaviour
                 first = false;
                 continue;
             }
+            if (line.Trim() == "")
+                continue;
+            
 
             string[] split = line.Split(",");
             List<int> count = new List<int>();
@@ -80,15 +138,31 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
+    public static int CurrentWave => instance.wave_i + 1;
+    public static int MaxWaves => instance.waveTotals.Count;
     private int wave_i = 0;
 
     void _win()
     {
         GameStateManager.WinGame();
     }
+
+    private bool run = false;
     IEnumerator WaveLoop()
     {
-        
+        if (IsStressTest) yield break;
+        if (run == false)
+        {
+            yield return new WaitForSeconds(0.2f);
+            run = true;
+            _counterDisplay.SetPanelVisibility(true);
+            for (int i = 0; i < (int)firstRoundDelay; i++)
+            {
+                _counterDisplay.SetText($"{(int)firstRoundDelay - i}s");
+                yield return new WaitForSeconds(1);
+            }
+            _counterDisplay.SetPanelVisibility(false);
+        }
         yield return new WaitForEndOfFrame();
         if (wave_i >= waveTotals.Count)
         {
@@ -104,6 +178,7 @@ public class EnemySpawner : MonoBehaviour
                 available.Add(i);
         }
 
+        OnRoundStarted.Invoke();
         while (available.Count != 0)
         {
             //Choose a random index from available
@@ -125,6 +200,7 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
         }
+        OnRoundEnded.Invoke();
         wave_i++;
         if (wave_i >= waveTotals.Count)
         {

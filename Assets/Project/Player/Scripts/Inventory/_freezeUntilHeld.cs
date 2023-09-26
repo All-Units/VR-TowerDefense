@@ -70,6 +70,7 @@ public class _freezeUntilHeld : MonoBehaviour
         {
             enteredTip = true;
             _selector.SelectTower(icon.towerSO);
+            _selector.CloseInventory();
             icon.gameObject.SetActive(false);
         }
     }

@@ -167,7 +167,6 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             // We delay turning off the teleport interactor in this callback so that
             // the teleport interactor has a chance to complete the teleport if needed.
             // OnAfterInteractionEvents will handle deactivating its GameObject.
-
             RayInteractorUpdate();
         }
 

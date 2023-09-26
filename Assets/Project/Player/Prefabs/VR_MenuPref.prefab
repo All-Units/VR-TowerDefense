@@ -5481,7 +5481,6 @@ GameObject:
   - component: {fileID: 7085731728326562732}
   - component: {fileID: 7912514356090577522}
   - component: {fileID: 1538863642864374221}
-  - component: {fileID: 5479077798336392009}
   m_Layer: 0
   m_Name: RightHand (Teleport Locomotion)
   m_TagString: Untagged
@@ -5773,21 +5772,6 @@ MonoBehaviour:
   - {fileID: 5449266178923015522}
   - {fileID: 0}
   m_StartingInteractionOverridesMap: []
---- !u!114 &5479077798336392009
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 647097643734552580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21336dfcb3ff03444aa0dae7a6247aea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  primaryButton: {fileID: 8179633155596226558, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  trigger: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &704655782720171547
 GameObject:
   m_ObjectHideFlags: 0
@@ -6073,7 +6057,6 @@ GameObject:
   - component: {fileID: 694407547765573855}
   - component: {fileID: 1602777292084563357}
   - component: {fileID: 1825078520211783707}
-  - component: {fileID: 3189107133738532093}
   m_Layer: 0
   m_Name: LeftHand (Smooth locomotion)
   m_TagString: Untagged
@@ -6365,22 +6348,6 @@ MonoBehaviour:
   - {fileID: 8167524106652444509}
   - {fileID: 891621396035757086}
   m_StartingInteractionOverridesMap: []
---- !u!114 &3189107133738532093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 945725909695972007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21336dfcb3ff03444aa0dae7a6247aea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  primaryButton: {fileID: -4865417013158564184, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  trigger: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
 --- !u!1 &960406565056419740
 GameObject:
   m_ObjectHideFlags: 0
@@ -59184,7 +59151,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6452089178047127351
 Transform:
   m_ObjectHideFlags: 0
@@ -64463,8 +64430,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1590325144611909964}
-  - component: {fileID: 3657432934296203667}
-  - component: {fileID: 32765627271416333}
   - component: {fileID: 3985776237738140980}
   m_Layer: 0
   m_Name: VR_MenuPref
@@ -64495,45 +64460,8 @@ Transform:
   - {fileID: 4469363998848382631}
   - {fileID: 135646258043391789}
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3657432934296203667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5785837711952878784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d675655e31397fc41bfc2d4390beb121, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerTransform: {fileID: 2792159699596905874}
-  leftHand: {fileID: 3189107133738532093}
-  rightHand: {fileID: 5479077798336392009}
-  playerLeftHand: {fileID: 8167524106652444509}
-  playerRightHand: {fileID: 8376328348228677832}
-  bow: {fileID: 2007922591582073913}
-  magicStaff: {fileID: 1045712888015542492}
-  handCannon: {fileID: 4091156295676580706}
---- !u!114 &32765627271416333
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5785837711952878784}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b97892a77f3e3df41a6c753830de2559, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerGameObject: {fileID: 5785837711952878784}
-  normalScale: 1
-  towerControlScale: 0.25
-  teleportationProvider: {fileID: 7380656336983661624}
-  dynamicMoveProvider: {fileID: 5149321809415271746}
 --- !u!114 &3985776237738140980
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -65299,6 +65227,7 @@ MonoBehaviour:
     type: 3}
   controlTowerConfirmActionReference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
+  openTowerMenuActionReference: {fileID: 0}
   lineRenderer: {fileID: 7813586892867595897}
   playerHand: {fileID: 8376328348228677832}
   _takeoverItem: {fileID: 0}
@@ -72609,9 +72538,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e0522e79237bb47801e70cb26363d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waistPoint: {fileID: 6452089178047127351}
   table: {fileID: 7349018135323229693}
+  waistPoint: {fileID: 6452089178047127351}
+  tableModel: {fileID: 0}
   starsParticles: {fileID: 421868238046194201}
+  starPoint: {fileID: 0}
   rb: {fileID: 5488021210320901896}
   waitTime: 1
 --- !u!1 &7741293503546901383
@@ -77707,7 +77638,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2754697940911735642
 Transform:
   m_ObjectHideFlags: 0
@@ -78280,6 +78211,7 @@ MonoBehaviour:
   mirrorPoint: {fileID: 2754697940911735642}
   waitTime: 3
   _controller: {fileID: 3416631735021658037}
+  _mr: {fileID: 0}
   isGrabbed: 0
 --- !u!114 &3416631735021658037
 MonoBehaviour:
@@ -78298,6 +78230,7 @@ MonoBehaviour:
     m_Bits: 64
   selectTowerModeActionReference: {fileID: 0}
   controlTowerConfirmActionReference: {fileID: 0}
+  openTowerMenuActionReference: {fileID: 0}
   lineRenderer: {fileID: 1355862592011003846}
   playerHand: {fileID: 8376328348228677832}
   _takeoverItem: {fileID: 102935658458369409}
@@ -95963,7 +95896,7 @@ PrefabInstance:
     - target: {fileID: 393386082085753876, guid: 7f62156cc24271749b1af44f95f516b2,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 1084
+      value: 1087
       objectReference: {fileID: 0}
     - target: {fileID: 1357375772017936136, guid: 7f62156cc24271749b1af44f95f516b2,
         type: 3}
@@ -96061,18 +95994,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1384777304975099941}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1045712888015542492 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2140522416397783289, guid: 7f62156cc24271749b1af44f95f516b2,
-    type: 3}
-  m_PrefabInstance: {fileID: 1384777304975099941}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1418661226029518325
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -97645,18 +97566,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86cda3d83cdc6ea42b0845fb58f0b30f, type: 3}
---- !u!114 &4091156295676580706 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 851444326751890993, guid: 86cda3d83cdc6ea42b0845fb58f0b30f,
-    type: 3}
-  m_PrefabInstance: {fileID: 3681205488218193235}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4469363998848382631 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 941280925213281268, guid: 86cda3d83cdc6ea42b0845fb58f0b30f,
@@ -98989,6 +98898,7 @@ MonoBehaviour:
   bgInvImage: {fileID: 6762219298921599687}
   inventoryPlatform: {fileID: 1402857600579250782}
   currentTowerIcon: {fileID: 5188781951790714956}
+  currentTowerPrice: {fileID: 0}
 --- !u!1 &5188781951790714956 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1177532325370716, guid: c0dd74f28e46e4b4495e6beae6d291e3,
@@ -99944,6 +99854,7 @@ MonoBehaviour:
   bgInvImage: {fileID: 812424968772864786}
   inventoryPlatform: {fileID: 5302814233436951714}
   currentTowerIcon: {fileID: 6328699065038760151}
+  currentTowerPrice: {fileID: 0}
 --- !u!4 &8232237721383147726 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2733377274699148101, guid: c0dd74f28e46e4b4495e6beae6d291e3,
@@ -101389,7 +101300,7 @@ PrefabInstance:
     - target: {fileID: 472037261040934669, guid: 5f6648a15e4878840b077bf3c7269b36,
         type: 3}
       propertyPath: m_VersionIndex
-      value: 4683
+      value: 4686
       objectReference: {fileID: 0}
     - target: {fileID: 1135431640778334143, guid: 5f6648a15e4878840b077bf3c7269b36,
         type: 3}
@@ -101476,18 +101387,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f6648a15e4878840b077bf3c7269b36, type: 3}
---- !u!114 &2007922591582073913 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8450296128140810317, guid: 5f6648a15e4878840b077bf3c7269b36,
-    type: 3}
-  m_PrefabInstance: {fileID: 7969376259199872116}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ad34abafad169848a38072baa96cdb2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &7014695568708400075 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1135431640778334143, guid: 5f6648a15e4878840b077bf3c7269b36,

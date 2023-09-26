@@ -28,12 +28,14 @@ public class InventoryItem : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Awake()
+    private Vector3 startScale;
+    protected virtual void Awake()
     {
         grabber.selectEntered.AddListener(OnPickup);
         grabber.selectExited.AddListener(OnDrop);
         startPos = transform.localPosition;
         startRot = transform.localRotation;
+        startScale = transform.localScale;
     }
 
     private void Update()
@@ -50,6 +52,11 @@ public class InventoryItem : MonoBehaviour
     private void OnEnable()
     {
         Reset();
+        Vector3 scale = transform.localScale;
+        if (scale != startScale)
+        {
+            Debug.Log($"{name} was the wrong scale, start scale was {startScale}, currently {scale}. Local scale is {transform.localScale}");
+        }
     }
 
     private bool isHeld = false;
@@ -84,9 +91,15 @@ public class InventoryItem : MonoBehaviour
 
     public void Reset()
     {
-        transform.parent = inventoryParent.transform;
-        transform.localPosition = startPos;
-        transform.localRotation = startRot;
+        Transform t = transform;
+        t.parent = inventoryParent.transform;
+        t.localPosition = startPos;
+        t.localRotation = startRot;
         rb.velocity = Vector3.zero;
+        if (transform.localScale != startScale)
+        {
+            print($"Manually rescaling back to {startScale} from {t.localScale}");
+            transform.localScale = startScale;
+        }
     }
 }

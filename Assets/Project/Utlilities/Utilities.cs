@@ -3,10 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+
+#if UNITY_EDITOR
 using UnityEditor;
+using UnityEditor.SceneManagement;
+
+#endif
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
@@ -214,7 +220,7 @@ public static class Utilities
             var child = oldChildren[0];
             oldChildren.RemoveAt(0);
             child.transform.parent = null;
-            Object.Destroy(child);
+            Object.DestroyImmediate(child);
         }
     }
     
@@ -259,4 +265,31 @@ public static class Utilities
         return actionReference != null ? actionReference.action : null;
 #pragma warning restore IDE0031
     }
+    #if UNITY_EDITOR
+    [MenuItem("Castle Tools/Go To DaneMainScene %#d")]
+    public static void GoToDaneScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map01_02.unity");
+        }
+    }
+    [MenuItem("Castle Tools/Go To DaneSecondScene %#e")]
+    public static void GoToDaneSecondScene()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map03.unity");
+        }
+    }
+    [MenuItem("Castle Tools/Go To Main Menu %#m")]
+    public static void GoToMainMenu()
+    {
+        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
+        {
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/MainMenu.unity");
+        }
+    }
+    
+    #endif
 }

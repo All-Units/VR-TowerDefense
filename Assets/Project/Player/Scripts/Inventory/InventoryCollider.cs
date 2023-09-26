@@ -1,21 +1,28 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class InventoryCollider : MonoBehaviour
 {
+    [SerializeField] private XRGrabInteractable table;
     public Transform waistPoint;
-    public GameObject table;
+    public GameObject tableModel;
     public ParticleSystem starsParticles;
+    [SerializeField] private Transform starPoint;
     public Rigidbody rb;
     public float waitTime = 1f;
 
+    private Quaternion startRot;
     private void Start()
     {
         starsParticles.gameObject.SetActive(false);
-        table.SetActive(false);
+        tableModel.SetActive(false);
+        startRot = transform.localRotation;
+        table.activated.AddListener(TriggerPulled);
     }
 
     private void Update()
@@ -31,8 +38,8 @@ public class InventoryCollider : MonoBehaviour
     {
         if (inInventoryCollider)
         {
-            OpenInventory();
-            return;
+            //OpenInventory();
+            //return;
         }
         StartCoroutine(_waitThenReturn());
     }
@@ -41,17 +48,21 @@ public class InventoryCollider : MonoBehaviour
     {
         positionTable();
         yield return new WaitForSeconds(0.8f);
-        table.SetActive(true);
+        tableModel.SetActive(true);
         yield return new WaitForSeconds(9f);
-        table.SetActive(false);
+        tableModel.SetActive(false);
         currentOpener = null;
     }
 
+    public void TriggerPulled(ActivateEventArgs args)
+    {
+        OpenInventory();
+    }
     private IEnumerator currentOpener = null;
     void OpenInventory()
     {
         GameObject particles = Instantiate(starsParticles.gameObject, null);
-        particles.transform.position = starsParticles.transform.position;
+        particles.transform.position = starPoint.position;
         particles.SetActive(true);
         if (currentOpener != null)
         {
@@ -69,17 +80,7 @@ public class InventoryCollider : MonoBehaviour
     void positionTable()
     {
         Vector3 pos = transform.position;
-        /*
-        if (_ls == null)
-            _ls = GetComponentInParent<LocomotionSystem>();
-        Vector3 dir = _ls.transform.position;
-        dir -= pos;
-        dir.y = 0f;
-        
-        float degrees = Mathf.Atan2(dir.x, dir.z) * (180f / Mathf.PI);
-        Vector3 euler = table.transform.localEulerAngles;
-        euler.y = degrees;*/
-        table.transform.position = pos;
+        tableModel.transform.position = pos;
         
     }
 
@@ -98,9 +99,13 @@ public class InventoryCollider : MonoBehaviour
 
     void _resetSphere()
     {
-        transform.parent = waistPoint;
-        transform.localPosition = Vector3.zero;
+        Transform t = transform;
+        t.parent = waistPoint;
+        Vector3 pos = waistPoint.position;
+        //pos.y = InventoryManager.InventoryY;
         rb.velocity = Vector3.zero;
+        t.localRotation = startRot;
+        t.position = pos;
     }
 
     private bool inInventoryCollider = false;

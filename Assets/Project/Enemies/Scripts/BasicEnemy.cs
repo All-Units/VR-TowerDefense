@@ -14,6 +14,7 @@ public class BasicEnemy : Enemy
     [SerializeField] private float rotateDamping = 1f;
     [SerializeField] private AudioClipController hitSFXController;
     [SerializeField] private AudioClipController footstepSFXController;
+    public GameObject headPrefab;
     private Rigidbody _rb;
 
     public PathPoint nextWaypoint;
@@ -101,6 +102,8 @@ public class BasicEnemy : Enemy
         {
             CurrencyManager.instance.CurrentMoney += killValue;
             addedToMoney = true;
+            EnemySpawner.RemoveEnemy(this);
+                
         }
         reachedEnd = true;
         Destroy(gameObject);

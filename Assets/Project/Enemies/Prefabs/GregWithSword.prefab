@@ -102,6 +102,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 988913515764738640, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: damage
@@ -115,13 +120,19 @@ PrefabInstance:
     - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: killValue
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: moveSpeed
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: headPrefab
+      value: 
+      objectReference: {fileID: 5003566580784940484, guid: fdf73a96810b651448c15c82e52ffaff,
+        type: 3}
     - target: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Name
@@ -222,7 +233,19 @@ PrefabInstance:
       propertyPath: maxHealth
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 7445657514973281875, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 7211448773848044386, guid: 44f3430c585c6514985b591c28e05a78,
+        type: 3}
     - target: {fileID: 7606125985548500940, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 7211448773848044386, guid: 44f3430c585c6514985b591c28e05a78,
+        type: 3}
+    - target: {fileID: 9212518778161609288, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 

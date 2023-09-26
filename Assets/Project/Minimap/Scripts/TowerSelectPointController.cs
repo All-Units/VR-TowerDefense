@@ -20,7 +20,9 @@ public class TowerSelectPointController : MonoBehaviour
             titleText.text = towerDTO.name;
         table.hoverEntered.AddListener(_HoverEnter);
         table.hoverExited.AddListener(_HoverExit);
-        table.activated.AddListener(OnSelectLevel);
+        table.activated.AddListener(OnSelectTower);
+        table.selectEntered.AddListener(_SelectEntered);
+        table.selectExited.AddListener(_SelectExited);
         RefreshText();
         secondTitlePanel.SetActive(false);
 
@@ -39,16 +41,15 @@ public class TowerSelectPointController : MonoBehaviour
             titleText.text = towerDTO.name;
     }
 
-    public void OnSelectLevel(ActivateEventArgs args)
+    public void OnSelectTower(ActivateEventArgs args)
     {
         if (towerDTO == null)
         {
             Debug.LogError($"No level data assigned to {gameObject.name}", gameObject);
             return;
         }
-        
         PlayerStateController.TakeControlOfTower(originTower);
-        print($"Selected {towerDTO.name}");
+        //print($"Selected {towerDTO.name}");
     }
 
     void _HoverEnter(HoverEnterEventArgs args)
@@ -60,11 +61,28 @@ public class TowerSelectPointController : MonoBehaviour
         secondTitlePanel.SetActive(false);
     }
 
-    IEnumerator _ResetText()
+    void _SelectEntered(SelectEnterEventArgs args)
     {
-        yield return new WaitForSeconds(2f);
-        _SetText(towerDTO.name);
+        originTower.healthController.onTakeDamage.AddListener(_TakeDamage);
+        _SetHealthText();
     }
+
+    void _TakeDamage(int i)
+    {
+        _SetHealthText();
+    }
+
+    void _SetHealthText()
+    {
+        string s = $"{originTower.healthController.CurrentHealth} HP";
+        _SetText(s);
+    }
+
+    void _SelectExited(SelectExitEventArgs args)
+    {
+        originTower.healthController.onTakeDamage.RemoveListener(_TakeDamage);
+    }
+
 
     void _SetText(string t)
     {
