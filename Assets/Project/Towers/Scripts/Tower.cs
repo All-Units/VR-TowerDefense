@@ -38,11 +38,15 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         if(Minimap.instance)
             Minimap.instance.DestroyTowerAt(pos);
         TowerSpawnManager._towersByPos.Remove(pos);
-        Minimap.instance.DestroyTowerAt(pos);
+        
+        if(Minimap.instance)
+            Minimap.instance.DestroyTowerAt(pos);
         if (removeFromDict)
         {
             TowerSpawnManager._towersByPos.Remove(pos);
-            Minimap.instance.DestroyTowerAt(pos);
+            
+            if(Minimap.instance)
+                Minimap.instance.DestroyTowerAt(pos);
         }
     }
 

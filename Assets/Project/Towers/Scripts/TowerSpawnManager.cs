@@ -106,7 +106,8 @@ namespace Project.Towers.Scripts
             Tower t = tower.GetComponentInChildren<Tower>(); 
             Vector3 pos = t.transform.position;
             _towersByPos.Add(pos, t);
-            Minimap.instance.SpawnTowerAt(pos, currentTower);
+            if(Minimap.instance)
+                Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
         }
 
