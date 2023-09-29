@@ -17,6 +17,7 @@ public class ItemScaler : MonoBehaviour
 
     public void OnSelect(SelectEnterEventArgs args)
     {
+        transform.parent = null;
         ResetScale("OnSelect");
     }
 
@@ -31,12 +32,13 @@ public class ItemScaler : MonoBehaviour
         
         
         Transform t = transform;
+        t.parent = null;
         Vector3 scale = t.localScale;
-        if (scale != startScale)
+        if (Vector3.Distance(scale, startScale) > 0.001f)
         {
             t.localScale = startScale;
             string s = (caller == "") ? "" : $". Called by: {caller}";
-            Debug.Log($"{name} was the wrong scale. Local scale is {t.localScale}. Setting to start val of {startScale}{s}");
+            //Debug.Log($"{name} was the wrong scale. Was {scale}. Local scale is {t.localScale}. Setting to start val of {startScale}{s}", gameObject);
         }
     }
 }

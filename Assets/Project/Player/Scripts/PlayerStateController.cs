@@ -75,6 +75,7 @@ public class PlayerStateController : MonoBehaviour
         TeleportPlayerToPoint(playerControlPoint);
 
         SetPlayerState(PlayerState.TOWER_CONTROL);
+        print($"Set player to {tower.dto.name}");
         dynamicMoveProvider.CanMove = false;
         dynamicMoveProvider.useGravity = false;
     }
@@ -141,12 +142,19 @@ public class PlayerStateController : MonoBehaviour
             teleportationProvider.beginLocomotion += OnNextTeleport;
     }
 
+    public static bool IsTeleportingToTower = false;
+
     private void OnNextTeleport(LocomotionSystem obj)
     {
         teleportationProvider.beginLocomotion -= OnNextTeleport;
 
-        if(_currentControlledTower)
+        if (_currentControlledTower && IsTeleportingToTower == false)
+        {
+            print($"Had {_currentControlledTower.dto.name}, releasing control");
             ReleaseControlOfTower();
+            
+        }
+        IsTeleportingToTower = false;
     }
 
     private static bool IsInstanced()

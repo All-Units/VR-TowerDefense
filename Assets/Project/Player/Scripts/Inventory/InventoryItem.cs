@@ -66,7 +66,7 @@ public class InventoryItem : MonoBehaviour
         if (currentWaiting != null)
             StopCoroutine(currentWaiting);
         transform.parent = null;
-        inventoryParent.SetActive(false);
+        //inventoryParent.SetActive(false);
     }
 
     
@@ -98,7 +98,7 @@ public class InventoryItem : MonoBehaviour
         rb.velocity = Vector3.zero;
         if (transform.localScale != startScale)
         {
-            print($"Manually rescaling back to {startScale} from {t.localScale}");
+            //print($"Manually rescaling back to {startScale} from {t.localScale}");
             transform.localScale = startScale;
         }
     }

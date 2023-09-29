@@ -10,6 +10,7 @@ public class TowerTakeoverItem : MonoBehaviour
     [SerializeField] private Transform mirrorPoint;
     [SerializeField] private float waitTime = 3f;
     [SerializeField] private XRControllerTowerController _controller;
+    [SerializeField] private ItemScaler _scaler;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,28 +24,20 @@ public class TowerTakeoverItem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (PlayerStateController.instance.state == PlayerState.TOWER_CONTROL)
+        
+        if (_mr == null) _mr = GetComponentInChildren<MeshRenderer>();
+        _mr.gameObject.SetActive(true);
+        //_mr.enabled = true;
+        table.enabled = true;
+        bool hitTime = (Time.time - lastDropTime >= waitTime) || lastDropTime == 0f;
+        if (isGrabbed == false && hitTime)
         {
-            if (_mr == null) _mr = GetComponentInChildren<MeshRenderer>();
-            _mr.gameObject.SetActive(false);
-            //_mr.enabled = false;
-            table.enabled = false;
+            if (transform.parent != mirrorPoint)
+                transform.parent = mirrorPoint;
+            if (transform.localPosition != Vector3.zero)
+                _resetSphere();
         }
-        else
-        {
-            if (_mr == null) _mr = GetComponentInChildren<MeshRenderer>();
-            _mr.gameObject.SetActive(true);
-            //_mr.enabled = true;
-            table.enabled = true;
-            bool hitTime = (Time.time - lastDropTime >= waitTime) || lastDropTime == 0f;
-            if (isGrabbed == false && hitTime)
-            {
-                if (transform.parent != mirrorPoint)
-                    transform.parent = mirrorPoint;
-                if (transform.localPosition != Vector3.zero)
-                    _resetSphere();
-            }
-        }
+        
     }
     public bool isGrabbed = false;
     private Inventory2 inv;
@@ -91,6 +84,7 @@ public class TowerTakeoverItem : MonoBehaviour
     private Rigidbody _rb;
     void _resetSphere()
     {
+        _scaler.ResetScale("Manual Takeover Item");
         Transform t = transform;
         t.parent = mirrorPoint;
         Vector3 pos = mirrorPoint.position;

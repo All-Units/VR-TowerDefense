@@ -62,7 +62,7 @@ public class XRControllerTowerController : MonoBehaviour
                 break;
             case PlayerState.TOWER_CONTROL:
                 if (lineRenderer)
-                    lineRenderer.enabled = false;
+                    lineRenderer.enabled = true;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(arg2), arg2, null);
@@ -79,8 +79,8 @@ public class XRControllerTowerController : MonoBehaviour
             return;
         }
 
-        if(PlayerStateController.instance.state == PlayerState.IDLE) 
-            SelectATower();
+        //if(PlayerStateController.instance.state == PlayerState.IDLE) 
+        SelectATower();
     }
 
     public Inventory2 inv;
@@ -158,6 +158,7 @@ public class XRControllerTowerController : MonoBehaviour
         if (_selectedTower != null)
         {
             _selectedTower.Deselected();
+            PlayerStateController.IsTeleportingToTower = true;
             PlayerStateController.TakeControlOfTower(_selectedTower);
             _selectedTower = null;
         }

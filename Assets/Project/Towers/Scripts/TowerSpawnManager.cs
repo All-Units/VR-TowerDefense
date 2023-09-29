@@ -62,25 +62,21 @@ namespace Project.Towers.Scripts
         public void PlaceTower(Vector3 targetPos)
         {
             targetPos.y += yOffset;
-            print($"Started placing tower");
+            //print($"Started placing tower");
             if (CurrencyManager.CanAfford(currentTower) == false)
             {
-                print($"Returning because POOR");
                 return;
             }
             if (_towersByPos.ContainsKey(targetPos))
             {
-                print($"Returning because contained in dict already");
                 return;
             }
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             Tower t = tower.GetComponentInChildren<Tower>();
             Vector3 pos = t.transform.position;
-            print($"Spawned tower");
             if (_towersByPos.ContainsKey(pos))
             {
-                print($"Already a tower at {pos}");
                 t.removeFromDict = false;
                 Destroy(tower.gameObject);
                 HideGhost();

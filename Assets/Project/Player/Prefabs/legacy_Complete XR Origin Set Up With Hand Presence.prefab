@@ -3807,8 +3807,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21336dfcb3ff03444aa0dae7a6247aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whichHand: 0
   primaryButton: {fileID: 8179633155596226558, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
+  SecondaryButton: {fileID: 0}
   trigger: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f, type: 3}
 --- !u!1 &5914940647695354973
 GameObject:
@@ -4524,8 +4526,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21336dfcb3ff03444aa0dae7a6247aea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  whichHand: 0
   primaryButton: {fileID: -4865417013158564184, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
+  SecondaryButton: {fileID: 0}
   trigger: {fileID: -5982496924579745919, guid: c348712bda248c246b8c49b3db54643f,
     type: 3}
 --- !u!1 &6888149392455277737
@@ -5390,9 +5394,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48e0522e79237bb47801e70cb26363d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waistPoint: {fileID: 1465788739537427242}
   table: {fileID: 3992907946157416986}
+  waistPoint: {fileID: 1465788739537427242}
+  tableModel: {fileID: 0}
   starsParticles: {fileID: 3917789850303173846}
+  starPoint: {fileID: 0}
   rb: {fileID: 8843017212854734404}
   waitTime: 1
 --- !u!1 &7885909308417891625
@@ -9294,6 +9300,7 @@ MonoBehaviour:
   bgInvImage: {fileID: 0}
   inventoryPlatform: {fileID: 1403609918353604720}
   currentTowerIcon: {fileID: 0}
+  currentTowerPrice: {fileID: 0}
 --- !u!1001 &8888557042655707358
 PrefabInstance:
   m_ObjectHideFlags: 0

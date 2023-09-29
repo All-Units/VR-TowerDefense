@@ -481,6 +481,8 @@ GameObject:
   - component: {fileID: 6374326090404816380}
   - component: {fileID: 4316575735654932684}
   - component: {fileID: 1306887010716393309}
+  - component: {fileID: -9119056772973763303}
+  - component: {fileID: -1766335113109734893}
   m_Layer: 0
   m_Name: Arrow Select Object
   m_TagString: Untagged
@@ -648,6 +650,41 @@ MonoBehaviour:
   secondTitlePanel: {fileID: 7862740998183077562}
   table: {fileID: 6374326090404816380}
   originTower: {fileID: 0}
+--- !u!65 &-9119056772973763303
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918884645610000673}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-1766335113109734893
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1918884645610000673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 669aa22aa9c2b8d4d8c1a67adafd5ffa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  started: 0
+  children: []
 --- !u!1 &2551043085278960375
 GameObject:
   m_ObjectHideFlags: 0

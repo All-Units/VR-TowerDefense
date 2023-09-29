@@ -52,22 +52,10 @@ public class EnemySpawner : MonoBehaviour
         {
             SpawnEnemy(enemyPrefabs.GetRandom());
         }
-        UpdateAllEnemyPositions();
+        //UpdateAllEnemyPositions();
     }
 
-    void UpdateAllEnemyPositions()
-    {
-        foreach (var e in enemies)
-        {
-            var enemy = e.Key;
-            var head = e.Value;
-            head.localPosition = enemy.transform.position * 0.02f;
-            Vector3 rot = head.localEulerAngles;
-            rot.y = enemy.transform.localEulerAngles.y;
-            head.localEulerAngles = rot;
-        }
-    }
-
+   
     public static void SpawnRandom()
     {
         instance.SpawnEnemy(instance.enemyPrefabs.GetRandom());
@@ -79,25 +67,11 @@ public class EnemySpawner : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab, point.enemyParent);
         enemy.transform.position = point.transform.position;
         var e = enemy.GetComponent<BasicEnemy>();
-        SpawnHead(e);
+        Minimap.SpawnHead(e);
+        //SpawnHead(e);
         e.nextWaypoint = point;
     }
 
-    void SpawnHead(BasicEnemy enemy)
-    {
-        GameObject head = Instantiate(enemy.headPrefab, Minimap.Zero);
-        enemies.Add(enemy, head.transform);
-        head.transform.localPosition = enemy.transform.position * 0.02f;
-    }
-
-    public static void RemoveEnemy(BasicEnemy enemy)
-    {
-        if (instance.enemies.ContainsKey(enemy))
-        {
-            Destroy(instance.enemies[enemy].gameObject);
-            instance.enemies.Remove(enemy);
-        }
-    }
     [SerializeField]
     private List<GameObject> orderedPrefabs = new List<GameObject>();
     private List<List<int>> waveTotals = new List<List<int>>();

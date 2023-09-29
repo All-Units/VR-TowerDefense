@@ -22,7 +22,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject leftHandParent;
     [SerializeField] private GameObject rightHandParent;
 
-    
+    public static Transform player => instance.playerTransform;
 
     private void Awake()
     {
@@ -84,7 +84,8 @@ public class InventoryManager : MonoBehaviour
     void resetItem(XRGrabInteractable go)
     {
         ItemScaler scaler = go.GetComponent<ItemScaler>();
-        scaler.ResetScale();
+        scaler.ResetScale("Manual");
+        print($"Manually reset {scaler.gameObject.name}");
     }
 
     private List<XRBaseInteractor> _tors = new List<XRBaseInteractor>();

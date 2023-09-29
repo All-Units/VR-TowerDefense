@@ -102,7 +102,8 @@ public class BasicEnemy : Enemy
         {
             CurrencyManager.instance.CurrentMoney += killValue;
             addedToMoney = true;
-            EnemySpawner.RemoveEnemy(this);
+            Minimap.RemoveHead(this);
+            //EnemySpawner.RemoveEnemy(this);
                 
         }
         reachedEnd = true;
