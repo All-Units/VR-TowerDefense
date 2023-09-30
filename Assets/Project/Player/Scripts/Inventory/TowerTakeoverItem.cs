@@ -17,6 +17,7 @@ public class TowerTakeoverItem : MonoBehaviour
         table.selectEntered.AddListener(StartGrab);
         table.selectExited.AddListener(EndGrab);
         startRot = transform.localRotation;
+        //print($"Started at {transform.localEulerAngles}");
     }
 
     private Quaternion startRot;
@@ -37,9 +38,12 @@ public class TowerTakeoverItem : MonoBehaviour
             if (transform.localPosition != Vector3.zero)
                 _resetSphere();
         }
-        
+
+        currentlyGrabbed = table.interactorsSelecting.Count != 0;
+
     }
     public bool isGrabbed = false;
+    public bool currentlyGrabbed = false;
     private Inventory2 inv;
     public void StartGrab(SelectEnterEventArgs args)
     {
@@ -53,6 +57,7 @@ public class TowerTakeoverItem : MonoBehaviour
     private float lastDropTime = 0f;
     void EndGrab(SelectExitEventArgs args)
     {
+        //print($"Ending grab on takeover item");
         isGrabbed = false;
         lastDropTime = Time.time;
         _controller.inv = null;
@@ -67,6 +72,7 @@ public class TowerTakeoverItem : MonoBehaviour
     IEnumerator _waitThenReturn()
     {
         yield return new WaitForSeconds(waitTime);
+        //print($"Ending grab after wait takeover");
         isGrabbed = false;
         _resetSphere();
     }
@@ -92,6 +98,7 @@ public class TowerTakeoverItem : MonoBehaviour
         t.position = pos;
         rb.velocity = Vector3.zero;
         t.localRotation = startRot;
+        //print($"Set sphere rot to {t.localEulerAngles}");
     }
     
     #endregion
