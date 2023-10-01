@@ -33,7 +33,7 @@ public class PlayerStateController : MonoBehaviour
 
     public GameObject penthouse;
     public GameObject penthouseInterior;
-    
+    public static Tower CurrentTower => instance._currentControlledTower;
     private Tower _currentControlledTower;
     [SerializeField] private bool StartInPenthouse = false;
 
@@ -58,16 +58,19 @@ public class PlayerStateController : MonoBehaviour
     public static void TakeControlOfTower(Tower tower)
     {
         if(IsInstanced() == false) return;
+        StartTeleportingReset();
         ActivatePenthouseExterior();
         instance.SetPlayerToTower(tower);
     }
 
+    public Tower CurrentTowerPublic;
     public void SetPlayerToTower(Tower tower)
     { 
         if(_currentControlledTower != null)
             _currentControlledTower.PlayerReleaseControl();
         
         _currentControlledTower = tower;
+        CurrentTowerPublic = tower;
         tower.PlayerTakeControl();
 
         var playerControlPoint = tower.GetPlayerControlPoint();
@@ -75,6 +78,7 @@ public class PlayerStateController : MonoBehaviour
         TeleportPlayerToPoint(playerControlPoint);
 
         SetPlayerState(PlayerState.TOWER_CONTROL);
+        print($"Set player to {tower.dto.name}");
         dynamicMoveProvider.CanMove = false;
         dynamicMoveProvider.useGravity = false;
     }
@@ -88,6 +92,7 @@ public class PlayerStateController : MonoBehaviour
 
     private void ReleasePlayerFromTower()
     {
+        print($"Released control of tower");
         var prevTower = _currentControlledTower;
         _currentControlledTower = null;
 
@@ -98,6 +103,7 @@ public class PlayerStateController : MonoBehaviour
         dynamicMoveProvider.CanMove = true;
         dynamicMoveProvider.useGravity = true;
         InventoryManager.instance.ReleaseAllItems();
+        InventoryManager.HideAllItems();
     }
     
     private void TeleportPlayerToPoint(Transform playerControlPoint)
@@ -141,12 +147,23 @@ public class PlayerStateController : MonoBehaviour
             teleportationProvider.beginLocomotion += OnNextTeleport;
     }
 
+    public static bool IsTeleportingToTower = false;
+
     private void OnNextTeleport(LocomotionSystem obj)
     {
         teleportationProvider.beginLocomotion -= OnNextTeleport;
 
-        if(_currentControlledTower)
+        if (IsTeleportingToTower)
+        {
+            //print($"Was teleporting to tower, not releasing control");
+            teleportationProvider.beginLocomotion += OnNextTeleport;
+        }
+        if (_currentControlledTower && IsTeleportingToTower == false)
+        {
+            //print($"Had {_currentControlledTower.dto.name}, releasing control");
             ReleaseControlOfTower();
+        }
+        //IsTeleportingToTower = false;
     }
 
     private static bool IsInstanced()
@@ -155,6 +172,17 @@ public class PlayerStateController : MonoBehaviour
             Debug.LogError($"No Player State Controller Detected!");
 
         return instance != null;
+    }
+
+    public static void StartTeleportingReset()
+    {
+        IsTeleportingToTower = true;
+        instance.StartCoroutine(instance._DelayThenResetTeleporting());
+    }
+    IEnumerator _DelayThenResetTeleporting()
+    {
+        yield return new WaitForSeconds(0.05f);
+        IsTeleportingToTower = false;
     }
 
     

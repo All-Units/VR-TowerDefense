@@ -35,18 +35,9 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     {
         Vector3 pos = transform.position;
         TowerSpawnManager._towersByPos.Remove(pos);
-        if(Minimap.instance)
-            Minimap.instance.DestroyTowerAt(pos);
-        TowerSpawnManager._towersByPos.Remove(pos);
-        
-        if(Minimap.instance)
-            Minimap.instance.DestroyTowerAt(pos);
         if (removeFromDict)
         {
-            TowerSpawnManager._towersByPos.Remove(pos);
-            
-            if(Minimap.instance)
-                Minimap.instance.DestroyTowerAt(pos);
+            Minimap.DestroyTower(pos);
         }
     }
 

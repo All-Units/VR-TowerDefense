@@ -6,6 +6,7 @@ public class InventoryFollowCamera : MonoBehaviour
 {
     [SerializeField] private Transform camera;
     [SerializeField] private float yOffset = -0.3f;
+    [SerializeField] private float yTowerOffset = -0.3f;
     [SerializeField] private float rotateOffset = 90f;
     [SerializeField] private float rotateDamping = 0.3f;
     // Start is called before the first frame update
@@ -25,7 +26,10 @@ public class InventoryFollowCamera : MonoBehaviour
     {
         //Set our Y to camera Y
         Vector3 pos = camera.position;
-        pos.y += yOffset;
+        if (PlayerStateController.instance.state == PlayerState.IDLE)
+            pos.y += yOffset;
+        else
+            pos.y += yTowerOffset;
         transform.position = pos;
 
 

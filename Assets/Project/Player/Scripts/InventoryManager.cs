@@ -1,7 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class InventoryManager : MonoBehaviour
@@ -22,7 +24,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] private GameObject leftHandParent;
     [SerializeField] private GameObject rightHandParent;
 
-    
+    public static Transform player => instance.playerTransform;
 
     private void Awake()
     {
@@ -35,7 +37,6 @@ public class InventoryManager : MonoBehaviour
 
     public void SpawnBow()
     {
-        resetItem(bow);
         playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
 
@@ -44,14 +45,12 @@ public class InventoryManager : MonoBehaviour
 
     public void SpawnMagicStaff()
     {
-        resetItem(magicStaff);
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, magicStaff);
     }
 
     public void SpawnHandCannon()
     {
-        resetItem(handCannon);
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, handCannon);
     }
@@ -65,6 +64,7 @@ public class InventoryManager : MonoBehaviour
     {
         ReleaseAllItems();
 
+        HideAllItems();
         switch (playerItemType)
         {
             case PlayerItemType.Bow:
@@ -81,11 +81,6 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    void resetItem(XRGrabInteractable go)
-    {
-        ItemScaler scaler = go.GetComponent<ItemScaler>();
-        scaler.ResetScale();
-    }
 
     private List<XRBaseInteractor> _tors = new List<XRBaseInteractor>();
     public void ReleaseAllItems()
@@ -103,6 +98,52 @@ public class InventoryManager : MonoBehaviour
             ReleaseAllSelected(tor);
         }
     }
+
+    private static List<Transform> itemTransforms {
+        get
+        {
+            //Init item list if it doesn't exist
+            if (_itemTransforms.Count == 0)
+            {
+                _itemTransforms.Add(instance.bow.transform);
+                _itemTransforms.Add(instance.magicStaff.transform);
+                _itemTransforms.Add(instance.handCannon.transform);
+            }
+            return _itemTransforms;
+        }
+}
+    private static List<Transform> _itemTransforms = new List<Transform>();
+    /// <summary>
+    /// Moves all items out of the map
+    /// </summary>
+    public static void HideAllItems()
+    {
+        foreach (Transform t in itemTransforms)
+        {
+            //Move down 100
+            t.Translate(Vector3.down * 100f);
+            Rigidbody rb = t.GetComponent<Rigidbody>();
+            //Freeze
+            if (rb)
+            {
+                instance.StartCoroutine(_ResetRigidbody(rb));
+            }
+        }
+        OnItemsHidden.Invoke();
+        print($"Hid all items");
+    }
+
+    static IEnumerator _ResetRigidbody(Rigidbody rb)
+    {
+        rb.velocity = Vector3.zero;
+        rb.useGravity = false;
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        yield return new WaitForSeconds(0.1f);
+        rb.constraints = RigidbodyConstraints.None;
+        rb.velocity = Vector3.zero;
+    }
+
+    public static UnityEvent OnItemsHidden = new UnityEvent();
 
     
     private void ReleaseAllSelected(XRBaseInteractor interactor)

@@ -121,7 +121,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
     {
         if (lastTowerPos.y > -100000f)
         {
-            print($"Placing tower at {lastTowerPos}");
+            //print($"Placing tower at {lastTowerPos}");
             TowerSpawnManager.Instance.PlaceTower(lastTowerPos);
         }
        

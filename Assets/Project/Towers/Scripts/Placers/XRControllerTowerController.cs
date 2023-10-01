@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -62,7 +63,7 @@ public class XRControllerTowerController : MonoBehaviour
                 break;
             case PlayerState.TOWER_CONTROL:
                 if (lineRenderer)
-                    lineRenderer.enabled = false;
+                    lineRenderer.enabled = true;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(arg2), arg2, null);
@@ -73,14 +74,14 @@ public class XRControllerTowerController : MonoBehaviour
     {
         lineRenderer.SetPosition(0, transform.position);
         //Do nothing if we aren't held
-        if(_selecting == false || _takeoverItem.isGrabbed == false)
+        if(_selecting == false || _takeoverItem.currentlyGrabbed == false)
         {
             lineRenderer.SetPosition(1, transform.position);
             return;
         }
 
-        if(PlayerStateController.instance.state == PlayerState.IDLE) 
-            SelectATower();
+        //if(PlayerStateController.instance.state == PlayerState.IDLE) 
+        SelectATower();
     }
 
     public Inventory2 inv;
@@ -91,7 +92,7 @@ public class XRControllerTowerController : MonoBehaviour
         if (inv != null)
             firePointTransform = inv.transform;
         var ray = new Ray(firePointTransform.position, firePointTransform.forward);
-        
+        Vector3 point = firePointTransform.position + firePointTransform.forward * 100;
         if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
         {
             var tower = hit.transform.GetComponent<Tower>();
@@ -107,13 +108,15 @@ public class XRControllerTowerController : MonoBehaviour
             {
                 _deselectCurrent();
             }
+
+            point = hit.point;
         }
         else
         {
             _deselectCurrent();
         }
         
-        lineRenderer.SetPosition(1, firePointTransform.position + firePointTransform.forward * 100);
+        lineRenderer.SetPosition(1, point);
     }
 
     void _deselectCurrent()
@@ -157,13 +160,21 @@ public class XRControllerTowerController : MonoBehaviour
     {
         if (_selectedTower != null)
         {
+            
             _selectedTower.Deselected();
+            
+            //StartCoroutine(_DelayThenResetTeleporting());
             PlayerStateController.TakeControlOfTower(_selectedTower);
             _selectedTower = null;
         }
         
         _selecting = false;
-        
+    }
+
+    IEnumerator _DelayThenResetTeleporting()
+    {
+        yield return new WaitForSeconds(0.05f);
+        PlayerStateController.IsTeleportingToTower = false;
     }
 
     private void OnConfirm(InputAction.CallbackContext obj)
