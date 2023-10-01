@@ -85,7 +85,9 @@ namespace Project.Towers.Scripts
                 return;
             }
             _towersByPos.Add(pos, t);
-            Minimap.instance.SpawnTowerAt(pos, currentTower);
+            
+            // Todo: Refactor to use the Tower.OnTowerSpawn event
+            //Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
             
             //Minimap.instance.SpawnTowerAt(pos, currentTower);
@@ -102,8 +104,9 @@ namespace Project.Towers.Scripts
             Tower t = tower.GetComponentInChildren<Tower>(); 
             Vector3 pos = t.transform.position;
             _towersByPos.Add(pos, t);
-            if(Minimap.instance)
-                Minimap.instance.SpawnTowerAt(pos, currentTower);
+            
+            // Todo: Refactor to use the Tower.OnTowerSpawn event
+            //Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
 
             return tower;
@@ -147,6 +150,13 @@ namespace Project.Towers.Scripts
             Vector3 pos = t.transform.position;
             _towersByPos.Remove(pos);
             Destroy(towerToRemove.gameObject);
+        }
+
+        public static void SellTower(Tower tower)
+        {
+            if(Instance == null) return;
+            
+            Instance.RemoveTower(tower);
         }
     }
 }

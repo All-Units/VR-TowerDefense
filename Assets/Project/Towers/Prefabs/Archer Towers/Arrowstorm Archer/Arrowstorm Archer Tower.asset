@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Name: Arrowstorm Archer Tower
+  m_EditorClassIdentifier: 
+  ghostObject: {fileID: 6139709382012762173, guid: 27e7e69799efc1341a7919854b28fa01,
+    type: 3}
+  towerPrefab: {fileID: 7502261813038807644, guid: 4e87f6632bf53b3428d033f9a654ad93,
+    type: 3}
+  iconPrefab: {fileID: 2507574902089980903, guid: 7005a015c0b070e4a95cc455c4a0b1a4,
+    type: 3}
+  minimapPrefab: {fileID: 1918884645610000673, guid: c5248cb323ad2ca49ae960fe6519bbe1,
+    type: 3}
+  cost: 12
+  name: Arrowstorm Archer
+  description: Shoots arrows at foes
+  upgrades: []

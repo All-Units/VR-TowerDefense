@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class BubbleMenuOption : MonoBehaviour
 {
     private BubbleMenuController _controller;
     private TowerUpgrade _upgrade;
+
+    private Action _callback;
 
     public void InitializeUpgrade(BubbleMenuController controller, TowerUpgrade upgrade)
     {
@@ -12,22 +15,29 @@ public class BubbleMenuOption : MonoBehaviour
         _controller = controller;
         _upgrade = upgrade;
     }
+
+    public void Initialize(Action ctx)
+    {
+        gameObject.SetActive(true);
+
+        _callback = ctx;
+    }
+
+    public void PerformOption()
+    {
+        _callback?.Invoke();
+    }
     
     public void OnHoverStart()
     {
-        Debug.Log("On Hover Start");
+        // Debug.Log("On Hover Start");
     }
 
     public void OnHoverEnd()
     {
-        Debug.Log("On Hover Exit");
+        // Debug.Log("On Hover Exit");
     }
-
-    public void OnConfirm()
-    {
-        Debug.Log("Confirming bubble menu option");
-    }
-
+    
     public void Upgrade()
     {
         _controller.Upgrade(_upgrade);

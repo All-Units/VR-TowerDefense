@@ -17,6 +17,8 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public static event Action<Tower> OnTowerSpawn;
     public static event Action<Tower> OnTowerDestroy; 
+    public static event Action<Tower> OnTowerSelected; 
+    public static event Action<Tower> OnTowerDeselected; 
 
     #region Unity Interface
 
@@ -48,10 +50,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Selected()
     {
-        BubbleMenuController.Open(this);
+        OnTowerSelected?.Invoke(this);
     }    
     public virtual void Deselected()
     {
+        OnTowerDeselected?.Invoke(this);
     }
     
     public virtual void PlayerTakeControl()
