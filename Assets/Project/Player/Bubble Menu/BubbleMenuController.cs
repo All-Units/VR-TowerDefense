@@ -74,6 +74,7 @@ public class BubbleMenuController : MonoBehaviour
 
     public void Upgrade(TowerUpgrade towerUpgrade)
     {
-        TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
+        var newTower = TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
+        Open(newTower);
     }
 }

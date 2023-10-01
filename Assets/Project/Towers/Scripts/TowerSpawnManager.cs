@@ -93,7 +93,7 @@ namespace Project.Towers.Scripts
             HideGhost();
         }        
         
-        public void PlaceTowerSpecific(Tower_SO targetTower, Vector3 targetPos)
+        public Tower PlaceTowerSpecific(Tower_SO targetTower, Vector3 targetPos)
         {
             var tower = Instantiate(targetTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
@@ -105,6 +105,8 @@ namespace Project.Towers.Scripts
             if(Minimap.instance)
                 Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
+
+            return tower;
         }
 
         public static void ClearAllTowers()
@@ -125,17 +127,18 @@ namespace Project.Towers.Scripts
             OnTowerSet.Invoke();
         }
 
-        public static void UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
+        public static Tower UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
         {
             if (Instance)
-                Instance._UpgradeTower(towerToUpgrade, upgrade);
+                return Instance._UpgradeTower(towerToUpgrade, upgrade);
+            return null;
         }
 
-        private void _UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
+        private Tower _UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
         {
             var pos = towerToUpgrade.transform.position;
             RemoveTower(towerToUpgrade);
-            PlaceTowerSpecific(upgrade, pos);
+            return PlaceTowerSpecific(upgrade, pos);
         }
 
         private void RemoveTower(Tower towerToRemove)
