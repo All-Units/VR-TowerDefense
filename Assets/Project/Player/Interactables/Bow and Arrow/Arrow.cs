@@ -30,6 +30,16 @@ public class Arrow : MonoBehaviour
     private void PullInteractionOnPullActionReleased(float obj)
     {
         PullInteraction.PullActionReleased -= PullInteractionOnPullActionReleased;
+        Fire(obj);
+    }
+
+    public void Fire()
+    {
+        Fire(1);
+    }
+
+    private void Fire(float obj)
+    {
         gameObject.transform.parent = null;
         _inAir = true;
         particles.gameObject.SetActive(true);
