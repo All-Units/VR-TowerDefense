@@ -130,7 +130,7 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void OpenTowerMenuActionOnPerformed(InputAction.CallbackContext obj)
     {
-        if(_selectedTower)
+        if(_selectedTower != null)
             BubbleMenuController.Open(_selectedTower);
     }
 

@@ -10,17 +10,21 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
-  m_Name: Archer Tower
+  m_Name: Ranged Archer Tower
   m_EditorClassIdentifier: 
-  ghostObject: {fileID: 6139709382012762173, guid: 786403fc3ff8d9844b50481bbaba47ec,
+  ghostObject: {fileID: 6139709382012762173, guid: a27f088cf90dd444584cbb709eb4dcec,
     type: 3}
-  towerPrefab: {fileID: 7502261813038807644, guid: 098da0d917b90c74190f028bf1ccba1e,
+  towerPrefab: {fileID: 7502261813038807644, guid: c02b1c55a65320e498282a16c70187e9,
     type: 3}
   iconPrefab: {fileID: 2507574902089980903, guid: 7005a015c0b070e4a95cc455c4a0b1a4,
     type: 3}
   minimapPrefab: {fileID: 1918884645610000673, guid: c5248cb323ad2ca49ae960fe6519bbe1,
     type: 3}
-  cost: 12
+  cost: 80
   name: Archer
   description: Shoots arrows at foes
-  upgrades: []
+  upgrades:
+  - upgrade: {fileID: 11400000, guid: eb8fb503c91b15341a720d79d03f2d98, type: 2}
+    cost: 0
+  - upgrade: {fileID: 11400000, guid: 577e7aeefc8fd734ba76f2e0faf6c4e5, type: 2}
+    cost: 0

@@ -192,9 +192,10 @@ public class PlayerStateController : MonoBehaviour
     /// <param name="exterior">If true, exterior on / interior off</param>
     public static void ActivatePenthouseExterior(bool exterior = true)
     {
-        instance.penthouse.SetActive(exterior);
+        // Todo: Handle exception where penthouse is not assigned. Better would be to refactor out to separate class and handle this through the event OnStateChanged
+        //instance.penthouse.SetActive(exterior);
         //Set the interior to the inverse of the exterior
-        instance.penthouseInterior.SetActive(!exterior);
+        //instance.penthouseInterior.SetActive(!exterior);
     }
 
 }

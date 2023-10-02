@@ -73,7 +73,9 @@ namespace Project.Towers.Scripts
             }
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
-            Tower t = tower.GetComponentInChildren<Tower>();
+            
+            // Todo refactor needed
+            Tower t = tower.GetComponentInChildren<Tower>(); 
             Vector3 pos = t.transform.position;
             if (_towersByPos.ContainsKey(pos))
             {
@@ -83,9 +85,31 @@ namespace Project.Towers.Scripts
                 return;
             }
             _towersByPos.Add(pos, t);
+            
+            // Todo: Refactor to use the Tower.OnTowerSpawn event
+            //Minimap.instance.SpawnTowerAt(pos, currentTower);
+            // End refactor needed
+            
             //Minimap.instance.SpawnTowerAt(pos, currentTower);
             CurrencyManager.PayFor(currentTower.cost);
             HideGhost();
+        }        
+        
+        public Tower PlaceTowerSpecific(Tower_SO targetTower, Vector3 targetPos)
+        {
+            var tower = Instantiate(targetTower.towerPrefab, targetPos, Quaternion.identity);
+            tower.transform.SetParent(towersRoot);
+            
+            // Todo refactor needed
+            Tower t = tower.GetComponentInChildren<Tower>(); 
+            Vector3 pos = t.transform.position;
+            _towersByPos.Add(pos, t);
+            
+            // Todo: Refactor to use the Tower.OnTowerSpawn event
+            //Minimap.instance.SpawnTowerAt(pos, currentTower);
+            // End refactor needed
+
+            return tower;
         }
 
         public static void ClearAllTowers()
@@ -104,6 +128,35 @@ namespace Project.Towers.Scripts
             Instance.HideGhost();
             Instance.currentTower = towerDTO;
             OnTowerSet.Invoke();
+        }
+
+        public static Tower UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
+        {
+            if (Instance)
+                return Instance._UpgradeTower(towerToUpgrade, upgrade);
+            return null;
+        }
+
+        private Tower _UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
+        {
+            var pos = towerToUpgrade.transform.position;
+            RemoveTower(towerToUpgrade);
+            return PlaceTowerSpecific(upgrade, pos);
+        }
+
+        private void RemoveTower(Tower towerToRemove)
+        {
+            Tower t = towerToRemove.GetComponentInChildren<Tower>(); 
+            Vector3 pos = t.transform.position;
+            _towersByPos.Remove(pos);
+            Destroy(towerToRemove.gameObject);
+        }
+
+        public static void SellTower(Tower tower)
+        {
+            if(Instance == null) return;
+            
+            Instance.RemoveTower(tower);
         }
     }
 }
