@@ -149,7 +149,9 @@ public class BasicEnemy : Enemy
         //Move towards next target
         if (reachedEnd == false)
         {
-            _rb.velocity = Vector3.Normalize(nextPos - pos) * moveSpeed;
+            Vector3 velocity = Vector3.Normalize(nextPos - pos) * moveSpeed;
+            velocity.y = 0f;
+            _rb.velocity += velocity;
         }
         _rotateTowards(pos, nextPos);
         
@@ -162,17 +164,23 @@ public class BasicEnemy : Enemy
         Vector3 pos = transform.position;
         Vector3 target = currentTarget.GetPosition();
         _rotateTowards(pos, target);
+        _zeroVelocity();
         if (Vector3.Distance(pos, target) > 1)
-            _rb.velocity = Vector3.Normalize(target - pos) * moveSpeed;
-        else
-        {
-            _zeroVelocity();
+        { 
+            Vector3 velocity = Vector3.Normalize(target - pos) * moveSpeed;
+            velocity.y = 0f;
+            _rb.velocity += velocity;
         }
         
     }
+    //We don't want to zero velocity in the y direction
     void _zeroVelocity()
     {
-        _rb.velocity = Vector3.zero;
+        //We don't want to zero velocity in the y direction
+        Vector3 velocity = _rb.velocity;
+        velocity.x = 0f;
+        velocity.z = 0f;
+        _rb.velocity = velocity;
     }
     /// <summary>
     /// Rotates us towards the given target

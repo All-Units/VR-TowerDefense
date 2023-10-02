@@ -4,7 +4,7 @@
 QualitySettings:
   m_ObjectHideFlags: 0
   serializedVersion: 5
-  m_CurrentQuality: 2
+  m_CurrentQuality: 0
   m_QualitySettings:
   - serializedVersion: 3
     name: Performant
@@ -20,9 +20,12 @@ QualitySettings:
     shadowmaskMode: 0
     skinWeights: 2
     globalTextureMipmapLimit: 0
-    textureMipmapLimitSettings: []
+    textureMipmapLimitSettings:
+    - serializedVersion: 0
+      limitBiasMode: 0
+      limitBias: 0
     anisotropicTextures: 0
-    antiAliasing: 0
+    antiAliasing: 4
     softParticles: 0
     softVegetation: 0
     realtimeReflectionProbes: 0
@@ -69,7 +72,10 @@ QualitySettings:
     shadowmaskMode: 0
     skinWeights: 4
     globalTextureMipmapLimit: 0
-    textureMipmapLimitSettings: []
+    textureMipmapLimitSettings:
+    - serializedVersion: 0
+      limitBiasMode: 0
+      limitBias: 0
     anisotropicTextures: 1
     antiAliasing: 0
     softParticles: 0
@@ -103,7 +109,8 @@ QualitySettings:
     terrainBillboardStart: 50
     terrainFadeLength: 5
     terrainMaxTrees: 50
-    excludedTargetPlatforms: []
+    excludedTargetPlatforms:
+    - Android
   - serializedVersion: 3
     name: High Fidelity
     pixelLightCount: 2
@@ -118,8 +125,11 @@ QualitySettings:
     shadowmaskMode: 1
     skinWeights: 255
     globalTextureMipmapLimit: 0
-    textureMipmapLimitSettings: []
-    anisotropicTextures: 2
+    textureMipmapLimitSettings:
+    - serializedVersion: 0
+      limitBiasMode: 0
+      limitBias: 0
+    anisotropicTextures: 1
     antiAliasing: 4
     softParticles: 0
     softVegetation: 1
@@ -152,8 +162,10 @@ QualitySettings:
     terrainBillboardStart: 50
     terrainFadeLength: 5
     terrainMaxTrees: 50
-    excludedTargetPlatforms: []
-  m_TextureMipmapLimitGroupNames: []
+    excludedTargetPlatforms:
+    - Android
+  m_TextureMipmapLimitGroupNames:
+  - New Group
   m_PerPlatformDefaultQuality:
     Android: 2
     CloudRendering: 2

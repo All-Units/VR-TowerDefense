@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+#if UNITY_EDITOR
 [CustomEditor(typeof(Minimap))]
 class MinimapEditor : Editor
 {
@@ -29,6 +30,7 @@ class MinimapEditor : Editor
         base.OnInspectorGUI();
     }
 }
+#endif
 public class Minimap : MonoBehaviour
 {
     public static Minimap instance;
@@ -115,7 +117,9 @@ public class Minimap : MonoBehaviour
     
     #endregion
 
+
     #region EditorFunctions
+    #if UNITY_EDITOR
     public void PrepareMapModel()
     {
         Transform baseGrid = mapModelParent.Find("BaseGrid");
@@ -149,6 +153,7 @@ public class Minimap : MonoBehaviour
         }
         print($"Map prepared :)");
     }
+#endif
     public void AddAllMasks()
     {
         var mrs = GetComponentsInChildren<MeshRenderer>(true);
