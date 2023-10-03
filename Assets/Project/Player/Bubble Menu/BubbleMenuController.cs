@@ -6,7 +6,7 @@ public class BubbleMenuController : MonoBehaviour
 {
     private static BubbleMenuController Instance;
     private Tower _currentTower;
-    [SerializeField] private GameObject towerCamera;
+    public GameObject towerCamera;
 
     [SerializeField] private BubbleMenuOption upgradeOption1;
     [SerializeField] private BubbleMenuOption upgradeOption2;
@@ -93,7 +93,7 @@ public class BubbleMenuController : MonoBehaviour
         Instance._Hide();
     }
 
-    private void _Hide()
+    public void _Hide()
     {
         gameObject.SetActive(false);
     }

@@ -16,7 +16,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public Tower_SO dto;
 
     public static event Action<Tower> OnTowerSpawn;
-    public static event Action<Tower> OnTowerDestroy; 
+    public static event Action<Tower> OnTowerDestroy;
     public static event Action<Tower> OnTowerSelected; 
     public static event Action<Tower> OnTowerDeselected; 
 
