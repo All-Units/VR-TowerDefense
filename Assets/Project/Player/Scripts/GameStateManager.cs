@@ -29,13 +29,14 @@ public class GameStateManager : MonoBehaviour
     {
         var logic = _endgameLogic(panel);
         StartCoroutine(logic);
+        SoundtrackManager.PlayMenu();
     }
 
     public static void WinGame()
     {
         instance._StartEndgame(instance.YouWinPanel);
-        
-    }
+        SoundtrackManager.PlayMenu();
+    } 
     IEnumerator _endgameLogic(GameObject panel)
     {
         panel.SetActive(true);

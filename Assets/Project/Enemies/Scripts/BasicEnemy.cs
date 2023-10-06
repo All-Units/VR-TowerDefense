@@ -57,7 +57,7 @@ public class BasicEnemy : Enemy
         if (attacking)
         {
             movedLastFrame = false;
-            footstepSFXController.Stop();
+            //footstepSFXController.Stop();
             _MoveToAttack();
             return;
         }
@@ -65,12 +65,11 @@ public class BasicEnemy : Enemy
         if (reachedEnd)
         {
             movedLastFrame = false;
-            footstepSFXController.Stop();
+            //footstepSFXController.Stop();
             _zeroVelocity();
             return;
         }
-        if (movedLastFrame == false)
-            footstepSFXController.PlayClip();
+        
         movedLastFrame = true;
         _moveLoop();
     }
@@ -214,6 +213,13 @@ public class BasicEnemy : Enemy
 
         hitSFXController.PlayClip();
         currentTarget.GetHealthController().TakeDamage(damage);
+    }
+
+    public void Footstep()
+    {
+        //AudioClip clip = footstepSFXController.GetClip();
+        
+        footstepSFXController.PlayClip();
     }
 
     void Victory()

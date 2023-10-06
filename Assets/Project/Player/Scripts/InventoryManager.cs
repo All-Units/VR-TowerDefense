@@ -130,7 +130,6 @@ public class InventoryManager : MonoBehaviour
             }
         }
         OnItemsHidden.Invoke();
-        print($"Hid all items");
     }
 
     static IEnumerator _ResetRigidbody(Rigidbody rb)

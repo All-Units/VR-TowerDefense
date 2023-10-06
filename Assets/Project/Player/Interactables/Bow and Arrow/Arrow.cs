@@ -11,6 +11,9 @@ public class Arrow : MonoBehaviour
     private bool _isDestroying = false;
     [SerializeField] private ParticleSystem particles;
     public StatusModifier statusModifier;
+    [SerializeField] private AudioClipController woodHit;
+    [SerializeField] private AudioClipController enemyHit;
+    
 
     private void Awake()
     {
@@ -67,7 +70,7 @@ public class Arrow : MonoBehaviour
         if (_isDestroying) return;
         
         var colliderGameObject = other.collider.gameObject;
-        
+        Vector3 pos = transform.position;
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);
@@ -78,6 +81,12 @@ public class Arrow : MonoBehaviour
                 if(statusEffectController)
                     statusModifier.ApplyStatus(statusEffectController);
             }
+            enemyHit.PlayClipAt(pos);
+        }
+        else
+        {
+            print($"Arrow hit env");
+            woodHit.PlayClipAt(pos);
         }
 
         _isDestroying = true;

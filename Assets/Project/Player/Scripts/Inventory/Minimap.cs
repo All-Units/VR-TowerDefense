@@ -210,6 +210,14 @@ public class Minimap : MonoBehaviour
     }
 
     private Dictionary<Vector3, GameObject> towersByPos = new Dictionary<Vector3, GameObject>();
+
+    public static void SpawnTower(Vector3 pos, Tower_SO dto)
+    {
+        if (instance == null) return;
+        if (instance.towersByPos.ContainsKey(pos)) return;
+        
+        instance.SpawnTowerAt(pos, dto);
+    }
     public void SpawnTowerAt(Vector3 pos, Tower_SO dto)
     {
         GameObject tower = Instantiate(dto.minimapPrefab, zeroPoint.transform);

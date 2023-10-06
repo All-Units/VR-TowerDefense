@@ -29,6 +29,8 @@ public class EnemyAnimEvents : MonoBehaviour
 
     public void Footstep()
     {
-        _ac.PlayClip();
+        if (enemy)
+            enemy.Footstep();
+        //_ac.PlayClip();
     }
 }

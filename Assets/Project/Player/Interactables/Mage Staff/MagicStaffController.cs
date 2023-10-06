@@ -14,7 +14,7 @@ public class MagicStaffController : MonoBehaviour
     [SerializeField] private float maxChargeTime = 2f;
 
     [SerializeField] private GameObject spellVFX;
-    
+    [SerializeField] private AudioClipController chargingSFX;
 
     public void BeginCharging()
     {
@@ -37,6 +37,7 @@ public class MagicStaffController : MonoBehaviour
 
     private void ResetChargingSequence()
     {
+        chargingSFX.Stop();
         chargeTime = 0;
         StopCoroutine(chargingCoroutine);
         chargingCoroutine = null;
@@ -44,6 +45,7 @@ public class MagicStaffController : MonoBehaviour
     
     private IEnumerator ChargeAttack()
     {
+        chargingSFX.PlayClip();
         do
         {
             if (isCharging)

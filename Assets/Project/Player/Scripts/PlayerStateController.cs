@@ -78,7 +78,7 @@ public class PlayerStateController : MonoBehaviour
         TeleportPlayerToPoint(playerControlPoint);
 
         SetPlayerState(PlayerState.TOWER_CONTROL);
-        print($"Set player to {tower.dto.name}");
+        //print($"Set player to {tower.dto.name}");
         dynamicMoveProvider.CanMove = false;
         dynamicMoveProvider.useGravity = false;
     }
@@ -92,7 +92,7 @@ public class PlayerStateController : MonoBehaviour
 
     private void ReleasePlayerFromTower()
     {
-        print($"Released control of tower");
+        //print($"Released control of tower");
         var prevTower = _currentControlledTower;
         _currentControlledTower = null;
 
@@ -193,9 +193,11 @@ public class PlayerStateController : MonoBehaviour
     public static void ActivatePenthouseExterior(bool exterior = true)
     {
         // Todo: Handle exception where penthouse is not assigned. Better would be to refactor out to separate class and handle this through the event OnStateChanged
-        //instance.penthouse.SetActive(exterior);
+        if (instance.penthouse == null || instance.penthouseInterior == null) return;
+        
+        instance.penthouse.SetActive(exterior);
         //Set the interior to the inverse of the exterior
-        //instance.penthouseInterior.SetActive(!exterior);
+        instance.penthouseInterior.SetActive(!exterior);
     }
 
 }

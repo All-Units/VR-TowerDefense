@@ -32,6 +32,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable
             deathParticles.SetActive(false);
     }
 
+    private void OnEnable()
+    {
+        //Minimap.SpawnTower(transform.position, dto);
+    }
+
     [HideInInspector] public bool removeFromDict = true;
     private void OnDestroy()
     {
@@ -81,6 +86,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Die()
     {
+        TowerSpawnManager.PlayDeathSounds(transform.position);
         if (isPlayerControlled)
         {
             PlayerStateController.ReleaseControlOfTower();
