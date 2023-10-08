@@ -85,7 +85,6 @@ public class Arrow : MonoBehaviour
         }
         else
         {
-            print($"Arrow hit env");
             woodHit.PlayClipAt(pos);
         }
 

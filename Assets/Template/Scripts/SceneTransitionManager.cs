@@ -16,6 +16,10 @@ public class SceneTransitionManager : MonoBehaviour
         singleton = this;
     }
 
+    public void LoadScene(string sceneName)
+    {
+        StartCoroutine(GoToSceneRoutine(sceneName));
+    }
     public void GoToScene(int sceneIndex)
     {
         StartCoroutine(GoToSceneRoutine(sceneIndex));
@@ -28,6 +32,15 @@ public class SceneTransitionManager : MonoBehaviour
 
         //Launch the new scene
         SceneManager.LoadScene(sceneIndex);
+    }
+
+    IEnumerator GoToSceneRoutine(string sceneName)
+    {
+        fadeScreen.FadeOut();
+        yield return new WaitForSeconds(fadeScreen.fadeDuration);
+
+        //Launch the new scene
+        SceneManager.LoadScene(sceneName);
     }
 
     public void GoToSceneAsync(int sceneIndex)

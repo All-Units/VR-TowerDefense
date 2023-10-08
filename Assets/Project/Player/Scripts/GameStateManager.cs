@@ -14,7 +14,7 @@ public class GameStateManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private GameObject YouWinPanel;
     [SerializeField] private GameObject YouLosePanel;
-
+    
     private void Awake()
     {
         instance = this;

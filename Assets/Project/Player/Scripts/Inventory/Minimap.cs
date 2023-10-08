@@ -103,7 +103,15 @@ public class Minimap : MonoBehaviour
         {
             var enemy = e.Key;
             var head = e.Value;
-            head.localPosition = enemy.transform.position * Minimap.scale;
+            try
+            {
+                head.localPosition = enemy.transform.position * Minimap.scale;
+            }
+            catch (MissingReferenceException exception)
+            {
+                continue;
+            }
+            
             Vector3 rot = head.localEulerAngles;
             rot.y = enemy.transform.localEulerAngles.y;
             head.localEulerAngles = rot;

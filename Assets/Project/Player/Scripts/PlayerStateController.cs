@@ -30,6 +30,10 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private float towerControlScale;
     [SerializeField] private TeleportationProvider teleportationProvider;
     [SerializeField] private DynamicMoveProvider dynamicMoveProvider;
+    [Header("References")]
+    [SerializeField] private FadeScreen _fadeScreen;
+
+    [SerializeField] private float fadeAfterDeathTime = 4f;
 
     public GameObject penthouse;
     public GameObject penthouseInterior;
@@ -83,6 +87,23 @@ public class PlayerStateController : MonoBehaviour
         dynamicMoveProvider.useGravity = false;
     }
 
+    /// <summary>
+    /// When a tower dies that is player controlled
+    /// </summary>
+    public static void DiedInTower()
+    {
+        ReleaseControlOfTower();
+        instance.TeleportPlayerToPenthouse();
+        instance._fadeScreen.SetFadeInstant(1);
+        instance.StartCoroutine(fadeInAfter());
+    }
+
+    static IEnumerator fadeInAfter()
+    {
+        yield return new WaitForSeconds(instance.fadeAfterDeathTime);
+        instance._fadeScreen.FadeIn();
+        
+    }
     public static void ReleaseControlOfTower()
     {
         if(IsInstanced() == false) return;

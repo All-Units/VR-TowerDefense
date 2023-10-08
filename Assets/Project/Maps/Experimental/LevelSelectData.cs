@@ -4,5 +4,6 @@
 public class LevelSelectData : ScriptableObject
 {
     public int sceneToLoad;
+    public string sceneName;
     public string title;
 }

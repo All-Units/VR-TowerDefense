@@ -89,8 +89,8 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         TowerSpawnManager.PlayDeathSounds(transform.position);
         if (isPlayerControlled)
         {
-            PlayerStateController.ReleaseControlOfTower();
-            PlayerStateController.instance.TeleportPlayerToPenthouse();
+            PlayerStateController.DiedInTower();
+            
             PlayerReleaseControl();
             InventoryManager.instance.ReleaseAllItems();
         }

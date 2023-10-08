@@ -21,11 +21,24 @@ public class FadeScreen : MonoBehaviour
             FadeIn();
     }
 
+    public void SetFadeInstant(float a)
+    {
+        rend.enabled = true;
+        Color newColor = fadeColor;
+        newColor.a = Mathf.Clamp01(a);
+        rend.material.SetColor(colorPropertyName, newColor);
+    }
+
+    /// <summary>
+    /// Starts black, ends see through
+    /// </summary>
     public void FadeIn()
     {
         Fade(1, 0);
     }
-    
+    /// <summary>
+    /// Starts see through, ends black
+    /// </summary>
     public void FadeOut()
     {
         Fade(0, 1);

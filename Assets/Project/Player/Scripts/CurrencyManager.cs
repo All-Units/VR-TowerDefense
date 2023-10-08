@@ -9,6 +9,7 @@ public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager instance;
     public int StartingMoney = 10;
+    public int roundBonus = 50;
     public static int CurrentCash => instance.CurrentMoney;
     public static string CurrentCashString => instance.CurrentMoney.ToString();
     public int CurrentMoney {
@@ -29,6 +30,7 @@ public class CurrencyManager : MonoBehaviour
     {
         CurrentMoney = StartingMoney;
         instance = this;
+        EnemySpawner.OnRoundEnded.AddListener(FinishRound);
     }
 
     // Start is called before the first frame update
@@ -41,6 +43,11 @@ public class CurrencyManager : MonoBehaviour
     void Update()
     {
         
+    }
+
+    void FinishRound()
+    {
+        CurrentMoney += roundBonus;
     }
 
     public static bool CanAfford(Tower_SO tower)

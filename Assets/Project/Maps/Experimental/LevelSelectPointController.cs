@@ -26,7 +26,12 @@ public class LevelSelectPointController : MonoBehaviour
             Debug.LogError($"No level data assigned to {gameObject.name}", gameObject);
             return;
         }
-        
+
+        if (levelSelectData.sceneName != "")
+        {
+            SceneTransitionManager.singleton.LoadScene(levelSelectData.sceneName);
+            return;
+        }
         SceneTransitionManager.singleton.GoToScene(levelSelectData.sceneToLoad);
     }
 }

@@ -87,7 +87,9 @@ public class EnemySpawner : MonoBehaviour
         foreach (string enemy in enemies)
         {
             GameObject e = enemyPrefabs.Find(x => x.name.ToLower().Trim() == enemy.ToLower().Trim());
-            orderedPrefabs.Add(e);
+            if (e)
+                orderedPrefabs.Add(e);
+            
         }
         bool first = true;
         foreach (var line in lines)
