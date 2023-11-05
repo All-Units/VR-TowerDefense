@@ -38,7 +38,6 @@ public class ResetOnDrop : MonoBehaviour
     {
         if (_currentResetter != null)
         {
-            print($"{gameObject.name} had a resetter, turning that off");
             StopCoroutine(_currentResetter);
             _currentResetter = null;
         }
@@ -81,7 +80,7 @@ public class ResetOnDrop : MonoBehaviour
     {
         rb.useGravity = true;
         //print($"{gameObject} dropped");
-        if (_currentResetter == null)
+        if (_currentResetter == null && gameObject.activeInHierarchy)
         {
             _currentResetter = _ResetPosition();
             StartCoroutine(_currentResetter);

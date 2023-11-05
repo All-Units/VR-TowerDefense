@@ -10,6 +10,9 @@ namespace Project.Towers.Scripts
         private Dictionary<Tower_SO, GameObject> ghostObjects = new Dictionary<Tower_SO, GameObject>();
         [SerializeField] private Transform ghostsRoot;
         [SerializeField] private Transform towersRoot;
+        [SerializeField] private AudioClipController placingSounds;
+        [SerializeField] private AudioClipController deathSounds;
+
         public static bool CouldAffordCurrentTower => CurrencyManager.CouldAfford(Instance.currentTower);
         public static TowerSpawnManager Instance;
         private Tower_SO currentTower;
@@ -58,6 +61,15 @@ namespace Project.Towers.Scripts
             
         }
 
+        /// <summary>
+        /// TODO: REFACTOR
+        /// I KNOW THIS IS BAD BUT IT'S LATE
+        /// </summary>
+        public static void PlayDeathSounds(Vector3 pos)
+        {
+            Instance.deathSounds.PlayClipAt(pos);
+        }
+
         public static Dictionary<Vector3, Tower> _towersByPos = new Dictionary<Vector3, Tower>();
         public void PlaceTower(Vector3 targetPos)
         {
@@ -85,8 +97,9 @@ namespace Project.Towers.Scripts
                 return;
             }
             _towersByPos.Add(pos, t);
-            
+            Minimap.SpawnTower(pos, currentTower);
             // Todo: Refactor to use the Tower.OnTowerSpawn event
+            placingSounds.PlayClipAt(pos);
             //Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
             

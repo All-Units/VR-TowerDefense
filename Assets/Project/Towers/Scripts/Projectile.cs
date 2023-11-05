@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Projectile : MonoBehaviour
     protected bool isDestroying = false;
 
     public StatusModifier statusModifier;
+    [SerializeField] protected AudioClipController _hitEnemy;
+    [SerializeField] protected AudioClipController _hitGround;
     
     private void Awake()
     {
@@ -18,10 +21,17 @@ public class Projectile : MonoBehaviour
         Destroy(gameObject, 10f);
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        Debug.Log($"Trigger entered {other.gameObject.name}", other.gameObject);
+    }
+
     private void OnCollisionEnter(Collision other)
     {
         if (isDestroying) return;
 
+        if (other.collider.isTrigger) return;
+        
         OnCollision(other);
     }
 
@@ -29,7 +39,7 @@ public class Projectile : MonoBehaviour
     {
 
         var colliderGameObject = other.collider.gameObject;
-
+        Vector3 pos = transform.position;
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);
@@ -40,6 +50,13 @@ public class Projectile : MonoBehaviour
                 if(statusEffectController)
                     statusModifier.ApplyStatus(statusEffectController);
             }
+            if (_hitEnemy)
+                _hitEnemy.PlayClipAt(pos);
+        }
+        else
+        {
+            if(_hitGround)
+                _hitGround.PlayClipAt(pos);
         }
 
         isDestroying = true;

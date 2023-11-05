@@ -15,6 +15,7 @@ public class PullInteraction : XRBaseInteractable
     private IXRSelectInteractor pullingInteractor = null;
 
     public AnimationCurve curve;
+    [SerializeField] private AudioClipController drawAudio;
 
     protected override void Awake()
     {
@@ -33,11 +34,11 @@ public class PullInteraction : XRBaseInteractable
         pullingInteractor = null;
         pullAmount = 0f;
         pullIncrement = 0.1f;
-        
         notch.transform.localPosition =
             new Vector3(notch.transform.localPosition.x, notch.transform.localPosition.y, 0);
         UpdateString();
     }
+
 
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
@@ -48,7 +49,13 @@ public class PullInteraction : XRBaseInteractable
             {
                 var pullPosition = pullingInteractor.transform.position;
                 var prevPull = pullAmount;
+                
                 pullAmount = CalculatePull(pullPosition);
+                //Started being pulled this frame
+                if (prevPull == 0f && pullAmount != 0f)
+                {
+                    drawAudio.PlayClip();
+                }
                 
                 UpdateString();
                 if(pullAmount >= pullIncrement || pullAmount <= pullIncrement - 0.1f)

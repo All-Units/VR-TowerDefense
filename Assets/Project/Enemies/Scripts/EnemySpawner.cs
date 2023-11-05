@@ -11,6 +11,8 @@ public class EnemySpawner : MonoBehaviour
     public float enemySpawnDelay = 1f;
     [Tooltip("The number of seconds between rounds")]
     [SerializeField] private int waveDelay = 20;
+
+    public static int WaveDelay => instance.waveDelay;
     [SerializeField] private List<GameObject> enemyPrefabs;
 
     [SerializeField] private GameObject nextRoundCounterPanel;
@@ -174,7 +176,7 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(2f);
         }
-        OnRoundEnded.Invoke();
+        
         wave_i++;
         if (wave_i >= waveTotals.Count)
         {
@@ -182,6 +184,7 @@ public class EnemySpawner : MonoBehaviour
             _win();
             yield break;
         }
+        OnRoundEnded.Invoke();
         _counterDisplay.SetPanelVisibility(true);
         for (int i = 0; i < waveDelay; i++)
         {
