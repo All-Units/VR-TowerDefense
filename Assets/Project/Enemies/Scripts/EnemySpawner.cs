@@ -42,6 +42,7 @@ public class EnemySpawner : MonoBehaviour
     {
         parseCSV();
         _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
+        
         _counterDisplay = GetComponent<WaveCounterDisplay>();
         StartCoroutine(WaveLoop());
         
@@ -133,13 +134,16 @@ public class EnemySpawner : MonoBehaviour
         {
             yield return new WaitForSeconds(0.2f);
             run = true;
-            _counterDisplay.SetPanelVisibility(true);
+            if (_counterDisplay && _counterDisplay.enabled)
+                _counterDisplay.SetPanelVisibility(true);
             for (int i = 0; i < (int)firstRoundDelay; i++)
             {
-                _counterDisplay.SetText($"{(int)firstRoundDelay - i}s");
+                if (_counterDisplay && _counterDisplay.enabled)
+                    _counterDisplay.SetText($"{(int)firstRoundDelay - i}s");
                 yield return new WaitForSeconds(1);
             }
-            _counterDisplay.SetPanelVisibility(false);
+            if (_counterDisplay && _counterDisplay.enabled)
+                _counterDisplay.SetPanelVisibility(false);
         }
         yield return new WaitForEndOfFrame();
         if (wave_i >= waveTotals.Count)
@@ -187,13 +191,16 @@ public class EnemySpawner : MonoBehaviour
             yield break;
         }
         OnRoundEnded.Invoke();
-        _counterDisplay.SetPanelVisibility(true);
+        if (_counterDisplay && _counterDisplay.enabled)
+            _counterDisplay.SetPanelVisibility(true);
         for (int i = 0; i < waveDelay; i++)
         {
-            _counterDisplay.SetText($"{waveDelay - i}s");
+            if (_counterDisplay && _counterDisplay.enabled)
+                _counterDisplay.SetText($"{waveDelay - i}s");
             yield return new WaitForSeconds(1);
         }
-        _counterDisplay.SetPanelVisibility(false);
+        if (_counterDisplay && _counterDisplay.enabled)
+            _counterDisplay.SetPanelVisibility(false);
         
         StartCoroutine(WaveLoop());
     }

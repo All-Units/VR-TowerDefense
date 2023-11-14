@@ -271,7 +271,7 @@ public static class Utilities
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
-            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map01_02.unity");
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map03.unity");
         }
     }
     [MenuItem("Castle Tools/Go To DaneSecondScene %#e")]
@@ -279,7 +279,7 @@ public static class Utilities
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
         {
-            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map03.unity");
+            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map_trailer.unity");
         }
     }
     [MenuItem("Castle Tools/Go To Main Menu %#m")]

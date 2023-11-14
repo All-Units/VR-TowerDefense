@@ -52,11 +52,13 @@ public class CurrencyManager : MonoBehaviour
 
     public static bool CanAfford(Tower_SO tower)
     {
+        if (instance == null) return false;
         return (instance.CurrentMoney >= tower.cost);
     }
 
     public static bool CouldAfford(Tower_SO tower)
     {
+        if (instance == null) return false;
         return (instance.CurrentMoney - tower.cost >= 0);
     }
     /// <summary>

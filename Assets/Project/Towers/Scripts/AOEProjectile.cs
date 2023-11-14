@@ -11,7 +11,7 @@ public class AOEProjectile : Projectile
     
     protected override void OnCollision(Collision other)
     {
-        print($"Hit {other.gameObject.name} with cannon");
+        //print($"Hit {other.gameObject.name} with cannon");
         var hits = Physics.OverlapSphere(other.collider.transform.position, splashRadius, LayerMask.GetMask("Enemy"));
         Vector3 pos = transform.position;
         foreach (var hit in hits)

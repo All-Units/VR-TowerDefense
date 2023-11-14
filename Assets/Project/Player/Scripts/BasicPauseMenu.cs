@@ -54,7 +54,6 @@ public class BasicPauseMenu : MonoBehaviour
     {
         pausePanel.SetActive(true);
         circleFillPanel.SetActive(false);
-        Time.timeScale = 0f;
     }
     public void Resume()
     {
@@ -68,6 +67,7 @@ public class BasicPauseMenu : MonoBehaviour
     }
     IEnumerator _openPauseCircle()
     {
+        yield break;
         if (Time.timeScale == 0f)
         {
             Resume();

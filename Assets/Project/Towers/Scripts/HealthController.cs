@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
@@ -15,9 +16,11 @@ public class HealthController : MonoBehaviour
     public UnityEvent onDeath;
 
     [SerializeField] private float deathDelay = 1.4f;
+    [SerializeField] private Slider healthbar;
     private Animator _anim;
     private void Start()
     {
+        healthbar.value = 1f;
         _anim = GetComponentInChildren<Animator>();
         _currentHealth = maxHealth;
         // OnDeath += _onDeath;
@@ -30,6 +33,7 @@ public class HealthController : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         _currentHealth -= dmg;
+        healthbar.value = (_currentHealth / maxHealth);
         //Debug.Log($"Taking Damage! {gameObject.name} {_currentHealth}");
 
         OnTakeDamage?.Invoke(_currentHealth);
