@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -12,6 +13,10 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     [SerializeField] private Transform playerControlPosition;
     [SerializeField] private Transform playerReleasePosition;
     [SerializeField] private GameObject deathParticles;
+    [SerializeField] private ParticleSystem constructionParticles;
+
+    protected bool isInitialized = false;
+    protected float buildTime = 2.5f;
 
     public Tower_SO dto;
 
@@ -30,6 +35,8 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         healthController.onDeath.AddListener(Die);
         if (deathParticles)
             deathParticles.SetActive(false);
+
+        SpawnTower();
     }
 
     private void OnEnable()
@@ -50,6 +57,34 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     #endregion
 
+    #region Tower Lifecycle
+
+    public void SpawnTower()
+    {
+        StartCoroutine(PlayBuildingAnimation());
+    }
+
+    private IEnumerator PlayBuildingAnimation()
+    {
+        var time = buildTime;
+        if(constructionParticles)
+            constructionParticles.Play();
+
+        while (time > 0)
+        {
+            transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, time / buildTime);
+            time -= Time.deltaTime;
+            yield return null;
+        }
+
+        if(constructionParticles)
+            constructionParticles.Stop();
+
+        transform.localScale = Vector3.one;
+        isInitialized = true; 
+    }
+
+    #endregion
 
     #region Tower Takeover
 

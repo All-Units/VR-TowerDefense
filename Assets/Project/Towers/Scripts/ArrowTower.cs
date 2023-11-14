@@ -32,10 +32,14 @@ public class ArrowTower : Tower
         base.Awake();
         targetingSystem.SetRadius(stats.radius);
         selectedVfx.SetActive(false);
+        if(attackVFX)
+            attackVFX.SetActive(false);
     }
 
     private void Update()
     {
+        if(!isInitialized) return; 
+        
         if(isPlayerControlled) return;
         
         if(targetingSystem.HasTarget())
