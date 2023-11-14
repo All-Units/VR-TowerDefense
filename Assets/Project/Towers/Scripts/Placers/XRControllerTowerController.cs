@@ -23,7 +23,6 @@ public class XRControllerTowerController : MonoBehaviour
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
     private InputActionReference openTowerMenuActionReference;
 
-    [SerializeField] private LineRenderer lineRenderer;
     public XRDirectInteractor playerHand;
 
     [SerializeField] private TowerTakeoverItem _takeoverItem;
@@ -55,28 +54,14 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void PlayerStateControllerOnStateChange(PlayerState arg1, PlayerState arg2)
     {
-        switch (arg2)
-        {
-            case PlayerState.IDLE:
-                if (lineRenderer)
-                    lineRenderer.enabled = true;
-                break;
-            case PlayerState.TOWER_CONTROL:
-                if (lineRenderer)
-                    lineRenderer.enabled = true;
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(arg2), arg2, null);
-        }
+        
     }
 
     private void Update()
     {
-        lineRenderer.SetPosition(0, transform.position);
         //Do nothing if we aren't held
         if(_selecting == false || _takeoverItem.currentlyGrabbed == false)
         {
-            lineRenderer.SetPosition(1, transform.position);
             return;
         }
 
@@ -115,8 +100,6 @@ public class XRControllerTowerController : MonoBehaviour
         {
             _deselectCurrent();
         }
-        
-        lineRenderer.SetPosition(1, point);
     }
 
     void _deselectCurrent()

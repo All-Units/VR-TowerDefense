@@ -41,6 +41,11 @@ public class AudioPool : MonoBehaviour
 
     public static void PlaySoundAt(AudioClip clip, Vector3 pos)
     {
+        if(instance == null)
+        {
+            Debug.LogError("No Audio Pool Instance Found!");
+            return;
+        }
         var source = instance._GetSource();
         var release = instance._releaseSourceAfter(source, clip.length);
         instance.StartCoroutine(release);
