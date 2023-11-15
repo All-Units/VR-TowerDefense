@@ -266,7 +266,7 @@ public static class Utilities
 #pragma warning restore IDE0031
     }
     #if UNITY_EDITOR
-    [MenuItem("Castle Tools/Go To DaneMainScene %#d")]
+    [MenuItem("Castle Tools/Scenes/Go To DaneMainScene %#d")]
     public static void GoToDaneScene()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
@@ -274,7 +274,7 @@ public static class Utilities
             EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map03.unity");
         }
     }
-    [MenuItem("Castle Tools/Go To DaneSecondScene %#e")]
+    [MenuItem("Castle Tools/Scenes/Go To DaneSecondScene %#e")]
     public static void GoToDaneSecondScene()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
@@ -282,7 +282,7 @@ public static class Utilities
             EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map_trailer.unity");
         }
     }
-    [MenuItem("Castle Tools/Go To Main Menu %#m")]
+    [MenuItem("Castle Tools/Scenes/Go To Main Menu %#m")]
     public static void GoToMainMenu()
     {
         if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())

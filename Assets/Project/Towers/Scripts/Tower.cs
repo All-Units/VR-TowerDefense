@@ -100,11 +100,14 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public virtual void PlayerTakeControl()
     {
         isPlayerControlled = true;
+        healthController.SetHealthbarActive(false);
     }
 
     public virtual void PlayerReleaseControl()
     {
+
         isPlayerControlled = false;
+        healthController.SetHealthbarActive(true);
     }
 
     public Transform GetPlayerControlPoint()

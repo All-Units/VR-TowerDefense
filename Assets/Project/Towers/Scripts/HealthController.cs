@@ -20,7 +20,11 @@ public class HealthController : MonoBehaviour
     private Animator _anim;
     private void Start()
     {
-        healthbar.value = 1f;
+        if (healthbar == null)
+            healthbar = GetComponentInChildren<Slider>();
+        
+        if (healthbar != null)
+            healthbar.value = 1f;
         _anim = GetComponentInChildren<Animator>();
         _currentHealth = maxHealth;
         // OnDeath += _onDeath;
@@ -33,7 +37,8 @@ public class HealthController : MonoBehaviour
     public void TakeDamage(int dmg)
     {
         _currentHealth -= dmg;
-        healthbar.value = (_currentHealth / maxHealth);
+        if (healthbar != null)
+            healthbar.value = ((float)_currentHealth / (float)maxHealth);
         //Debug.Log($"Taking Damage! {gameObject.name} {_currentHealth}");
 
         OnTakeDamage?.Invoke(_currentHealth);
@@ -44,6 +49,11 @@ public class HealthController : MonoBehaviour
             OnDeath?.Invoke();
             onDeath?.Invoke();
         }
+    }
+    public void SetHealthbarActive(bool active)
+    {
+        if (healthbar != null)
+            healthbar.gameObject.SetActive(active);
     }
 
     public bool isDead = false;
