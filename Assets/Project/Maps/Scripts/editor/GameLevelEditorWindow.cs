@@ -8,7 +8,7 @@ public class GameLevelEditorWindow : EditorWindow
 {
     private string customFolderPath = "Assets/Project/Maps/SO"; // Specify your custom folder path here
 
-    [MenuItem("Window/Game Level Editor %m")]
+    [MenuItem("Castle Tools/Game Level Editor %m")]
     public static void ShowWindow()
     {
         GetWindow<GameLevelEditorWindow>("Game Level Editor");

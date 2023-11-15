@@ -21,8 +21,6 @@ public class Arrow : MonoBehaviour
         PullInteraction.PullActionReleased += PullInteractionOnPullActionReleased;
 
         Stop();
-        
-        Destroy(gameObject, 5f);
     }
 
     private void OnDestroy()
