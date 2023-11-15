@@ -1,6 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
+/// <summary>
+/// Read as ammo pouch. Basically on select, spawn and grab the assigned item.
+/// </summary>
 public class XRInstantiateGrabbableObject : XRBaseInteractable
 {
     [SerializeField]
