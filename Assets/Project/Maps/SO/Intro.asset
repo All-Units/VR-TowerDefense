@@ -9,10 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dea8aee4ad1944bcb7f18a0bb1fba7a6, type: 3}
-  m_Name: Cannon 1
+  m_Script: {fileID: 11500000, guid: 7913ff2327fcb254fa1f8bf9dcf78dc4, type: 3}
+  m_Name: Intro
   m_EditorClassIdentifier: 
-  radius: 20
-  shotCooldown: 1
-  projectile: {fileID: 3071368436360838454, guid: 564aa02aa7da8514199cecfa3b2f21ed,
-    type: 3}
+  scene: {fileID: 102900000, guid: 908f168937e8e6a4090825a40af5b840, type: 3}
+  levelTitle: Intro
+  levelDescription: Intro Cutscene Level

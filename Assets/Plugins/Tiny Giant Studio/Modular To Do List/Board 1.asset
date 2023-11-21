@@ -25,154 +25,6 @@ MonoBehaviour:
     addedDescription: 0
     myDescription: Description
     tasks:
-    - myName: Archer Base weapon
-      hideMyDetails: 1
-      addedDescription: 1
-      myDescription: Add quiver mechanics and remove the poison effect
-      addedReference: 0
-      references: []
-      completed: 0
-      failed: 0
-      ignored: 0
-      creationTime:
-        year: 2023
-        month: 11
-        day: 13
-        dayOfTheWeek: Monday
-        minute: 57
-        hour: 16
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 4
-          format: 1
-      hasDueDate: 0
-      dueDate:
-        year: 2023
-        month: 11
-        day: 13
-        dayOfTheWeek: Monday
-        minute: 57
-        hour: 16
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 4
-          format: 1
-      completionTime:
-        year: 0
-        month: 0
-        day: 0
-        dayOfTheWeek: 
-        minute: 0
-        hour: 0
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 0
-          format: 0
-      failedTime:
-        year: 0
-        month: 0
-        day: 0
-        dayOfTheWeek: 
-        minute: 0
-        hour: 0
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 0
-          format: 0
-      ignoredTime:
-        year: 0
-        month: 0
-        day: 0
-        dayOfTheWeek: 
-        minute: 0
-        hour: 0
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 0
-          format: 0
-      tags: []
-      editing: 0
-      visibilityIndex: 1
-      heightTakenInEditor: 19
-    - myName: Cannon base weapon
-      hideMyDetails: 1
-      addedDescription: 1
-      myDescription: Add fire rate cap and reload mechanic
-      addedReference: 0
-      references: []
-      completed: 0
-      failed: 0
-      ignored: 0
-      creationTime:
-        year: 2023
-        month: 11
-        day: 13
-        dayOfTheWeek: Monday
-        minute: 58
-        hour: 16
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 4
-          format: 1
-      hasDueDate: 0
-      dueDate:
-        year: 2023
-        month: 11
-        day: 13
-        dayOfTheWeek: Monday
-        minute: 58
-        hour: 16
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 4
-          format: 1
-      completionTime:
-        year: 0
-        month: 0
-        day: 0
-        dayOfTheWeek: 
-        minute: 0
-        hour: 0
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 0
-          format: 0
-      failedTime:
-        year: 0
-        month: 0
-        day: 0
-        dayOfTheWeek: 
-        minute: 0
-        hour: 0
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 0
-          format: 0
-      ignoredTime:
-        year: 0
-        month: 0
-        day: 0
-        dayOfTheWeek: 
-        minute: 0
-        hour: 0
-        hourBeforeCountingAMPM: 0
-        timeIndex: 0
-        _hourInTweleveHourFormat:
-          hour: 0
-          format: 0
-      tags: []
-      editing: 0
-      visibilityIndex: 2
-      heightTakenInEditor: 19
     - myName: Mage base weapon
       hideMyDetails: 1
       addedDescription: 1
@@ -245,7 +97,7 @@ MonoBehaviour:
           format: 0
       tags: []
       editing: 0
-      visibilityIndex: 3
+      visibilityIndex: 1
       heightTakenInEditor: 19
     creationTime:
       year: 0
@@ -266,7 +118,81 @@ MonoBehaviour:
     mainColor: {r: 1, g: 1, b: 1, a: 1}
     addedDescription: 0
     myDescription: Description
-    tasks: []
+    tasks:
+    - myName: Cannon base weapon
+      hideMyDetails: 1
+      addedDescription: 1
+      myDescription: Add fire rate cap and reload mechanic
+      addedReference: 0
+      references: []
+      completed: 0
+      failed: 0
+      ignored: 0
+      creationTime:
+        year: 2023
+        month: 11
+        day: 13
+        dayOfTheWeek: Monday
+        minute: 58
+        hour: 16
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 4
+          format: 1
+      hasDueDate: 0
+      dueDate:
+        year: 2023
+        month: 11
+        day: 13
+        dayOfTheWeek: Monday
+        minute: 58
+        hour: 16
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 4
+          format: 1
+      completionTime:
+        year: 0
+        month: 0
+        day: 0
+        dayOfTheWeek: 
+        minute: 0
+        hour: 0
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 0
+          format: 0
+      failedTime:
+        year: 0
+        month: 0
+        day: 0
+        dayOfTheWeek: 
+        minute: 0
+        hour: 0
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 0
+          format: 0
+      ignoredTime:
+        year: 0
+        month: 0
+        day: 0
+        dayOfTheWeek: 
+        minute: 0
+        hour: 0
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 0
+          format: 0
+      tags: []
+      editing: 0
+      visibilityIndex: 1
+      heightTakenInEditor: 19
     creationTime:
       year: 0
       month: 0
@@ -286,7 +212,81 @@ MonoBehaviour:
     mainColor: {r: 1, g: 1, b: 1, a: 1}
     addedDescription: 0
     myDescription: Description
-    tasks: []
+    tasks:
+    - myName: Archer Base weapon
+      hideMyDetails: 1
+      addedDescription: 1
+      myDescription: Add quiver mechanics and remove the poison effect
+      addedReference: 0
+      references: []
+      completed: 0
+      failed: 0
+      ignored: 0
+      creationTime:
+        year: 2023
+        month: 11
+        day: 13
+        dayOfTheWeek: Monday
+        minute: 57
+        hour: 16
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 4
+          format: 1
+      hasDueDate: 0
+      dueDate:
+        year: 2023
+        month: 11
+        day: 13
+        dayOfTheWeek: Monday
+        minute: 57
+        hour: 16
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 4
+          format: 1
+      completionTime:
+        year: 2023
+        month: 11
+        day: 21
+        dayOfTheWeek: Tuesday
+        minute: 24
+        hour: 8
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 0
+          format: 0
+      failedTime:
+        year: 0
+        month: 0
+        day: 0
+        dayOfTheWeek: 
+        minute: 0
+        hour: 0
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 0
+          format: 0
+      ignoredTime:
+        year: 0
+        month: 0
+        day: 0
+        dayOfTheWeek: 
+        minute: 0
+        hour: 0
+        hourBeforeCountingAMPM: 0
+        timeIndex: 0
+        _hourInTweleveHourFormat:
+          hour: 0
+          format: 0
+      tags: []
+      editing: 0
+      visibilityIndex: 1
+      heightTakenInEditor: 19
     creationTime:
       year: 0
       month: 0

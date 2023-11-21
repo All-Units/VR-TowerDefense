@@ -115,6 +115,8 @@ public class BasicEnemy : Enemy
     public float distanceToTarget;
     void _moveLoop()
     {
+        if(nextWaypoint == null) return;
+        
         //Cache our pos, target pos, and distance to target
         Vector3 pos = transform.position;
         Vector3 nextPos = nextWaypoint.transform.position;

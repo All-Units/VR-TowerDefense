@@ -35,8 +35,6 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         healthController.onDeath.AddListener(Die);
         if (deathParticles)
             deathParticles.SetActive(false);
-
-        SpawnTower();
     }
 
     private void OnEnable()
