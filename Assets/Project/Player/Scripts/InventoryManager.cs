@@ -43,6 +43,7 @@ public class InventoryManager : MonoBehaviour
     
     [Header("Player Tower Item Extras")]
     public XRInstantiateGrabbableObject quiver;
+    public XRInstantiateGrabbableObject cannonAmmoPouch;
 
     #endregion
 
@@ -185,6 +186,7 @@ public class InventoryManager : MonoBehaviour
                 quiver.gameObject.SetActive(true);
                 break;
             case PlayerItem_SO.ItemAmmoPouch.BOMB_SATCHEL:
+                cannonAmmoPouch.gameObject.SetActive(true);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(ammoPouch), ammoPouch, null);
@@ -201,6 +203,7 @@ public class InventoryManager : MonoBehaviour
                 quiver.gameObject.SetActive(false);
                 break;
             case PlayerItem_SO.ItemAmmoPouch.BOMB_SATCHEL:
+                cannonAmmoPouch.gameObject.SetActive(false);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(ammoPouch), ammoPouch, null);
