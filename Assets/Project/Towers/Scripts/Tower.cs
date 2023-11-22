@@ -15,7 +15,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     [SerializeField] private GameObject deathParticles;
     [SerializeField] private ParticleSystem constructionParticles;
 
-    protected bool isInitialized = false;
+    [SerializeField] protected bool isInitialized = false;
     protected float buildTime = 2.5f;
 
     public Tower_SO dto;
@@ -23,7 +23,9 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public static event Action<Tower> OnTowerSpawn;
     public static event Action<Tower> OnTowerDestroy;
     public static event Action<Tower> OnTowerSelected; 
+    public event Action OnSelected; 
     public static event Action<Tower> OnTowerDeselected; 
+    public event Action OnDeselected; 
 
     #region Unity Interface
 
@@ -60,6 +62,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public void SpawnTower()
     {
         StartCoroutine(PlayBuildingAnimation());
+        OnTowerSpawn?.Invoke(this);
     }
 
     private IEnumerator PlayBuildingAnimation()
@@ -89,23 +92,22 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public virtual void Selected()
     {
         OnTowerSelected?.Invoke(this);
+        OnSelected?.Invoke();
     }    
     public virtual void Deselected()
     {
         OnTowerDeselected?.Invoke(this);
+        OnDeselected?.Invoke();
     }
     
     public virtual void PlayerTakeControl()
     {
         isPlayerControlled = true;
-        healthController.SetHealthbarActive(false);
     }
 
     public virtual void PlayerReleaseControl()
     {
-
         isPlayerControlled = false;
-        healthController.SetHealthbarActive(true);
     }
 
     public Transform GetPlayerControlPoint()
