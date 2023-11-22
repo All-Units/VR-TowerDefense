@@ -26,7 +26,8 @@ public class InventoryManager : MonoBehaviour
     public XRGrabInteractable magicStaff;
     public XRGrabInteractable handCannon;
     
-    private static List<Transform> itemTransforms {
+    private List<Transform> itemTransforms 
+    {
         get
         {
             //Init item list if it doesn't exist
@@ -39,7 +40,7 @@ public class InventoryManager : MonoBehaviour
             return _itemTransforms;
         }
     }
-    private static List<Transform> _itemTransforms = new List<Transform>();
+    private readonly List<Transform> _itemTransforms = new();
     
     [Header("Player Tower Item Extras")]
     public XRInstantiateGrabbableObject quiver;
@@ -138,7 +139,7 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public static void HideAllItems()
     {
-        foreach (Transform t in itemTransforms)
+        foreach (Transform t in instance.itemTransforms)
         {
             //Move down 100
             t.Translate(Vector3.down * 100f);

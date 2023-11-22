@@ -8,7 +8,7 @@ public class HealthbarController : MonoBehaviour
 
     [SerializeField] private HealthController healthController;
 
-    private bool isShowing = false;
+    private bool _isShowing = false;
 
     private void Start()
     {
@@ -31,12 +31,14 @@ public class HealthbarController : MonoBehaviour
 
         healthController.OnTakeDamage += UpdateValue;
         slider.maxValue = healthController.MaxHealth;
+        _isShowing = true;
         UpdateValue(healthController.CurrentHealth);
     }
 
     private void UpdateValue(int curr)
     {
         slider.value = curr;
+        
         if (healthController.CurrentHealth < healthController.MaxHealth)
         {
             Show();
@@ -49,21 +51,21 @@ public class HealthbarController : MonoBehaviour
 
     private void Show()
     {
-        if(isShowing) return;
+        if(_isShowing) return;
         
         StartCoroutine(Fade(.5f, true));
-        isShowing = true;
+        _isShowing = true;
     }
 
     private void Hide()
     {
-        if(!isShowing) return;
+        if(!_isShowing) return;
 
         StartCoroutine(Fade(.5f, false));
-        isShowing = false;
+        _isShowing = false;
     }
 
-    private IEnumerator Fade(float time, bool _in)
+    private IEnumerator Fade(float time, bool fadeIn)
     {
         var images = GetComponentsInChildren<Image>();
         var t = time;
@@ -73,7 +75,7 @@ public class HealthbarController : MonoBehaviour
             foreach (var image in images)
             {
                 var imageColor = image.color;
-                imageColor.a = _in ? Mathf.Lerp(0, 1, t / time) : Mathf.Lerp(1, 0, t / time);
+                imageColor.a = fadeIn ? Mathf.Lerp(0, 1, t / time) : Mathf.Lerp(1, 0, t / time);
                 image.color = imageColor;
             }
             
@@ -84,7 +86,7 @@ public class HealthbarController : MonoBehaviour
         foreach (var image in images)
         {
             var imageColor = image.color;
-            imageColor.a = _in ? 1 : 0;
+            imageColor.a = fadeIn ? 1 : 0;
             image.color = imageColor;
         }
     }
