@@ -21,11 +21,17 @@ public class SpawnPoint : PathPoint
         Gizmos.DrawSphere(position, .5f);
         if (data)
         {
-            var result = int.Parse(new string(data.name.Reverse()
+            /*
+            try
+            {
+                var result = int.Parse(new string(data.name.Reverse()
                 .TakeWhile(char.IsDigit)
                 .Reverse()
                 .ToArray()));
-            Handles.Label(transform.position + Vector3.up * 2, result.ToString());
+                Handles.Label(transform.position + Vector3.up * 2, result.ToString());
+            }
+            catch { }*/
+            
         }
 
         var next = nextPoint;

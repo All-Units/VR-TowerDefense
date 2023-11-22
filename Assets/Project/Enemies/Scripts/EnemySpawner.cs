@@ -31,6 +31,8 @@ public class EnemySpawner : MonoBehaviour
     public static UnityEvent OnRoundStarted = new UnityEvent();
     public static UnityEvent OnRoundEnded = new UnityEvent();
 
+    [SerializeField] private LevelSpawn_SO levelData;
+
     private void Awake()
     {
         instance = this;
@@ -46,7 +48,14 @@ public class EnemySpawner : MonoBehaviour
         StartCoroutine(WaveLoop());
         
     }
-
+    IEnumerator _LevelCoroutine()
+    {
+        yield return null;
+    }
+    IEnumerator _WaveCoroutine()
+    {
+        yield return null;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -214,6 +223,13 @@ public class EnemySpawner : MonoBehaviour
         foreach (var spawn in _spawnPoints)
             c += spawn.enemyParent.childCount;
         return c;
+    }
+
+    GameObject _EnemyByType(EnemyType type)
+    {
+        var e = levelData.enemyPrefabs.Find(x => x.type == type);
+        return e.prefab;
+       
     }
     
 }
