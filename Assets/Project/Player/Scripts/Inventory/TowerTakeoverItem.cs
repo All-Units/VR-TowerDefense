@@ -49,7 +49,7 @@ public class TowerTakeoverItem : MonoBehaviour
     {
         inv = InventoryManager.invByTor(args.interactorObject);
         isGrabbed = true;
-        _controller.inv = inv;
+        // _controller.inv = inv;
 
         inv.trigger.action.started += _controller.StartSelection;
         inv.trigger.action.canceled += _controller.EndSelection;
@@ -60,7 +60,7 @@ public class TowerTakeoverItem : MonoBehaviour
         //print($"Ending grab on takeover item");
         isGrabbed = false;
         lastDropTime = Time.time;
-        _controller.inv = null;
+        // _controller.inv = null;
         inv.trigger.action.started -= _controller.StartSelection;
         inv.trigger.action.canceled -= _controller.EndSelection;
         StartCoroutine(_waitThenReturn());
