@@ -66,6 +66,7 @@ public class GameLevelEditorWindow : EditorWindow
                             {
                                 // Load the selected scene
                                 EditorSceneManager.OpenScene(scenePath);
+                                Close();
                             }
                         }
                         else

@@ -41,7 +41,11 @@ public class BasicEnemy : Enemy
         {
             Debug.Log($"{gameObject.name} was null ", gameObject);
             return;
-        }   
+        }
+        else
+        {
+            _target = nextWaypoint.GetPoint();
+        }
         
         Vector3 dir = nextWaypoint.nextPoint.transform.position - nextWaypoint.transform.position;
         dir.y = 0f;
@@ -113,48 +117,49 @@ public class BasicEnemy : Enemy
     
     #region HelperFunctions
     public float distanceToTarget;
+    private Vector3 _target;
     void _moveLoop()
     {
         if(nextWaypoint == null) return;
         
-        //Cache our pos, target pos, and distance to target
-        Vector3 pos = transform.position;
-        Vector3 nextPos = nextWaypoint.transform.position;
+        /*//Cache our pos, target pos, and distance to target 
+        _target = nextWaypoint.GetPoint();
         pos.y = 0f;
-        nextPos.y = 0f;
-        float distance = Vector3.Distance(pos, nextPos);
+        _target.y = 0f;
         float distanceToGoal = Vector3.Distance(pos, nextWaypoint.goal.position);
         //If we are closer to goal than the current waypoint, skip it
         while (nextWaypoint.nextPoint && distanceToGoal < nextWaypoint.DistanceToGoal)
-            nextWaypoint = nextWaypoint.nextPoint;
-        distanceToTarget = distance;
+            nextWaypoint = nextWaypoint.GetNext();
+        distanceToTarget = distance;*/
+        
+        Vector3 pos = transform.position;
+        float distance = Vector3.Distance(pos, _target);
+        
         //If we've reached our current target
         if (distance <= targetTolerance)
         {
             //Get the next target
-            nextWaypoint = nextWaypoint.nextPoint;
+            nextWaypoint = nextWaypoint.GetNext();
             //If there is a next target
             if (nextWaypoint != null)
             {
-                nextPos = nextWaypoint.transform.position;
+                _target = nextWaypoint.GetPoint();
             }
             else
             {
                 reachedEnd = true;
                 Victory();
             }
-            
-            
         }
         _zeroVelocity();
         //Move towards next target
         if (reachedEnd == false)
         {
-            Vector3 velocity = Vector3.Normalize(nextPos - pos) * moveSpeed;
+            Vector3 velocity = Vector3.Normalize(_target - pos) * moveSpeed;
             velocity.y = 0f;
             _rb.velocity += velocity;
         }
-        _rotateTowards(pos, nextPos);
+        _rotateTowards(pos, _target);
         
     }
 

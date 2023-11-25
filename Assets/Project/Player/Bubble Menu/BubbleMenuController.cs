@@ -105,7 +105,8 @@ public class BubbleMenuController : MonoBehaviour
     {
         Debug.Log($"Upgrading: {_currentTower} to {towerUpgrade.upgrade.name}");
         var newTower = TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
-        Open(newTower);
+        // Open(newTower);
+        Hide();
     }
     
     private void SellTower()

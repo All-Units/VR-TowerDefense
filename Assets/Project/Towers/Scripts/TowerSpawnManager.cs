@@ -123,6 +123,7 @@ namespace Project.Towers.Scripts
             //Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
 
+            tower.SpawnTower();
             return tower;
         }
 

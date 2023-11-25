@@ -47,8 +47,8 @@ public class InventoryFollowCamera : MonoBehaviour
             _currentDampTime = 0f;
         }
         
-        if (Quaternion.Angle(_startRot, _target) < 45)
-            return;
+        /*if (Quaternion.Angle(_startRot, _target) < 45)
+            return;*/
 
         transform.rotation = Quaternion.Lerp(_startRot, _target, (_currentDampTime / rotateDamping));
 
