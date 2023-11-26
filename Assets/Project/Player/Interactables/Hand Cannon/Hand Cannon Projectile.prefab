@@ -123,9 +123,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 3
+  damage: 20
   speed: 20
   statusModifier: {fileID: 0}
+  _hitEnemy: {fileID: 0}
+  _hitGround: {fileID: 0}
   splashRadius: 3
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
@@ -135,20 +137,29 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -0.004573574
       value: 0.99475145
-      inSlope: -2.790245
-      outSlope: -2.790245
+      inSlope: -0.041651938
+      outSlope: -0.041651938
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.11060789
+      outWeight: 0.4462083
+    - serializedVersion: 3
+      time: 0.36197755
+      value: 0.9727671
+      inSlope: -0.05907448
+      outSlope: -0.05907448
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
       value: 0.025829673
-      inSlope: -0.0012240435
-      outSlope: -0.0012240435
+      inSlope: -1.9538796
+      outSlope: -1.9538796
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.23943877
+      inWeight: 0.1519354
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -176,7 +187,7 @@ Rigidbody:
     m_Bits: 0
   m_ImplicitCom: 1
   m_ImplicitTensor: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
@@ -402,6 +413,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3598f888e85115a45857a40b027a3e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   _clips:
   - {fileID: 8300000, guid: 81fd3d411c0de7a4c846e2d7106ea5fc, type: 3}
   - {fileID: 8300000, guid: 116c2cf758fbd2841a3114694d8fb67c, type: 3}
@@ -425,6 +437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3598f888e85115a45857a40b027a3e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   _clips:
   - {fileID: 8300000, guid: ef155ce290061f74b806f13f3528d6c3, type: 3}
   _maxInclusivePitchVariance: 0

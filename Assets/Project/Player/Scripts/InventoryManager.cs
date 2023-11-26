@@ -16,15 +16,47 @@ public class InventoryManager : MonoBehaviour
     public Inventory2 rightHand;
     public XRDirectInteractor playerLeftHand;
     public XRDirectInteractor playerRightHand;
-    public XRGrabInteractable bow;
-    public XRGrabInteractable magicStaff;
-    public XRGrabInteractable handCannon;
-    private XRInteractionManager _manager;
-
     [SerializeField] private GameObject leftHandParent;
     [SerializeField] private GameObject rightHandParent;
 
+    #region Player Item Variables
+
+    [Header("Player Tower Items")]
+    public XRGrabInteractable bow;
+    public XRGrabInteractable magicStaff;
+    public XRGrabInteractable handCannon;
+    
+    private List<Transform> itemTransforms 
+    {
+        get
+        {
+            //Init item list if it doesn't exist
+            if (_itemTransforms.Count == 0)
+            {
+                _itemTransforms.Add(instance.bow.transform);
+                _itemTransforms.Add(instance.magicStaff.transform);
+                _itemTransforms.Add(instance.handCannon.transform);
+            }
+            return _itemTransforms;
+        }
+    }
+    private readonly List<Transform> _itemTransforms = new();
+    
+    [Header("Player Tower Item Extras")]
+    public XRInstantiateGrabbableObject quiver;
+    public XRInstantiateGrabbableObject cannonAmmoPouch;
+
+    #endregion
+
+    
+    private XRInteractionManager _manager;
+
+    // Todo: Should be Refactored out. No need to couple the Inventory manager and the minimap 
     public static Transform player => instance.playerTransform;
+    
+    public static UnityEvent OnItemsHidden = new UnityEvent();
+
+    #region Unity Interface
 
     private void Awake()
     {
@@ -33,9 +65,13 @@ public class InventoryManager : MonoBehaviour
         invByHand.Add(whichHand.left, leftHand);
         invByHand.Add(whichHand.right, rightHand);
     }
-    
 
-    public void SpawnBow()
+    #endregion
+
+
+    #region Item Initialization
+
+    private void SpawnBow()
     {
         playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
@@ -43,28 +79,27 @@ public class InventoryManager : MonoBehaviour
         _manager.SelectEnter((IXRSelectInteractor)playerLeftHand, bow);
     }
 
-    public void SpawnMagicStaff()
+    private void SpawnMagicStaff()
     {
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, magicStaff);
     }
 
-    public void SpawnHandCannon()
+    private void SpawnHandCannon()
     {
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         _manager.SelectEnter((IXRSelectInteractor)playerRightHand, handCannon);
     }
 
-    public void SpawnItemNearPlayer(GameObject item)
-    {
-        var go = Instantiate(item, playerTransform.position + playerTransform.forward, playerTransform.rotation);
-    }
+    #endregion
+
+    #region Item Lifecyle
 
     public void GivePlayerItem(PlayerItemType playerItemType)
     {
         ReleaseAllItems();
-
         HideAllItems();
+        
         switch (playerItemType)
         {
             case PlayerItemType.Bow:
@@ -81,44 +116,30 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-
-    private List<XRBaseInteractor> _tors = new List<XRBaseInteractor>();
     public void ReleaseAllItems()
     {
-        //ReleaseAllSelected(playerRightHand);
-        //ReleaseAllSelected(playerLeftHand);
-        if (_tors.Count == 0)
+        var tors = new List<XRBaseInteractor>();
+        if (tors.Count == 0)
         {
-            _tors = _tors.Concat(leftHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
-            _tors = _tors.Concat(rightHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
+            tors = tors.Concat(leftHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
+            tors = tors.Concat(rightHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
         }
 
-        foreach (var tor in _tors)
+        foreach (var tor in tors)
         {
             ReleaseAllSelected(tor);
         }
+        
+        DeactivateAllItemExtras();
     }
 
-    private static List<Transform> itemTransforms {
-        get
-        {
-            //Init item list if it doesn't exist
-            if (_itemTransforms.Count == 0)
-            {
-                _itemTransforms.Add(instance.bow.transform);
-                _itemTransforms.Add(instance.magicStaff.transform);
-                _itemTransforms.Add(instance.handCannon.transform);
-            }
-            return _itemTransforms;
-        }
-}
-    private static List<Transform> _itemTransforms = new List<Transform>();
+
     /// <summary>
     /// Moves all items out of the map
     /// </summary>
     public static void HideAllItems()
     {
-        foreach (Transform t in itemTransforms)
+        foreach (Transform t in instance.itemTransforms)
         {
             //Move down 100
             t.Translate(Vector3.down * 100f);
@@ -141,13 +162,9 @@ public class InventoryManager : MonoBehaviour
         rb.constraints = RigidbodyConstraints.None;
         rb.velocity = Vector3.zero;
     }
-
-    public static UnityEvent OnItemsHidden = new UnityEvent();
-
     
     private void ReleaseAllSelected(XRBaseInteractor interactor)
     {
-        
         var selectedInteractables = interactor.interactablesSelected.ToArray();
 
         bool dropped = false;
@@ -155,11 +172,55 @@ public class InventoryManager : MonoBehaviour
         {
             _manager.SelectExit(interactor, selectedInteractable);
         }
-        
     }
 
     public bool RightHandFull() => playerRightHand.interactablesSelected.Any();
     public bool LeftHandFull() => playerLeftHand.interactablesSelected.Any();
+
+    public void ActivateItemExtra(PlayerItem_SO.ItemAmmoPouch ammoPouch)
+    {
+        switch (ammoPouch)
+        {
+            case PlayerItem_SO.ItemAmmoPouch.NONE:
+                break;
+            case PlayerItem_SO.ItemAmmoPouch.ARROW_QUIVER:
+                quiver.gameObject.SetActive(true);
+                break;
+            case PlayerItem_SO.ItemAmmoPouch.BOMB_SATCHEL:
+                cannonAmmoPouch.gameObject.SetActive(true);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(ammoPouch), ammoPouch, null);
+        }
+    }
+
+    public void DeactivateItemExtra(PlayerItem_SO.ItemAmmoPouch ammoPouch)
+    {
+        switch (ammoPouch)
+        {
+            case PlayerItem_SO.ItemAmmoPouch.NONE:
+                break;
+            case PlayerItem_SO.ItemAmmoPouch.ARROW_QUIVER:
+                quiver.gameObject.SetActive(false);
+                break;
+            case PlayerItem_SO.ItemAmmoPouch.BOMB_SATCHEL:
+                cannonAmmoPouch.gameObject.SetActive(false);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(ammoPouch), ammoPouch, null);
+        }
+    }
+
+    public void DeactivateAllItemExtras()
+    {
+        foreach (PlayerItem_SO.ItemAmmoPouch value in Enum.GetValues(typeof(PlayerItem_SO.ItemAmmoPouch)))
+        {
+            DeactivateItemExtra(value);
+        }
+    }
+
+    #endregion
+
     public static Inventory2 invByTor(IXRSelectInteractor tor)
     {
         foreach (var inv in instance.invByHand.Values)
@@ -171,5 +232,3 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 }
-
-

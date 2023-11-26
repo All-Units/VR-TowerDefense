@@ -29,22 +29,9 @@ public class SoundtrackManager : MonoBehaviour
         EnemySpawner.OnRoundStarted.AddListener(PlayCombat);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     public static void PlayMenu()
     {
         _PlayContext("menu");
-        
     }
 
     public static void PlayCombat()

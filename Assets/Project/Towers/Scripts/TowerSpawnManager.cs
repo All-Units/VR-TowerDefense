@@ -85,6 +85,7 @@ namespace Project.Towers.Scripts
             }
             var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
+            tower.SpawnTower();
             
             // Todo refactor needed
             Tower t = tower.GetComponentInChildren<Tower>(); 
@@ -122,6 +123,7 @@ namespace Project.Towers.Scripts
             //Minimap.instance.SpawnTowerAt(pos, currentTower);
             // End refactor needed
 
+            tower.SpawnTower();
             return tower;
         }
 

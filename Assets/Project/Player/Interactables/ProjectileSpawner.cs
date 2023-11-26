@@ -16,7 +16,7 @@ public class ProjectileSpawner : MonoBehaviour
     [Tooltip("The speed at which the projectile is launched")]
     float m_LaunchSpeed = 1.0f;
 
-    public void Fire()
+    public virtual void Fire()
     {
         GameObject newObject = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
 

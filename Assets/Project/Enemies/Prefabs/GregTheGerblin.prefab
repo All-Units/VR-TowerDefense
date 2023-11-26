@@ -154,7 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae91ddbcc274c0aad737eded9ced4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 16
+  maxHealth: 10
   _currentHealth: 10
   onTakeDamage:
     m_PersistentCalls:
@@ -186,8 +186,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  deathDelay: 4
-  healthbar: {fileID: 2605668245758121139}
   isDead: 0
 --- !u!1 &2334665579380852891
 GameObject:
@@ -1126,33 +1124,21 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5368649729684537483, guid: 078e64b743a501649a607509884f5830,
+        type: 3}
+      propertyPath: healthController
+      value: 
+      objectReference: {fileID: 6812066425755246883}
     - target: {fileID: 6928277851612195147, guid: 078e64b743a501649a607509884f5830,
         type: 3}
       propertyPath: m_Name
       value: Healthbar
-      objectReference: {fileID: 0}
-    - target: {fileID: 9102140759691434637, guid: 078e64b743a501649a607509884f5830,
-        type: 3}
-      propertyPath: m_Value
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 078e64b743a501649a607509884f5830, type: 3}
---- !u!114 &2605668245758121139 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9102140759691434637, guid: 078e64b743a501649a607509884f5830,
-    type: 3}
-  m_PrefabInstance: {fileID: 6519098713400315454}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &6748755946066835735 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 562976872983492393, guid: 078e64b743a501649a607509884f5830,

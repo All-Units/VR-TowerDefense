@@ -6,14 +6,20 @@ using System.Collections.Generic;
 using UnityEditor;
 #endif
 using UnityEngine;
+using UnityEngine.Serialization;
+using Random = UnityEngine.Random;
 
 public class PathPoint : MonoBehaviour
 {
     [SerializeField] public PathPoint nextPoint;
     [SerializeField] public PathPoint prevPoint;
+    
     public Vector3 position;
     public float DistanceToGoal = float.PositiveInfinity;
+    
     [HideInInspector] public PathPoint goal;
+    private int maxPointVarianceInclusive = 2;
+
     private void Awake()
     {
         position = transform.position;
@@ -26,7 +32,11 @@ public class PathPoint : MonoBehaviour
     }
 
     public PathPoint GetNext() => nextPoint;
-    public Vector3 GetPoint() => transform.position;
+    public Vector3 GetPoint()
+    {
+        return transform.position + new Vector3(Random.Range(-maxPointVarianceInclusive, maxPointVarianceInclusive), 0, Random.Range(-maxPointVarianceInclusive, maxPointVarianceInclusive));
+    }
+
 #if UNITY_EDITOR
 
     protected virtual void OnDrawGizmos()
@@ -88,4 +98,5 @@ public class PathPoint : MonoBehaviour
         newPoint.AddComponent<PathPoint>();
     }
 #endif
+    
 }

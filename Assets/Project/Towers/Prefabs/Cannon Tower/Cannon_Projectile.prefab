@@ -124,8 +124,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 2
-  speed: 20
+  speed: 50
   statusModifier: {fileID: 0}
+  _hitEnemy: {fileID: 0}
+  _hitGround: {fileID: 0}
   splashRadius: 3
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
@@ -306,6 +308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3598f888e85115a45857a40b027a3e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   _clips:
   - {fileID: 8300000, guid: 81fd3d411c0de7a4c846e2d7106ea5fc, type: 3}
   - {fileID: 8300000, guid: 116c2cf758fbd2841a3114694d8fb67c, type: 3}
@@ -425,6 +428,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3598f888e85115a45857a40b027a3e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   _clips:
   - {fileID: 8300000, guid: ef155ce290061f74b806f13f3528d6c3, type: 3}
   _maxInclusivePitchVariance: 0

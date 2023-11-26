@@ -33,7 +33,6 @@ public class InventoryFollowCamera : MonoBehaviour
         transform.position = pos;
 
 
-        return;
         if (_currentDampTime >= rotateDamping)
         {
             Vector3 dir = camera.forward;
@@ -47,6 +46,9 @@ public class InventoryFollowCamera : MonoBehaviour
             
             _currentDampTime = 0f;
         }
+        
+        /*if (Quaternion.Angle(_startRot, _target) < 45)
+            return;*/
 
         transform.rotation = Quaternion.Lerp(_startRot, _target, (_currentDampTime / rotateDamping));
 

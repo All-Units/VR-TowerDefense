@@ -1,8 +1,10 @@
-﻿using UnityEditor;
-using UnityEngine;
-using UnityEditor.SceneManagement;
+﻿using UnityEngine;
 using System.IO;
 using System.Collections.Generic;
+
+#if UNITY_EDITOR
+using UnityEditor;
+using UnityEditor.SceneManagement;
 
 public class GameLevelEditorWindow : EditorWindow
 {
@@ -64,6 +66,7 @@ public class GameLevelEditorWindow : EditorWindow
                             {
                                 // Load the selected scene
                                 EditorSceneManager.OpenScene(scenePath);
+                                Close();
                             }
                         }
                         else
@@ -80,3 +83,4 @@ public class GameLevelEditorWindow : EditorWindow
         }
     }
 }
+#endif

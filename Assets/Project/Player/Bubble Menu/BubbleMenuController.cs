@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class BubbleMenuController : MonoBehaviour
 {
-    private static BubbleMenuController Instance;
+    private static BubbleMenuController _instance;
     private Tower _currentTower;
     public GameObject towerCamera;
 
@@ -14,17 +14,15 @@ public class BubbleMenuController : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;
+        _instance = this;
         _Hide();
         
         PlayerStateController.OnStateChange += PlayerStateControllerOnOnStateChange;
-        Tower.OnTowerSelected += Open;
     }
 
     private void OnDestroy()
     {
         PlayerStateController.OnStateChange -= PlayerStateControllerOnOnStateChange;
-        Tower.OnTowerSelected -= Open;
     }
 
     private void PlayerStateControllerOnOnStateChange(PlayerState arg1, PlayerState arg2)
@@ -81,16 +79,16 @@ public class BubbleMenuController : MonoBehaviour
 
     public static void Open(Tower tower)
     {
-        if(Instance == null) return;
+        if(_instance == null) return;
         
-        Instance.Initialize(tower);
+        _instance.Initialize(tower);
     }
 
     public static void Hide()
     {
-        if (Instance == null) return;
+        if (_instance == null) return;
         
-        Instance._Hide();
+        _instance._Hide();
     }
 
     public void _Hide()
@@ -107,7 +105,8 @@ public class BubbleMenuController : MonoBehaviour
     {
         Debug.Log($"Upgrading: {_currentTower} to {towerUpgrade.upgrade.name}");
         var newTower = TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
-        Open(newTower);
+        // Open(newTower);
+        Hide();
     }
     
     private void SellTower()
