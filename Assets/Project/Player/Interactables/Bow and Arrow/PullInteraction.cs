@@ -4,6 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class PullInteraction : XRBaseInteractable
 {
+    public static event Action PullActionStarted;
     public static event Action<float> PullActionReleased;
 
     public Transform start, end;
@@ -26,6 +27,7 @@ public class PullInteraction : XRBaseInteractable
     public void SetPullInteractor(SelectEnterEventArgs args)
     {
         pullingInteractor = args.interactorObject;
+        PullActionStarted?.Invoke();
     }
 
     public void Release()

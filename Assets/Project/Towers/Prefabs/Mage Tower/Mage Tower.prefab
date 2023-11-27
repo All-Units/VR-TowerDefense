@@ -222,6 +222,7 @@ MonoBehaviour:
   playerReleasePosition: {fileID: 2335260489334345643}
   deathParticles: {fileID: 754336113746814313}
   constructionParticles: {fileID: 4421642806989300263}
+  isInitialized: 0
   dto: {fileID: 11400000, guid: c1485a6ce47756940a2021ac2fb8c4e9, type: 2}
   removeFromDict: 1
   stats: {fileID: 11400000, guid: edfa8bfa8db27f94a848d1a70d127842, type: 2}
@@ -232,7 +233,7 @@ MonoBehaviour:
   selectedVfx: {fileID: 37483902079555549}
   turretModel: {fileID: 260109540466612344}
   playerPlatform: {fileID: 789477411806127998}
-  playerItemType: 1
+  playerItemSO: {fileID: 11400000, guid: 1e5750d5d8a7067408fcbf9b7f4c860f, type: 2}
 --- !u!114 &5764481117411547575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -253,8 +254,6 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
-  deathDelay: 1.4
-  healthbar: {fileID: 3618029312338696694}
   isDead: 0
 --- !u!65 &2109300424744119849
 BoxCollider:
@@ -849,18 +848,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 078e64b743a501649a607509884f5830, type: 3}
---- !u!114 &3618029312338696694 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9102140759691434637, guid: 078e64b743a501649a607509884f5830,
-    type: 3}
-  m_PrefabInstance: {fileID: 5504699150046135163}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!224 &5455133266012402770 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 562976872983492393, guid: 078e64b743a501649a607509884f5830,

@@ -189,6 +189,7 @@ MonoBehaviour:
   playerReleasePosition: {fileID: 4518858747152182974}
   deathParticles: {fileID: 4241957486440738107}
   constructionParticles: {fileID: 8434213176561270105}
+  isInitialized: 0
   dto: {fileID: 11400000, guid: 17279f9f65fa3f84094c607dffee5ad6, type: 2}
   removeFromDict: 1
   stats: {fileID: 11400000, guid: 76506c6d619c58440a80cbdeaeb869f8, type: 2}
@@ -199,7 +200,7 @@ MonoBehaviour:
   selectedVfx: {fileID: 4151954165064415887}
   turretModel: {fileID: 6660010794930149879}
   playerPlatform: {fileID: 1536221837531291880}
-  playerItemType: 2
+  playerItemSO: {fileID: 11400000, guid: f9a55e550234eb249b99e31339890d23, type: 2}
 --- !u!114 &5764481117411547575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,8 +221,6 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
-  deathDelay: 1.4
-  healthbar: {fileID: 6617004247652858991}
   isDead: 0
 --- !u!65 &7609404042598163692
 BoxCollider:
@@ -494,18 +493,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2703600711099901666}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &6617004247652858991 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 9102140759691434637, guid: 078e64b743a501649a607509884f5830,
-    type: 3}
-  m_PrefabInstance: {fileID: 2703600711099901666}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &3071587310395827147
 PrefabInstance:
   m_ObjectHideFlags: 0

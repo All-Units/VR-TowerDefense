@@ -44,6 +44,11 @@ public class SoundtrackManager : MonoBehaviour
         _PlayContext("betweenrounds");
     }
 
+    public static void Stop()
+    {
+        instance._source.Stop();
+    }
+
     static void _PlayContext(string context)
     {
         if (instance == null) return;

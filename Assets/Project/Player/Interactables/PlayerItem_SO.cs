@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 [CreateAssetMenu(menuName = "SO/Player Item SO", fileName = "New Item")]
 public class PlayerItem_SO : ScriptableObject
@@ -12,6 +13,9 @@ public class PlayerItem_SO : ScriptableObject
     
     public TowerPlayerWeapon itemGo;
     public ItemAmmoPouch ammoPouch = ItemAmmoPouch.NONE;
+    public XRGrabInteractable ammo;
+
+    public bool holdInOffHand;
     
     #region HelperFunctions
 
