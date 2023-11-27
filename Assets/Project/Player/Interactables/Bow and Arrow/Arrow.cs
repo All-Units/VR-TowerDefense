@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Arrow : MonoBehaviour
 {
     public int damage;
     public float speed = 10f;
+
+    public UnityEvent OnDrawnBack;
+    public UnityEvent OnRelease;
 
     private Rigidbody _rigidbody;
     private bool _inAir = false;
@@ -18,19 +22,29 @@ public class Arrow : MonoBehaviour
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
+        PullInteraction.PullActionStarted += PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased += PullInteractionOnPullActionReleased;
 
         Stop();
     }
 
+
+
     private void OnDestroy()
     {
+        PullInteraction.PullActionStarted -= PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased -= PullInteractionOnPullActionReleased;
     }
 
+    private void PullInteractionOnPullActionStarted()
+    {
+        OnDrawnBack?.Invoke();
+    }
     private void PullInteractionOnPullActionReleased(float obj)
     {
+        PullInteraction.PullActionStarted -= PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased -= PullInteractionOnPullActionReleased;
+        OnRelease?.Invoke();
         Fire(obj);
     }
 

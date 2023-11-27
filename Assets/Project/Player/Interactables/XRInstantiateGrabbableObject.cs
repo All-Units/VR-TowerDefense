@@ -9,6 +9,11 @@ public class XRInstantiateGrabbableObject : XRBaseInteractable
     [SerializeField]
     private GameObject grabbableObject;
 
+    public void SetAmmoPrefab(GameObject pref)
+    {
+        grabbableObject = pref;
+    }
+
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
         // Instantiate object

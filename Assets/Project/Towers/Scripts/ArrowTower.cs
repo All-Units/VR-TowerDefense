@@ -1,13 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Serialization;
 
-public enum PlayerItemType
-{
-    Bow,
-    Staff,
-    Cannon
-}
-
 public class ArrowTower : Tower
 {
     [SerializeField] private TowerStats stats;
@@ -25,8 +18,7 @@ public class ArrowTower : Tower
     [SerializeField] private GameObject turretModel;
     [SerializeField] private GameObject playerPlatform;
 
-    [SerializeField] private PlayerItemType playerItemType;
-    
+    [SerializeField] private PlayerItem_SO playerItemSO;
     protected override void Awake()
     {
         base.Awake();
@@ -104,7 +96,7 @@ public class ArrowTower : Tower
         turretModel.SetActive(false);
         playerPlatform.SetActive(true);
 
-        InventoryManager.instance.GivePlayerItem(playerItemType);
+        InventoryManager.instance.GivePlayerItem(playerItemSO);
     }
 
     public override void PlayerReleaseControl()

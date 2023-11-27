@@ -21,26 +21,10 @@ public class InventoryManager : MonoBehaviour
 
     #region Player Item Variables
 
-    [Header("Player Tower Items")]
-    public XRGrabInteractable bow;
-    public XRGrabInteractable magicStaff;
-    public XRGrabInteractable handCannon;
-    
-    private List<Transform> itemTransforms 
-    {
-        get
-        {
-            //Init item list if it doesn't exist
-            if (_itemTransforms.Count == 0)
-            {
-                _itemTransforms.Add(instance.bow.transform);
-                _itemTransforms.Add(instance.magicStaff.transform);
-                _itemTransforms.Add(instance.handCannon.transform);
-            }
-            return _itemTransforms;
-        }
-    }
-    private readonly List<Transform> _itemTransforms = new();
+    [Header("Player Tower Items")] 
+    private Dictionary<PlayerItem_SO, XRGrabInteractable> _playerItems = new();
+
+    [SerializeField] private Transform playerItemsTransformRoot;
     
     [Header("Player Tower Item Extras")]
     public XRInstantiateGrabbableObject quiver;
@@ -71,48 +55,56 @@ public class InventoryManager : MonoBehaviour
 
     #region Item Initialization
 
-    private void SpawnBow()
+    private void SpawnBow(XRGrabInteractable item)
     {
         playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
 
-        _manager.SelectEnter((IXRSelectInteractor)playerLeftHand, bow);
+        _manager.SelectEnter((IXRSelectInteractor)playerLeftHand, item);
     }
 
-    private void SpawnMagicStaff()
+    private void SpawnMagicStaff(XRGrabInteractable item)
     {
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
-        _manager.SelectEnter((IXRSelectInteractor)playerRightHand, magicStaff);
+        _manager.SelectEnter((IXRSelectInteractor)playerRightHand, item);
     }
 
-    private void SpawnHandCannon()
+    private void SpawnHandCannon(XRGrabInteractable item)
     {
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
-        _manager.SelectEnter((IXRSelectInteractor)playerRightHand, handCannon);
+        _manager.SelectEnter((IXRSelectInteractor)playerRightHand, item);
     }
 
     #endregion
 
     #region Item Lifecyle
 
-    public void GivePlayerItem(PlayerItemType playerItemType)
+    public void GivePlayerItem(PlayerItem_SO playerItemType)
     {
         ReleaseAllItems();
         HideAllItems();
-        
-        switch (playerItemType)
+
+        if (_playerItems.ContainsKey(playerItemType) == false) 
         {
-            case PlayerItemType.Bow:
-                SpawnBow();
-                break;
-            case PlayerItemType.Staff:
-                SpawnMagicStaff();
-                break;
-            case PlayerItemType.Cannon:
-                SpawnHandCannon();
-                break;
-            default:
-                throw new ArgumentOutOfRangeException(nameof(playerItemType), playerItemType, null);
+            var newWeapon = Instantiate(playerItemType.itemGo,playerItemsTransformRoot);
+            _playerItems.Add(playerItemType, newWeapon.GetComponent<XRGrabInteractable>());
+        }
+
+        var item = _playerItems[playerItemType];
+        
+        if (playerItemType.holdInOffHand)
+        {
+            playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
+            playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
+
+            _manager.SelectEnter((IXRSelectInteractor)playerLeftHand, item);
+        }
+        else
+        {
+            playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
+            playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
+
+            _manager.SelectEnter((IXRSelectInteractor)playerRightHand, item);
         }
     }
 
@@ -139,7 +131,7 @@ public class InventoryManager : MonoBehaviour
     /// </summary>
     public static void HideAllItems()
     {
-        foreach (Transform t in instance.itemTransforms)
+        foreach (Transform t in instance._playerItems.Values.Select(i => i.transform))
         {
             //Move down 100
             t.Translate(Vector3.down * 100f);
@@ -177,26 +169,28 @@ public class InventoryManager : MonoBehaviour
     public bool RightHandFull() => playerRightHand.interactablesSelected.Any();
     public bool LeftHandFull() => playerLeftHand.interactablesSelected.Any();
 
-    public void ActivateItemExtra(PlayerItem_SO.ItemAmmoPouch ammoPouch)
+    public void ActivateItemExtra(PlayerItem_SO data)
     {
-        switch (ammoPouch)
+        switch (data.ammoPouch)
         {
             case PlayerItem_SO.ItemAmmoPouch.NONE:
                 break;
             case PlayerItem_SO.ItemAmmoPouch.ARROW_QUIVER:
                 quiver.gameObject.SetActive(true);
+                quiver.SetAmmoPrefab(data.ammo.gameObject);
                 break;
             case PlayerItem_SO.ItemAmmoPouch.BOMB_SATCHEL:
                 cannonAmmoPouch.gameObject.SetActive(true);
+                cannonAmmoPouch.SetAmmoPrefab(data.ammo.gameObject);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(ammoPouch), ammoPouch, null);
+                throw new ArgumentOutOfRangeException(nameof(data.ammoPouch), data.ammoPouch, null);
         }
     }
 
-    public void DeactivateItemExtra(PlayerItem_SO.ItemAmmoPouch ammoPouch)
+    public void DeactivateItemExtra(PlayerItem_SO data)
     {
-        switch (ammoPouch)
+        switch (data.ammoPouch)
         {
             case PlayerItem_SO.ItemAmmoPouch.NONE:
                 break;
@@ -207,16 +201,14 @@ public class InventoryManager : MonoBehaviour
                 cannonAmmoPouch.gameObject.SetActive(false);
                 break;
             default:
-                throw new ArgumentOutOfRangeException(nameof(ammoPouch), ammoPouch, null);
+                throw new ArgumentOutOfRangeException(nameof(data.ammoPouch), data.ammoPouch, null);
         }
     }
 
-    public void DeactivateAllItemExtras()
+    private void DeactivateAllItemExtras()
     {
-        foreach (PlayerItem_SO.ItemAmmoPouch value in Enum.GetValues(typeof(PlayerItem_SO.ItemAmmoPouch)))
-        {
-            DeactivateItemExtra(value);
-        }
+        quiver.gameObject.SetActive(false);
+        cannonAmmoPouch.gameObject.SetActive(false);
     }
 
     #endregion
