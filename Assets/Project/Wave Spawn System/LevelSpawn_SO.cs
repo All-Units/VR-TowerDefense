@@ -52,6 +52,16 @@ public class LevelSpawn_SO : ScriptableObject
         wave.WaveCompleteBounty = bounty;
         waveStructs[i] = wave;
     }
+    public int GetDelay(int i)
+    {
+        return waveStructs[i].preWaveDelay;
+    }
+    public void EditDelay(int i, int delay)
+    {
+        var wave = waveStructs[i];
+        wave.preWaveDelay = delay;
+        waveStructs[i] = wave;
+    }
 
     public WaveSpawn_SO GetNextWave() => _queue.Dequeue();
     public bool HasMoreWave() => _queue.Count > 0;
@@ -63,6 +73,7 @@ public struct WaveStruct
     public List<EnemyQuant> enemies;
     public List<SubWave> subWaves;
     public int WaveCompleteBounty;
+    public int preWaveDelay;
     public List<SpawnPointData> spawnPoints;
 }
 [Serializable]

@@ -45,16 +45,37 @@ public class EnemySpawner : MonoBehaviour
         _spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
         
         _counterDisplay = GetComponent<WaveCounterDisplay>();
-        StartCoroutine(WaveLoop());
+        StartCoroutine(_LevelCoroutine());
+        //StartCoroutine(WaveLoop());
         
     }
+    int _wave_i = 0;
     IEnumerator _LevelCoroutine()
     {
-        yield return null;
+        while (_wave_i < levelData.waveStructs.Count)
+        {
+            var wave = levelData.waveStructs[_wave_i];
+            //Wait n seconds to start wave
+            print($"Waited {wave.preWaveDelay} seconds before starting wave {_wave_i + 1}!");
+            yield return new WaitForSeconds(wave.preWaveDelay);
+            print($"Starting wave");
+            StartCoroutine(_WaveCoroutine(wave));
+            //Wait until the current wave is complete before starting another
+            while (_currentWaveComplete == false)
+                yield return null;
+            print($"Wave {_wave_i + 1} complete, going to {_wave_i + 2}");
+            _wave_i++;
+        }
+        print("Ran out of waves, ending!");
     }
-    IEnumerator _WaveCoroutine()
+    bool _currentWaveComplete = false;
+    IEnumerator _WaveCoroutine(WaveStruct wave)
     {
-        yield return null;
+        _currentWaveComplete = false;
+        print($"Wave {_wave_i + 1}");
+        yield return new WaitForSeconds(1.5f);
+
+        _currentWaveComplete = true;
     }
     // Update is called once per frame
     void Update()

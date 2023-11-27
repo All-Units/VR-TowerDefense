@@ -83,7 +83,8 @@ public class WaveEditorWindow : EditorWindow
             {
                 wave_i = i;
             }
-
+            var delay = currentLevel.GetDelay(i);
+            var newDelay = EditorGUILayout.IntField("Pre wave delay: ", delay);
             int bounty = currentLevel.GetBounty(i);
             var newBounty = EditorGUILayout.IntField("Wave Complete Bounty", bounty);
             if (GUILayout.Button("X", _xButton))
@@ -103,9 +104,10 @@ public class WaveEditorWindow : EditorWindow
             SerializedProperty spawnProperty = so.FindProperty("spawnPoints");
             EditorGUILayout.PropertyField(spawnProperty, new GUIContent("Spawn points:"), true);
             so.ApplyModifiedProperties();
-            if (bounty != newBounty || save)
+            if (bounty != newBounty || save || delay != newDelay)
             {
                 currentLevel.EditBounty(i, newBounty);
+                currentLevel.EditDelay(i, newDelay);
                 var wv = currentLevel.waveStructs[i];
                 wv.spawnPoints = spawnPoints;
                 currentLevel.waveStructs[i] = wv;
