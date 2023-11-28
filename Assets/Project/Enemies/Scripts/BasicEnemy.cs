@@ -39,7 +39,7 @@ public class BasicEnemy : Enemy
         _anim = GetComponentInChildren<Animator>();
         if (nextWaypoint == null)
         {
-            Debug.Log($"{gameObject.name} was null ", gameObject);
+            Debug.LogWarning($"{gameObject.name} has no waypoint!", gameObject);
             return;
         }
         else

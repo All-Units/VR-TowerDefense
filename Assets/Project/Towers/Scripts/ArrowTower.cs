@@ -73,7 +73,8 @@ public class ArrowTower : Tower
 
     private void Fire()
     {
-        var go = Instantiate(stats.projectile, firePoint.position, firePoint.rotation);
+        var projectile = Instantiate(stats.projectile, firePoint.position, firePoint.rotation);
+        projectile.Fire();
         _currentCooldown = stats.shotCooldown;
     }
 

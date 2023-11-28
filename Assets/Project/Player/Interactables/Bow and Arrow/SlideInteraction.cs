@@ -1,28 +1,27 @@
-using System;
+﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class PullInteraction : XRBaseInteractable
+public class SlideInteraction : XRBaseInteractable
 {
-    public static event Action PullActionStarted;
-    public static event Action<float> PullActionReleased;
-    
+    public event Action PullActionStarted;
+    public event Action<float> PullActionReleased;
+
+    public UnityEvent<float> updatePullAmount;
+    public UnityEvent onLocked;
+
     public Transform start, end;
-    public GameObject notch;
     public float pullAmount { get; private set; } = 0.0f;
     private float pullIncrement = 0.1f;
+    public float maxPullIncrement = 0.1f;
 
-    private LineRenderer _lineRenderer;
     private IXRSelectInteractor pullingInteractor = null;
 
     public AnimationCurve curve;
-    [SerializeField] private AudioClipController drawAudio;
 
-    protected override void Awake()
-    {
-        base.Awake();
-        _lineRenderer = GetComponent<LineRenderer>();
-    }
+    [SerializeField] private bool lockAtEnd = true;
+    public bool isLocked { get; private set; } = false;
 
     public void SetPullInteractor(SelectEnterEventArgs args)
     {
@@ -34,37 +33,55 @@ public class PullInteraction : XRBaseInteractable
     {
         PullActionReleased?.Invoke(pullAmount);
         pullingInteractor = null;
+        
+        if(isLocked) return;
+        
         pullAmount = 0f;
         pullIncrement = 0.1f;
-        notch.transform.localPosition =
-            new Vector3(notch.transform.localPosition.x, notch.transform.localPosition.y, 0);
-        UpdateString();
+
+        updatePullAmount?.Invoke(pullAmount);
     }
 
 
     public override void ProcessInteractable(XRInteractionUpdateOrder.UpdatePhase updatePhase)
     {
         base.ProcessInteractable(updatePhase);
+
+        if(isLocked) return;
         
         if (updatePhase == XRInteractionUpdateOrder.UpdatePhase.Dynamic)
         {
             if (isSelected)
             {
-                var pullPosition = pullingInteractor.transform.position;
-                var prevPull = pullAmount;
-                
-                pullAmount = CalculatePull(pullPosition);
-                //Started being pulled this frame
-                if (prevPull == 0f && pullAmount != 0f)
+                pullAmount = CalculatePull(pullingInteractor.transform.position);
+
+                if (!isLocked)
                 {
-                    drawAudio.PlayClip();
+                    if (pullAmount >= .998f)
+                    {
+                        Lock();
+                    }
                 }
+
+                updatePullAmount?.Invoke(pullAmount);
                 
-                UpdateString();
-                if(pullAmount >= pullIncrement || pullAmount <= pullIncrement - 0.1f)
+                if (pullAmount >= pullIncrement || pullAmount <= pullIncrement - 0.1f)
                     HapticFeedback();
             }
         }
+    }
+
+    private void Lock()
+    {
+        isLocked = true;
+        onLocked?.Invoke();
+        interactionManager.SelectExit(pullingInteractor, this);
+    }
+
+    public void Unlock()
+    {
+        isLocked = false;
+        Release();
     }
 
     private float CalculatePull(Vector3 pullPosition)
@@ -75,21 +92,19 @@ public class PullInteraction : XRBaseInteractable
         
         targetDirection.Normalize();
         var pullValue = Vector3.Dot(pullDirection, targetDirection) / maxLength;
+
+        pullValue = Mathf.Min(pullValue, pullAmount + (maxPullIncrement * Time.deltaTime));
         return Mathf.Clamp01(pullValue);
     }
 
-    private void UpdateString()
-    {
-        var linePosition = Vector3.forward * Mathf.Lerp(start.transform.localPosition.z, end.transform.localPosition.z, pullAmount);
-        notch.transform.localPosition = new Vector3(notch.transform.localPosition.x, notch.transform.localPosition.y, linePosition.z + 0.2f);
-        _lineRenderer.SetPosition(1, linePosition + new Vector3(0,0, 0.2f));
-    }
+
 
     private void HapticFeedback()
     {
         if (pullingInteractor != null)
         {
-            var currentController = pullingInteractor.transform.gameObject.GetComponentInParent<ActionBasedController>();
+            var currentController =
+                pullingInteractor.transform.gameObject.GetComponentInParent<ActionBasedController>();
             currentController.SendHapticImpulse(curve.Evaluate(pullAmount), 0.1f);
             if (pullAmount >= pullIncrement)
             {

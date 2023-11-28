@@ -29,7 +29,7 @@ public class LiveCurrencyTracker : MonoBehaviour
         string s = displayString.Replace("[GOLD]",CurrencyManager.CurrentCashString);
         var towerSO = TowerSpawnManager.GetCurrentTower;
         
-        if (s.Contains("TOWERCOST"))
+        if (towerSO != null && s.Contains("TOWERCOST"))
         {
             string color = CurrencyManager.CanAfford(towerSO) ? "green" : "red";
             string coloredCost = $"<color={color}>COST: {towerSO.cost} gp</color>";

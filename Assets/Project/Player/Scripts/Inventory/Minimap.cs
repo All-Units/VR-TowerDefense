@@ -208,7 +208,7 @@ public class Minimap : MonoBehaviour
     #region TowerFunctions
     void SpawnAllExisting()
     {
-        var towers = TowerSpawnManager.Instance.GetComponentsInChildren<Tower>();
+        var towers = TowerSpawnManager.GetAllSpawnedTowers();
         foreach (var tower in towers)
         {
             Vector3 pos = tower.transform.position;

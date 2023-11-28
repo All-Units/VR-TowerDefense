@@ -74,5 +74,6 @@ public class MagicStaffController : MonoBehaviour
     {
         var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
         go.damage = Mathf.FloorToInt(go.damage * chargeTime);
+        go.Fire();
     }
 }

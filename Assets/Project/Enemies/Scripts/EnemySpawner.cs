@@ -11,7 +11,7 @@ public class EnemySpawner : MonoBehaviour
     [Tooltip("The number of seconds between rounds")]
     [SerializeField] private int waveDelay = 20;
 
-    public static int WaveDelay => instance.waveDelay;
+    public static int WaveDelay => instance ? instance.waveDelay : -1;
     [SerializeField] private List<GameObject> enemyPrefabs;
 
     [SerializeField] private GameObject nextRoundCounterPanel;
@@ -116,8 +116,8 @@ public class EnemySpawner : MonoBehaviour
         }
     }
 
-    public static int CurrentWave => instance.wave_i + 1;
-    public static int MaxWaves => instance.waveTotals.Count;
+    public static int CurrentWave => instance ? instance.wave_i + 1 : -1;
+    public static int MaxWaves => instance ? instance.waveTotals.Count : -1;
     private int wave_i = 0;
 
     void _win()
