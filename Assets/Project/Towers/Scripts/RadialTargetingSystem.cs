@@ -24,7 +24,7 @@ public class RadialTargetingSystem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out Enemy e))
+        if(other.TryGetComponent(out Enemy e) && _targetsInRange.Contains(e) == false)
         {
             _targetsInRange.Add(e);
         }
@@ -37,10 +37,11 @@ public class RadialTargetingSystem : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.TryGetComponent(out Enemy e))
+        if(other.TryGetComponent(out Enemy e) && _targetsInRange.Contains(e))
         {
             _targetsInRange.Remove(e);
-        }    
+        }
+        
     }
 
     public Enemy GetClosestTarget(Vector3 pos)
