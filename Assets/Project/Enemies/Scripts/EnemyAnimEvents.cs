@@ -7,19 +7,20 @@ public class EnemyAnimEvents : MonoBehaviour
     /// <summary>
     /// Dirty way of calling
     /// </summary>
+    [HideInInspector]
     public int HasHit;
+    [SerializeField]
     private BasicEnemy enemy;
     
-    [SerializeField] AudioClipController _ac;
 
     // Start is called before the first frame update
     void Start()
     {
-        enemy = GetComponentInParent<BasicEnemy>();
+        if (enemy == null)
+            enemy = GetComponentInParent<BasicEnemy>();
         
     }
 
-    private float lastHit;
     
 
     public void Impact(float f)
