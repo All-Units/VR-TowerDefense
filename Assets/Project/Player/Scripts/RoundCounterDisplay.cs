@@ -10,12 +10,12 @@ public class RoundCounterDisplay : MonoBehaviour
     void Start()
     {
         UpdateWaveText();
-        EnemySpawner.OnRoundStarted.AddListener(UpdateWaveText);
+        EnemyManager.OnRoundStarted.AddListener(UpdateWaveText);
     }
 
     void UpdateWaveText()
     {
-        displayText.text = $"{EnemySpawner.CurrentWave} / {EnemySpawner.MaxWaves}";
+        displayText.text = $"{EnemyManager.CurrentWave} / {EnemyManager.MaxWaves}";
     }
 
     // Update is called once per frame

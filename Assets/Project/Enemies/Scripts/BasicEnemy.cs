@@ -36,6 +36,7 @@ public class BasicEnemy : Enemy
     {
         _rb = GetComponent<Rigidbody>();
         _hc = GetComponent<HealthController>();
+        _hc.onDeath.AddListener(OnDeath);
         _anim = GetComponentInChildren<Animator>();
         if (nextWaypoint == null)
         {
@@ -50,6 +51,10 @@ public class BasicEnemy : Enemy
         Vector3 dir = nextWaypoint.nextPoint.transform.position - nextWaypoint.transform.position;
         dir.y = 0f;
         transform.rotation = Quaternion.LookRotation(dir);
+
+        //We have a rigidbody, a health controller, and animator
+        //Perform OnSpawn logic
+        OnSpawn();
     }
 
     private bool movedLastFrame = false;
@@ -97,8 +102,22 @@ public class BasicEnemy : Enemy
     #endregion
 
     #region LifeCycle
+    void OnSpawn()
+    {
+        EnemyManager.EnemyCount++;
+        EnemyManager.GregSpawned();
+    }
+    /// <summary>
+    /// Logic on Greg death
+    /// </summary>
+    void OnDeath()
+    {
+        EnemyManager.EnemyCount--;
+        EnemyManager.GregKilled();
+    }
 
     private bool addedToMoney = false;
+
     public void Die()
     {
         if (addedToMoney == false && CurrencyManager.instance)
@@ -111,6 +130,8 @@ public class BasicEnemy : Enemy
         }
         reachedEnd = true;
         Destroy(gameObject);
+
+
     }
 
     #endregion

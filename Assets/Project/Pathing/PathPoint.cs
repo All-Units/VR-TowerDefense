@@ -18,7 +18,7 @@ public class PathPoint : MonoBehaviour
     public float DistanceToGoal = float.PositiveInfinity;
     
     [HideInInspector] public PathPoint goal;
-    private int maxPointVarianceInclusive = 2;
+    protected int maxPointVarianceInclusive = 2;
 
     private void Awake()
     {

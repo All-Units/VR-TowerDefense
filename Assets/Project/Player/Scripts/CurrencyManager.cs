@@ -30,7 +30,7 @@ public class CurrencyManager : MonoBehaviour
     {
         CurrentMoney = StartingMoney;
         instance = this;
-        EnemySpawner.OnRoundEnded.AddListener(FinishRound);
+        EnemyManager.OnRoundEnded.AddListener(FinishRound);
     }
 
     // Start is called before the first frame update

@@ -25,54 +25,28 @@ MonoBehaviour:
   waveStructs:
   - enemies:
     - enemyType: 0
-      amountToSpawn: {x: 6, y: 6}
-    - enemyType: 1
-      amountToSpawn: {x: 10, y: 10}
+      amountToSpawn: {x: 5, y: 10}
     subWaves:
     - enemies:
-      - enemyType: 0
-        amountToSpawn: {x: 1, y: 5}
       - enemyType: 1
-        amountToSpawn: {x: 12, y: 12}
-      - enemyType: 2
-        amountToSpawn: {x: 0, y: 0}
+        amountToSpawn: {x: 5, y: 12}
       delayType: 1
-      DelayCount: 0
+      DelayCount: 3
+      groupSizes: {x: 1, y: 2}
+      spawnRate: 2
       spawnPoints:
       - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
-      - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
-      - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
+    - enemies:
+      - enemyType: 2
+        amountToSpawn: {x: 2, y: 2}
+      delayType: 1
+      DelayCount: 1
+      groupSizes: {x: 1, y: 1}
+      spawnRate: 3
+      spawnPoints: []
     WaveCompleteBounty: 9
     preWaveDelay: 1
+    groupSizes: {x: 2, y: 3}
+    spawnRate: 2
     spawnPoints:
     - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
-    - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
-    - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
-  - enemies:
-    - enemyType: 1
-      amountToSpawn: {x: 10, y: 10}
-    - enemyType: 2
-      amountToSpawn: {x: 0, y: 0}
-    - enemyType: 0
-      amountToSpawn: {x: 0, y: 0}
-    subWaves:
-    - enemies:
-      - enemyType: 1
-        amountToSpawn: {x: 10, y: 10}
-      delayType: 0
-      DelayCount: 0
-      spawnPoints: []
-    WaveCompleteBounty: 0
-    preWaveDelay: 2
-    spawnPoints:
-    - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
-  - enemies: []
-    subWaves: []
-    WaveCompleteBounty: 0
-    preWaveDelay: 3
-    spawnPoints: []
-  - enemies: []
-    subWaves: []
-    WaveCompleteBounty: 0
-    preWaveDelay: 3
-    spawnPoints: []

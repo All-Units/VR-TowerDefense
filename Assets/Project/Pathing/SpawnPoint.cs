@@ -105,4 +105,12 @@ public class SpawnPoint : PathPoint
         newPoint.AddComponent<SpawnPoint>();
     }
 #endif
+
+    private void Start()
+    {
+        data.pos = transform.position;
+        data.enemyParent = enemyParent;
+        data.SpawnPoint = this;
+        EnemyManager.SpawnPoints.Add(data);
+    }
 }

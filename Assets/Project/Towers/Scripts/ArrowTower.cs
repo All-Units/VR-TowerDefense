@@ -27,7 +27,7 @@ public class ArrowTower : Tower
         if(attackVFX)
             attackVFX.SetActive(false);
     }
-
+   
     private void Update()
     {
         if(!isInitialized) return; 
@@ -45,13 +45,13 @@ public class ArrowTower : Tower
         }
         else
         {
+            
             if (attackVFX)
             {
                 if (attackVFX.activeSelf)
                     attackVFX.SetActive(false);
             }
         }
-        
         if (_currentCooldown <= 0)
         {
             if (!targetingSystem.HasTarget()) return;

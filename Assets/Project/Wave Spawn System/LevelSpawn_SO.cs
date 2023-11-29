@@ -43,6 +43,7 @@ public class LevelSpawn_SO : ScriptableObject
         
         Debug.Log($"Starting Level {name}! Waves: {_queue.Count}");
     }
+    #region GettersAndSetters
     public int GetBounty(int i)
     {
         return waveStructs[i].WaveCompleteBounty;
@@ -62,6 +63,52 @@ public class LevelSpawn_SO : ScriptableObject
         wave.preWaveDelay = delay;
         waveStructs[i] = wave;
     }
+    public Vector2Int GetGroupSizes(int i)
+    {
+        return waveStructs[i].groupSizes;
+    }
+    
+    public void EditGroupSizes(int i, Vector2Int sizes)
+    {
+        var wave = waveStructs[i];
+        wave.groupSizes = sizes;
+        waveStructs[i] = wave;
+    }
+    /// <summary>
+    /// The time, in seconds, between spawning groups of Gregs
+    /// </summary>
+    /// <param name="i">The wave to get the spawn rate of</param>
+    /// <returns></returns>
+    public float GetSpawnRate(int i)
+    {
+        return waveStructs[i].spawnRate;
+    }
+    /// <summary>
+    /// Sets the time, in seconds, between spawning groups of Gregs
+    /// </summary>
+    /// <param name="i"></param>
+    /// <param name="spawnRate">the new time to set</param>
+    public void EditSpawnRate(int i, float spawnRate)
+    {
+        var wave = waveStructs[i];
+        wave.spawnRate = spawnRate;
+        waveStructs[i] = wave;
+    }
+    /// <summary>
+    /// Gets the prefab reference for a given enemy type
+    /// </summary>
+    /// <param name="type">The type of enemy to find the prefab of</param>
+    /// <returns></returns>
+    public GameObject GetEnemyPrefab(EnemyType type)
+    {
+        foreach (var e in enemyPrefabs)
+        {
+            if (e.type == type)
+                return e.prefab;
+        }
+        return null;
+    }
+    #endregion
 
     public WaveSpawn_SO GetNextWave() => _queue.Dequeue();
     public bool HasMoreWave() => _queue.Count > 0;
@@ -74,6 +121,11 @@ public struct WaveStruct
     public List<SubWave> subWaves;
     public int WaveCompleteBounty;
     public int preWaveDelay;
+    public Vector2Int groupSizes;
+    /// <summary>
+    /// The time, in seconds, between spawning groups of Gregs
+    /// </summary>
+    public float spawnRate;
     public List<SpawnPointData> spawnPoints;
 }
 [Serializable]
@@ -82,6 +134,11 @@ public struct SubWave
     public List<EnemyQuant> enemies;
     public DelayType delayType;
     public int DelayCount;
+    public Vector2Int groupSizes;
+    /// <summary>
+    /// The time, in seconds, between spawning groups of Gregs
+    /// </summary>
+    public float spawnRate;
     public List<SpawnPointData> spawnPoints;
 }
 

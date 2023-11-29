@@ -18,9 +18,9 @@ public class RoundGUI : MonoBehaviour
         roundStartPanel.SetActive(false);
         roundEndPanel.SetActive(false);
         _roundStartString = roundStartText.text;
-        roundEndText.text = roundEndText.text.Replace("[TIME]", EnemySpawner.WaveDelay.ToString());
-        EnemySpawner.OnRoundStarted.AddListener(_OnRoundStart);
-        EnemySpawner.OnRoundEnded.AddListener(_OnRoundEnd);
+        roundEndText.text = roundEndText.text.Replace("[TIME]", EnemyManager.WaveDelay.ToString());
+        EnemyManager.OnRoundStarted.AddListener(_OnRoundStart);
+        EnemyManager.OnRoundEnded.AddListener(_OnRoundEnd);
     }
 
     // Update is called once per frame
@@ -31,7 +31,7 @@ public class RoundGUI : MonoBehaviour
 
     void _OnRoundStart()
     {
-        roundStartText.text = _roundStartString.Replace("[N]", EnemySpawner.CurrentWave.ToString());
+        roundStartText.text = _roundStartString.Replace("[N]", EnemyManager.CurrentWave.ToString());
         StartCoroutine(fadeGOAfter(roundStartPanel));
     }
 

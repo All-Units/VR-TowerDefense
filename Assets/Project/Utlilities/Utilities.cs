@@ -180,6 +180,11 @@ public static class Utilities
         //Random.range is exclusive on the upper bound
         return list[Random.Range(0, list.Count)];
     }
+    public static int GetRandomIndex<T>(this List<T> list)
+    {
+        //Random.range is exclusive on the upper bound
+        return Random.Range(0, list.Count);
+    }
     
     public static Vector3 RandomPointInBounds(this Bounds bounds) {
         return new Vector3(

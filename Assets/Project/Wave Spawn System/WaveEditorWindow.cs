@@ -96,6 +96,31 @@ public class WaveEditorWindow : EditorWindow
                 break;
             }
             GUILayout.EndHorizontal();
+            EditorGUILayout.BeginHorizontal();
+
+
+            Vector2Int groupSizes = currentLevel.GetGroupSizes(i);
+            var newSizes = groupSizes;//EditorGUILayout.Vector2IntField("Group sizes:", groupSizes);
+            newSizes.x = EditorGUILayout.IntField("Min group", newSizes.x);
+            newSizes.y = EditorGUILayout.IntField("Max group", newSizes.y);
+
+            float spawnRate = currentLevel.GetSpawnRate(i);
+            float newRate = EditorGUILayout.FloatField("Spawn rate (secs between gregs)", spawnRate);
+            //Min group size is 1
+            if (newSizes.x < 1 || newSizes.y < 1)
+                newSizes = Vector2Int.one;
+            //If the group sizes changed, set x to min and y to max
+            if (groupSizes != newSizes)
+            {
+                //If X changed, and it's larger than y, bring y up to match
+                if (newSizes.x != groupSizes.x && newSizes.x > newSizes.y)
+                    newSizes.y = newSizes.x;
+                //If Y changed, and is less than x, drop x to match
+                if (newSizes.y != groupSizes.y && newSizes.y < newSizes.x)
+                    newSizes.x = newSizes.y;
+            }
+
+            EditorGUILayout.EndHorizontal();
             bool save = false;
             if (GUILayout.Button("Save spawn points", _centerButton))
                 save = true;
@@ -104,10 +129,13 @@ public class WaveEditorWindow : EditorWindow
             SerializedProperty spawnProperty = so.FindProperty("spawnPoints");
             EditorGUILayout.PropertyField(spawnProperty, new GUIContent("Spawn points:"), true);
             so.ApplyModifiedProperties();
-            if (bounty != newBounty || save || delay != newDelay)
+            if (bounty != newBounty || save || spawnRate != newRate
+                || delay != newDelay || groupSizes != newSizes)
             {
                 currentLevel.EditBounty(i, newBounty);
                 currentLevel.EditDelay(i, newDelay);
+                currentLevel.EditGroupSizes(i, newSizes);
+                currentLevel.EditSpawnRate(i, newRate);
                 var wv = currentLevel.waveStructs[i];
                 wv.spawnPoints = spawnPoints;
                 currentLevel.waveStructs[i] = wv;
@@ -179,7 +207,7 @@ public class WaveEditorWindow : EditorWindow
                 removed = true;
             }
             EditorGUILayout.EndHorizontal();
-
+            
             if (type != enemy.enemyType)
             {
                 var e = enemies[i];
@@ -191,10 +219,10 @@ public class WaveEditorWindow : EditorWindow
             {
                 Vector2Int updatedAmount = amount;
                 //If x is larger, bring y up to match
-                if (updatedAmount.x > updatedAmount.y)
+                if (updatedAmount.x != startAmount.x && updatedAmount.x > updatedAmount.y)
                     updatedAmount.y = updatedAmount.x;
                 //If y is smaller, drop x to match
-                if (updatedAmount.y < updatedAmount.x)
+                if (updatedAmount.y != startAmount.y && updatedAmount.y < updatedAmount.x)
                     updatedAmount.x = updatedAmount.y;
                 var e = enemies[i];
                 e.amountToSpawn = updatedAmount;
@@ -258,6 +286,18 @@ public class WaveEditorWindow : EditorWindow
 
             GUILayout.EndHorizontal();
 
+
+            //Min / max group, and spawn rate
+            GUILayout.BeginHorizontal();
+            var sizes = subWave.groupSizes;
+            if (sizes.x < 1 || sizes.y < 1)
+                sizes = Vector2Int.one;
+            int min = EditorGUILayout.IntField("Min group", sizes.x);
+            int max = EditorGUILayout.IntField("Max group", sizes.y);
+            sizes = new Vector2Int(min, max);
+            var rate = EditorGUILayout.FloatField("Spawn Rate (sec)", subWave.spawnRate);
+            GUILayout.EndHorizontal();
+
             if (delay != subWave.delayType)
             {
                 var s = wave.subWaves[i];
@@ -269,6 +309,14 @@ public class WaveEditorWindow : EditorWindow
             {
                 var s = wave.subWaves[i];
                 s.DelayCount = count;
+                wave.subWaves[i] = s;
+                changed = true;
+            }
+            if (rate != subWave.spawnRate || sizes != subWave.groupSizes)
+            {
+                var s = wave.subWaves[i];
+                s.spawnRate = rate;
+                s.groupSizes = sizes;
                 wave.subWaves[i] = s;
                 changed = true;
             }
