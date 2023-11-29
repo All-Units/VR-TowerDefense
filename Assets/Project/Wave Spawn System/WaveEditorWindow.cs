@@ -169,7 +169,7 @@ public class WaveEditorWindow : EditorWindow
         
         GUILayout.Label("\n\n");
         GUI.contentColor = Color.red;
-        if (wave.subWaves.Count == 0)
+        if (wave.subWaves == null || wave.subWaves.Count == 0)
         {
             GUILayout.Label("No subwaves", _centerLabel);
             GUI.contentColor = Color.white;
@@ -193,6 +193,12 @@ public class WaveEditorWindow : EditorWindow
         int i = 0;
         bool changed = false;
         if (enemies == null) enemies = new List<EnemyQuant> { };
+        if (enemies.Count == 0)
+        {
+            var quant = new EnemyQuant();
+            quant.amountToSpawn = Vector2Int.one;
+            enemies.Add(quant);
+        }
         foreach (var enemy in enemies)
         {
             EditorGUILayout.BeginHorizontal();

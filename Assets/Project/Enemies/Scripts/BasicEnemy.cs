@@ -104,6 +104,8 @@ public class BasicEnemy : Enemy
     #region LifeCycle
     void OnSpawn()
     {
+        if (EnemyManager.Enemies.Contains(this) == false)
+            EnemyManager.Enemies.Add(this);
         EnemyManager.EnemyCount++;
         EnemyManager.GregSpawned();
     }
@@ -112,6 +114,8 @@ public class BasicEnemy : Enemy
     /// </summary>
     void OnDeath()
     {
+        if (EnemyManager.Enemies.Contains(this))
+            EnemyManager.Enemies.Remove(this);
         EnemyManager.EnemyCount--;
         EnemyManager.GregKilled();
     }

@@ -10,7 +10,8 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private LevelSpawn_SO levelData;
 
     public int CurrentEnemiesAlive = 0;
-    void onGregChange() { CurrentEnemiesAlive = EnemyCount; }
+    
+    void onGregChange() { CurrentEnemiesAlive = Enemies.Count; }
     
     #endregion
 
@@ -29,7 +30,7 @@ public class EnemyManager : MonoBehaviour
     /// The number of enemies currently alive
     /// </summary>
     public static int EnemyCount = 0;
-
+    public static HashSet<Enemy> Enemies = new HashSet<Enemy>();
     public static List<SpawnPointData> SpawnPoints = new List<SpawnPointData>();
     #endregion
 
@@ -93,11 +94,12 @@ public class EnemyManager : MonoBehaviour
             //Wait until the current wave is complete before starting another
             while (_currentWaveComplete == false)
                 yield return null;
-
+            print("Waited until last wave done, starting next wave");
             //Next wave
             _wave_i++;
         }
         print("YOU WIN!!!!!!");
+        _win();
     }
 
     HashSet<IEnumerator> _currentWaves = new HashSet<IEnumerator>();
@@ -105,6 +107,7 @@ public class EnemyManager : MonoBehaviour
     /// Set whenever another wave is started, used to get self
     /// </summary>
     IEnumerator _lastSpawnedWave;
+    LinkedList<IEnumerator> _subwaves = new LinkedList<IEnumerator>();
     IEnumerator _WaveCoroutine(WaveStruct wave)
     {
         //Wave started Events
@@ -115,29 +118,46 @@ public class EnemyManager : MonoBehaviour
         print($"Started wave {_wave_i + 1}");
         List<GameObject> toSpawn = _GetSpawnList(wave.enemies);
 
+        //Start sequentially
+        bool first = true;
         //Start all subwaves
         foreach (SubWave subWave in wave.subWaves)
         {
-            StartCoroutine(_SubwaveCoroutine(subWave));
+            var coroutine = _SubwaveCoroutine(subWave);
+            _subwaves.AddLast(coroutine);
+            if (first)
+            {
+                StartCoroutine(coroutine);
+                first = false;
+                _subwaves.RemoveFirst();
+            }
+
+            //StartCoroutine();
         }
 
         //Start main wave
         var sizes = levelData.GetGroupSizes(_wave_i);
         var rate = levelData.GetSpawnRate(_wave_i);
         _spawns = levelData.waveStructs[_wave_i].spawnPoints;
-        var waveRoutine = _spawnWave(toSpawn, sizes, rate);
+        var waveStruct = new _waveStruct();
+        waveStruct.toSpawn = toSpawn;
+        waveStruct.rate = rate;
+        waveStruct.groupSizes = sizes;
+        waveStruct.spawnPoints = wave.spawnPoints;
+        var waveRoutine = _spawnWave(waveStruct);
 
         
         StartCoroutine(waveRoutine);
         _lastSpawnedWave = waveRoutine;
         float startTime = Time.time;
         //Wait until all waves have finished
-        while (_currentWaves.Count > 0)
+        yield return new WaitForSeconds(1f);
+        while (_currentWaves.Count > 0 || Enemies.Count > 0)
         {
             yield return null;
         }
         
-        print($"Finished wave {CurrentWave} in {Time.time - startTime}s");
+        print($"Finished wave {CurrentWave} in {Time.time - startTime}s. Enemies left: {Enemies.Count}");
         _currentWaveComplete = true;
         OnRoundEnded.Invoke();
         yield return null;
@@ -145,18 +165,27 @@ public class EnemyManager : MonoBehaviour
     }
     IEnumerator _SubwaveCoroutine(SubWave subWave)
     {
+        print($"Started subwave");
          var toSpawn = _GetSpawnList(subWave.enemies);
         _spawns = subWave.spawnPoints;
-        var wave = _spawnWave(toSpawn, subWave.groupSizes, subWave.spawnRate);
+        var waveStuct = new _waveStruct();
+        waveStuct.toSpawn = toSpawn;
+        waveStuct.spawnPoints = subWave.spawnPoints;
+        waveStuct.groupSizes = subWave.groupSizes;
+        waveStuct.rate = subWave.spawnRate;
+        //var wave = _spawnWave(toSpawn, subWave.groupSizes, subWave.spawnRate);
+        var wave = _spawnWave(waveStuct);
         _currentWaves.Add(wave);
+
+        //Delay logic
+
         if (subWave.delayType == DelayType.TimeDelay)
             yield return new WaitForSeconds(subWave.DelayCount);
-        else
+        else if (subWave.delayType == DelayType.EnemiesRemaining)
         {
             //We have to get to the threshold first, i.e. enough have spawned
             while (EnemyCount <= subWave.DelayCount)
                 yield return null;
-            print("Reached threshold, there are enough gregs alive");
             //Wait in place until the enemy count drops to the desired
             while (EnemyCount > subWave.DelayCount)
             {
@@ -164,6 +193,18 @@ public class EnemyManager : MonoBehaviour
             }
             print($"Waited until there were {subWave.DelayCount} Gregs alive before spawning wave");
         }
+        //Start timer for next subwave
+        if (_subwaves.Count > 0)
+        {
+            var next = _subwaves.First();
+            StartCoroutine(next);
+            _subwaves.RemoveFirst();
+            print("Started next subwave delay");
+        }
+        
+
+        //Start subwave
+        
        
         _lastSpawnedWave = wave;
         StartCoroutine(wave);
@@ -171,31 +212,40 @@ public class EnemyManager : MonoBehaviour
         _spawns = null;
     }
     List<SpawnPointData> _spawns = new List<SpawnPointData>();
-    IEnumerator _spawnWave(List<GameObject> toSpawn, Vector2Int groupSizes, float rate)
+    struct _waveStruct
+    {
+        
+        public List<GameObject> toSpawn;
+        public List<SpawnPointData> spawnPoints;
+        public Vector2Int groupSizes;
+        public float rate;
+
+    }
+    IEnumerator _spawnWave(_waveStruct wave)
     {
         //Init self logic
         
         var self = _lastSpawnedWave;
         if (_currentWaves.Contains(self) == false)
             _currentWaves.Add(self);
-        int count = toSpawn.Count;
+        int count = wave.toSpawn.Count;
         print($"Pool of {count} in wave {CurrentWave}");
         float time = Time.time;
         //While there are still enemies to spawn, keep spawning
-        while (toSpawn.Count > 0)
+        while (wave.toSpawn.Count > 0)
         {
-            int groupSize = Random.Range(groupSizes.x, groupSizes.y + 1);
-            int startSize = toSpawn.Count;
+            int groupSize = Random.Range(wave.groupSizes.x, wave.groupSizes.y + 1);
+            int startSize = wave.toSpawn.Count;
             for (int i = 0; i < groupSize; i++)
             {
                 //If we've run out of Gregs to spawn, break
-                if (toSpawn.Count == 0)
+                if (wave.toSpawn.Count == 0)
                     break;
-                int index = toSpawn.GetRandomIndex();
-                SpawnEnemy(toSpawn[index], _spawns);
-                toSpawn.RemoveAt(index);
+                int index = wave.toSpawn.GetRandomIndex();
+                SpawnEnemy(wave.toSpawn[index], wave.spawnPoints);
+                wave.toSpawn.RemoveAt(index);
             }
-            yield return new WaitForSeconds(rate);
+            yield return new WaitForSeconds(wave.rate);
         }
 
         //Need to remove ourselves from list of active waves
@@ -241,10 +291,13 @@ public class EnemyManager : MonoBehaviour
     /// <returns></returns>
     SpawnPointData _GetSpawnPoint(List<SpawnPointData> spawnPoints = null)
     {
-       
+
         //If the list is empty, choose randomly from all
         if (spawnPoints == null || spawnPoints.Count == 0)
+        {
             return SpawnPoints.GetRandom();
+        }
+
         //Else choose from the specific list
         var points = spawnPoints;
         return points.GetRandom();
@@ -258,6 +311,10 @@ public class EnemyManager : MonoBehaviour
         Minimap.SpawnHead(e);
         //SpawnHead(e);
         e.nextWaypoint = point.SpawnPoint.nextPoint;
+    }
+    void _win()
+    {
+        GameStateManager.WinGame();
     }
 
     #endregion
@@ -332,11 +389,7 @@ public class EnemyManager : MonoBehaviour
     public static int MaxWaves => instance.waveTotals.Count;
     private int old_wave_i = 0;
 
-    void _win()
-    {
-        GameStateManager.WinGame();
-    }
-
+    
     private bool run = false;
     IEnumerator WaveLoop()
     {

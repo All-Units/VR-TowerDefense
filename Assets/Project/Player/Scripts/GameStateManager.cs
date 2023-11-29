@@ -41,6 +41,6 @@ public class GameStateManager : MonoBehaviour
     {
         panel.SetActive(true);
         yield return new WaitForSeconds(waitBeforeEndingTime);
-        SceneManager.LoadSceneAsync(0);
+        SceneManager.LoadSceneAsync("MainMenu");
     }
 }

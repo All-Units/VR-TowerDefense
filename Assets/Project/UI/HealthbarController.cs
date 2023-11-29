@@ -1,6 +1,9 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
+using Slider = UnityEngine.UI.Slider;
 
 public class HealthbarController : MonoBehaviour
 {
@@ -31,8 +34,10 @@ public class HealthbarController : MonoBehaviour
 
         healthController.OnTakeDamage += UpdateValue;
         slider.maxValue = healthController.MaxHealth;
+        slider.value = healthController.CurrentHealth;
         _isShowing = true;
-        UpdateValue(healthController.CurrentHealth);
+        //UpdateValue(healthController.CurrentHealth);
+        HideInstantly();    
     }
 
     private void UpdateValue(int curr)
@@ -62,6 +67,12 @@ public class HealthbarController : MonoBehaviour
         if(!_isShowing) return;
 
         StartCoroutine(Fade(.5f, false));
+        _isShowing = false;
+    }
+    void HideInstantly()
+    {
+        if (!_isShowing) return;
+        StartCoroutine(Fade(0f, false));
         _isShowing = false;
     }
 
