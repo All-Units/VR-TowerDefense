@@ -218,6 +218,8 @@ MonoBehaviour:
   playerControlPosition: {fileID: 6633924381212461763}
   playerReleasePosition: {fileID: 3592083959461306238}
   deathParticles: {fileID: 1678810948469593924}
+  constructionParticles: {fileID: 0}
+  isInitialized: 0
   dto: {fileID: 11400000, guid: eb8fb503c91b15341a720d79d03f2d98, type: 2}
   removeFromDict: 1
   stats: {fileID: 11400000, guid: ff9caa3b829ce1b48a79b9db5366bc02, type: 2}
@@ -228,7 +230,7 @@ MonoBehaviour:
   selectedVfx: {fileID: 5582938296733635272}
   turretModel: {fileID: 7390162474951515300}
   playerPlatform: {fileID: 3959487174918953517}
-  playerItemType: 0
+  playerItemSO: {fileID: 11400000, guid: 7587d174894318f47a31ac7920d26fc8, type: 2}
 --- !u!114 &5764481117411547575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,7 +251,6 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
-  deathDelay: 1.4
   isDead: 0
 --- !u!65 &66825144505051336
 BoxCollider:

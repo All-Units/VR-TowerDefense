@@ -8,6 +8,7 @@ public class GenericProjectileSpawner : MonoBehaviour
     public void Fire()
     {
         var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
+        go.Fire();
         /*Debug.Log(go.name, go);
         Debug.Break();*/
     }

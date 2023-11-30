@@ -1,28 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using UnityEngine;
 
-public class MultishotPullInteraction : MonoBehaviour
+public class ArrowStormArrowController : MonoBehaviour
 {
-    [SerializeField] private List<Transform> spawnPoints = new();
-    [SerializeField] private Arrow prefab;
+    [SerializeField] private ArrowstormPlacableController prefab;
+    [SerializeField] private ParticleSystem chargedParticles;
     [SerializeField] private float spawnTime = .33f;
     private Coroutine _spawnCoroutine;
-
-
+    private bool isCharged;
+    
+    
     public void OnDrawnBack()
     {
         _spawnCoroutine = StartCoroutine(SpawnArrow());
     }
-
+    
     public void OnReleased()
     {
         if (_spawnCoroutine == null) return;
-        
+            
         StopCoroutine(_spawnCoroutine);
         _spawnCoroutine = null;
     }
-
+    
     private IEnumerator SpawnArrow()
     {
         var t = spawnTime;
@@ -32,11 +32,18 @@ public class MultishotPullInteraction : MonoBehaviour
             t -= Time.deltaTime;
         }
 
-        foreach (var spawnPoint in spawnPoints)
-        {
-            Instantiate(prefab, spawnPoint);
-        }
-        
+        isCharged = true;
+        chargedParticles.Play();
+            
         _spawnCoroutine = null;
+    }
+
+    public void OnHit()
+    {
+        if(isCharged == false) return;
+        
+        var storm = Instantiate(prefab, transform.position, Quaternion.identity);
+        
+        storm.transform.SetParent(null);
     }
 }

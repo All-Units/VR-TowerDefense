@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,7 +17,7 @@ namespace Project.Towers.Scripts
         public static bool CouldAffordCurrentTower => CurrencyManager.CouldAfford(Instance.currentTower);
         public static TowerSpawnManager Instance;
         private Tower_SO currentTower;
-        public static Tower_SO GetCurrentTower => Instance.currentTower;
+        public static Tower_SO GetCurrentTower => Instance ? Instance.currentTower : null;
 
         public float yOffset = -0.1f;
         private void Awake()
@@ -140,9 +141,16 @@ namespace Project.Towers.Scripts
         public static UnityEvent OnTowerSet = new UnityEvent();
         public static void SetTower(Tower_SO towerDTO)
         {
-            Instance.HideGhost();
-            Instance.currentTower = towerDTO;
-            OnTowerSet.Invoke();
+            if (Instance)
+            {
+                Instance.HideGhost();
+                Instance.currentTower = towerDTO;
+                OnTowerSet.Invoke();
+            }
+            else
+            {
+                Debug.LogWarning("No Tower Manager Present!!!");
+            }
         }
 
         public static Tower UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
@@ -172,6 +180,11 @@ namespace Project.Towers.Scripts
             if(Instance == null) return;
             
             Instance.RemoveTower(tower);
+        }
+
+        public static IEnumerable<Tower> GetAllSpawnedTowers()
+        {
+            return Instance ? Instance.GetComponentsInChildren<Tower>() : Array.Empty<Tower>();
         }
     }
 }

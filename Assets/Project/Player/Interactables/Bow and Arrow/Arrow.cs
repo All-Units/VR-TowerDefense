@@ -9,6 +9,7 @@ public class Arrow : MonoBehaviour
 
     public UnityEvent OnDrawnBack;
     public UnityEvent OnRelease;
+    public UnityEvent OnHit;
 
     private Rigidbody _rigidbody;
     private bool _inAir = false;
@@ -104,6 +105,7 @@ public class Arrow : MonoBehaviour
         particles.transform.SetParent(null);
         particles.Stop();
 
+        OnHit?.Invoke();
         Destroy(gameObject);
     }
 

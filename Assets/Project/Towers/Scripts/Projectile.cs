@@ -10,20 +10,23 @@ public class Projectile : MonoBehaviour
     protected bool isDestroying = false;
 
     public StatusModifier statusModifier;
+    
     [SerializeField] protected AudioClipController _hitEnemy;
     [SerializeField] protected AudioClipController _hitGround;
-    
-    private void Awake()
-    {
-        rb = GetComponent<Rigidbody>();
-        rb.AddForce(transform.forward * speed, ForceMode.VelocityChange);
-        
-        Destroy(gameObject, 10f);
-    }
 
-    private void OnTriggerEnter(Collider other)
+    [SerializeField] private GameObject flyingVFX;
+
+    public void Fire()
     {
-        //Debug.Log($"Trigger entered {other.gameObject.name}", other.gameObject);
+        transform.SetParent(null);
+        rb = GetComponent<Rigidbody>();
+        rb.useGravity = true;
+        rb.isKinematic = false;
+        rb.AddForce(transform.forward * speed, ForceMode.VelocityChange);
+
+        if(flyingVFX)
+            flyingVFX.SetActive(true);
+        Destroy(gameObject, 10f);
     }
 
     private void OnCollisionEnter(Collision other)
@@ -32,13 +35,13 @@ public class Projectile : MonoBehaviour
 
         if (other.collider.isTrigger) return;
         
-        OnCollision(other);
+        OnCollision(other.collider);
     }
 
-    protected virtual void OnCollision(Collision other)
+    protected virtual void OnCollision(Collider other)
     {
 
-        var colliderGameObject = other.collider.gameObject;
+        var colliderGameObject = other.gameObject;
         Vector3 pos = transform.position;
         if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
@@ -55,11 +58,11 @@ public class Projectile : MonoBehaviour
         }
         else
         {
-            if(_hitGround)
+            if (_hitGround)
                 _hitGround.PlayClipAt(pos);
         }
 
         isDestroying = true;
-        Destroy(gameObject);
+            Destroy(gameObject);
     }
 }

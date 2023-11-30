@@ -9,11 +9,10 @@ public class AOEProjectile : Projectile
     [SerializeField] private AudioClipController _audioClipController;
     
     
-    protected override void OnCollision(Collision other)
+    protected override void OnCollision(Collider other)
     {
-        //print($"Hit {other.gameObject.name} with cannon");
-        var hits = Physics.OverlapSphere(other.collider.transform.position, splashRadius, LayerMask.GetMask("Enemy"));
         Vector3 pos = transform.position;
+        var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
         {
             var colliderGameObject = hit.gameObject;
