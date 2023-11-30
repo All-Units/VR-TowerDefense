@@ -40,11 +40,11 @@ public class GattlingController : MonoBehaviour
             {
                 fireRate += spinSpeed;
 
-                if (fireRate >= 180)
+                if (fireRate >= 90)
                 {
                     var p = Instantiate(projectile, launchPoint.position, launchPoint.rotation);
                     p.Fire();
-                    fireRate -= 180;
+                    fireRate -= 90;
                 }
             }
             

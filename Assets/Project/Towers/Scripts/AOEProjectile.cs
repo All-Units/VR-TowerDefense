@@ -8,7 +8,6 @@ public class AOEProjectile : Projectile
     [SerializeField] private AnimationCurve damageDropOff;
     [SerializeField] private AudioClipController _audioClipController;
     
-    
     protected override void OnCollision(Collider other)
     {
         Vector3 pos = transform.position;
@@ -32,6 +31,8 @@ public class AOEProjectile : Projectile
         if (_audioClipController)
             _audioClipController.PlayClip();
         AudioPool.PlaySoundAt(_audioClipController.GetClip(), pos);
+        
+        OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
     }

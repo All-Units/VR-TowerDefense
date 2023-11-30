@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Projectile : MonoBehaviour
 {
@@ -16,6 +17,9 @@ public class Projectile : MonoBehaviour
 
     [SerializeField] private GameObject flyingVFX;
 
+    public UnityEvent OnFire;
+    public UnityEvent OnHit;
+
     public void Fire()
     {
         transform.SetParent(null);
@@ -26,7 +30,9 @@ public class Projectile : MonoBehaviour
 
         if(flyingVFX)
             flyingVFX.SetActive(true);
-        Destroy(gameObject, 10f);
+        // Destroy(gameObject, 10f);
+        
+        OnFire?.Invoke();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -62,7 +68,8 @@ public class Projectile : MonoBehaviour
                 _hitGround.PlayClipAt(pos);
         }
 
+        OnHit?.Invoke();
         isDestroying = true;
-            Destroy(gameObject);
+        Destroy(gameObject);
     }
 }
