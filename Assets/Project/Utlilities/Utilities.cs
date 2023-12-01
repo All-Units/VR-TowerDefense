@@ -30,6 +30,18 @@ public static class Utilities
         var theta = increment*degree*Mathf.Deg2Rad;
         return new Vector2(Mathf.Cos(theta), Mathf.Sin(theta));
     }
+    /// <summary>
+    /// Returns the distance between two vectors, ignoring their Y values
+    /// </summary>
+    /// <param name="a">The first vector</param>
+    /// <param name="b">The second vector</param>
+    /// <returns></returns>
+    public static float FlatDistance(this Vector3 a, Vector3 b)
+    {
+        a.y = 0f;
+        b.y = 0f;
+        return Vector3.Distance(a, b);
+    }
     
     public static bool RandomNavSphere(Vector3 origin, float dist, out Vector3 result, int layerMask = NavMesh.AllAreas) 
     {

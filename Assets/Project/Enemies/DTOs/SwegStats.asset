@@ -16,7 +16,9 @@ MonoBehaviour:
   KillValue: 4
   MinRange: 1
   MaxRange: 2
-  MoveSpeed: 3
   Damage: 1
+  MoveSpeed: 3
   rotateDamping: 1
-  targetTolerance: 1
+  targetTolerance: 1.4
+  StuckTimeTolerance: 1
+  StuckAngleOffset: 15

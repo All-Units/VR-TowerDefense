@@ -15,37 +15,30 @@ public class SpawnPoint : PathPoint
 
     protected override void OnDrawGizmos()
     {
+        base.OnDrawGizmos();
         var position = transform.position;
-
+        this.position = position;
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(position, .5f);
+        Gizmos.DrawSphere(position, .6f);
         if (data)
         {
-            /*
-            try
-            {
-                var result = int.Parse(new string(data.name.Reverse()
-                .TakeWhile(char.IsDigit)
-                .Reverse()
-                .ToArray()));
-                Handles.Label(transform.position + Vector3.up * 2, result.ToString());
-            }
-            catch { }*/
+            
             
         }
-
         var next = nextPoint;
         while (next)
         {
             Gizmos.color = Color.magenta;
-            Gizmos.DrawLine(position, next.transform.position);
+            //Gizmos.DrawLine(position, next.transform.position);
 
             position = next.transform.position;
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(position, .5f);
 
             next = next.nextPoint;
+            break;
         }
+        gameObject.name = $"Spawn Point {transform.parent.name}";
     }
 
     private const string DataAssetPath = "Assets/Project/Scriptables/SpawnPoint";

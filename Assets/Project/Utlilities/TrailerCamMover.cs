@@ -12,8 +12,13 @@ public class TrailerCamMover : MonoBehaviour
     void Start()
     {
         if (playerPref == null)
-            playerPref = FindObjectOfType<InventoryManager>().gameObject;
-        if (playerPref.activeInHierarchy)
+        {
+            var p = FindObjectOfType<InventoryManager>();
+            if (p != null)
+                playerPref = p.gameObject;
+        }
+
+        if (playerPref && playerPref.activeInHierarchy)
         {
             gameObject.SetActive(false);
         }

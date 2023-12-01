@@ -35,6 +35,8 @@ public class TeleportFloorPlacer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (player == null)
+            return;
         StartCoroutine(_RefreshTeleportHeightsLoop());
     }
 

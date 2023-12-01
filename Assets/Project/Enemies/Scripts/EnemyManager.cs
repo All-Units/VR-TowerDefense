@@ -306,7 +306,9 @@ public class EnemyManager : MonoBehaviour
     {
         SpawnPointData point = _GetSpawnPoint(spawns);
         GameObject enemy = Instantiate(enemyPrefab, point.enemyParent);
-        enemy.transform.position = point.PositionOffset(4);
+        float r = enemy.GetComponent<CapsuleCollider>().radius;
+        Vector3 pos = point.SpawnPoint.GetPoint(r);
+        enemy.transform.position = pos;
         var e = enemy.GetComponent<BasicEnemy>();
         Minimap.SpawnHead(e);
         //SpawnHead(e);
