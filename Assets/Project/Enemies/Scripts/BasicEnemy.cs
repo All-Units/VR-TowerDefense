@@ -111,7 +111,7 @@ public class BasicEnemy : Enemy
         if (_targets.Count > 0)
         {
             _AttackState();
-            currentTarget
+            //currentTarget
         }
 
        
