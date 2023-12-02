@@ -15,6 +15,7 @@ public class MagicStaffController : MonoBehaviour
 
     [SerializeField] private GameObject spellVFX;
     [SerializeField] private AudioClipController chargingSFX;
+    private ParticleSystem _particleSystem;
 
     public void BeginCharging()
     {
@@ -75,5 +76,6 @@ public class MagicStaffController : MonoBehaviour
         var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
         go.damage = Mathf.FloorToInt(go.damage * chargeTime);
         go.Fire();
+        
     }
 }
