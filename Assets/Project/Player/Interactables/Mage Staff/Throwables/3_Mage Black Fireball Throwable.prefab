@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5628972293646612881}
   - component: {fileID: 1806234328444671963}
   - component: {fileID: 3390742561270071}
+  - component: {fileID: -7051063008692687875}
   - component: {fileID: 2872828575579571665}
   - component: {fileID: 1394862805575704577}
   m_Layer: 8
@@ -63,7 +64,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  splashRadius: 3
+  splashRadius: 5
   hitParticles: {fileID: 2504214343621411470, guid: e8c58ca6dfd2c344da758d5fd792bfce,
     type: 3}
   damageDropOff:
@@ -79,8 +80,8 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.43176556
     - serializedVersion: 3
-      time: 0.2822144
-      value: 0.9894096
+      time: 0.17388107
+      value: 0.9831596
       inSlope: -0.3137561
       outSlope: -0.3137561
       tangentMode: 0
@@ -186,6 +187,19 @@ MonoBehaviour:
   playOnAwake: 1
   playOnEnable: 0
   loop: 0
+--- !u!114 &-7051063008692687875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8805872072579189874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82d64418889da8438d612f029496e4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factor: 5
 --- !u!82 &2872828575579571665
 AudioSource:
   m_ObjectHideFlags: 0

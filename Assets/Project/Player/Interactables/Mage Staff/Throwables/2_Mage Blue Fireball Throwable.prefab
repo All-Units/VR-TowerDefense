@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 5628972293646612881}
   - component: {fileID: 1806234328444671963}
   - component: {fileID: 3390742561270071}
+  - component: {fileID: 7184036440039440407}
   - component: {fileID: 2872828575579571665}
   - component: {fileID: 1394862805575704577}
   m_Layer: 8
@@ -87,7 +88,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  splashRadius: 3
+  splashRadius: 4
   hitParticles: {fileID: 2504214343621411470, guid: f4fa987c7f84a1d4ab77a9e56ef5d9d8,
     type: 3}
   damageDropOff:
@@ -210,6 +211,19 @@ MonoBehaviour:
   playOnAwake: 1
   playOnEnable: 0
   loop: 0
+--- !u!114 &7184036440039440407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8805872072579189874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e82d64418889da8438d612f029496e4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  factor: 2
 --- !u!82 &2872828575579571665
 AudioSource:
   m_ObjectHideFlags: 0
