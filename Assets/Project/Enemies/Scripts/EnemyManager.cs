@@ -10,14 +10,14 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private LevelSpawn_SO levelData;
 
     public int CurrentEnemiesAlive = 0;
-    
+
     void onGregChange() { CurrentEnemiesAlive = Enemies.Count; }
-    
+
     #endregion
 
-    
 
-    
+
+
 
 
     #region PublicStats
@@ -42,9 +42,9 @@ public class EnemyManager : MonoBehaviour
     public static UnityEvent OnRoundEnded = new UnityEvent();
 
     public static UnityEvent OnGregSpawned = new UnityEvent();
-    public static void GregSpawned() {  OnGregSpawned.Invoke(); }
+    public static void GregSpawned() { OnGregSpawned.Invoke(); }
     public static UnityEvent OnGregKilled = new UnityEvent();
-    public static void GregKilled() {  OnGregKilled.Invoke(); }
+    public static void GregKilled() { OnGregKilled.Invoke(); }
 
 
     private void Awake()
@@ -61,17 +61,17 @@ public class EnemyManager : MonoBehaviour
         OnGregKilled.AddListener(onGregChange);
         //parseCSV();
         //_spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
-        
-        
+
+
         //StartCoroutine(WaveLoop());
-        
+
     }
 
     #endregion
 
 
 
-   
+
 
     #region LevelCoroutines
     //Internal variables
@@ -146,7 +146,7 @@ public class EnemyManager : MonoBehaviour
         waveStruct.spawnPoints = wave.spawnPoints;
         var waveRoutine = _spawnWave(waveStruct);
 
-        
+
         StartCoroutine(waveRoutine);
         _lastSpawnedWave = waveRoutine;
         float startTime = Time.time;
@@ -156,7 +156,7 @@ public class EnemyManager : MonoBehaviour
         {
             yield return null;
         }
-        
+
         print($"Finished wave {CurrentWave} in {Time.time - startTime}s. Enemies left: {Enemies.Count}");
         _currentWaveComplete = true;
         OnRoundEnded.Invoke();
@@ -166,7 +166,7 @@ public class EnemyManager : MonoBehaviour
     IEnumerator _SubwaveCoroutine(SubWave subWave)
     {
         print($"Started subwave");
-         var toSpawn = _GetSpawnList(subWave.enemies);
+        var toSpawn = _GetSpawnList(subWave.enemies);
         _spawns = subWave.spawnPoints;
         var waveStuct = new _waveStruct();
         waveStuct.toSpawn = toSpawn;
@@ -201,11 +201,11 @@ public class EnemyManager : MonoBehaviour
             _subwaves.RemoveFirst();
             print("Started next subwave delay");
         }
-        
+
 
         //Start subwave
-        
-       
+
+
         _lastSpawnedWave = wave;
         StartCoroutine(wave);
         yield return null;
@@ -214,7 +214,7 @@ public class EnemyManager : MonoBehaviour
     List<SpawnPointData> _spawns = new List<SpawnPointData>();
     struct _waveStruct
     {
-        
+
         public List<GameObject> toSpawn;
         public List<SpawnPointData> spawnPoints;
         public Vector2Int groupSizes;
@@ -224,7 +224,7 @@ public class EnemyManager : MonoBehaviour
     IEnumerator _spawnWave(_waveStruct wave)
     {
         //Init self logic
-        
+
         var self = _lastSpawnedWave;
         if (_currentWaves.Contains(self) == false)
             _currentWaves.Add(self);
@@ -306,7 +306,9 @@ public class EnemyManager : MonoBehaviour
     {
         SpawnPointData point = _GetSpawnPoint(spawns);
         GameObject enemy = Instantiate(enemyPrefab, point.enemyParent);
-        enemy.transform.position = point.PositionOffset(4);
+        float r = enemy.GetComponent<CapsuleCollider>().radius;
+        Vector3 pos = point.SpawnPoint.GetPoint(r);
+        enemy.transform.position = pos;
         var e = enemy.GetComponent<BasicEnemy>();
         Minimap.SpawnHead(e);
         //SpawnHead(e);
@@ -389,7 +391,7 @@ public class EnemyManager : MonoBehaviour
     public static int MaxWaves => instance.waveTotals.Count;
     private int old_wave_i = 0;
 
-    
+
     private bool run = false;
     IEnumerator WaveLoop()
     {

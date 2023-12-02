@@ -144,15 +144,30 @@ PrefabInstance:
       propertyPath: targetTolerance
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1756766881243722513, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.574
+      objectReference: {fileID: 0}
     - target: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Name
       value: GregWithSword
       objectReference: {fileID: 0}
+    - target: {fileID: 2515703335802629952, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.11
+      objectReference: {fileID: 0}
     - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.98
+      value: -0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297007579981143160, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6042510218290352424, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -239,10 +254,25 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6748755946066835735, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.3099997
+      objectReference: {fileID: 0}
     - target: {fileID: 6812066425755246883, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: maxHealth
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868652869252803117, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868652869252803117, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7445657514973281875, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -294,7 +324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HasHit: 0
-  _ac: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!4 &2056195496491495767 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3474282102911204098, guid: 13567c604ffbd9a40b98745c330550f9,

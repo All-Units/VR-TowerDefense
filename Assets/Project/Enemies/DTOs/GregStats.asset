@@ -14,9 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   KillValue: 0
+  Health: 200
   MinRange: 1
   MaxRange: 5
+  Damage: 20
+  attackThreshold: 1.2
   MoveSpeed: 2
-  Damage: 1
   rotateDamping: 1
   targetTolerance: 1
+  StuckTimeTolerance: 1
+  StuckAngleOffset: 15

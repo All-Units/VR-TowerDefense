@@ -37,6 +37,10 @@ public class HealthController : MonoBehaviour
             onDeath?.Invoke();
         }
     }
-
+    public void SetMaxHealth(int health)
+    {
+        _currentHealth = health;
+        maxHealth = health;
+    }
     public bool isDead = false;
 }
