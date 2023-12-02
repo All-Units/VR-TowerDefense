@@ -16,11 +16,11 @@ public class BasicEnemy : Enemy
     public GameObject headPrefab;
 
     
-    public string equipment = "";
+    private string equipment = "";
 
     #region InternalVariables
     public Vector3 pos;
-
+    [HideInInspector]
     public PathPoint nextWaypoint;
     public IEnemyTargetable currentTarget;
     private bool hasTarget = false;
@@ -68,7 +68,7 @@ public class BasicEnemy : Enemy
         _sphereCollider.radius = targetingRange;
         //Add OnDeath logic to healthcontroller
         _hc.onDeath.AddListener(OnDeath);
-        
+        _hc.SetMaxHealth(enemyDTO.Health);
         //Face which direction our first
         _FaceWaypoint();
 
@@ -76,6 +76,7 @@ public class BasicEnemy : Enemy
         //Perform OnSpawn logic
         OnSpawn();
     }
+    public float ManualSpeed = 1f;
 
     // Update is called once per frame
     void Update()
@@ -126,12 +127,15 @@ public class BasicEnemy : Enemy
     #endregion
 
     #region StateMachine
-    public List<GameObject> TargetList = new List<GameObject>();
+    
+    private List<GameObject> TargetList = new List<GameObject>();
+    Vector3 lastPos;
     /// <summary>
     /// Called every frame, this handles the logic tree for enemies
     /// </summary>
     private void _EnemyStateMachine()
     {
+        Attacking = false;
         //If we are dead, perform no further logic
         if (_hc.isDead) return;
         pos = transform.position;
@@ -139,6 +143,7 @@ public class BasicEnemy : Enemy
         if (_targets.Count > 0)
         {
             _AttackState();
+            return;
         }
 
        
@@ -154,6 +159,8 @@ public class BasicEnemy : Enemy
         _MoveState();
         //_moveLoop();
     }
+
+    
 
     /* Legacy state machine
      
@@ -175,6 +182,7 @@ public class BasicEnemy : Enemy
     /// The current list of towers in range
     /// </summary>
     private HashSet<IEnemyTargetable> _targets = new HashSet<IEnemyTargetable>();
+    IEnumerator _targetSelector;
     /// <summary>
     /// Attacks the closest tower in range
     /// </summary>
@@ -183,7 +191,10 @@ public class BasicEnemy : Enemy
         //If we don't have a target, choose a new one
         if (currentTarget == null && _targets.Count > 0)
         {
-            SelectNewTarget();
+            if (_targetSelector != null) return;
+            _targetSelector = SelectNewTarget();
+            StartCoroutine(_targetSelector);
+            if (currentTarget == null) return;
         }
         float d = Utilities.FlatDistance(pos, _target);
         d -= hitboxRadius;
@@ -194,14 +205,24 @@ public class BasicEnemy : Enemy
         else
         {
             listeningForFootstep = true;
-            _anim.SetTrigger(_getAttackAnimString());
+            timeSinceLastAttack = Time.time - lastAttackTime;
+
+            lastAttackTime = Time.time;
+            
+            Attacking = true;
+            _rb.constraints = RigidbodyConstraints.FreezeAll;
+            UpdateSpeed(0f);
+            
         }
             
         //TO DO  do this!
     }
 
-    bool listeningForFootstep = false;
-    public Vector3 Direction;
+    [Header("Debug variables")]
+    public bool Attacking = false;
+    public bool listeningForFootstep = false;
+    public float lastAttackTime = 0f;
+    public float timeSinceLastAttack;
     private void _MoveState()
     {
         if (nextWaypoint == null) return;
@@ -227,16 +248,17 @@ public class BasicEnemy : Enemy
                 _target = nextWaypoint.GetPoint(hitboxRadius);
             }
         }
-        
         _Move();
         
     }
     
     void _Move()
     {
+        UpdateSpeed(1f);
         //Do not move if we are listening for a footstep
         if (listeningForFootstep)
             return;
+        _rb.constraints = RigidbodyConstraints.FreezeRotation;
         Vector3 dir = _target - pos;
         dir.y = 0;
         dir = dir.normalized;
@@ -249,8 +271,8 @@ public class BasicEnemy : Enemy
 
         velocity.x = dir.x; velocity.z = dir.z;
         _rb.velocity = velocity;
-        Direction = velocity;
         _rotateTowards(_target);
+        
     }
     
     #endregion
@@ -313,16 +335,51 @@ public class BasicEnemy : Enemy
     #endregion
     
     #region HelperFunctions
+    void UpdateSpeed(float speed)
+    {
+        speed = Mathf.Clamp01(speed);   
+        _anim.SetFloat("Speed", speed);
+    }
 
-    void SelectNewTarget()
+    IEnumerator SelectNewTarget()
     {
         if (_targets.Count == 0)
-            return;
-        //Selects the closest tower in range
-        var closest = _targets.OrderBy(t => Vector3.Distance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
-        _target = closest.GetHealthController().transform.position;
-        currentTarget = closest;
+            yield break;
+        
+        while (true)
+        {
+            _CullTargets();
+            try
+            {
+                //Selects the closest tower in range
+                var closest = _targets.OrderBy(t => Vector3.Distance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
+                _target = closest.GetHealthController().transform.position;
+                currentTarget = closest;
+                break;
+            }
+            catch (MissingReferenceException e) {  }
+            catch (NullReferenceException e) {  }
+            yield return null;
+
+        }
+        _targetSelector = null;
         currentTarget.GetHealthController().onDeath.AddListener(OnTargetDeath);
+    }
+    void _CullTargets()
+    {
+        var copy = _targets.ToArray();
+        var valid = new List<IEnemyTargetable>();
+        for (int i = 0; i < copy.Count(); i++)
+        {
+            var t = copy[i];
+            try { var h = t.GetHealthController(); var x = h.transform.position; }
+            catch (MissingReferenceException e) { continue; }
+            catch (NullReferenceException e) { continue; }
+            valid.Add(t);
+        }    
+        
+
+        _targets = valid.ToHashSet();
     }
 
     public float distanceToTarget;
@@ -360,7 +417,6 @@ public class BasicEnemy : Enemy
         var rot = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotateDamping * Time.deltaTime);
     }
-    [SerializeField]
     bool attacking = false;
 
     /// <summary>
@@ -373,10 +429,9 @@ public class BasicEnemy : Enemy
         {
             currentTarget = null;
             attacking = false;
-            _anim.SetTrigger("run");
+            //_anim.SetTrigger("run");
             return;
         }
-        print($"Hit!");
         hitSFXController.PlayClip();
         currentTarget.GetHealthController().TakeDamage(damage);
     }
@@ -384,6 +439,11 @@ public class BasicEnemy : Enemy
     public void Footstep()
     {
         //AudioClip clip = footstepSFXController.GetClip();
+        if (listeningForFootstep && Time.time - lastAttackTime < 0.5f)
+        {
+            return;
+        }
+        //if (listeningForFootstep) print("Was waiting for footstep, and we got one");
         if (listeningForFootstep)
             listeningForFootstep = false;
         footstepSFXController.PlayClip();
@@ -405,7 +465,7 @@ public class BasicEnemy : Enemy
             s += "sword";
         return s;
     }
-
+    
     private void OnTargetDeath()
     {
         if (currentTarget != null)
@@ -418,9 +478,20 @@ public class BasicEnemy : Enemy
         //If that was the only tower, need to pick a new point
         if (_targets.Count == 0)
         {
-            _target = nextWaypoint.GetPoint(hitboxRadius);
+            //_target = nextWaypoint.GetPoint(hitboxRadius);
+            float _targetDistance = nextWaypoint.DistanceToGoalFrom(_target);
+            float d = nextWaypoint.DistanceToGoalFrom(pos);
+            do
+            {
+                NewWaypoint(nextWaypoint.nextPoint, nextWaypoint.nextPoint.GetPoint(hitboxRadius));
+                _targetDistance = nextWaypoint.DistanceToGoalFrom(_target);
+                d = nextWaypoint.DistanceToGoalFrom(pos);
+                if (_targetDistance > d)
+                    print($"Advanced to next target to avoid running backwards after kill");
+            } while (_targetDistance > d);
+
         }
-        print($"Target died, setting current target to null");
+        //print($"Target died, setting current target to null");
     }
     void NewWaypoint(PathPoint point, Vector3 target)
     {
@@ -497,9 +568,9 @@ public class BasicEnemy : Enemy
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.green;
-        Gizmos.DrawLine(pos + Vector3.up, _target + Vector3.up);
-        Gizmos.DrawSphere(_target, 1f);
+        //Gizmos.color = Color.green;
+        //Gizmos.DrawLine(pos + Vector3.up, _target + Vector3.up);
+        //Gizmos.DrawSphere(_target, 1f);
         //Gizmos.DrawWireSphere(transform.position, targetingRange);
 
         //Gizmos.color = targetingSystem.HasTarget() ? Color.red : Color.blue;

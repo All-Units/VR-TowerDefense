@@ -19,6 +19,11 @@ public class HealthController : MonoBehaviour
     {
         _currentHealth = maxHealth;
     }
+    public void SetMaxHealth(int health)
+    {
+        _currentHealth = health;
+        maxHealth = health;
+    }
 
     /// <summary>
     /// Generic take damage. Will Invoke OnTakeDamage(currentHealth) event and if health is >= 0 will invoke OnDeath.

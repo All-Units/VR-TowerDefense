@@ -17,6 +17,11 @@ public class PathPoint : MonoBehaviour
     
     public Vector3 position;
     public float DistanceToGoal = float.PositiveInfinity;
+    public float DistanceToGoalFrom(Vector3 point)
+    {
+        float d = Vector3.Distance(position, point);
+        return d + DistanceToGoal;
+    }
     
     [HideInInspector] public PathPoint goal;
     public int Variance = 2;
@@ -29,7 +34,7 @@ public class PathPoint : MonoBehaviour
             goal = this;
         while (goal && goal.nextPoint != null)
             goal = goal.nextPoint;
-        DistanceToGoal = Vector3.Distance(position, goal.transform.position);
+        DistanceToGoal = _CalculateDistance();
     }
 
     public PathPoint Next => nextPoint;
@@ -42,6 +47,16 @@ public class PathPoint : MonoBehaviour
         lastPoint = point;
         //print($"I am {gameObject.name}, position {position}, I returned the point {point}. Variance was {variance}. Distance was {Vector3.Distance(position, lastPoint)}");
         return point;
+    }
+    public float _CalculateDistance()
+    {
+        var d = 0f;
+        if (nextPoint == null)
+            return d;
+        d += Vector3.Distance(position, nextPoint.position);
+        d += nextPoint._CalculateDistance();
+
+        return d;
     }
 
 
@@ -87,9 +102,7 @@ public class PathPoint : MonoBehaviour
             position = next.transform.position;
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(position, .5f);
-            Gizmos.color = Color.cyan;
-            if (lastPoint != Vector3.zero)
-                Gizmos.DrawSphere(lastPoint, 2f);
+           
 
             //next = next.nextPoint;
             if (next == start)
@@ -118,6 +131,7 @@ public class PathPoint : MonoBehaviour
 
         }
         position = pos;
+        DistanceToGoal = _CalculateDistance();
     }
 
     [MenuItem("PathPoint/CreateNewPathPointFromSelected ^g"), MenuItem("GameObject/Pathing/New Connected Path Point")]

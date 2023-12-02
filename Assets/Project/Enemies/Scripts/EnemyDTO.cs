@@ -8,6 +8,7 @@ public class EnemyDTO : ScriptableObject
     public EnemyType type;
     [Header("Gameplay values")]
     public int KillValue = 1;
+    public int Health = 20;
 
 
     [Header("Attack variables")]
