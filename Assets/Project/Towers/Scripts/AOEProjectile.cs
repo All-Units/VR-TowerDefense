@@ -21,6 +21,8 @@ public class AOEProjectile : Projectile
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
                 healthController.TakeDamage(Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius))));
+                
+                ApplyEffects(healthController);
             }
         }
         if(hitParticles)
@@ -28,6 +30,8 @@ public class AOEProjectile : Projectile
             var particles = Instantiate(hitParticles, pos, Quaternion.identity);
             Destroy(particles, 2f);
         }
+        
+        // Todo Refactor out to event based
         if (_audioClipController)
             _audioClipController.PlayClip();
         AudioPool.PlaySoundAt(_audioClipController.GetClip(), pos);

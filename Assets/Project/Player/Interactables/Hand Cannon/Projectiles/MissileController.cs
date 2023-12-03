@@ -90,6 +90,9 @@ public class MissileController : MonoBehaviour
 
         while (true)
         {
+            if (target == null)
+                target = FindObjectsOfType<Enemy>().ToList().GetRandom().transform;
+            
             transform.LookAt(target);
 
             rb.AddForce(transform.forward * (moveSpeed * Time.deltaTime));
