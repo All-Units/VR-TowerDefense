@@ -1,11 +1,14 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Projectile : MonoBehaviour
 {
     public int damage;
     private Rigidbody rb;
     public float speed = 20f;
+    public float RagdollForce = 20f;
 
     protected bool isDestroying = false;
 
@@ -55,6 +58,19 @@ public class Projectile : MonoBehaviour
             }
             if (_hitEnemy)
                 _hitEnemy.PlayClipAt(pos);
+            if (healthController.isDead && other.TryGetComponent<BasicEnemy>(out BasicEnemy e))
+            {
+                Vector3 dir = (e.CenterOfGravity.position + Vector3.up) - pos;
+                a = pos;
+                dir = transform.forward * 3 + Vector3.up;
+
+                dir *= RagdollForce;
+                b = pos + dir;
+                print($"Applied {dir.magnitude} force to RB");
+                StartCoroutine(_AddForce(e.RB, dir));
+                e.RB.AddForce(dir, ForceMode.Impulse);
+                _rb = e.RB;
+            }
         }
         else
         {
@@ -63,6 +79,30 @@ public class Projectile : MonoBehaviour
         }
 
         isDestroying = true;
-            Destroy(gameObject);
+        Destroy(gameObject, 3f);
+    }
+    IEnumerator _AddForce(Rigidbody rb, Vector3 dir)
+    {
+        var t = Time.time;
+        while (Time.time - t <= 0.5f)
+        {
+            yield return null;
+            rb.AddForce(dir);
+        }
+        //yield return null;
+    }
+    Rigidbody _rb;
+    protected Vector3 a = Vector3.zero;
+    protected Vector3 b = Vector3.zero;
+    private void OnDrawGizmos()
+    {
+        if (a == Vector3.zero || b == Vector3.zero) return;
+        Gizmos.color = Color.blue;
+        Gizmos.DrawLine(a, b);
+        Gizmos.DrawSphere(b, .5f);
+        if (_rb != null) { 
+            print($"rb velocity: {_rb.velocity}");
+            
+        }
     }
 }

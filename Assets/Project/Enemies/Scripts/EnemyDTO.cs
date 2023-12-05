@@ -9,6 +9,8 @@ public class EnemyDTO : ScriptableObject
     [Header("Gameplay values")]
     public int KillValue = 1;
     public int Health = 20;
+    [Tooltip("The amount of time a Greg spends as a ragdoll before despawning")]
+    public int RagdollTime = 5;
 
 
     [Header("Attack variables")]
@@ -27,6 +29,7 @@ public class EnemyDTO : ScriptableObject
 
     [Header("Movement values")]
     public float MoveSpeed = 5f;
+    public float MoveSpeedVariance = 0.4f;
     public float rotateDamping = 1;
     public float targetTolerance = 1;
 

@@ -32,7 +32,8 @@ public class CameraBasedTowerPlacer : MonoBehaviour
         else
         {
             selectedTile = null;
-            TowerSpawnManager.Instance.HideGhost();
+            if (TowerSpawnManager.Instance != null)
+                TowerSpawnManager.Instance.HideGhost();
         }
     }
 

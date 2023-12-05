@@ -51,11 +51,20 @@ public class RadialTargetingSystem : MonoBehaviour
     
     public Enemy GetOldestTarget()
     {
-        _targetsInRange.RemoveAll(e => !e);
+        _CullTargets();
+        
         return _targetsInRange.OrderBy(t => t.spawnTime).FirstOrDefault();
     }
-
-    public bool HasTarget() => _targetsInRange.Any(t => t != null);
+    void _CullTargets()
+    {
+        _targetsInRange.RemoveAll(e => !e);
+        _targetsInRange.RemoveAll(e => e.healthController.isDead);
+    }
+    public bool HasTarget()
+    {
+        _CullTargets();
+        return _targetsInRange.Any(t => t != null);
+    } 
 
     public void SetRadius(float newRadius)
     {

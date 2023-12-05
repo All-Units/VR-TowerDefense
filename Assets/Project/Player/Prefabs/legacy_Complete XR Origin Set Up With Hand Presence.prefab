@@ -3866,11 +3866,11 @@ MonoBehaviour:
   rightHand: {fileID: 4981971054208844023}
   playerLeftHand: {fileID: 0}
   playerRightHand: {fileID: 0}
-  bow: {fileID: 0}
-  magicStaff: {fileID: 0}
-  handCannon: {fileID: 0}
   leftHandParent: {fileID: 0}
   rightHandParent: {fileID: 0}
+  playerItemsTransformRoot: {fileID: 0}
+  quiver: {fileID: 0}
+  cannonAmmoPouch: {fileID: 0}
 --- !u!1 &5943359521879442321
 GameObject:
   m_ObjectHideFlags: 0
@@ -6038,6 +6038,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   StartingMoney: 10
+  roundBonus: 50
   currencyDisplay: {fileID: 0}
 --- !u!1 &8233537019590660548
 GameObject:

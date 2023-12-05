@@ -21,7 +21,19 @@ public class AOEProjectile : Projectile
             {
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
-                healthController.TakeDamage(Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius))));
+                var dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
+                healthController.TakeDamage(dmg);
+                //We killed Greg! Apply force between us and their center of gravity
+                if (healthController.isDead && colliderGameObject.TryGetComponent(out BasicEnemy enemy))
+                {
+                    Vector3 dir = (enemy.CenterOfGravity.position + Vector3.up) - pos;
+                    a = pos;
+                    dir = dir.normalized;
+
+                    dir *= RagdollForce;
+                    b = pos + dir;
+                    enemy.RB.AddForce(dir, ForceMode.Impulse);
+                }
             }
         }
         if(hitParticles)
@@ -33,6 +45,7 @@ public class AOEProjectile : Projectile
             _audioClipController.PlayClip();
         AudioPool.PlaySoundAt(_audioClipController.GetClip(), pos);
         isDestroying = true;
-        Destroy(gameObject);
+        Destroy(gameObject, 3f);
     }
+    
 }

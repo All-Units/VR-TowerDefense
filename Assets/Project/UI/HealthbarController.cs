@@ -25,6 +25,7 @@ public class HealthbarController : MonoBehaviour
                 Debug.LogError($"Unable to find health component on {transform.parent.gameObject.name}!", gameObject);
                 return;
             }
+            healthController.onDeath.AddListener(HideInstantly);
         }
 
         var tower = GetComponentInParent<Tower>();
@@ -59,7 +60,7 @@ public class HealthbarController : MonoBehaviour
     private void Show()
     {
         if(_isShowing) return;
-        
+        if (gameObject.activeInHierarchy == false) return;
         StartCoroutine(Fade(.5f, true));
         if (_currentFader != null)
             StopCoroutine(_currentFader);
@@ -101,6 +102,7 @@ public class HealthbarController : MonoBehaviour
             foreach (var image in images)
             {
                 var imageColor = image.color;
+                if (healthController.isDead) { fadeIn = false; t = 0f; }
                 imageColor.a = fadeIn ? Mathf.Lerp(0, 1, t / time) : Mathf.Lerp(1, 0, t / time);
                 image.color = imageColor;
             }

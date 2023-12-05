@@ -30,6 +30,7 @@ public class BasicEnemy : Enemy
     private float moveSpeed = 5f;
     private float targetTolerance = 1f;
     private float rotateDamping = 1f;
+    Vector3 _initialHipsPos;
     float hitboxRadius => _capsuleCollider.radius;
     int damage;
 
@@ -46,11 +47,15 @@ public class BasicEnemy : Enemy
     private HealthController _hc;
     [SerializeField]
     private Rigidbody _rb;
+    public Rigidbody RB => _rb;
     [SerializeField] private SphereCollider _sphereCollider;
     [Tooltip("The physics hitbox")]
     [SerializeField] private CapsuleCollider _capsuleCollider;
     [SerializeField] private AudioClipController hitSFXController;
     [SerializeField] private AudioClipController footstepSFXController;
+    [SerializeField] private Rigidbody _hipsRB;
+    [SerializeField] private LayerMask _ignoreGregLayer;
+    public Transform CenterOfGravity;
 
     #endregion
 
@@ -61,6 +66,7 @@ public class BasicEnemy : Enemy
         //Fill values from DTO
         killValue = enemyDTO.KillValue;
         moveSpeed = enemyDTO.MoveSpeed;
+        moveSpeed += Random.Range(-enemyDTO.MoveSpeedVariance, enemyDTO.MoveSpeedVariance);
         damage = enemyDTO.Damage;
         targetTolerance = enemyDTO.targetTolerance;
         rotateDamping = enemyDTO.rotateDamping;
@@ -76,6 +82,8 @@ public class BasicEnemy : Enemy
         //We have a rigidbody, a health controller, and animator
         //Perform OnSpawn logic
         OnSpawn();
+
+        _initialHipsPos = _hipsRB.transform.localPosition;
     }
     public float ManualSpeed = 1f;
 
@@ -136,19 +144,19 @@ public class BasicEnemy : Enemy
     /// </summary>
     private void _EnemyStateMachine()
     {
+        pos = transform.position;
         Attacking = false;
+        float distance = Utilities.FlatDistance(pos, _target);
+        distanceToTarget = distance;
         //If we are dead, perform no further logic
         if (_hc.isDead) return;
-        pos = transform.position;
+        
         //There is at least one target in range
         if (_targets.Count > 0)
         {
             _AttackState();
             return;
         }
-
-
-
         //If we're at the end, do not move
         if (reachedEnd)
         {
@@ -160,24 +168,6 @@ public class BasicEnemy : Enemy
         _MoveState();
         //_moveLoop();
     }
-
-
-
-    /* Legacy state machine
-     
-     //If we have a valid target, attack them and do not move
-        if (attacking)
-        {
-            movedLastFrame = false;
-            //footstepSFXController.Stop();
-            _MoveToAttack();
-            return;
-        }
-
-
-
-
-     */
 
     /// <summary>
     /// The current list of towers in range
@@ -224,6 +214,7 @@ public class BasicEnemy : Enemy
     public bool listeningForFootstep = false;
     public float lastAttackTime = 0f;
     public float timeSinceLastAttack;
+    public Vector3 MoveDir;
     private void _MoveState()
     {
         if (nextWaypoint == null) return;
@@ -309,10 +300,40 @@ public class BasicEnemy : Enemy
     /// </summary>
     void OnDeath()
     {
+        //Turn off anim
+        _anim.enabled = false;
         if (EnemyManager.Enemies.Contains(this))
             EnemyManager.Enemies.Remove(this);
         EnemyManager.EnemyCount--;
         EnemyManager.GregKilled();
+        StartCoroutine(_FreezeLocalHipsPos());
+    }
+    /// <summary>
+    /// After death, keeps the ragdoll centered on this GO
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator _FreezeLocalHipsPos()
+    {
+        var parent = _hipsRB.transform.parent;
+        parent.parent = null;
+        Destroy(parent.gameObject, enemyDTO.RagdollTime );
+        foreach (var collider in GetComponents<Collider>())
+        {
+            collider.excludeLayers = _ignoreGregLayer;
+        }
+        //yield return null;
+        //_hipsRB.constraints = RigidbodyConstraints.FreezePosition;
+        while (true)
+        {
+            Vector3 localPos = _hipsRB.transform.position;
+            //LocalHipPos = localPos;
+            Vector3 dir = pos - localPos;
+            if (dir.magnitude > 1f)
+                _hipsRB.AddForce(dir * 1000f);
+            else _hipsRB.velocity = Vector3.zero;
+            yield return null;
+
+        }
     }
 
     private bool addedToMoney = false;
@@ -328,7 +349,7 @@ public class BasicEnemy : Enemy
 
         }
         reachedEnd = true;
-        Destroy(gameObject);
+        Destroy(gameObject, enemyDTO.RagdollTime);
 
 
     }
@@ -387,6 +408,7 @@ public class BasicEnemy : Enemy
     public Vector3 _target;
     void _FaceWaypoint()
     {
+        if (nextWaypoint == null) return;
         _target = nextWaypoint.GetPoint(hitboxRadius);
         Vector3 dir = nextWaypoint.nextPoint.transform.position - nextWaypoint.transform.position;
         dir.y = 0f;
@@ -567,16 +589,10 @@ public class BasicEnemy : Enemy
     #endregion
     #region Debugging
 #if UNITY_EDITOR
-    private void OnDrawGizmos()
+    
+    private void OnDrawGizmosSelected()
     {
-        //Gizmos.color = Color.green;
-        //Gizmos.DrawLine(pos + Vector3.up, _target + Vector3.up);
-        //Gizmos.DrawSphere(_target, 1f);
-        //Gizmos.DrawWireSphere(transform.position, targetingRange);
-
-        //Gizmos.color = targetingSystem.HasTarget() ? Color.red : Color.blue;
-
-        //Gizmos.DrawLine(firePoint.position, firePoint.forward + firePoint.position);
+        
     }
 #endif
     #endregion

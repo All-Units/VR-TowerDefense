@@ -18,6 +18,7 @@ public class Arrow : MonoBehaviour
     public StatusModifier statusModifier;
     [SerializeField] private AudioClipController woodHit;
     [SerializeField] private AudioClipController enemyHit;
+    public int RagdollForce = 20;
     
 
     private void Awake()
@@ -94,7 +95,16 @@ public class Arrow : MonoBehaviour
                 if(statusEffectController)
                     statusModifier.ApplyStatus(statusEffectController);
             }
+
             enemyHit.PlayClipAt(pos);
+            if (healthController.isDead && other.gameObject.TryGetComponent<BasicEnemy>(out BasicEnemy e))
+            {
+                Vector3 dir = (e.CenterOfGravity.position + Vector3.up) - pos;
+                dir = dir.normalized;
+
+                dir *= RagdollForce;
+                e.RB.AddForce(dir, ForceMode.Impulse);
+            }
         }
         else
         {

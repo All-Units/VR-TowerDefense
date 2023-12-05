@@ -13,13 +13,15 @@ MonoBehaviour:
   m_Name: GregStats
   m_EditorClassIdentifier: 
   type: 0
-  KillValue: 0
-  Health: 200
-  MinRange: 1
-  MaxRange: 5
+  KillValue: 4
+  Health: 2
+  RagdollTime: 8
+  MinRange: 5
+  MaxRange: 10
   Damage: 20
   attackThreshold: 1.2
-  MoveSpeed: 2
+  MoveSpeed: 4
+  MoveSpeedVariance: 0.4
   rotateDamping: 1
   targetTolerance: 1
   StuckTimeTolerance: 1
