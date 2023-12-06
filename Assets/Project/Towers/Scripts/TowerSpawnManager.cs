@@ -68,6 +68,7 @@ namespace Project.Towers.Scripts
         /// </summary>
         public static void PlayDeathSounds(Vector3 pos)
         {
+            if (Instance == null) return;
             Instance.deathSounds.PlayClipAt(pos);
         }
 

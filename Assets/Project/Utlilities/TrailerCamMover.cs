@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class TrailerCamMover : MonoBehaviour
 {
@@ -17,6 +18,7 @@ public class TrailerCamMover : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        
     }
 
     // Update is called once per frame

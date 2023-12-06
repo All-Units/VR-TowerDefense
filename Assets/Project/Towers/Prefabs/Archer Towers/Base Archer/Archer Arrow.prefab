@@ -247,12 +247,12 @@ SphereCollider:
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 8
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2013298679
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -271,10 +271,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
-  speed: 30
+  speed: 50
+  RagdollForce: 300
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 4359639538064573319}
   _hitGround: {fileID: 5308158447713014252}
+  flyingVFX: {fileID: 0}
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -18,7 +18,11 @@ public class Projectile : MonoBehaviour
     [SerializeField] protected AudioClipController _hitGround;
 
     [SerializeField] private GameObject flyingVFX;
-
+    Vector3 startPos;
+    private void Awake()
+    {
+        startPos = transform.position;
+    }
     public void Fire()
     {
         transform.SetParent(null);
@@ -44,9 +48,11 @@ public class Projectile : MonoBehaviour
     protected virtual void OnCollision(Collider other)
     {
 
-        var colliderGameObject = other.gameObject;
         Vector3 pos = transform.position;
-        if (colliderGameObject.TryGetComponent(out HealthController healthController))
+        BasicEnemy e = other.GetComponentInParent<BasicEnemy>();
+        var healthController = other.GetComponentInParent<HealthController>();
+        //If we just hit an enemy
+        if (healthController != null && e != null)
         {
             healthController.TakeDamage(damage);
             
@@ -58,16 +64,16 @@ public class Projectile : MonoBehaviour
             }
             if (_hitEnemy)
                 _hitEnemy.PlayClipAt(pos);
-            if (healthController.isDead && other.TryGetComponent<BasicEnemy>(out BasicEnemy e))
+            if (healthController.isDead)
             {
-                Vector3 dir = (e.CenterOfGravity.position + Vector3.up) - pos;
+                Vector3 dir = pos - startPos;
+                dir.y = 0f; dir = dir.normalized;
+                dir.y = 1f;
                 a = pos;
-                dir = transform.forward * 3 + Vector3.up;
 
                 dir *= RagdollForce;
-                b = pos + dir;
-                print($"Applied {dir.magnitude} force to RB");
-                StartCoroutine(_AddForce(e.RB, dir));
+                dir = Vector3.ClampMagnitude(dir, 400f);
+                b = pos + dir.normalized * 4;
                 e.RB.AddForce(dir, ForceMode.Impulse);
                 _rb = e.RB;
             }
@@ -79,19 +85,10 @@ public class Projectile : MonoBehaviour
         }
 
         isDestroying = true;
-        Destroy(gameObject, 3f);
+        Destroy(gameObject);
     }
-    IEnumerator _AddForce(Rigidbody rb, Vector3 dir)
-    {
-        var t = Time.time;
-        while (Time.time - t <= 0.5f)
-        {
-            yield return null;
-            rb.AddForce(dir);
-        }
-        //yield return null;
-    }
-    Rigidbody _rb;
+    
+    protected Rigidbody _rb;
     protected Vector3 a = Vector3.zero;
     protected Vector3 b = Vector3.zero;
     private void OnDrawGizmos()
@@ -101,7 +98,7 @@ public class Projectile : MonoBehaviour
         Gizmos.DrawLine(a, b);
         Gizmos.DrawSphere(b, .5f);
         if (_rb != null) { 
-            print($"rb velocity: {_rb.velocity}");
+            //print($"rb velocity: {_rb.velocity}");
             
         }
     }

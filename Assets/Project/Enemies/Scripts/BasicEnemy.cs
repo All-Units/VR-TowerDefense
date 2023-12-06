@@ -19,6 +19,7 @@ public class BasicEnemy : Enemy
     private string equipment = "";
 
     #region InternalVariables
+    [HideInInspector] EnemyType enemyType;
     public Vector3 pos;
     [HideInInspector]
     public PathPoint nextWaypoint;
@@ -315,8 +316,8 @@ public class BasicEnemy : Enemy
     IEnumerator _FreezeLocalHipsPos()
     {
         var parent = _hipsRB.transform.parent;
-        parent.parent = null;
-        Destroy(parent.gameObject, enemyDTO.RagdollTime );
+        //parent.parent = null;
+        //Destroy(parent.gameObject, enemyDTO.RagdollTime);
         foreach (var collider in GetComponents<Collider>())
         {
             collider.excludeLayers = _ignoreGregLayer;
@@ -328,9 +329,10 @@ public class BasicEnemy : Enemy
             Vector3 localPos = _hipsRB.transform.position;
             //LocalHipPos = localPos;
             Vector3 dir = pos - localPos;
-            if (dir.magnitude > 1f)
-                _hipsRB.AddForce(dir * 1000f);
-            else _hipsRB.velocity = Vector3.zero;
+            _hipsRB.velocity = RB.velocity;
+            //if (dir.magnitude > 0.1f)
+                //_hipsRB.AddForce(dir.normalized * 500f);
+            //else _hipsRB.velocity = Vector3.zero;
             yield return null;
 
         }

@@ -67,8 +67,10 @@ public class ArrowTower : Tower
     private void AimAtTarget()
     {
         var oldestTarget = targetingSystem.GetOldestTarget();
+        var target = oldestTarget.transform.position;
+        target += Vector3.up;
         if(oldestTarget)
-            pivotPoint.LookAt(oldestTarget.transform);
+            pivotPoint.LookAt(target);
     }
 
     private void Fire()

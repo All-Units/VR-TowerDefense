@@ -58,7 +58,11 @@ public class RadialTargetingSystem : MonoBehaviour
     void _CullTargets()
     {
         _targetsInRange.RemoveAll(e => !e);
-        _targetsInRange.RemoveAll(e => e.healthController.isDead);
+
+        //If there is any living target, cull all the dead
+        //Otherwise, have at 'em
+        if (_targetsInRange.Exists(e => e.healthController.isDead == false))
+            _targetsInRange.RemoveAll(e => e.healthController.isDead);
     }
     public bool HasTarget()
     {

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class AOEProjectile : Projectile
 {
@@ -26,13 +27,18 @@ public class AOEProjectile : Projectile
                 //We killed Greg! Apply force between us and their center of gravity
                 if (healthController.isDead && colliderGameObject.TryGetComponent(out BasicEnemy enemy))
                 {
-                    Vector3 dir = (enemy.CenterOfGravity.position + Vector3.up) - pos;
+                    Vector3 dir = enemy.pos - pos;
+                    dir.y = 0f; dir = dir.normalized;
+                    dir.y = 1f;
                     a = pos;
                     dir = dir.normalized;
 
                     dir *= RagdollForce;
+                    dir = Vector3.ClampMagnitude(dir, 200f);
                     b = pos + dir;
                     enemy.RB.AddForce(dir, ForceMode.Impulse);
+                    
+                    _rb = enemy.RB;
                 }
             }
         }
@@ -47,5 +53,6 @@ public class AOEProjectile : Projectile
         isDestroying = true;
         Destroy(gameObject, 3f);
     }
+   
     
 }

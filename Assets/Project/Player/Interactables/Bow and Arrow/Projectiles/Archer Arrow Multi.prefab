@@ -166,10 +166,14 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
   particles: {fileID: 7375297172013159069}
   statusModifier: {fileID: 0}
   woodHit: {fileID: 4003565438109291779}
   enemyHit: {fileID: 3202021467002785933}
+  RagdollForce: 350
 --- !u!114 &5361667336999487932
 MonoBehaviour:
   m_ObjectHideFlags: 0
