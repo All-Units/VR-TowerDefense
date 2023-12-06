@@ -14,11 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   KillValue: 4
-  Health: 1
+  Health: 10
   RagdollTime: 8
+  RagdollForce: 100
+  MaxRagdollForce: 75
   MinRange: 5
   MaxRange: 10
-  Damage: 20
+  Damage: 4
   attackThreshold: 1.2
   MoveSpeed: 4
   MoveSpeedVariance: 0.4

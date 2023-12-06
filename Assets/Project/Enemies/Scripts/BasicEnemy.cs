@@ -6,6 +6,7 @@ using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Serialization;
+using static UnityEngine.EventSystems.EventTrigger;
 using Random = UnityEngine.Random;
 
 public class BasicEnemy : Enemy
@@ -271,13 +272,20 @@ public class BasicEnemy : Enemy
     #endregion
 
     #region LifeCycle
+    List<Collider> _ragdollColliders = new List<Collider>();
     void OnSpawn()
     {
         if (EnemyManager.Enemies.Contains(this) == false)
             EnemyManager.Enemies.Add(this);
         EnemyManager.EnemyCount++;
         EnemyManager.GregSpawned();
-
+        foreach (Transform t in transform)
+        {
+            if (t == transform) continue;
+            _ragdollColliders.AddRange(t.GetComponentsInChildren<Collider>().ToList());
+        }
+        foreach (var col in _ragdollColliders)
+            col.enabled = false;
     }
 
 
@@ -308,6 +316,8 @@ public class BasicEnemy : Enemy
         EnemyManager.EnemyCount--;
         EnemyManager.GregKilled();
         StartCoroutine(_FreezeLocalHipsPos());
+        foreach (var col in _ragdollColliders)
+            col.enabled = true;
     }
     /// <summary>
     /// After death, keeps the ragdoll centered on this GO
@@ -316,23 +326,20 @@ public class BasicEnemy : Enemy
     IEnumerator _FreezeLocalHipsPos()
     {
         var parent = _hipsRB.transform.parent;
-        //parent.parent = null;
-        //Destroy(parent.gameObject, enemyDTO.RagdollTime);
+        
         foreach (var collider in GetComponents<Collider>())
         {
             collider.excludeLayers = _ignoreGregLayer;
         }
-        //yield return null;
-        //_hipsRB.constraints = RigidbodyConstraints.FreezePosition;
+       
         while (true)
         {
             Vector3 localPos = _hipsRB.transform.position;
-            //LocalHipPos = localPos;
             Vector3 dir = pos - localPos;
+            RB.velocity = Vector3.ClampMagnitude(RB.velocity, enemyDTO.MaxRagdollForce);
             _hipsRB.velocity = RB.velocity;
-            //if (dir.magnitude > 0.1f)
-                //_hipsRB.AddForce(dir.normalized * 500f);
-            //else _hipsRB.velocity = Vector3.zero;
+            _hipsRB.transform.position = pos;
+            
             yield return null;
 
         }
@@ -359,6 +366,33 @@ public class BasicEnemy : Enemy
     #endregion
 
     #region HelperFunctions
+    /// <summary>
+    /// Checks if a GO has an Enemy, and flings it if so
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="target"></param>
+    public static void FlingRagdoll(GameObject go, Vector3 target)
+    {
+        var e = go.GetComponentInParent<BasicEnemy>();
+        if (e)
+            e.FlingRagdoll(target);
+    }
+    /// <summary>
+    /// Applies force to the ragdoll towards the given world pos
+    /// </summary>
+    /// <param name="target"></param>
+    public void FlingRagdoll(Vector3 target)
+    {
+        if (healthController.isDead == false) return;
+        Vector3 dir = pos - target;
+        dir.y = 0f; dir = dir.normalized;
+        dir.y = 1f;
+        dir = dir.normalized;
+
+        dir *= enemyDTO.RagdollForce;
+        dir = Vector3.ClampMagnitude(dir, enemyDTO.MaxRagdollForce);
+        RB.AddForce(dir, ForceMode.Impulse);
+    }
     void UpdateSpeed(float speed)
     {
         speed = Mathf.Clamp01(speed);

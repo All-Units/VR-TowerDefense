@@ -101,16 +101,8 @@ public class Arrow : MonoBehaviour
             }
 
             enemyHit.PlayClipAt(pos);
-            if (healthController.isDead)
-            {
-                Vector3 dir = pos - startPos;
-                dir.y = 0f; dir = dir.normalized;
-                dir.y = 1f;
-
-                dir *= RagdollForce;
-                dir = Vector3.ClampMagnitude(dir, 400f);
-                e.RB.AddForce(dir, ForceMode.Impulse);
-            }
+            e.FlingRagdoll(startPos);
+            
         }
         else
         {

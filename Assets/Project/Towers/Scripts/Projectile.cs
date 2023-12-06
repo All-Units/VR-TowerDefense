@@ -64,19 +64,8 @@ public class Projectile : MonoBehaviour
             }
             if (_hitEnemy)
                 _hitEnemy.PlayClipAt(pos);
-            if (healthController.isDead)
-            {
-                Vector3 dir = pos - startPos;
-                dir.y = 0f; dir = dir.normalized;
-                dir.y = 1f;
-                a = pos;
-
-                dir *= RagdollForce;
-                dir = Vector3.ClampMagnitude(dir, 400f);
-                b = pos + dir.normalized * 4;
-                e.RB.AddForce(dir, ForceMode.Impulse);
-                _rb = e.RB;
-            }
+            e.FlingRagdoll(startPos);
+            
         }
         else
         {

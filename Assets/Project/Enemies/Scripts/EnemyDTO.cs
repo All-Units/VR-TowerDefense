@@ -11,6 +11,8 @@ public class EnemyDTO : ScriptableObject
     public int Health = 20;
     [Tooltip("The amount of time a Greg spends as a ragdoll before despawning")]
     public int RagdollTime = 5;
+    public float RagdollForce = 300f;
+    public float MaxRagdollForce = 300f;
 
 
     [Header("Attack variables")]
