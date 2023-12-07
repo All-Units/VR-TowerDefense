@@ -1,8 +1,8 @@
-# VR-Game-Jam-Template
- Starter Project using Unity XR Toolkit created for VR Jam 2023
+# Save the Castle!
+a VR tower defense by Endless Path Studios
 
-# Learn More About This Project
-[<img src="https://i.ytimg.com/vi/apnfGuMI0Dc/maxresdefault.jpg" width="50%">](https://youtu.be/apnfGuMI0Dc)
+# Trailer:
+[<img src="https://drive.google.com/uc?id=1jHdlsEvx8o4Za1TSmPwLd1QT4qi5aC1e" width="50%">](https://youtu.be/VWQDnfKPmiM)
 
 https://youtu.be/apnfGuMI0Dc
 
