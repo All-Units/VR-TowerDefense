@@ -14,7 +14,7 @@ using UnityEngine;
         public new string name;
         public string description;
         public TowerStats stats;
-        public PlayerItem_SO playerItem_SO;
+        public TowerTakeoverObject playerItem_SO;
 
         [SerializeField] private List<TowerUpgrade> upgrades = new();
 
