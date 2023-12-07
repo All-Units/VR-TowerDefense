@@ -94,7 +94,16 @@ public class MissileController : MonoBehaviour
         while (true)
         {
             if (target == null)
-                target = FindObjectsOfType<Enemy>().ToList().GetRandom().transform;
+            {
+                var e = FindObjectsOfType<Enemy>().ToList();
+                if (e.Count > 0)
+                    target = e.GetRandom().transform;
+                else { 
+                    target = null; 
+                    yield return null;
+                    continue; }
+            }
+                
             
             transform.LookAt(target);
 
