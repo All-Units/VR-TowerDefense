@@ -83,6 +83,9 @@ public class MissileController : MonoBehaviour
 
     IEnumerator PursueTarget(Transform target)
     {
+        if(rb == null)
+            rb = GetComponent<Rigidbody>();
+
         rb.useGravity = false;
         rb.isKinematic = false;
         

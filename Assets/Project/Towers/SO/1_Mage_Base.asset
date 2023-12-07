@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Name: 1_Mage_Base
+  m_EditorClassIdentifier: 
+  ghostObject: {fileID: 6139709382012762173, guid: 6a2fb45205d1efb41b077425cc5bfed7,
+    type: 3}
+  towerPrefab: {fileID: 7502261813038807644, guid: d339032daa9dbbd43b1b9fb9a8c337e6,
+    type: 3}
+  iconPrefab: {fileID: 2507574902089980903, guid: b9ef5d7630abb714a80f9a6fb830a944,
+    type: 3}
+  minimapPrefab: {fileID: 2722459153121728768, guid: eb95e9e319cfe7e499fc2e719b9dfd17,
+    type: 3}
+  cost: 35
+  name: Mage
+  description: Uses arcane arts to incinerate foes
+  stats: {fileID: 11400000, guid: edfa8bfa8db27f94a848d1a70d127842, type: 2}
+  playerItem_SO: {fileID: 11400000, guid: 1e5750d5d8a7067408fcbf9b7f4c860f, type: 2}
+  upgrades: []

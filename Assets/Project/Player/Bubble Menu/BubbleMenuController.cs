@@ -49,7 +49,7 @@ public class BubbleMenuController : MonoBehaviour
         }
 
         ListUpgrades();
-        sellOption.Initialize(()=> SellTower());
+        sellOption.Initialize(SellTower, $"Sell: ${_currentTower.dto.cost/2}");
     }
 
     private void ListUpgrades()
@@ -57,7 +57,7 @@ public class BubbleMenuController : MonoBehaviour
         var towerUpgrades = _currentTower.dto.GetUpgrades();
         if(towerUpgrades.InRange(0))
         {
-            upgradeOption1.Initialize(() => Upgrade(towerUpgrades[0]));
+            upgradeOption1.Initialize(() => Upgrade(towerUpgrades[0]), towerUpgrades[0].upgrade.name);
         }       
         else
         {
@@ -66,7 +66,7 @@ public class BubbleMenuController : MonoBehaviour
         
         if(towerUpgrades.InRange(1))
         {
-            upgradeOption2.Initialize(() => Upgrade(towerUpgrades[1]));
+            upgradeOption2.Initialize(() => Upgrade(towerUpgrades[1]), towerUpgrades[1].upgrade.name);
         }   
         else
         {

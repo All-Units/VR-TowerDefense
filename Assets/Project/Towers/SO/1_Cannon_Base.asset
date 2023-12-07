@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Name: 1_Cannon_Base
+  m_EditorClassIdentifier: 
+  ghostObject: {fileID: 6139709382012762173, guid: 947513e8c2f44e34ebdde3ba795bb369,
+    type: 3}
+  towerPrefab: {fileID: 7502261813038807644, guid: 8deceadac54d9d04995b0763440f9c93,
+    type: 3}
+  iconPrefab: {fileID: 2507574902089980903, guid: e830a507d6f8bb84eba216cc6a18386b,
+    type: 3}
+  minimapPrefab: {fileID: 2899096153814601545, guid: a297d228d5652e140b720ee6ca08c7b1,
+    type: 3}
+  cost: 25
+  name: Cannon
+  description: Blasts entire groups of enemies!
+  stats: {fileID: 11400000, guid: 76506c6d619c58440a80cbdeaeb869f8, type: 2}
+  playerItem_SO: {fileID: 11400000, guid: f9a55e550234eb249b99e31339890d23, type: 2}
+  upgrades:
+  - upgrade: {fileID: 11400000, guid: 93e91a3ceb66f4f4cab4bc6b0d67d7b6, type: 2}
+    cost: 0
+  - upgrade: {fileID: 11400000, guid: c073acd6fe5739c488d08cabcb80da76, type: 2}
+    cost: 0

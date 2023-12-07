@@ -32,9 +32,9 @@ public class AOEProjectile : Projectile
         }
         
         // Todo Refactor out to event based
-        if (_audioClipController)
+        /*if (_audioClipController)
             _audioClipController.PlayClip();
-        AudioPool.PlaySoundAt(_audioClipController.GetClip(), pos);
+        AudioPool.PlaySoundAt(_audioClipController.GetClip(), pos);*/
         
         OnHit?.Invoke();
         isDestroying = true;

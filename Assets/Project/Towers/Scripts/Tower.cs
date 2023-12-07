@@ -12,8 +12,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     protected bool isPlayerControlled = false;
     [SerializeField] private Transform playerControlPosition;
     [SerializeField] private Transform playerReleasePosition;
+    
+    [Header("Tower VFX")] 
     [SerializeField] private GameObject deathParticles;
     [SerializeField] private ParticleSystem constructionParticles;
+    [SerializeField] protected GameObject selectedVfx;
 
     [SerializeField] protected bool isInitialized = false;
     protected float buildTime = 2.5f;
@@ -37,11 +40,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         healthController.onDeath.AddListener(Die);
         if (deathParticles)
             deathParticles.SetActive(false);
-    }
-
-    private void OnEnable()
-    {
-        //Minimap.SpawnTower(transform.position, dto);
+        selectedVfx.SetActive(false);
     }
 
     [HideInInspector] public bool removeFromDict = true;
@@ -93,11 +92,13 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     {
         OnTowerSelected?.Invoke(this);
         OnSelected?.Invoke();
+        selectedVfx.SetActive(true);
     }    
     public virtual void Deselected()
     {
         OnTowerDeselected?.Invoke(this);
         OnDeselected?.Invoke();
+        selectedVfx.SetActive(false);
     }
     
     public virtual void PlayerTakeControl()
@@ -113,11 +114,6 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public Transform GetPlayerControlPoint()
     {
         return playerControlPosition;
-    }
-
-    public Transform GetPlayerEjectPoint()
-    {
-        return playerReleasePosition;
     }
 
     #endregion
