@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
   m_Name: 2_Mage_Flamethrower
   m_EditorClassIdentifier: 
-  ghostObject: {fileID: 6139709382012762173, guid: 6a2fb45205d1efb41b077425cc5bfed7,
+  ghostObject: {fileID: 6139709382012762173, guid: 1e66486a3f8e94548bfbf7c02c2d1197,
     type: 3}
-  towerPrefab: {fileID: 7502261813038807644, guid: d339032daa9dbbd43b1b9fb9a8c337e6,
+  towerPrefab: {fileID: 7502261813038807644, guid: af7e20def86a2934cb30022987db488f,
     type: 3}
   iconPrefab: {fileID: 2507574902089980903, guid: b9ef5d7630abb714a80f9a6fb830a944,
     type: 3}
   minimapPrefab: {fileID: 2722459153121728768, guid: eb95e9e319cfe7e499fc2e719b9dfd17,
     type: 3}
   cost: 35
-  name: Mage
+  name: Flamethrower
   description: Uses arcane arts to incinerate foes
   stats: {fileID: 11400000, guid: edfa8bfa8db27f94a848d1a70d127842, type: 2}
   playerItem_SO: {fileID: 11400000, guid: 1e5750d5d8a7067408fcbf9b7f4c860f, type: 2}
-  upgrades: []
+  upgrades:
+  - upgrade: {fileID: 11400000, guid: e49a256b2ae6ecb46ae4e81c0dc80e9e, type: 2}
+    cost: 0
+  - upgrade: {fileID: 11400000, guid: 360fc7907952aa147803ca476dbd61fd, type: 2}
+    cost: 0

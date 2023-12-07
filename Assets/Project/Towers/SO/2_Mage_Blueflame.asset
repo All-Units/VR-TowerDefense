@@ -12,17 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
   m_Name: 2_Mage_Blueflame
   m_EditorClassIdentifier: 
-  ghostObject: {fileID: 6139709382012762173, guid: 6a2fb45205d1efb41b077425cc5bfed7,
+  ghostObject: {fileID: 6139709382012762173, guid: f404282ff3c61e54e9bd6343a3da2f3a,
     type: 3}
-  towerPrefab: {fileID: 7502261813038807644, guid: d339032daa9dbbd43b1b9fb9a8c337e6,
+  towerPrefab: {fileID: 7502261813038807644, guid: ce41dc46628d16142b6c1b15335361d2,
     type: 3}
   iconPrefab: {fileID: 2507574902089980903, guid: b9ef5d7630abb714a80f9a6fb830a944,
     type: 3}
   minimapPrefab: {fileID: 2722459153121728768, guid: eb95e9e319cfe7e499fc2e719b9dfd17,
     type: 3}
   cost: 35
-  name: Mage
+  name: Blueflame
   description: Uses arcane arts to incinerate foes
   stats: {fileID: 11400000, guid: edfa8bfa8db27f94a848d1a70d127842, type: 2}
   playerItem_SO: {fileID: 11400000, guid: 141e15234838008448fbcc2e35007bf2, type: 2}
-  upgrades: []
+  upgrades:
+  - upgrade: {fileID: 11400000, guid: 2a647f905f90fda4c9b126c39db2ba4b, type: 2}
+    cost: 0
+  - upgrade: {fileID: 11400000, guid: 360fc7907952aa147803ca476dbd61fd, type: 2}
+    cost: 0
