@@ -11,16 +11,21 @@ public class RoundGUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI roundStartText;
     [SerializeField] private TextMeshProUGUI roundEndText;
     [SerializeField] private float displayTime = 3f;
+    [SerializeField] private float distanceFromPlayer = 3f;
+    [SerializeField] private float height = 2f;
     private string _roundStartString;
+    private string _roundEndString;
     // Start is called before the first frame update
     void Start()
     {
         roundStartPanel.SetActive(false);
         roundEndPanel.SetActive(false);
         _roundStartString = roundStartText.text;
+        _roundEndString = roundEndText.text;
         roundEndText.text = roundEndText.text.Replace("[TIME]", EnemyManager.WaveDelay.ToString());
         EnemyManager.OnRoundStarted.AddListener(_OnRoundStart);
         EnemyManager.OnRoundEnded.AddListener(_OnRoundEnd);
+        
     }
 
     // Update is called once per frame
@@ -31,7 +36,6 @@ public class RoundGUI : MonoBehaviour
 
     void _OnRoundStart()
     {
-        roundStartText.text = _roundStartString.Replace("[N]", EnemyManager.CurrentWave.ToString());
         StartCoroutine(fadeGOAfter(roundStartPanel));
     }
 
@@ -39,11 +43,46 @@ public class RoundGUI : MonoBehaviour
     {
         StartCoroutine(fadeGOAfter(roundEndPanel));
     }
+    void _RefreshTexts()
+    {
+        roundStartText.text = _FormatString(_roundStartString);
+        roundEndText.text = _FormatString(_roundEndString);
+    }
+    string _FormatString(string start)
+    {
+        start = start.Replace("[N]", EnemyManager.CurrentWave.ToString());
+        start = start.Replace("[N - 1]", (EnemyManager.CurrentWave - 1).ToString());
+        start = start.Replace("[TIME]", EnemyManager.TimeUntilNextWave.ToString());
+        start = start.Replace("[$]", EnemyManager.LastWaveBonus.ToString());
 
+
+        return start;
+    }
+    Transform player => InventoryManager.instance.playerTransform;
+    Transform playerCam => InventoryManager.instance.playerCameraTransform;
+    /// <summary>
+    /// Spawns a copy of the given GO, and destroys it after a few seconds
+    /// </summary>
+    /// <param name="go"></param>
+    /// <returns></returns>
     IEnumerator fadeGOAfter(GameObject go)
     {
-        go.SetActive(true);
-        yield return new WaitForSeconds(displayTime);
-        go.SetActive(false);
+        yield return new WaitForSeconds(.1f);
+        Vector3 dir = playerCam.transform.forward;
+        dir.y = 0; dir = dir.normalized * distanceFromPlayer;
+        var pos = player.transform.position + dir;
+        pos += Vector3.up * height;
+
+        _RefreshTexts();
+        GameObject spawned = Instantiate(go, transform);
+        spawned.SetActive(true);
+        spawned.transform.position = pos;
+        spawned.transform.LookAt(pos + dir);
+        //spawned.transform.LookAt(pos - dir);
+        Destroy(spawned, displayTime);
+        //go.SetActive(true);
+        //yield return new WaitForSeconds(displayTime);
+        //go.SetActive(false);
+        yield break;
     }
 }

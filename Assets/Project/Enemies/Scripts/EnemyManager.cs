@@ -27,6 +27,21 @@ public class EnemyManager : MonoBehaviour
     /// </summary>
     public static int CurrentWave => instance._wave_i + 1;
     /// <summary>
+    /// Returns the time until next wave
+    /// </summary>
+    public static int TimeUntilNextWave => instance.levelData.waveStructs[instance._wave_i].preWaveDelay;
+    /// <summary>
+    /// Gets the wave complete bonus for the last wave completed, or 0 if just started
+    /// </summary>
+    public static int LastWaveBonus => _LastWaveBonus();
+    static int _LastWaveBonus()
+    {
+        if (instance == null) return 0;
+        if (instance._wave_i == 0)
+            return instance.levelData.waveStructs[instance._wave_i].WaveCompleteBounty;
+        return instance.levelData.waveStructs[instance._wave_i - 1].WaveCompleteBounty;
+    }
+    /// <summary>
     /// The number of enemies currently alive
     /// </summary>
     public static int EnemyCount = 0;
