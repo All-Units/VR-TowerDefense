@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GattlingController : MonoBehaviour
 {
@@ -13,6 +14,8 @@ public class GattlingController : MonoBehaviour
     private Coroutine _spinRoutine;
     private bool _isActive;
     private float fireRate;
+
+    public UnityEvent OnFire;
     
     public void OnActivate()
     {
@@ -40,11 +43,13 @@ public class GattlingController : MonoBehaviour
             {
                 fireRate += spinSpeed;
 
-                if (fireRate >= 180)
+                if (fireRate >= 90)
                 {
                     var p = Instantiate(projectile, launchPoint.position, launchPoint.rotation);
                     p.Fire();
-                    fireRate -= 180;
+                    fireRate -= 90;
+                    
+                    OnFire?.Invoke();
                 }
             }
             

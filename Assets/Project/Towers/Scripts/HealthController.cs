@@ -26,6 +26,8 @@ public class HealthController : MonoBehaviour
     /// <param name="dmg"></param>
     public void TakeDamage(int dmg)
     {
+        if(isDead)return;
+        
         _currentHealth -= dmg;
         
         OnTakeDamage?.Invoke(_currentHealth);
@@ -33,6 +35,7 @@ public class HealthController : MonoBehaviour
 
         if (_currentHealth <= 0)
         {
+            isDead = true;
             OnDeath?.Invoke();
             onDeath?.Invoke();
             isDead = true;

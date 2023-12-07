@@ -1,8 +1,11 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 
 public class BubbleMenuOption : MonoBehaviour
 {
+    [SerializeField] private TMP_Text title;
+    
     private BubbleMenuController _controller;
     private TowerUpgrade _upgrade;
 
@@ -16,9 +19,10 @@ public class BubbleMenuOption : MonoBehaviour
         _upgrade = upgrade;
     }
 
-    public void Initialize(Action ctx)
+    public void Initialize(Action ctx, string displayText)
     {
         gameObject.SetActive(true);
+        title.text = displayText;
 
         _callback = ctx;
     }
@@ -31,11 +35,15 @@ public class BubbleMenuOption : MonoBehaviour
     public void OnHoverStart()
     {
         // Debug.Log("On Hover Start");
+        // title.gameObject.SetActive(true)
+        title.color = Color.gray;
     }
 
     public void OnHoverEnd()
     {
         // Debug.Log("On Hover Exit");
+        // title.gameObject.SetActive(false);
+        title.color = Color.white;
     }
     
     public void Upgrade()

@@ -29,18 +29,6 @@ public class XRControllerTowerController : MonoBehaviour
     private void Start()
     {
         otherInteractors = transform.parent.GetComponentsInChildren<XRBaseInteractor>().ToList();
-        /*var selectTowerAction = Utilities.GetInputAction(selectTowerModeActionReference);
-        if (selectTowerAction != null)
-        {
-            selectTowerAction.performed += OnStartSelection;
-            selectTowerAction.canceled += OnEndSelectMode;
-        }*/
-        
-        /*var confirmSelectAction = Utilities.GetInputAction(controlTowerConfirmActionReference);
-        if (confirmSelectAction != null)
-        {
-            confirmSelectAction.performed += OnConfirm;
-        }      */ 
         
         var openTowerMenuAction = Utilities.GetInputAction(openTowerMenuActionReference);
         if (openTowerMenuAction != null)
@@ -62,7 +50,6 @@ public class XRControllerTowerController : MonoBehaviour
         if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()))
             return;
 
-        // if(PlayerStateController.instance.state == PlayerState.IDLE) 
         SelectATower();
     }
     

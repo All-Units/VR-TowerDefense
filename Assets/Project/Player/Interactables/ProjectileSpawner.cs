@@ -6,7 +6,7 @@ public class ProjectileSpawner : MonoBehaviour
 {
     [SerializeField]
     [Tooltip("The projectile that's created")]
-    GameObject m_ProjectilePrefab = null;
+    Projectile m_ProjectilePrefab = null;
 
     [SerializeField]
     [Tooltip("The point that the project is created")]
@@ -18,16 +18,11 @@ public class ProjectileSpawner : MonoBehaviour
 
     public virtual void Fire()
     {
-        GameObject newObject = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
-
-        if (newObject.TryGetComponent(out Rigidbody rigidBody))
-            ApplyForce(rigidBody);
+        var newObject = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
+        
+        newObject.Fire();
+        
         Destroy(newObject, 15f);
     }
-
-    void ApplyForce(Rigidbody rigidBody)
-    {
-        Vector3 force = m_StartPoint.forward * m_LaunchSpeed;
-        rigidBody.AddForce(force);
-    }
+    
 }

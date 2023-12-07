@@ -1,14 +1,12 @@
 ﻿using System;
-using System.Collections;
 using UnityEngine;
-using static UnityEngine.EventSystems.EventTrigger;
+using UnityEngine.Events;
 
 public class Projectile : MonoBehaviour
 {
     public int damage;
     private Rigidbody rb;
     public float speed = 20f;
-    public float RagdollForce = 20f;
 
     protected bool isDestroying = false;
 
@@ -18,11 +16,10 @@ public class Projectile : MonoBehaviour
     [SerializeField] protected AudioClipController _hitGround;
 
     [SerializeField] private GameObject flyingVFX;
-    Vector3 startPos;
-    private void Awake()
-    {
-        startPos = transform.position;
-    }
+
+    public UnityEvent OnFire;
+    public UnityEvent OnHit;
+
     public void Fire()
     {
         transform.SetParent(null);
@@ -33,7 +30,9 @@ public class Projectile : MonoBehaviour
 
         if(flyingVFX)
             flyingVFX.SetActive(true);
-        Destroy(gameObject, 10f);
+        Destroy(gameObject, 20f);
+        
+        OnFire?.Invoke();
     }
 
     private void OnCollisionEnter(Collision other)
@@ -48,47 +47,36 @@ public class Projectile : MonoBehaviour
     protected virtual void OnCollision(Collider other)
     {
 
-        Vector3 pos = transform.position;
-        BasicEnemy e = other.GetComponentInParent<BasicEnemy>();
-        var healthController = other.GetComponentInParent<HealthController>();
-        //If we just hit an enemy
-        if (healthController != null && e != null)
+        var colliderGameObject = other.gameObject;
+        if (colliderGameObject.TryGetComponent(out HealthController healthController))
         {
             healthController.TakeDamage(damage);
+
+            ApplyEffects(healthController);
             
-            if(statusModifier)
-            {
-                var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
-                if(statusEffectController)
-                    statusModifier.ApplyStatus(statusEffectController);
-            }
+            // Todo Refactor out to event based
             if (_hitEnemy)
-                _hitEnemy.PlayClipAt(pos);
-            e.FlingRagdoll(startPos);
-            
+                _hitEnemy.PlayClipAt(transform.position);
         }
         else
         {
+            // Todo Refactor out to event based
             if (_hitGround)
-                _hitGround.PlayClipAt(pos);
+                _hitGround.PlayClipAt(transform.position);
         }
 
+        OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
     }
-    
-    protected Rigidbody _rb;
-    protected Vector3 a = Vector3.zero;
-    protected Vector3 b = Vector3.zero;
-    private void OnDrawGizmos()
+
+    protected void ApplyEffects(HealthController healthController)
     {
-        if (a == Vector3.zero || b == Vector3.zero) return;
-        Gizmos.color = Color.blue;
-        Gizmos.DrawLine(a, b);
-        Gizmos.DrawSphere(b, .5f);
-        if (_rb != null) { 
-            //print($"rb velocity: {_rb.velocity}");
-            
+        if (statusModifier)
+        {
+            var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
+            if (statusEffectController)
+                statusModifier.ApplyStatus(statusEffectController);
         }
     }
 }

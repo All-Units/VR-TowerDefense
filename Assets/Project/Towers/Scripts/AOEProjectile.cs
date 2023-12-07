@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AOEProjectile : Projectile
 {
@@ -8,7 +7,6 @@ public class AOEProjectile : Projectile
 
     [SerializeField] private AnimationCurve damageDropOff;
     [SerializeField] private AudioClipController _audioClipController;
-    
     
     protected override void OnCollision(Collider other)
     {
@@ -22,14 +20,9 @@ public class AOEProjectile : Projectile
             {
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
-                var dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
-                healthController.TakeDamage(dmg);
-                //We killed Greg! Apply force between us and their center of gravity
-                if (healthController.isDead && colliderGameObject.TryGetComponent(out BasicEnemy enemy))
-                {
-                    enemy.FlingRagdoll(pos);
-                    
-                }
+                healthController.TakeDamage(Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius))));
+                
+                ApplyEffects(healthController);
             }
         }
         if(hitParticles)
@@ -37,12 +30,14 @@ public class AOEProjectile : Projectile
             var particles = Instantiate(hitParticles, pos, Quaternion.identity);
             Destroy(particles, 2f);
         }
-        if (_audioClipController)
+        
+        // Todo Refactor out to event based
+        /*if (_audioClipController)
             _audioClipController.PlayClip();
-        AudioPool.PlaySoundAt(_audioClipController.GetClip(), pos);
+        AudioPool.PlaySoundAt(_audioClipController.GetClip(), pos);*/
+        
+        OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
     }
-   
-    
 }

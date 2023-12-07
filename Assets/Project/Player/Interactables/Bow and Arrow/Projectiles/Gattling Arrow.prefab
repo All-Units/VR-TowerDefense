@@ -117,7 +117,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 3
+  m_CollisionDetection: 2
 --- !u!82 &6709334573630659050
 AudioSource:
   m_ObjectHideFlags: 0
@@ -249,12 +249,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c4ba8bba61a47dc9118ea49199ddd4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
+  damage: 4
   speed: 50
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 0}
   _hitGround: {fileID: 0}
   flyingVFX: {fileID: 0}
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1269536743542982401
 GameObject:
   m_ObjectHideFlags: 0
