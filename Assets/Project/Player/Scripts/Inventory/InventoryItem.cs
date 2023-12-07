@@ -74,6 +74,7 @@ public class InventoryItem : MonoBehaviour
     public virtual void OnDrop(SelectExitEventArgs args)
     {
         isHeld = false;
+        if (gameObject.activeInHierarchy == false) return;
         currentWaiting = waitThenReset();
         StartCoroutine(waitThenReset());
     }
