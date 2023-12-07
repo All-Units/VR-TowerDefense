@@ -30,6 +30,8 @@ public class InventoryManager : MonoBehaviour
     public XRInstantiateGrabbableObject quiver;
     public XRInstantiateGrabbableObject cannonAmmoPouch;
 
+    [SerializeField] private FireballGlovesController leftFireballGlovesController, rightFireballGlovesController;
+
     #endregion
 
     
@@ -106,6 +108,17 @@ public class InventoryManager : MonoBehaviour
 
             _manager.SelectEnter((IXRSelectInteractor)playerRightHand, item);
         }
+    }
+
+    public void GivePlayerPower(PlayerPower playerPower)
+    {
+        leftFireballGlovesController.gameObject.SetActive(true);
+        rightFireballGlovesController.gameObject.SetActive(true);
+        leftFireballGlovesController.SetThrowable(playerPower.throwable);
+        rightFireballGlovesController.SetThrowable(playerPower.throwable);
+        
+        playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
+        playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
     }
 
     public void ReleaseAllItems()
@@ -209,6 +222,9 @@ public class InventoryManager : MonoBehaviour
     {
         quiver.gameObject.SetActive(false);
         cannonAmmoPouch.gameObject.SetActive(false);
+        
+        leftFireballGlovesController.gameObject.SetActive(false);
+        rightFireballGlovesController.gameObject.SetActive(false);
     }
 
     #endregion

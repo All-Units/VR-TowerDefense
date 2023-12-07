@@ -1,8 +1,8 @@
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-[CreateAssetMenu(menuName = "SO/Player Item SO", fileName = "New Item")]
-public class PlayerItem_SO : ScriptableObject
+[CreateAssetMenu(menuName = "SO/Tower Takeover/Player Item", fileName = "New Item")]
+public class PlayerItem_SO : TowerTakeoverObject
 {
     public enum ItemAmmoPouch
     {
@@ -22,4 +22,9 @@ public class PlayerItem_SO : ScriptableObject
     public bool HasItemPouch() => ammoPouch != ItemAmmoPouch.NONE;
 
     #endregion
+}
+
+public abstract class TowerTakeoverObject : ScriptableObject
+{
+    
 }

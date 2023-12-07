@@ -83,8 +83,16 @@ public class ProjectileTower : Tower
         // Hide turret
         turretModel.SetActive(false);
         playerPlatform.SetActive(true);
-
-        InventoryManager.instance.GivePlayerItem(dto.playerItem_SO);
+        
+        switch (dto.playerItem_SO)
+        {
+            case PlayerItem_SO itemSo:
+                InventoryManager.instance.GivePlayerItem(itemSo);
+                break;
+            case PlayerPower power:
+                InventoryManager.instance.GivePlayerPower(power);
+                break;
+        }
     }
 
     public override void PlayerReleaseControl()
