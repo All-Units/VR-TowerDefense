@@ -1,12 +1,17 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.UIElements;
+using Image = UnityEngine.UI.Image;
+using Slider = UnityEngine.UI.Slider;
 
 public class HealthbarController : MonoBehaviour
 {
     [SerializeField] private Slider slider;
 
     [SerializeField] private HealthController healthController;
+    [Tooltip("Unless more damage is taken, hides after this many seconds")]
+    public int HideAfter = 4;
 
     private bool _isShowing = false;
 
@@ -20,6 +25,7 @@ public class HealthbarController : MonoBehaviour
                 Debug.LogError($"Unable to find health component on {transform.parent.gameObject.name}!", gameObject);
                 return;
             }
+            healthController.onDeath.AddListener(_Destroy);
         }
 
         var tower = GetComponentInParent<Tower>();
@@ -31,8 +37,10 @@ public class HealthbarController : MonoBehaviour
 
         healthController.OnTakeDamage += UpdateValue;
         slider.maxValue = healthController.MaxHealth;
+        slider.value = healthController.CurrentHealth;
         _isShowing = true;
-        UpdateValue(healthController.CurrentHealth);
+        //UpdateValue(healthController.CurrentHealth);
+        HideInstantly();    
     }
 
     private void UpdateValue(int curr)
@@ -52,9 +60,22 @@ public class HealthbarController : MonoBehaviour
     private void Show()
     {
         if(_isShowing) return;
-        
+        if (gameObject.activeInHierarchy == false) return;
         StartCoroutine(Fade(.5f, true));
+        if (_currentFader != null)
+            StopCoroutine(_currentFader);
+        _currentFader = _FadeAfterDelay();
+        StartCoroutine(_currentFader);
         _isShowing = true;
+    }
+    IEnumerator _currentFader = null;
+    IEnumerator _FadeAfterDelay()
+    {
+
+        yield return new WaitForSeconds(HideAfter);
+        _currentFader = null;
+        Hide();
+
     }
 
     private void Hide()
@@ -64,6 +85,13 @@ public class HealthbarController : MonoBehaviour
         StartCoroutine(Fade(.5f, false));
         _isShowing = false;
     }
+    void HideInstantly()
+    {
+        if (!_isShowing) return;
+        StartCoroutine(Fade(0f, false));
+        _isShowing = false;
+    }
+    void _Destroy() { Destroy(gameObject); }
 
     private IEnumerator Fade(float time, bool fadeIn)
     {
@@ -75,6 +103,7 @@ public class HealthbarController : MonoBehaviour
             foreach (var image in images)
             {
                 var imageColor = image.color;
+                if (healthController.isDead) { fadeIn = false; t = 0f; }
                 imageColor.a = fadeIn ? Mathf.Lerp(0, 1, t / time) : Mathf.Lerp(1, 0, t / time);
                 image.color = imageColor;
             }

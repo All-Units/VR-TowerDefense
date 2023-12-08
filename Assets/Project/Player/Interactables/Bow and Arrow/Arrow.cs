@@ -18,14 +18,15 @@ public class Arrow : MonoBehaviour
     public StatusModifier statusModifier;
     [SerializeField] private AudioClipController woodHit;
     [SerializeField] private AudioClipController enemyHit;
-    
+    public int RagdollForce = 20;
+    Vector3 startPos;
 
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         PullInteraction.PullActionStarted += PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased += PullInteractionOnPullActionReleased;
-
+        
         Stop();
     }
 
@@ -52,10 +53,12 @@ public class Arrow : MonoBehaviour
     public void Fire()
     {
         Fire(1);
+        
     }
 
     private void Fire(float obj)
     {
+        startPos = transform.position;
         gameObject.transform.parent = null;
         _inAir = true;
         particles.gameObject.SetActive(true);
@@ -84,7 +87,9 @@ public class Arrow : MonoBehaviour
         
         var colliderGameObject = other.collider.gameObject;
         Vector3 pos = transform.position;
-        if (colliderGameObject.TryGetComponent(out HealthController healthController))
+        HealthController healthController = colliderGameObject.GetComponentInParent<HealthController>();
+        BasicEnemy e = colliderGameObject.GetComponentInParent<BasicEnemy>();
+        if (healthController && e)
         {
             healthController.TakeDamage(damage);
             
@@ -94,7 +99,10 @@ public class Arrow : MonoBehaviour
                 if(statusEffectController)
                     statusModifier.ApplyStatus(statusEffectController);
             }
+
             enemyHit.PlayClipAt(pos);
+            e.FlingRagdoll(startPos);
+            
         }
         else
         {

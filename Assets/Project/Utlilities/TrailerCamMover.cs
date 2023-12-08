@@ -1,15 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.XR;
 
 public class TrailerCamMover : MonoBehaviour
 {
+    public GameObject playerPref;
     public float moveSpeed;
     public Vector3 moveDir = new Vector3(1f, 0f, 0f);
     public bool isMoving = false;
     // Start is called before the first frame update
     void Start()
     {
+        if (playerPref == null)
+            playerPref = FindObjectOfType<InventoryManager>().gameObject;
+        if (playerPref.activeInHierarchy)
+        {
+            gameObject.SetActive(false);
+        }
         
     }
 

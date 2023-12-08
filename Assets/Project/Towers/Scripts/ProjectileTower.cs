@@ -23,7 +23,7 @@ public class ProjectileTower : Tower
         if(attackVFX)
             attackVFX.SetActive(false);
     }
-
+   
     private void Update()
     {
         if(!isInitialized) return; 
@@ -41,13 +41,13 @@ public class ProjectileTower : Tower
         }
         else
         {
+            
             if (attackVFX)
             {
                 if (attackVFX.activeSelf)
                     attackVFX.SetActive(false);
             }
         }
-        
         if (_currentCooldown <= 0)
         {
             if (!targetingSystem.HasTarget()) return;
@@ -63,8 +63,10 @@ public class ProjectileTower : Tower
     private void AimAtTarget()
     {
         var oldestTarget = targetingSystem.GetOldestTarget();
+        var target = oldestTarget.transform.position;
+        target += Vector3.up;
         if(oldestTarget)
-            pivotPoint.LookAt(oldestTarget.transform);
+            pivotPoint.LookAt(target);
     }
 
     private void Fire()

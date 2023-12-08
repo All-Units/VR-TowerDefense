@@ -24,7 +24,7 @@ public class RadialTargetingSystem : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.TryGetComponent(out Enemy e))
+        if(other.TryGetComponent(out Enemy e) && _targetsInRange.Contains(e) == false)
         {
             _targetsInRange.Add(e);
         }
@@ -37,10 +37,11 @@ public class RadialTargetingSystem : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(other.TryGetComponent(out Enemy e))
+        if(other.TryGetComponent(out Enemy e) && _targetsInRange.Contains(e))
         {
             _targetsInRange.Remove(e);
-        }    
+        }
+        
     }
 
     public Enemy GetClosestTarget(Vector3 pos)
@@ -50,11 +51,24 @@ public class RadialTargetingSystem : MonoBehaviour
     
     public Enemy GetOldestTarget()
     {
-        _targetsInRange.RemoveAll(e => !e);
+        _CullTargets();
+        
         return _targetsInRange.OrderBy(t => t.spawnTime).FirstOrDefault();
     }
+    void _CullTargets()
+    {
+        _targetsInRange.RemoveAll(e => !e);
 
-    public bool HasTarget() => _targetsInRange.Any(t => t != null);
+        //If there is any living target, cull all the dead
+        //Otherwise, have at 'em
+        if (_targetsInRange.Exists(e => e.healthController.isDead == false))
+            _targetsInRange.RemoveAll(e => e.healthController.isDead);
+    }
+    public bool HasTarget()
+    {
+        _CullTargets();
+        return _targetsInRange.Any(t => t != null);
+    } 
 
     public void SetRadius(float newRadius)
     {

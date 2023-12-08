@@ -112,11 +112,32 @@ PrefabInstance:
       propertyPath: m_Parameters.m_DirectionCurveY.scalar
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 542789149064850207, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Height
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 542789149064850207, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Radius
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 542789149064850207, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 2.52
+      objectReference: {fileID: 0}
     - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: damage
       value: 50
       objectReference: {fileID: 0}
+    - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: enemyDTO
+      value: 
+      objectReference: {fileID: 11400000, guid: e69e83318f652cb468308432dafc41ce,
+        type: 2}
     - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: killValue
@@ -138,6 +159,16 @@ PrefabInstance:
       propertyPath: targetTolerance
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1756766881243722513, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 5.33
+      objectReference: {fileID: 0}
+    - target: {fileID: 1756766881243722513, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.34
+      objectReference: {fileID: 0}
     - target: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Name
@@ -145,24 +176,58 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.742
+      value: -0.06
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297007579981143160, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5612869072056406576, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: fcdb7867c5c69cc45b51b50f99f8fd8a, type: 2}
+      objectReference: {fileID: 9100000, guid: 8df718478cc6d0a4e935a56325f0dd81, type: 2}
     - target: {fileID: 5612869072056406576, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_WarningMessage
-      value: "\nBinding warning: Some generic clip(s) animate transforms that are
-        already bound by a Humanoid avatar. These transforms can only be changed
-        by Humanoid clips.\n\tTransform 'mixamorig:Hips'\n\tTransform 'mixamorig:LeftFoot'\n\tTransform
-        'mixamorig:Spine1'\n\tTransform 'mixamorig:LeftToeBase'\n\tTransform 'mixamorig:RightArm'\n\tTransform
-        'mixamorig:LeftLeg'\n\tTransform 'mixamorig:LeftShoulder'\n\tTransform 'mixamorig:RightHandIndex3'\n\tTransform
-        'mixamorig:RightFoot'\n\tTransform 'mixamorig:Head'\n\tand more ...\n\tFrom
-        animation clip 'Victory'"
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6346060074183271040, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Height
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6346060074183271040, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6346060074183271040, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 1.49
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -172,17 +237,17 @@ PrefabInstance:
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 2.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 2.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -192,7 +257,7 @@ PrefabInstance:
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.689
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -234,10 +299,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6748755946066835735, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.94
+      value: 5.74
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748755946066835735, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6812066425755246883, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -259,6 +334,41 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 11cb563e1c92c3b449715d99a09202a5, type: 2}
+    - target: {fileID: 7482028198614088574, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028198614088574, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028198614088574, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.08
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028198614088574, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.53
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028198614088574, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.22
+      objectReference: {fileID: 0}
+    - target: {fileID: 7482028198614088574, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7591001212215304780, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Mass
+      value: 75
+      objectReference: {fileID: 0}
     - target: {fileID: 7606125985548500940, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Materials.Array.data[0]

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c7753b4123e1e4a94c9b18a65ad6b3, type: 3}
+  m_Name: Test_Level
+  m_EditorClassIdentifier: 
+  waves:
+  - {fileID: 11400000, guid: ccff98bceab289d418f77a7f107ae55a, type: 2}
+  - {fileID: 11400000, guid: 07ea3f4c43f37224ca523e3140d73a99, type: 2}
+  waveStructs:
+  - enemies:
+    - enemyType: 0
+      amountToSpawn: {x: 3, y: 6}
+    - enemyType: 1
+      amountToSpawn: {x: 1, y: 5}
+    - enemyType: 2
+      amountToSpawn: {x: 0, y: 0}
+    WaveCompleteBounty: 7
+  - enemies:
+    - enemyType: 0
+      amountToSpawn: {x: 0, y: 0}
+    WaveCompleteBounty: 10
+  - enemies: []
+    WaveCompleteBounty: 11

@@ -68,7 +68,7 @@ public class StressTestManager : MonoBehaviour
         {
             counter.text = $"{currentQuantity}\nLeft to spawn: {left}";
             yield return new WaitForSeconds(timeBetweenSpawns);
-            EnemySpawner.SpawnRandom();
+            EnemyManager.SpawnRandom();
             left--;
         }
         _SetQuantityText();
@@ -76,13 +76,13 @@ public class StressTestManager : MonoBehaviour
 
     public void ClearAllEnemies()
     {
-        HealthController[] hcs = EnemySpawner.instance.GetComponentsInChildren<HealthController>();
+        HealthController[] hcs = EnemyManager.instance.GetComponentsInChildren<HealthController>();
         foreach (var hc in hcs)
         {
             Destroy(hc.gameObject);
         }
 
-        EnemySpawner.instance.enemies = new Dictionary<BasicEnemy, Transform>();
+        EnemyManager.instance.enemies = new Dictionary<BasicEnemy, Transform>();
     }
 
     public void ClearAllTowers()

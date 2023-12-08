@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     private Dictionary<whichHand, Inventory2> invByHand = new Dictionary<whichHand, Inventory2>();
 
     public Transform playerTransform;
+    public Transform playerCameraTransform;
     public Inventory2 leftHand;
     public Inventory2 rightHand;
     public XRDirectInteractor playerLeftHand;

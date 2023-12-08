@@ -25,8 +25,8 @@ public class SoundtrackManager : MonoBehaviour
             _source.clip = firstTrack;
             _source.Play();
         }
-        EnemySpawner.OnRoundEnded.AddListener(PlayBetweenRounds);
-        EnemySpawner.OnRoundStarted.AddListener(PlayCombat);
+        EnemyManager.OnRoundEnded.AddListener(PlayBetweenRounds);
+        EnemyManager.OnRoundStarted.AddListener(PlayCombat);
     }
 
     public static void PlayMenu()

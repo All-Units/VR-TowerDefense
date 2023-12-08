@@ -14,6 +14,9 @@ public class Book : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        if (title == null) title = "Moby Dick";
+        if (author == null) author = "Herman Melville";
+        if (description == null) description = "A tale about whale";
         populateCover();
     }
 

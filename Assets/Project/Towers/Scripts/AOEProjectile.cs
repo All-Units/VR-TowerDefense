@@ -24,6 +24,7 @@ public class AOEProjectile : Projectile
                 
                 ApplyEffects(healthController);
             }
+            BasicEnemy.FlingRagdoll(colliderGameObject, pos);
         }
         if(hitParticles)
         {

@@ -15,42 +15,41 @@ public class SpawnPoint : PathPoint
 
     protected override void OnDrawGizmos()
     {
+        base.OnDrawGizmos();
         var position = transform.position;
-
+        this.position = position;
         Gizmos.color = Color.green;
-        Gizmos.DrawSphere(position, .5f);
+        Gizmos.DrawSphere(position, .6f);
         if (data)
         {
-            var result = int.Parse(new string(data.name.Reverse()
-                .TakeWhile(char.IsDigit)
-                .Reverse()
-                .ToArray()));
-            Handles.Label(transform.position + Vector3.up * 2, result.ToString());
-        }
 
+
+        }
         var next = nextPoint;
         while (next)
         {
             Gizmos.color = Color.magenta;
-            Gizmos.DrawLine(position, next.transform.position);
+            //Gizmos.DrawLine(position, next.transform.position);
 
             position = next.transform.position;
             Gizmos.color = Color.yellow;
             Gizmos.DrawSphere(position, .5f);
 
             next = next.nextPoint;
+            break;
         }
+        gameObject.name = $"Spawn Point {transform.parent.name}";
     }
 
     private const string DataAssetPath = "Assets/Project/Scriptables/SpawnPoint";
-    
+
     [MenuItem("CONTEXT/SpawnPoint/GenerateSpawnData")]
     public static void GenerateSpawnData()
     {
         foreach (SpawnPoint spawnPoint in FindObjectsOfType<SpawnPoint>())
         {
             if (spawnPoint.data != null) continue;
-            
+
             SpawnPointData[] allSpawnPointData = AssetDatabase.FindAssets("t:SpawnPointData")
                 .Select(guid => AssetDatabase.LoadAssetAtPath<SpawnPointData>(AssetDatabase.GUIDToAssetPath(guid)))
                 .ToArray();
@@ -71,7 +70,7 @@ public class SpawnPoint : PathPoint
             spawnPoint.data = nextAvailableSpawnPointData;
         }
     }
-    
+
     [MenuItem("PathPoint/CreateNewSpawnPointFromSelected ^b"), MenuItem("GameObject/Pathing/New Connected Spawn Point")]
     public static void CreateNewSpawnPointFromSelected(MenuCommand menuCommand)
     {
@@ -79,7 +78,7 @@ public class SpawnPoint : PathPoint
         var newPoints = new List<GameObject>();
         foreach (var selected in Selection.gameObjects)
         {
-            if(selected.TryGetComponent(out PathPoint pathPoint) == false) continue;
+            if (selected.TryGetComponent(out PathPoint pathPoint) == false) continue;
 
             var newPoint = new GameObject(selected.name.IterateSuffix());
             var pp = newPoint.AddComponent<SpawnPoint>();
@@ -91,7 +90,7 @@ public class SpawnPoint : PathPoint
 
         Selection.objects = newPoints.ToArray();
     }
-    
+
     [MenuItem("GameObject/Pathing/New Spawn Point")]
     public static void CreateNewSpawnPoint()
     {
@@ -99,4 +98,12 @@ public class SpawnPoint : PathPoint
         newPoint.AddComponent<SpawnPoint>();
     }
 #endif
+
+    private void Start()
+    {
+        data.pos = transform.position;
+        data.enemyParent = enemyParent;
+        data.SpawnPoint = this;
+        EnemyManager.SpawnPoints.Add(data);
+    }
 }

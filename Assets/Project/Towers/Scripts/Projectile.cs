@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEditor.PlayerSettings;
 
 public class Projectile : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class Projectile : MonoBehaviour
 
     public UnityEvent OnFire;
     public UnityEvent OnHit;
-
+    Vector3 startPos;
     public void Fire()
     {
         transform.SetParent(null);
@@ -31,7 +32,7 @@ public class Projectile : MonoBehaviour
         if(flyingVFX)
             flyingVFX.SetActive(true);
         Destroy(gameObject, 20f);
-        
+        startPos = transform.position;
         OnFire?.Invoke();
     }
 
@@ -64,6 +65,7 @@ public class Projectile : MonoBehaviour
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
         }
+        BasicEnemy.FlingRagdoll(colliderGameObject, startPos);
 
         OnHit?.Invoke();
         isDestroying = true;

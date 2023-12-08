@@ -114,6 +114,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
+      propertyPath: enemyDTO
+      value: 
+      objectReference: {fileID: 11400000, guid: 47c5b0763f01444449594b3bf98c2515,
+        type: 2}
+    - target: {fileID: 1082082296216967521, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
       propertyPath: equipment
       value: sword
       objectReference: {fileID: 0}
@@ -138,16 +144,56 @@ PrefabInstance:
       propertyPath: targetTolerance
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 1756766881243722513, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.574
+      objectReference: {fileID: 0}
     - target: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_Name
       value: GregWithSword
       objectReference: {fileID: 0}
+    - target: {fileID: 2515703335802629952, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.11
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.98
+      value: -0.025
       objectReference: {fileID: 0}
+    - target: {fileID: 3316958976457990945, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4297007579981143160, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5612869072056406576, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: d2508f2ad958b1b40a661de6a15dfcd5, type: 2}
     - target: {fileID: 6042510218290352424, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: _clips.Array.size
@@ -166,17 +212,17 @@ PrefabInstance:
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -231,12 +277,27 @@ PrefabInstance:
     - target: {fileID: 6730594830205077411, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: m_ConstrainProportionsScale
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6748755946066835735, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.3099997
       objectReference: {fileID: 0}
     - target: {fileID: 6812066425755246883, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
       propertyPath: maxHealth
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868652869252803117, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6868652869252803117, guid: 13567c604ffbd9a40b98745c330550f9,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7445657514973281875, guid: 13567c604ffbd9a40b98745c330550f9,
         type: 3}
@@ -288,7 +349,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HasHit: 0
-  _ac: {fileID: 0}
+  enemy: {fileID: 0}
 --- !u!4 &2056195496491495767 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3474282102911204098, guid: 13567c604ffbd9a40b98745c330550f9,

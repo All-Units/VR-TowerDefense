@@ -98,9 +98,16 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void OpenTowerMenuActionOnStarted(InputAction.CallbackContext obj)
     {
-        if (_actionButtonCoroutine == null)
-            _actionButtonCoroutine = StartCoroutine(ActionButtonCoroutine());
-
+        try
+        {
+            if (_actionButtonCoroutine == null)
+                _actionButtonCoroutine = StartCoroutine(ActionButtonCoroutine());
+        }
+        catch (MissingReferenceException)
+        {
+            
+        }
+        
     }
     
     private void OpenTowerMenuActionOnCanceled(InputAction.CallbackContext obj)

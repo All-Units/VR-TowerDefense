@@ -294,7 +294,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 500, y: 500}
+  m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4852913854763948057
 Canvas:
@@ -373,6 +373,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 9102140759691434637}
   healthController: {fileID: 0}
+  HideAfter: 4
 --- !u!1 &7626878253680776496
 GameObject:
   m_ObjectHideFlags: 0
