@@ -90,10 +90,9 @@ public class PrefabPlacer : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(pos, Vector3.down, out hit))
         {
-            if (hit.collider.name.ToLower().Contains("waterblock"))
+            if (hit.collider.name.ToLower().Contains("water"))
                 return;
-            if (hit.transform.root.name == "Environment")
-                return;
+            
                 
             GameObject spawned = Instantiate(current.terrainSquares.GetRandom(), transform);
             spawned.name = spawned.name.Replace("(Clone)", "");

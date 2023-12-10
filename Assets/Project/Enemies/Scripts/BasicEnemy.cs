@@ -331,11 +331,10 @@ public class BasicEnemy : Enemy
         {
             collider.excludeLayers = _ignoreGregLayer;
         }
-       
+        RB.constraints = RigidbodyConstraints.None;
         while (true)
         {
-            Vector3 localPos = _hipsRB.transform.position;
-            Vector3 dir = pos - localPos;
+            
             RB.velocity = Vector3.ClampMagnitude(RB.velocity, enemyDTO.MaxRagdollForce);
             _hipsRB.velocity = RB.velocity;
             _hipsRB.transform.position = pos;
@@ -384,6 +383,8 @@ public class BasicEnemy : Enemy
     public void FlingRagdoll(Vector3 target)
     {
         if (healthController.isDead == false) return;
+        foreach (var col in GetComponents<Collider>())
+            col.excludeLayers = _ignoreGregLayer;
         Vector3 dir = pos - target;
         dir.y = 0f; dir = dir.normalized;
         dir.y = 1f;
@@ -391,7 +392,21 @@ public class BasicEnemy : Enemy
 
         dir *= enemyDTO.RagdollForce;
         dir = Vector3.ClampMagnitude(dir, enemyDTO.MaxRagdollForce);
-        RB.AddForce(dir, ForceMode.Impulse);
+        StartCoroutine(_ApplyForceContinuously(dir));
+    }
+    IEnumerator _ApplyForceContinuously(Vector3 dir, float time = 0.5f)
+    {
+        var t = Time.time;
+        while (Time.time - t <= time) {
+            RB.AddForce(dir);
+            yield return null;
+            Vector3 velocity = RB.velocity;
+            float y = enemyDTO.MinRagdollYForce;
+            if (velocity.y < y)
+                velocity.y = y;
+            RB.velocity = velocity;
+            
+        }
     }
     void UpdateSpeed(float speed)
     {
@@ -542,11 +557,13 @@ public class BasicEnemy : Enemy
             float d = nextWaypoint.DistanceToGoalFrom(pos);
             do
             {
-                NewWaypoint(nextWaypoint.nextPoint, nextWaypoint.nextPoint.GetPoint(hitboxRadius));
+                if (nextWaypoint.nextPoint != null)
+                    NewWaypoint(nextWaypoint.nextPoint, nextWaypoint.nextPoint.GetPoint(hitboxRadius));
+                else
+                    NewWaypoint(nextWaypoint, nextWaypoint.GetPoint(hitboxRadius));
                 _targetDistance = nextWaypoint.DistanceToGoalFrom(_target);
                 d = nextWaypoint.DistanceToGoalFrom(pos);
-                if (_targetDistance > d)
-                    print($"Advanced to next target to avoid running backwards after kill");
+                
             } while (_targetDistance > d);
 
         }
@@ -626,9 +643,13 @@ public class BasicEnemy : Enemy
     #region Debugging
 #if UNITY_EDITOR
     
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        
+        Gizmos.color = Color.cyan;
+        Vector3 p = pos + Vector3.up;
+        Vector3 dir = p + RB.velocity.normalized * 3f;
+
+        Gizmos.DrawLine(p, dir);
     }
 #endif
     #endregion
