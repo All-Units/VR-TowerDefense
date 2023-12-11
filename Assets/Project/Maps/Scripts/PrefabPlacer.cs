@@ -99,6 +99,7 @@ public class PrefabPlacer : MonoBehaviour
             spawned.transform.position = hit.point;
             Vector3 rot = spawned.transform.localEulerAngles;
             rot.y = Random.Range(0f, 360f);
+            spawned.transform.eulerAngles = rot;
 
         }
     }

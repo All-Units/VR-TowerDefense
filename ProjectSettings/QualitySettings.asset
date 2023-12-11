@@ -138,7 +138,7 @@ QualitySettings:
     billboardsFaceCameraPosition: 0
     useLegacyDetailDistribution: 1
     vSyncCount: 0
-    lodBias: 0.4
+    lodBias: 1.4
     maximumLODLevel: 0
     enableLODCrossFade: 1
     streamingMipmapsActive: 0
@@ -167,19 +167,6 @@ QualitySettings:
   m_TextureMipmapLimitGroupNames:
   - New Group
   m_PerPlatformDefaultQuality:
-    Android: 2
-    CloudRendering: 2
-    GameCoreScarlett: 2
-    GameCoreXboxOne: 2
-    Lumin: 2
-    Nintendo Switch: 2
-    PS4: 2
-    PS5: 2
+    Android: 0
     Server: 0
-    Stadia: 2
-    Standalone: 2
-    WebGL: 1
-    Windows Store Apps: 2
-    XboxOne: 2
-    iPhone: 1
-    tvOS: 1
+    Standalone: 0
