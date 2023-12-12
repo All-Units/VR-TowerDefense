@@ -18,11 +18,11 @@ public class CurrencyManager : MonoBehaviour
         {
             _cash = value;
             currencyDisplay.text = $"{_cash} gold";
-            OnChangeMoneyAmount?.Invoke();
+            OnChangeMoneyAmount?.Invoke(_cash);
         }
     }
 
-    public static UnityEvent OnChangeMoneyAmount = new UnityEvent();
+    public static UnityEvent<int> OnChangeMoneyAmount = new UnityEvent<int>();
 
     private int _cash;
     public TextMeshProUGUI currencyDisplay;

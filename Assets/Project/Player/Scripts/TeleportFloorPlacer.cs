@@ -115,7 +115,7 @@ public class TeleportFloorPlacer : MonoBehaviour
 
     public void SpawnFloor()
     {
-        transform.DestroyChildren();
+        transform.DestroyChildrenImmediate();
         _lastCenter = Vector3.negativeInfinity;
         Vector3 root = transform.position;
         tiles = new Dictionary<Vector2, Transform>();

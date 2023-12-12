@@ -1137,6 +1137,15 @@
                     "initialStateCheck": false
                 },
                 {
+                    "name": "B",
+                    "type": "Button",
+                    "id": "0a0da195-d167-41eb-81b9-21a2f79302f3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "RightStick",
                     "type": "Value",
                     "id": "1aba848e-305c-4356-858b-19ec5abf8dfd",
@@ -1395,6 +1404,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "Grip",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "232bdfe4-9734-4692-b40f-b2ebb845e2c5",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "B",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
