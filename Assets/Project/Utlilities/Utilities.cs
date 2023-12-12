@@ -227,6 +227,10 @@ public static class Utilities
             t.gameObject.SetLayerRecursive(layer);
         }
     }
+    /// <summary>
+    /// Destroys all children of a transform
+    /// </summary>
+    /// <param name="p">The transform to destroy the children of</param>
 
     public static void DestroyChildren(this Transform p)
     {
