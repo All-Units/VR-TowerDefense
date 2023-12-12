@@ -13,6 +13,7 @@ public class EnemyDTO : ScriptableObject
     public int RagdollTime = 5;
     public float RagdollForce = 300f;
     public float MaxRagdollForce = 300f;
+    public float MinRagdollYForce = 5f;
 
 
     [Header("Attack variables")]

@@ -90,16 +90,16 @@ public class PrefabPlacer : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(pos, Vector3.down, out hit))
         {
-            if (hit.collider.name.ToLower().Contains("waterblock"))
+            if (hit.collider.name.ToLower().Contains("water"))
                 return;
-            if (hit.transform.root.name == "Environment")
-                return;
+            
                 
             GameObject spawned = Instantiate(current.terrainSquares.GetRandom(), transform);
             spawned.name = spawned.name.Replace("(Clone)", "");
             spawned.transform.position = hit.point;
             Vector3 rot = spawned.transform.localEulerAngles;
             rot.y = Random.Range(0f, 360f);
+            spawned.transform.eulerAngles = rot;
 
         }
     }
