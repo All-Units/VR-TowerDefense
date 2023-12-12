@@ -237,6 +237,19 @@ public static class Utilities
             var child = oldChildren[0];
             oldChildren.RemoveAt(0);
             child.transform.parent = null;
+            Object.Destroy(child);
+        }
+    }    
+    
+    public static void DestroyChildrenImmediate(this Transform p)
+    {
+        var oldChildren = (from Transform t in p.transform select t.gameObject).ToList();
+
+        while (oldChildren.Count > 0)
+        {
+            var child = oldChildren[0];
+            oldChildren.RemoveAt(0);
+            child.transform.parent = null;
             Object.DestroyImmediate(child);
         }
     }

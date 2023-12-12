@@ -71,7 +71,7 @@ public class PrefabPlacer : MonoBehaviour
     public void PlaceObjects()
     {
         if (ClearOnSpawn)
-            transform.DestroyChildren();
+            transform.DestroyChildrenImmediate();
         Vector3 pos = transform.position;
         pos.y += 10f;
         down = transform.up;

@@ -33,7 +33,7 @@ public class TowerIcon : MonoBehaviour
         
     }
 
-    private void _RefreshCanAfford()
+    private void _RefreshCanAfford(int _)
     {
         FillText();
     }

@@ -1,21 +1,15 @@
-﻿using Project.Towers.Scripts;
+﻿using System;
+using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 
 public class XRControllerTowerPlacer : MonoBehaviour
 {
-    [SerializeField] private Tower_SO towerToPlace;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private LineRenderer _lr;
     [SerializeField] private Transform firePoint;
-    //private MapTile selectedTile = null;
-    private bool _placing = false;
+    public bool placing { get; private set; }= false;
     [SerializeField] private float width = 0.5f;
-    
-    [SerializeField]
-    [Tooltip("The reference to the action to start the teleport aiming mode for this controller.")]
-    InputActionReference placeTowerModeActivate;
 
     [SerializeField] private Material validColor;
     [SerializeField] private Material invalidColor;
@@ -23,6 +17,22 @@ public class XRControllerTowerPlacer : MonoBehaviour
     private BaseItem parentItem;
 
     public Inventory2 inv;
+    
+    [SerializeField]
+    [Tooltip("The reference to the action to confirm tower takeover selection.")]
+    private InputActionReference placeTowerActionReference;
+
+    public event Action OnPlaceTowerEvent;
+
+    private void Start()
+    {
+        var placeTowerAction = Utilities.GetInputAction(placeTowerActionReference);
+        if (placeTowerAction != null)
+        {
+            placeTowerAction.started += OnPlaceTower;
+        }   
+    }
+
     public void Pickup()
     {
         inv.trigger.action.performed += OnStartPlacement;
@@ -35,41 +45,29 @@ public class XRControllerTowerPlacer : MonoBehaviour
         inv.trigger.action.canceled -= OnPlaceTower;
         Close();
     }
-    private void Start()
-    {
-        TowerSpawnManager.SetTower(towerToPlace);
-        /*
-        var placeTowerModeActivateAction = placeTowerModeActivate.action;
-        if (placeTowerModeActivateAction != null)
-        {
-            //Debug.Log("Found Action!");
-            placeTowerModeActivateAction.performed += OnStartPlacement;
-            placeTowerModeActivateAction.canceled += OnPlaceTower;
-        }*/
-    }
 
     private void Update()
     {
         clearRay();
-        if(_placing == false) return;
+        if(placing == false) return;
         SelectATile();
     }
 
     private Vector3 lastTowerPos = Vector3.negativeInfinity;
+    [SerializeField] private int maxDistance = 50;
+
     private void SelectATile()
     {
         var firePointTransform = firePoint;
         Vector3 pos = firePointTransform.position;
         Vector3 forward = firePointTransform.forward;
         var ray = new Ray(pos, forward);
-        if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
+        if (Physics.Raycast(ray, out var hit, maxDistance, layerMask.value))
         {
-            //var tile = hit.transform.GetComponent<MapTile>();
-
-            bool valid = true;//hit.transform.root.GetChild(0).CompareTag("Castle") == false;
+            bool valid = true;
             valid = valid && (hit.transform.gameObject.layer == 7);
             Vector3 hitPos = hit.point;
-            if (valid && lastTowerPos != hitPos)// && tile != selectedTile && tile.selectable
+            if (valid && lastTowerPos != hitPos)
             {
                 TowerSpawnManager.Instance.PlaceGhost(hitPos);
                 lastTowerPos = hitPos;
@@ -84,7 +82,6 @@ public class XRControllerTowerPlacer : MonoBehaviour
             TowerSpawnManager.Instance.HideGhost();
             DrawRay(pos, pos + (forward * 100f), false);
         }
-        
     }
 
     void clearRay()
@@ -107,31 +104,31 @@ public class XRControllerTowerPlacer : MonoBehaviour
 
     public void OnStartPlacement(InputAction.CallbackContext callbackContext)
     {
-        _placing = true;
+        placing = true;
     }
 
     public void Close()
     {
-        _placing = false;
+        placing = false;
         clearRay();
-        
     }
 
     public void OnPlaceTower(InputAction.CallbackContext callbackContext)
     {
+        if (placing == false) return;
+        
         if (lastTowerPos.y > -100000f)
         {
-            //print($"Placing tower at {lastTowerPos}");
             TowerSpawnManager.Instance.PlaceTower(lastTowerPos);
         }
        
-        _placing = false;
+        placing = false;
+        
+        OnPlaceTowerEvent?.Invoke();
     }
-    
-    static InputAction GetInputAction(InputActionReference actionReference)
+
+    public void PlaceOne()
     {
-#pragma warning disable IDE0031 // Use null propagation -- Do not use for UnityEngine.Object types
-        return actionReference != null ? actionReference.action : null;
-#pragma warning restore IDE0031
+        placing = true;
     }
 }

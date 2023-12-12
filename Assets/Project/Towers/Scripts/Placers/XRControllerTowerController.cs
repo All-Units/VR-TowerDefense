@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
+
+/// <summary>
+/// TODO: Rework this and the tower placer to a state machine
+/// </summary>
 
 public class XRControllerTowerController : MonoBehaviour
 {
@@ -12,19 +18,29 @@ public class XRControllerTowerController : MonoBehaviour
     private bool _selecting = true;
     
     [SerializeField]
-    [Tooltip("The reference to the action to start the select aiming mode for this controller.")]
-    private InputActionReference selectTowerModeActionReference;    
-    
-    [SerializeField]
-    [Tooltip("The reference to the action to confirm tower takeover selection.")]
-    private InputActionReference controlTowerConfirmActionReference; 
-    
-    [SerializeField]
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
     private InputActionReference openTowerMenuActionReference;
+    
+    [SerializeField]
+    [Tooltip("The reference to the action to confirm tower takeover selection.")]
+    private InputActionReference openTowerPlacementActionReference;    
+    
+    [SerializeField]
+    [Tooltip("The reference to the action to confirm tower takeover selection.")]
+    private InputActionReference closeTowerPlacementActionReference; 
 
     public XRDirectInteractor playerHand;
     private List<XRBaseInteractor> otherInteractors;
+
+    [SerializeField] private List<Tower_SO> availableTowers;
+    [SerializeField] private BubbleMenuOption towersBubblePrefab;
+    [SerializeField] private BubbleMenuOption currencyBubblePrefab;
+    [SerializeField] private Transform towersBubbleRoot;
+    [SerializeField] private float bubbleMenuRadius;
+    [SerializeField] private float bubbleMenuMaxAngle;
+    [SerializeField] private XRControllerTowerPlacer towerPlacer;
+
+    private bool _selectorLock = false;
     
     private void Start()
     {
@@ -35,19 +51,26 @@ public class XRControllerTowerController : MonoBehaviour
         {
             openTowerMenuAction.started += OpenTowerMenuActionOnStarted;
             openTowerMenuAction.canceled += OpenTowerMenuActionOnCanceled;
+        }   
+        
+        var openTowerPlacementBubbleAction = Utilities.GetInputAction(openTowerPlacementActionReference);
+        if (openTowerPlacementBubbleAction != null)
+        {
+            openTowerPlacementBubbleAction.started += OpenTowerBubbles;
+        }        
+        
+        var closeTowerPlacementBubbleAction = Utilities.GetInputAction(closeTowerPlacementActionReference);
+        if (closeTowerPlacementBubbleAction != null)
+        {
+            closeTowerPlacementBubbleAction.started += CloseTowerBubbles;
         }
-        
-        PlayerStateController.OnStateChange += PlayerStateControllerOnStateChange;
-    }
 
-    private void PlayerStateControllerOnStateChange(PlayerState arg1, PlayerState arg2)
-    {
-        
+        towerPlacer.OnPlaceTowerEvent += OnPlace;
     }
-
+    
     private void Update()
     {
-        if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()))
+        if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
             return;
 
         SelectATower();
@@ -98,16 +121,10 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void OpenTowerMenuActionOnStarted(InputAction.CallbackContext obj)
     {
-        try
-        {
-            if (_actionButtonCoroutine == null)
-                _actionButtonCoroutine = StartCoroutine(ActionButtonCoroutine());
-        }
-        catch (MissingReferenceException)
-        {
-            
-        }
+        if(towerPlacer.placing) return;
         
+        if (_actionButtonCoroutine == null) 
+            _actionButtonCoroutine = StartCoroutine(ActionButtonCoroutine());
     }
     
     private void OpenTowerMenuActionOnCanceled(InputAction.CallbackContext obj)
@@ -133,6 +150,67 @@ public class XRControllerTowerController : MonoBehaviour
         
         OnConfirm();
         _actionButtonCoroutine = null;
+    }
+
+    private void OpenTowerBubbles(InputAction.CallbackContext obj)
+    {
+        if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
+            return;
+        
+        towersBubbleRoot.DestroyChildren();
+        towersBubbleRoot.position = transform.position;
+        towersBubbleRoot.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+
+        var step = bubbleMenuMaxAngle / (availableTowers.Count - 1);
+        var mainTransform = Camera.main.transform;
+
+        for (var i = 0; i < availableTowers.Count; i++)
+        {
+            var angle = i * step - (bubbleMenuMaxAngle / 2f);
+            var position = Quaternion.Euler(0f, angle, 0f) * Vector3.forward * bubbleMenuRadius;
+
+            var newBubble = Instantiate(towersBubblePrefab, towersBubbleRoot);
+            newBubble.transform.localPosition = position;
+            newBubble.transform.LookAt(mainTransform, Vector3.up);
+            var towerSo = availableTowers[i];
+            var icon = Instantiate(towerSo.iconPrefab, newBubble.transform);
+            icon.transform.position += Vector3.down * .07f;
+            icon.transform.rotation = Quaternion.identity;
+            icon.transform.localScale *= 2;
+            newBubble.Initialize(()=>SetTowerToPlace(towerSo), $"${towerSo.cost}\n{towerSo.name}");
+        }
+        
+        var currencyBubble = Instantiate(currencyBubblePrefab, towersBubbleRoot);
+        currencyBubble.Initialize(null, $"${CurrencyManager.CurrentCash}");
+        currencyBubble.transform.localPosition = new Vector3(0, -bubbleMenuRadius / 3f, bubbleMenuRadius / 2f);
+        currencyBubble.transform.LookAt(mainTransform, Vector3.up);
+        
+        towersBubbleRoot.SetParent(null);
+    }
+
+    private void CloseTowerBubbles(InputAction.CallbackContext obj)
+    {
+        towersBubbleRoot.DestroyChildren();
+        towerPlacer.Close();
+    }
+
+    private void SetTowerToPlace(Tower_SO so)
+    {
+        TowerSpawnManager.SetTower(so);
+        towerPlacer.PlaceOne();
+        towersBubbleRoot.DestroyChildren();
+    }
+
+    public void OnPlace()
+    {
+        StartCoroutine(SelectCooldown());
+    }
+
+    private IEnumerator SelectCooldown()
+    {
+        _selectorLock = true;
+        yield return new WaitForSeconds(1);
+        _selectorLock = false;
     }
 
     #region Action Event Listeners
