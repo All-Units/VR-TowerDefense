@@ -114,7 +114,7 @@ public class SpawnPoint : PathPoint
             _roadParent.parent = transform.parent;
             _roadParent.gameObject.name = "Road Tile Parent";
         }
-        _roadParent.DestroyChildren();
+        _roadParent.DestroyChildrenImmediate();
     }
 
     protected override void OnDrawGizmos()
