@@ -21,13 +21,13 @@ public class TowerIcon : MonoBehaviour
     private void Start()
     {
         FillText();
-        CurrencyManager.OnChangeMoneyAmount.AddListener(_RefreshCanAfford);
+        CurrencyManager.OnChangeMoneyAmount += _RefreshCanAfford;
     }
 
     void FillText()
     {
         nameText.text = towerSO.name;
-        string color = CurrencyManager.CanAfford(towerSO) ? "green" : "red";
+        string color = CurrencyManager.CanAfford(towerSO.cost) ? "green" : "red";
         string coloredCost = $"<color={color}>Cost:{towerSO.cost} gp</color>";
         descriptionText.text = $"{towerSO.description}\n{coloredCost}";
         
@@ -71,7 +71,7 @@ public class TowerIcon : MonoBehaviour
     {
         if (baseMats == null)
             SetMaterials();
-        if (CurrencyManager.CouldAfford(towerSO))
+        if (CurrencyManager.CanAfford(towerSO.cost))
         {
             _mr.materials = baseMats;
         }

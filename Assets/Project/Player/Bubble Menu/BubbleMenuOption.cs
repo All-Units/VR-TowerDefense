@@ -10,6 +10,15 @@ public class BubbleMenuOption : MonoBehaviour
     private TowerUpgrade _upgrade;
 
     private Action _callback;
+    private int cost = -1;
+    
+    [SerializeField] private Color cantAffordTextColor = Color.red;
+    private Color currentTextColor;
+
+    private void OnDestroy()
+    {
+        
+    }
 
     public void InitializeUpgrade(BubbleMenuController controller, TowerUpgrade upgrade)
     {
@@ -27,23 +36,33 @@ public class BubbleMenuOption : MonoBehaviour
         _callback = ctx;
     }
 
+    private void CanAfford(int cash)
+    {
+        title.color = cash < cost ? cantAffordTextColor : Color.white;
+    }
+    
+    public void Initialize(Action ctx, string displayText, int cost)
+    {
+        Initialize(ctx, $"${cost}\n {displayText}");
+        this.cost = cost;
+        CanAfford(CurrencyManager.CurrentCash);
+        CurrencyManager.OnChangeMoneyAmount += CanAfford;
+    }
+
     public void PerformOption()
     {
         _callback?.Invoke();
     }
-    
+
+    private readonly Color _grey = new Color(.4f, .4f, .4f, 0);
     public void OnHoverStart()
     {
-        // Debug.Log("On Hover Start");
-        // title.gameObject.SetActive(true)
-        title.color = Color.gray;
+        title.color -= _grey;
     }
 
     public void OnHoverEnd()
     {
-        // Debug.Log("On Hover Exit");
-        // title.gameObject.SetActive(false);
-        title.color = Color.white;
+        CanAfford(CurrencyManager.CurrentCash);
     }
     
     public void Upgrade()
@@ -52,6 +71,11 @@ public class BubbleMenuOption : MonoBehaviour
     }
 
     public void Disable()
+    {
+        
+    }
+
+    public void Hide()
     {
         gameObject.SetActive(false);
     }

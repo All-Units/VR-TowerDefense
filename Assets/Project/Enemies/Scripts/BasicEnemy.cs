@@ -350,16 +350,12 @@ public class BasicEnemy : Enemy
     {
         if (addedToMoney == false && CurrencyManager.instance)
         {
-            CurrencyManager.instance.CurrentMoney += killValue;
+            CurrencyManager.GiveToPlayer(killValue);
             addedToMoney = true;
             Minimap.RemoveHead(this);
-            //EnemySpawner.RemoveEnemy(this);
-
         }
         reachedEnd = true;
         Destroy(gameObject, enemyDTO.RagdollTime);
-
-
     }
 
     #endregion

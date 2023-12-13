@@ -1,84 +1,47 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager instance;
-    public int StartingMoney = 10;
-    public int roundBonus = 50;
-    public static int CurrentCash => instance.CurrentMoney;
-    public static string CurrentCashString => instance.CurrentMoney.ToString();
-    public int CurrentMoney {
+    [FormerlySerializedAs("StartingMoney")] public int startingMoney = 10; //Todo Refactor to level dto
+    public static int CurrentCash => instance != null ? instance.currentMoney : -1;
+
+    private int currentMoney 
+    {
         get => _cash;
         set
         {
             _cash = value;
-            currencyDisplay.text = $"{_cash} gold";
             OnChangeMoneyAmount?.Invoke(_cash);
         }
     }
 
-    public static UnityEvent<int> OnChangeMoneyAmount = new UnityEvent<int>();
+    public static event Action<int> OnChangeMoneyAmount;
 
     private int _cash;
-    public TextMeshProUGUI currencyDisplay;
     private void Awake()
     {
-        CurrentMoney = StartingMoney;
+        currentMoney = startingMoney;
         instance = this;
-        EnemyManager.OnRoundEnded.AddListener(FinishRound);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    void FinishRound()
-    {
-        CurrentMoney += roundBonus;
-    }
-
-    public static bool CanAfford(Tower_SO tower)
+    public static bool CanAfford(int amt)
     {
         if (instance == null) return false;
-        return (instance.CurrentMoney >= tower.cost);
+        return (instance.currentMoney >= amt);
     }
 
-    public static bool CouldAfford(Tower_SO tower)
+    public static void GiveToPlayer(int amt)
     {
-        if (instance == null) return false;
-        return (instance.CurrentMoney - tower.cost >= 0);
-    }
-    /// <summary>
-    /// Checks if the player can afford the tower, and takes out the appropriate cost if true
-    /// </summary>
-    /// <param name="tower"></param>
-    /// <returns></returns>
-    public static bool TryCanAfford(Tower_SO tower)
-    {
-        if (CanAfford(tower))
-        {
-            instance.CurrentMoney -= tower.cost;
-            return true;
-        }
-        return false;
+        if (instance)
+            instance.currentMoney += amt;
     }
 
-    public static void PayFor(int cost)
+    public static void TakeFromPlayer(int amt)
     {
-        instance.CurrentMoney -= cost;
+        if (instance)
+            instance.currentMoney -= amt;
     }
-    
 }

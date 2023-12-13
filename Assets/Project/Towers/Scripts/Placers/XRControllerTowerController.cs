@@ -177,7 +177,7 @@ public class XRControllerTowerController : MonoBehaviour
             icon.transform.position += Vector3.down * .07f;
             icon.transform.rotation = Quaternion.identity;
             icon.transform.localScale *= 2;
-            newBubble.Initialize(()=>SetTowerToPlace(towerSo), $"${towerSo.cost}\n{towerSo.name}");
+            newBubble.Initialize(()=>SetTowerToPlace(towerSo), towerSo.name, towerSo.cost);
         }
         
         var currencyBubble = Instantiate(currencyBubblePrefab, towersBubbleRoot);

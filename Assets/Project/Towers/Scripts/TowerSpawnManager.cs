@@ -14,7 +14,7 @@ namespace Project.Towers.Scripts
         [SerializeField] private AudioClipController placingSounds;
         [SerializeField] private AudioClipController deathSounds;
 
-        public static bool CouldAffordCurrentTower => CurrencyManager.CouldAfford(Instance.currentTower);
+        public static bool CouldAffordCurrentTower => CurrencyManager.CanAfford(Instance.currentTower.cost);
         public static TowerSpawnManager Instance;
         private Tower_SO currentTower;
         public static Tower_SO GetCurrentTower => Instance ? Instance.currentTower : null;
@@ -77,7 +77,7 @@ namespace Project.Towers.Scripts
         {
             targetPos.y += yOffset;
             //print($"Started placing tower");
-            if (CurrencyManager.CanAfford(currentTower) == false)
+            if (CurrencyManager.CanAfford(currentTower.cost) == false)
             {
                 return;
             }
@@ -107,7 +107,7 @@ namespace Project.Towers.Scripts
             // End refactor needed
             
             //Minimap.instance.SpawnTowerAt(pos, currentTower);
-            CurrencyManager.PayFor(currentTower.cost);
+            CurrencyManager.TakeFromPlayer(currentTower.cost);
             HideGhost();
         }        
         
@@ -181,6 +181,7 @@ namespace Project.Towers.Scripts
             if(Instance == null) return;
             
             Instance.RemoveTower(tower);
+            CurrencyManager.GiveToPlayer(tower.dto.cost/2);
         }
 
         public static IEnumerable<Tower> GetAllSpawnedTowers()

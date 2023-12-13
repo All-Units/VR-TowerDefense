@@ -18,11 +18,13 @@ public class BubbleMenuController : MonoBehaviour
         _Hide();
         
         PlayerStateController.OnStateChange += PlayerStateControllerOnOnStateChange;
+        CurrencyManager.OnChangeMoneyAmount += CurrencyManagerOnChangeMoneyAmount;
     }
 
     private void OnDestroy()
     {
         PlayerStateController.OnStateChange -= PlayerStateControllerOnOnStateChange;
+        CurrencyManager.OnChangeMoneyAmount -= CurrencyManagerOnChangeMoneyAmount;
     }
 
     private void PlayerStateControllerOnOnStateChange(PlayerState arg1, PlayerState arg2)
@@ -54,23 +56,25 @@ public class BubbleMenuController : MonoBehaviour
 
     private void ListUpgrades()
     {
+        if(_currentTower == null) return;
+        
         var towerUpgrades = _currentTower.dto.GetUpgrades();
         if(towerUpgrades.InRange(0))
         {
-            upgradeOption1.Initialize(() => Upgrade(towerUpgrades[0]), towerUpgrades[0].upgrade.name);
+            upgradeOption1.Initialize(() => Upgrade(towerUpgrades[0]), towerUpgrades[0].upgrade.name, towerUpgrades[0].upgrade.cost);
         }       
         else
         {
-            upgradeOption1.Disable();
+            upgradeOption1.Hide();
         }         
         
         if(towerUpgrades.InRange(1))
         {
-            upgradeOption2.Initialize(() => Upgrade(towerUpgrades[1]), towerUpgrades[1].upgrade.name);
+            upgradeOption2.Initialize(() => Upgrade(towerUpgrades[1]), towerUpgrades[1].upgrade.name, towerUpgrades[1].upgrade.cost);
         }   
         else
         {
-            upgradeOption2.Disable();
+            upgradeOption2.Hide();
         }
     }
     #endregion
@@ -96,6 +100,12 @@ public class BubbleMenuController : MonoBehaviour
         gameObject.SetActive(false);
     }
 
+    private void CurrencyManagerOnChangeMoneyAmount(int obj)
+    {
+        if(gameObject.activeInHierarchy)
+            ListUpgrades();
+    }
+
     #endregion
 
 
@@ -103,6 +113,13 @@ public class BubbleMenuController : MonoBehaviour
 
     public void Upgrade(TowerUpgrade towerUpgrade)
     {
+        if (CurrencyManager.CanAfford(towerUpgrade.upgrade.cost) == false)
+        {
+            return;
+        }
+        
+        CurrencyManager.TakeFromPlayer(towerUpgrade.upgrade.cost);
+        
         Debug.Log($"Upgrading: {_currentTower} to {towerUpgrade.upgrade.name}");
         var newTower = TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
         Hide();
