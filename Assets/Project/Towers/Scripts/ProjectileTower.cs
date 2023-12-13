@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class ProjectileTower : Tower
@@ -14,7 +15,10 @@ public class ProjectileTower : Tower
     [FormerlySerializedAs("SelectedVfx")] 
     [SerializeField] private GameObject turretModel;
     [SerializeField] private GameObject playerPlatform;
-        private float _currentCooldown;
+    private float _currentCooldown;
+
+    public UnityEvent onTakeover;
+    public UnityEvent onRelease;
 
     protected override void Awake()
     {
@@ -93,6 +97,8 @@ public class ProjectileTower : Tower
                 InventoryManager.instance.GivePlayerPower(power);
                 break;
         }
+        
+        onTakeover?.Invoke();
     }
 
     public override void PlayerReleaseControl()
@@ -104,6 +110,7 @@ public class ProjectileTower : Tower
         playerPlatform.SetActive(false);
         
         InventoryManager.instance.ReleaseAllItems();
+        onRelease?.Invoke();
     }
 
     #region Debugging

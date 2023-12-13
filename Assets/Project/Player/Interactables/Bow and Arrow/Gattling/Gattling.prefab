@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 6740681194238382334}
   - component: {fileID: 7439189050815062011}
   - component: {fileID: 543670844771645246}
+  - component: {fileID: 103644683228260689}
   m_Layer: 0
   m_Name: Gattling
   m_TagString: Untagged
@@ -159,6 +160,7 @@ Transform:
   - {fileID: 463671122041993455}
   - {fileID: 7713356891263975315}
   - {fileID: 1076094338796536768}
+  - {fileID: 7324515915253577900}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -384,7 +386,20 @@ MonoBehaviour:
   launchPoint: {fileID: 2468221533985018331}
   OnFire:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 103644683228260689}
+        m_TargetAssemblyTypeName: OverheatModule, Project
+        m_MethodName: ProjectileSpawnerOnFire
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  overheatModule: {fileID: 103644683228260689}
 --- !u!114 &5833479798429297762
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -445,6 +460,65 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.24673367, y: 0.23620881, z: 0.48243332}
   m_Center: {x: 0.007289648, y: -0.083018936, z: 0.23205471}
+--- !u!114 &103644683228260689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4757615584691518507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f8f76b04b8b44428d8ae723e9760da2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotsToOverheat: 100
+  cooldownRate: 0.25
+  OnOverHeat:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5748840829519081735}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnCoolDown:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5748840829519081735}
+        m_TargetAssemblyTypeName: UnityEngine.ParticleSystem, UnityEngine
+        m_MethodName: Stop
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnHeatChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4428005083500504291}
+        m_TargetAssemblyTypeName: MaterialColorChange, Project
+        m_MethodName: LerpColor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5182077233360398257
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,6 +849,7 @@ GameObject:
   - component: {fileID: 3867170701286736423}
   - component: {fileID: 1199421409739009317}
   - component: {fileID: 9126226059131932818}
+  - component: {fileID: 4428005083500504291}
   m_Layer: 0
   m_Name: Barrel
   m_TagString: Untagged
@@ -1300,7 +1375,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e9109fc0810da704883e285f387a9030, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1352,6 +1427,19 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &4428005083500504291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8031904910795160846}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40a72fadc2914869b88e0cb879b7d32c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  finalColor: {r: 0.7264151, g: 0.2530496, b: 0.099368125, a: 1}
 --- !u!1 &8302715148392007616
 GameObject:
   m_ObjectHideFlags: 0
@@ -4164,3 +4252,108 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!1001 &2336552930353531783
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 8626938182293899476}
+    m_Modifications:
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.028
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6398778261345099503, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_Name
+      value: OverheatVFX
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046497414477643712, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046497414477643712, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046497414477643712, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046497414477643712, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.117
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: dc3569d967cae144bba7311a24653075, type: 3}
+--- !u!198 &5748840829519081735 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8046497414495992448, guid: dc3569d967cae144bba7311a24653075,
+    type: 3}
+  m_PrefabInstance: {fileID: 2336552930353531783}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7324515915253577900 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5028536069536920363, guid: dc3569d967cae144bba7311a24653075,
+    type: 3}
+  m_PrefabInstance: {fileID: 2336552930353531783}
+  m_PrefabAsset: {fileID: 0}
