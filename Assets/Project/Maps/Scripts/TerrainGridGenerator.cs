@@ -54,12 +54,9 @@ public class TerrainGridGenerator : MonoBehaviour
     {
         foreach (var mf in GetComponentsInChildren<MeshFilter>())
         {
-            //if (mf.gameObject.name.Contains("LOD0") == false) continue;
             _SmoothAllCorners(mf);
         }
-        print($"Smoothed {fixedCount} vertices");
     }
-    int fixedCount = 0;
     bool _IsRiver(MeshFilter mf)
     {
         var name = mf.gameObject.name.ToLower();
@@ -98,7 +95,6 @@ public class TerrainGridGenerator : MonoBehaviour
     {
         if (mf.gameObject.name == "water") return;
         List<Vector3> vertices = new List<Vector3>();
-        var corners = GetCornerVerts(mf, false).ToHashSet();
         foreach (var vert in mf.sharedMesh.vertices)
         {
             var v = vert;
@@ -114,7 +110,6 @@ public class TerrainGridGenerator : MonoBehaviour
                     v.y = 0f;
                 else if (_IsRiver(mf) == false)
                     v.y = 0f;
-                fixedCount++;
             }
             
             
@@ -295,40 +290,7 @@ public class TerrainGridGenerator : MonoBehaviour
             SetAllAsGround(child);
         }
     }
-    private void OnDrawGizmosSelected()
-    {
-        foreach (var vs in _ToFix)
-        {
-            Gizmos.color = Color.red;
-            if (Math.Abs(vs.Key.y - vs.Value.y) >= 0.01f)
-            { 
-                Gizmos.DrawLine(vs.Key, vs.Value);
-                print($"Fixing points");
-            }
-
-        }
-        foreach (var v in vertices)
-        {
-            break;
-            Gizmos.color = Color.green;
-            if ((v - lastPos).magnitude <= 0.2f)
-            {
-                Gizmos.color = Color.red;
-                Gizmos.DrawSphere(v, 3f);
-            }
-            else
-                Gizmos.DrawSphere(v, 1f);
-        }
-        foreach (var mf in _lastNeigbors)
-        {
-            break;
-            Gizmos.color = Color.cyan;
-            var scale = Vector3.up * 50f;
-            Vector3 pos = mf.transform.parent.parent.parent.position + scale;
-            Gizmos.DrawSphere(pos, 5f);
-            Gizmos.DrawLine(pos, pos - scale);
-        }
-    }
+    
     #endif
 }
 

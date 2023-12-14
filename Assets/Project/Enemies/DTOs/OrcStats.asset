@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f8542915e26e34a814916542d957cd, type: 3}
+  m_Name: OrcStats
+  m_EditorClassIdentifier: 
+  type: 0
+  KillValue: 4
+  Health: 20
+  RagdollTime: 8
+  RagdollForce: 75
+  MaxRagdollForce: 60
+  MinRagdollYForce: 4.5
+  MinRange: 5
+  MaxRange: 10
+  Damage: 4
+  attackThreshold: 1.2
+  MoveSpeed: 100
+  MoveSpeedVariance: 0.4
+  rotateDamping: 1
+  targetTolerance: 1
+  StuckTimeTolerance: 1
+  StuckAngleOffset: 15
