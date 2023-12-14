@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2468221533985018331}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Launch Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8616108359375585255}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Attach
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3265786660542374769}
   - component: {fileID: 5391883594153912900}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Handle 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 7439189050815062011}
   - component: {fileID: 543670844771645246}
   - component: {fileID: 103644683228260689}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Gattling
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -529,7 +529,7 @@ GameObject:
   m_Component:
   - component: {fileID: 463671122041993455}
   - component: {fileID: 5469074227283157116}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Handle 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -583,7 +583,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7713356891263975315}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -616,7 +616,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1076094338796536768}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Attach (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -651,7 +651,7 @@ GameObject:
   - component: {fileID: 7002345652976106388}
   - component: {fileID: 277661679577954087}
   - component: {fileID: 8843306345398406660}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: HoverStateVisuals - Only Hover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -850,7 +850,7 @@ GameObject:
   - component: {fileID: 1199421409739009317}
   - component: {fileID: 9126226059131932818}
   - component: {fileID: 4428005083500504291}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Barrel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1454,7 +1454,7 @@ GameObject:
   - component: {fileID: 6905259802321351353}
   - component: {fileID: 5855487636187011389}
   - component: {fileID: 894721449688779625}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4339,6 +4339,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0.117
+      objectReference: {fileID: 0}
+    - target: {fileID: 8046497414477931488, guid: dc3569d967cae144bba7311a24653075,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
