@@ -38,5 +38,7 @@ public class EnemyDTO : ScriptableObject
 
     public float StuckTimeTolerance = 1f;
     public float StuckAngleOffset = 15f;
+    [Tooltip("How long before the current frame do we cache positions, for animations and stuck tracking")]
+    public float PositionTrackTime = 1f;
 
 }

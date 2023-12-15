@@ -14,7 +14,7 @@ public class EnemyTestSpawner : MonoBehaviour
     private void SpawnNewEnemy()
     {
         currentEnemy = Instantiate(prefab, transform);
-        currentEnemy.healthController.OnDeath += HealthControllerOnOnDeath;
+        currentEnemy._hc.OnDeath += HealthControllerOnOnDeath;
         currentEnemy.reachedEnd = true;
     }
 

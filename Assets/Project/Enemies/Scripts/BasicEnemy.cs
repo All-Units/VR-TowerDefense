@@ -24,7 +24,6 @@ public class BasicEnemy : Enemy
     public Vector3 _OLD_pos;
     [HideInInspector]
     public PathPoint nextWaypoint;
-    public IEnemyTargetable currentTarget;
     private bool hasTarget = false;
     [HideInInspector]
     public bool reachedEnd = false;
@@ -45,8 +44,7 @@ public class BasicEnemy : Enemy
     [Header("Component References")]
     [SerializeField]
     private Animator _anim;
-    [SerializeField]
-    private HealthController _hc;
+    
     [SerializeField]
     private Rigidbody _rb;
     public Rigidbody RB => _rb;
@@ -171,10 +169,7 @@ public class BasicEnemy : Enemy
         //_moveLoop();
     }
 
-    /// <summary>
-    /// The current list of towers in range
-    /// </summary>
-    private HashSet<IEnemyTargetable> _targets = new HashSet<IEnemyTargetable>();
+    
     IEnumerator _targetSelector;
     /// <summary>
     /// Attacks the closest tower in range
@@ -382,7 +377,7 @@ public class BasicEnemy : Enemy
     /// <param name="target"></param>
     public void FlingRagdoll(Vector3 target)
     {
-        if (healthController.isDead == false) return;
+        if (base._hc.isDead == false) return;
         foreach (var col in GetComponents<Collider>())
             col.excludeLayers = _ignoreGregLayer;
         Vector3 dir = _OLD_pos - target;
@@ -414,7 +409,7 @@ public class BasicEnemy : Enemy
         _anim.SetFloat("Speed", speed);
     }
 
-    IEnumerator SelectNewTarget()
+    protected override IEnumerator SelectNewTarget()
     {
         if (_targets.Count == 0)
             yield break;
@@ -438,22 +433,7 @@ public class BasicEnemy : Enemy
         _targetSelector = null;
         currentTarget.GetHealthController().onDeath.AddListener(OnTargetDeath);
     }
-    void _CullTargets()
-    {
-        var copy = _targets.ToArray();
-        var valid = new List<IEnemyTargetable>();
-        for (int i = 0; i < copy.Count(); i++)
-        {
-            var t = copy[i];
-            try { var h = t.GetHealthController(); var x = h.transform.position; }
-            catch (MissingReferenceException e) { continue; }
-            catch (NullReferenceException e) { continue; }
-            valid.Add(t);
-        }
-
-
-        _targets = valid.ToHashSet();
-    }
+   
 
     public float distanceToTarget;
     public Vector3 _OLD_target;
@@ -496,7 +476,7 @@ public class BasicEnemy : Enemy
     /// <summary>
     /// When the enemy's attack impacts the tower
     /// </summary>
-    public void Impact()
+    public override void Impact()
     {
 
         if (currentTarget == null)

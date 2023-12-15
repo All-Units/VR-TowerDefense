@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 
 #if UNITY_EDITOR
@@ -35,10 +36,20 @@ public class TeleportFloorPlacer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
+        var player = InventoryManager.instance;
+        //If no player, do nothing
+        if (player == null) return;
         StartCoroutine(_RefreshTeleportHeightsLoop());
+        TeleportationProvider teleportation = player.GetComponentInChildren<TeleportationProvider>();
+        if (teleportation == null )
+        {
+            print("No teleporter!");
+            return;
+        }
+        teleportation.endLocomotion += Reposition;
     }
 
-    
 
     IEnumerator _RefreshTeleportHeightsLoop()
     {
@@ -51,6 +62,10 @@ public class TeleportFloorPlacer : MonoBehaviour
 
     private Vector3 _lastCenter = Vector3.negativeInfinity;
     Vector3 _center;
+    public void Reposition(LocomotionSystem system)
+    {
+        _RepositionSquares();
+    }
     void _RepositionSquares()
     {
         _center = player.transform.position;

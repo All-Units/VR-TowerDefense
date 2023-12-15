@@ -25,6 +25,20 @@ public static class Utilities
         return new Vector2(Mathf.Cos(theta), Mathf.Sin(theta));
     }
 
+    public static List<Transform> GetAllDescendants(this Transform root)
+    {
+        List<Transform> t = new List<Transform>();
+        t.Add(root);
+        for (int i = 0; i < root.childCount; i++)
+        {
+            var child = root.GetChild(i);
+            t.Add(child);
+            t.AddRange(child.GetAllDescendants());
+        }
+        return t;
+
+    }
+
     public static Vector2 IncrementsOfUnitCircle(int increment, int degree = 90)
     {
         var theta = increment*degree*Mathf.Deg2Rad;
