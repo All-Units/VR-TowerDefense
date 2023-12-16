@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
-
+using Random = UnityEngine.Random;
 
 /// <summary>
 /// Base enemy logic
@@ -20,7 +20,8 @@ public abstract class Enemy : MonoBehaviour
     [Header("Component references")]
     public PathPoint nextPoint;
     [SerializeField] protected EnemyDTO enemyStats;
-    public float _MoveSpeed => enemyStats.MoveSpeed;
+    [HideInInspector]
+    public float _MoveSpeed;
     public float _TargetTolerance => enemyStats.targetTolerance;
     public float _RotateDamping => enemyStats.rotateDamping;
     /// <summary>
@@ -33,6 +34,8 @@ public abstract class Enemy : MonoBehaviour
     public Rigidbody RB => _RB;
     [SerializeField] protected Rigidbody ragdollRB;
     [SerializeField] protected CapsuleCollider _Hitbox;
+    [SerializeField] protected AudioClipController footstepController;
+    [SerializeField] protected ParticleSystem _hitParticles;
     public float _HitboxRadius => _Hitbox.radius;
 
     #endregion
@@ -57,34 +60,65 @@ public abstract class Enemy : MonoBehaviour
     #endregion
 
     #region UnityEvents
-
     // Initialize Enemy logic
     protected virtual void Awake()
     {
-        _InitComponents();
-        healthController.OnDeath += HealthControllerOnOnDeath;
-        spawnTime = Time.realtimeSinceStartup;
-        _EnableRagdoll();
-
-        _SetTarget(nextPoint);
-
+        OnEnemySpawn();
     }
-    protected virtual void _InitComponents()
-    {
-        //Ensure all components have references
-        if (animator == null) animator = GetComponent<Animator>();
-        if (healthController == null) healthController = GetComponent<HealthController>();
-    }
+    
     protected virtual void Update()
     {
         //Cache position first
         pos = transform.position;
         _StateMachineUpdate();
     }
+    private void OnTriggerEnter(Collider other)
+    {
 
+    }
+    private void OnTriggerExit(Collider other)
+    {
+
+    }
     #endregion
 
     #region StateMachine
+    protected virtual void OnEnemySpawn()
+    {
+        _MoveSpeed = enemyStats.MoveSpeed + Random.Range(-enemyStats.MoveSpeedVariance, enemyStats.MoveSpeedVariance);
+        _InitComponents();
+
+        _InitHC();
+
+        
+        spawnTime = Time.realtimeSinceStartup;
+        _EnableRagdoll(false);
+        _SetSpeed(1f);
+    }
+    protected virtual void OnEnemyDie()
+    {
+        animator.enabled = false;
+
+
+        RB.isKinematic = true;
+        _Hitbox.enabled = false;
+
+        _EnableRagdoll(true);
+
+        Vector3 dir = transform.forward * -1f + Vector3.up; dir = dir.normalized;
+
+        dir *= enemyStats.RagdollForce;
+        ragdollRB.AddForce(dir, ForceMode.Impulse);
+    }
+    /// <summary>
+    /// Invoked when the healthController takes damage
+    /// </summary>
+    /// <param name="currentHealth">Enemy HP left</param>
+    protected virtual void OnEnemyTakeDamage(int currentHealth)
+    {
+        _hitParticles.Play();
+    }
+
     /// <summary>
     /// Called every frame, base enemy state machine logic
     /// </summary>
@@ -95,7 +129,8 @@ public abstract class Enemy : MonoBehaviour
     private void _MoveState()
     {
         if (nextPoint == null) return;
-
+        _CompareNeighbors();
+        
         float distance = Utilities.FlatDistance(pos, _target);
         //We've reached our current target
         if (distance <= _TargetTolerance)
@@ -122,6 +157,11 @@ public abstract class Enemy : MonoBehaviour
 
 
     #endregion
+
+
+
+
+    #region StateMachineHelpers
     void _Move()
     {
         //UpdateSpeed(1f);
@@ -146,13 +186,19 @@ public abstract class Enemy : MonoBehaviour
         _rotateTowards(_target);
 
     }
-
-    #region StateMachineHelpers
     protected virtual void _EnableRagdoll(bool enabled = false)
     {
         _EnableRagdollRBs(enabled);
         _EnableRagdollColliders(enabled);
     }
+    void _CompareNeighbors()
+    {
+        //if (Time.time - _lastNeighborCheckTime <= enemyStats.CheckForNeighborsRate) return;
+        //var neighbors = Physics.OverlapSphere(pos, _HitboxRadius + 0.5f);//.SphereCast(pos, _HitboxRadius + 0.5f, transform.forward, out RaycastHit hit);
+
+    }
+
+
     void _EnableRagdollRBs(bool enabled = false)
     {
         if (_ragdollRBs.Count == 0) 
@@ -191,6 +237,22 @@ public abstract class Enemy : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, _RotateDamping * Time.deltaTime);
     }
 
+    protected virtual void _InitComponents()
+    {
+        //Ensure all components have references
+        if (animator == null) animator = GetComponent<Animator>();
+        if (healthController == null) healthController = GetComponent<HealthController>();
+    }
+    /// <summary>
+    /// Initialize health controller
+    /// </summary>
+    protected virtual void _InitHC()
+    {
+        healthController.OnDeath += HealthControllerOnOnDeath;
+        healthController.OnDeath += OnEnemyDie;
+        healthController.OnTakeDamage += OnEnemyTakeDamage;
+    }
+
     #endregion
 
     #region HelperFunctions
@@ -198,13 +260,25 @@ public abstract class Enemy : MonoBehaviour
     /// Updates the current path point we are targeting
     /// </summary>
     /// <param name="target"></param>
-    void _SetTarget(PathPoint target)
+    public void _SetTarget(PathPoint target)
     {
         if (target == null) return;
         nextPoint = target;
-        _target = nextPoint.position;
+        _target = nextPoint.GetPoint(_HitboxRadius);
     }
 
+    #endregion
+
+    #region AnimHelpers
+    protected void _SetSpeed(float speed)
+    {
+        speed = Mathf.Clamp01(speed);
+        animator.SetFloat("Speed", speed);
+    }
+    public virtual void Footstep()
+    {
+        footstepController.PlayClip();
+    }
     #endregion
 
     private void HealthControllerOnOnDeath()
@@ -212,7 +286,5 @@ public abstract class Enemy : MonoBehaviour
         OnDeath?.Invoke(this);
     }
 
-    public virtual void Footstep()
-    {
-    }
+    
 }

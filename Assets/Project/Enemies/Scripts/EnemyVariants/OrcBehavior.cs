@@ -4,14 +4,9 @@ using UnityEngine;
 
 public class OrcBehavior : Enemy
 {
-    public Vector3 flingDir = new Vector3(1f, 1f, 0f);
-    public float RB_Force = 100f;
-    [Range(0f, 1f)] public float speed;
-    [Range(0f, 1f)] public float AttackStrength;
-    public bool IsAttacking;
 
-    public bool Taunt;
-    public bool Victory;
+    [Header("Debug vars")]
+    public Vector3 rb_velocity;
     
 
     // Start is called before the first frame update
@@ -22,44 +17,40 @@ public class OrcBehavior : Enemy
     }
     IEnumerator _fling()
     {
-        yield return new WaitForSeconds(3f); 
+        yield return new WaitForSeconds(3f);
+        
         animator.enabled = false;
-        print($"Flinging greg");
-        float t = Time.time;
-        Vector3 dir = flingDir.normalized * RB_Force;
+        
+
+        RB.isKinematic = true;
+        _Hitbox.enabled = false;
+        
+        _EnableRagdoll(true);
         yield return null;
+
+        Vector3 dir = transform.forward * -1f + Vector3.up; dir = dir.normalized;
+
+        dir *= enemyStats.RagdollForce;
         ragdollRB.AddForce(dir, ForceMode.Impulse);
-        while (Time.time - t <= 0.2f)
-        {
-            yield return null;
-            ragdollRB.AddForce(dir);
-            //print($"rb velocity: {ragdollRB.velocity}");
-        }
-        
-        
+        print("Flinging ragdoll");
+
+
     }
 
     // Update is called once per frame
     protected override void Update()
     {
         base.Update();
-        animator.SetFloat("Speed", speed);
-        animator.SetFloat("AttackStrength", AttackStrength);
-        animator.SetBool("IsAttacking", IsAttacking);
-        if (Taunt)
-        {
-            animator.SetTrigger("Taunt");
-            Taunt = false;
-        }
-        if (Victory) { animator.SetTrigger("Victory"); Victory = false; }
+        rb_velocity = ragdollRB.velocity;
+        
     }
-    private void OnDrawGizmos()
+    private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.cyan;
-        Vector3 dir = pos + RB.velocity.normalized * 3f;
-        Gizmos.DrawLine(pos, dir);
+        //Gizmos.color = Color.cyan;
+        //Vector3 dir = pos + RB.velocity.normalized * 3f;
+        //Gizmos.DrawLine(pos, );
         Gizmos.color = Color.green;
-        Gizmos.DrawLine (pos, nextPoint.position);
+        Gizmos.DrawLine (pos, _target + Vector3.up);
     }
 
 }

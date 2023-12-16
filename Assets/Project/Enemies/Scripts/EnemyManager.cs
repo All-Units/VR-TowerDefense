@@ -324,10 +324,12 @@ public class EnemyManager : MonoBehaviour
         float r = enemy.GetComponent<CapsuleCollider>().radius;
         Vector3 pos = point.SpawnPoint.GetPoint(r);
         enemy.transform.position = pos;
-        var e = enemy.GetComponent<BasicEnemy>();
-        Minimap.SpawnHead(e);
+        var e = enemy.GetComponent<Enemy>();
+        if (e)
+            e._SetTarget(point.SpawnPoint.nextPoint);
+        //Minimap.SpawnHead(e);
         //SpawnHead(e);
-        e.nextWaypoint = point.SpawnPoint.nextPoint;
+        //e.nextPoint = ;
     }
     void _win()
     {

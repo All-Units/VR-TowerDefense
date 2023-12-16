@@ -13,26 +13,27 @@ MonoBehaviour:
   m_Name: Map04
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - prefab: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
+  - prefab: {fileID: 6162612218955197706, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
       type: 3}
     type: 0
-  - prefab: {fileID: 3732419523249009799, guid: df62b2c5f1cef9c47a957b7e7b55b281,
+  - prefab: {fileID: 2265877983507758802, guid: 13567c604ffbd9a40b98745c330550f9,
       type: 3}
     type: 1
-  - prefab: {fileID: 3824934994461625781, guid: 7ea8d31244111cf4eb068ed322e285e1,
+  - prefab: {fileID: 3732419523249009799, guid: df62b2c5f1cef9c47a957b7e7b55b281,
       type: 3}
     type: 2
-  - prefab: {fileID: 0}
+  - prefab: {fileID: 3824934994461625781, guid: 7ea8d31244111cf4eb068ed322e285e1,
+      type: 3}
     type: 3
   waveStructs:
   - enemies:
     - enemyType: 0
-      amountToSpawn: {x: 20, y: 25}
+      amountToSpawn: {x: 60, y: 60}
     subWaves: []
     WaveCompleteBounty: 100
-    preWaveDelay: 60
-    groupSizes: {x: 3, y: 5}
-    spawnRate: 8
+    preWaveDelay: 2
+    groupSizes: {x: 1, y: 1}
+    spawnRate: 10
     spawnPoints:
     - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
   - enemies:
@@ -42,7 +43,7 @@ MonoBehaviour:
       amountToSpawn: {x: 20, y: 30}
     subWaves: []
     WaveCompleteBounty: 150
-    preWaveDelay: 15
+    preWaveDelay: 6000
     groupSizes: {x: 4, y: 8}
     spawnRate: 12
     spawnPoints: []

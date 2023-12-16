@@ -65,7 +65,6 @@ public class Projectile : MonoBehaviour
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
         }
-        BasicEnemy.FlingRagdoll(colliderGameObject, startPos);
 
         OnHit?.Invoke();
         isDestroying = true;

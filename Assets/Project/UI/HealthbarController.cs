@@ -25,8 +25,9 @@ public class HealthbarController : MonoBehaviour
                 Debug.LogError($"Unable to find health component on {transform.parent.gameObject.name}!", gameObject);
                 return;
             }
-            healthController.onDeath.AddListener(_Destroy);
+            
         }
+        healthController.onDeath.AddListener(_Destroy);
 
         var tower = GetComponentInParent<Tower>();
         if (tower)
@@ -91,7 +92,7 @@ public class HealthbarController : MonoBehaviour
         StartCoroutine(Fade(0f, false));
         _isShowing = false;
     }
-    void _Destroy() { Destroy(gameObject); }
+    void _Destroy() { print("uwu destwoying healhbar"); Destroy(gameObject); }
 
     private IEnumerator Fade(float time, bool fadeIn)
     {
