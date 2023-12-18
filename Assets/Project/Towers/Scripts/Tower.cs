@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Project.Towers.Scripts;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(HealthController))]
@@ -9,7 +10,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 {
     public HealthController healthController;
     
-    protected bool isPlayerControlled = false;
+    public bool isPlayerControlled { get; private set; } = false;
     [SerializeField] private Transform playerControlPosition;
     [SerializeField] private Transform playerReleasePosition;
     
@@ -27,8 +28,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public static event Action<Tower> OnTowerDestroy;
     public static event Action<Tower> OnTowerSelected; 
     public event Action OnSelected; 
+    public UnityEvent onStartFocus;
     public static event Action<Tower> OnTowerDeselected; 
     public event Action OnDeselected; 
+    public UnityEvent onEndFocus;
+
 
     #region Unity Interface
 
@@ -99,6 +103,16 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         OnTowerDeselected?.Invoke(this);
         OnDeselected?.Invoke();
         selectedVfx.SetActive(false);
+    }
+
+    public void StartFocus()
+    {
+        onStartFocus?.Invoke();
+    }
+
+    public void EndFocus()
+    {
+        onEndFocus?.Invoke();
     }
     
     public virtual void PlayerTakeControl()

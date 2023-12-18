@@ -18,7 +18,7 @@ public class ProjectileTower : Tower
     private float _currentCooldown;
 
     public UnityEvent onTakeover;
-    public UnityEvent onRelease;
+    public UnityEvent onRelease;    
 
     protected override void Awake()
     {

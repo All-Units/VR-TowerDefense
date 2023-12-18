@@ -1,6 +1,7 @@
 using System;
 using Project.Towers.Scripts;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class BubbleMenuController : MonoBehaviour
 {
@@ -11,6 +12,10 @@ public class BubbleMenuController : MonoBehaviour
     [SerializeField] private BubbleMenuOption upgradeOption1;
     [SerializeField] private BubbleMenuOption upgradeOption2;
     [SerializeField] private BubbleMenuOption sellOption;
+    
+    [SerializeField]
+    [Tooltip("The reference to the action to confirm tower takeover selection.")]
+    private InputActionReference closeMenuActionReference; 
 
     private void Awake()
     {
@@ -19,6 +24,12 @@ public class BubbleMenuController : MonoBehaviour
         
         PlayerStateController.OnStateChange += PlayerStateControllerOnOnStateChange;
         CurrencyManager.OnChangeMoneyAmount += CurrencyManagerOnChangeMoneyAmount;
+        
+        var closeBubbleMenuAction = Utilities.GetInputAction(closeMenuActionReference);
+        if (closeBubbleMenuAction != null)
+        {
+            closeBubbleMenuAction.started += CloseTowerBubbles;
+        }
     }
 
     private void OnDestroy()
@@ -37,8 +48,12 @@ public class BubbleMenuController : MonoBehaviour
 
     private void Initialize(Tower t)
     {
+        if(_currentTower)
+            _currentTower.EndFocus();
+        
         _currentTower = t;
-
+        _currentTower.StartFocus();
+        
         towerCamera.transform.position = t.transform.position;
         towerCamera.gameObject.SetActive(true);
         gameObject.SetActive(true);
@@ -98,6 +113,13 @@ public class BubbleMenuController : MonoBehaviour
     public void _Hide()
     {
         gameObject.SetActive(false);
+        if(_currentTower)
+            _currentTower.EndFocus();
+    }
+    
+    private void CloseTowerBubbles(InputAction.CallbackContext obj)
+    {
+        _Hide();
     }
 
     private void CurrencyManagerOnChangeMoneyAmount(int obj)
