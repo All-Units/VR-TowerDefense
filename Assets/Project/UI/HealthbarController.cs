@@ -92,7 +92,7 @@ public class HealthbarController : MonoBehaviour
         StartCoroutine(Fade(0f, false));
         _isShowing = false;
     }
-    void _Destroy() { print("uwu destwoying healhbar"); Destroy(gameObject); }
+    void _Destroy() { Destroy(gameObject); }
 
     private IEnumerator Fade(float time, bool fadeIn)
     {

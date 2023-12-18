@@ -312,7 +312,7 @@ public class EnemyManager : MonoBehaviour
         {
             return SpawnPoints.GetRandom();
         }
-
+        
         //Else choose from the specific list
         var points = spawnPoints;
         return points.GetRandom();

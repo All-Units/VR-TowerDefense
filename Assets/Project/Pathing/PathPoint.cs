@@ -19,7 +19,7 @@ public class PathPoint : MonoBehaviour
     public float DistanceToGoal = float.PositiveInfinity;
     public float DistanceToGoalFrom(Vector3 point)
     {
-        float d = Vector3.Distance(position, point);
+        float d = position.FlatDistance(point);// Vector3.Distance(position, point);
         return d + DistanceToGoal;
     }
 

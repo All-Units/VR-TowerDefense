@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -24,6 +25,9 @@ public abstract class Enemy : MonoBehaviour
     public float _MoveSpeed;
     public float _TargetTolerance => enemyStats.targetTolerance;
     public float _RotateDamping => enemyStats.rotateDamping;
+    public float _attackThreshold => enemyStats.attackThreshold;
+    public int _damage => enemyStats.Damage;
+    public int _health => enemyStats.Health;
     /// <summary>
     /// What type of enemy we are
     /// </summary>
@@ -34,7 +38,9 @@ public abstract class Enemy : MonoBehaviour
     public Rigidbody RB => _RB;
     [SerializeField] protected Rigidbody ragdollRB;
     [SerializeField] protected CapsuleCollider _Hitbox;
+    [SerializeField] protected SphereCollider _detectionSphere;
     [SerializeField] protected AudioClipController footstepController;
+    [SerializeField] protected AudioClipController attackSFXController;
     [SerializeField] protected ParticleSystem _hitParticles;
     public float _HitboxRadius => _Hitbox.radius;
 
@@ -55,7 +61,13 @@ public abstract class Enemy : MonoBehaviour
 
     List<Collider> _ragdollColliders = new List<Collider>();
     List<Rigidbody> _ragdollRBs = new List<Rigidbody>();
-
+    /// <summary>
+    /// The current list of towers in range
+    /// </summary>
+    protected HashSet<IEnemyTargetable> _targets = new HashSet<IEnemyTargetable>();
+    protected IEnumerator _targetSelector;
+    protected IEnemyTargetable currentTarget;
+    protected bool _IsMovementFrozen = false;
 
     #endregion
 
@@ -74,11 +86,20 @@ public abstract class Enemy : MonoBehaviour
     }
     private void OnTriggerEnter(Collider other)
     {
-
+        //If we don't have this enemy in our target list
+        if (other.TryGetComponent(out IEnemyTargetable enemy) 
+            && _targets.Contains(enemy) == false)
+        {
+            _targets.Add(enemy);
+        }
     }
     private void OnTriggerExit(Collider other)
     {
-
+        if (other.TryGetComponent(out IEnemyTargetable enemy)
+            && _targets.Contains(enemy))
+        {
+            _targets.Remove(enemy);
+        }
     }
     #endregion
 
@@ -86,6 +107,13 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void OnEnemySpawn()
     {
         _MoveSpeed = enemyStats.MoveSpeed + Random.Range(-enemyStats.MoveSpeedVariance, enemyStats.MoveSpeedVariance);
+
+
+        if (EnemyManager.Enemies.Contains(this) == false)
+            EnemyManager.Enemies.Add(this);
+        EnemyManager.EnemyCount++;
+        EnemyManager.GregSpawned();
+
         _InitComponents();
 
         _InitHC();
@@ -104,11 +132,12 @@ public abstract class Enemy : MonoBehaviour
         _Hitbox.enabled = false;
 
         _EnableRagdoll(true);
+        Destroy(gameObject, enemyStats.RagdollTime);
 
-        Vector3 dir = transform.forward * -1f + Vector3.up; dir = dir.normalized;
-
-        dir *= enemyStats.RagdollForce;
-        ragdollRB.AddForce(dir, ForceMode.Impulse);
+        if (EnemyManager.Enemies.Contains(this))
+            EnemyManager.Enemies.Remove(this);
+        EnemyManager.EnemyCount--;
+        EnemyManager.GregKilled();
     }
     /// <summary>
     /// Invoked when the healthController takes damage
@@ -119,11 +148,43 @@ public abstract class Enemy : MonoBehaviour
         _hitParticles.Play();
     }
 
+    protected virtual void OnEnemyTakeDamageFrom(int currentHealth, Vector3 source)
+    {
+        //Do nothing if not dead
+        if (healthController.isDead == false) return;
+
+
+        animator.enabled = false;
+
+
+        RB.isKinematic = true;
+        _Hitbox.enabled = false;
+
+        _EnableRagdoll(true);
+
+        Vector3 dir = (pos - source).normalized; dir.y = 0f;
+        dir += Vector3.up; dir = dir.normalized;
+
+        //Scale RB force by magic number to make more readable
+
+        dir *= enemyStats.RagdollForce * 8;
+        ragdollRB.AddForce(dir, ForceMode.Impulse);
+        print($"Flinging ragdoll in dir {dir.normalized}, magnitude {dir.magnitude}");
+
+    }
+
     /// <summary>
     /// Called every frame, base enemy state machine logic
     /// </summary>
     protected virtual void _StateMachineUpdate()
     {
+        //There is at least one target in range
+        if (_targets.Count > 0)
+        {
+            _AttackState();
+            return;
+        }
+
         _MoveState();
     }
     private void _MoveState()
@@ -152,6 +213,38 @@ public abstract class Enemy : MonoBehaviour
         _Move();
 
     }
+    /// <summary>
+    /// Logic for when the enemy has a tower to attack
+    /// </summary>
+    protected virtual void _AttackState()
+    {
+        //If we don't have a target, choose a new one
+        if (currentTarget == null && _targets.Count > 0)
+        {
+            if (_targetSelector != null) return;
+            SelectNewTarget();
+            if (currentTarget == null) return;
+        }
+
+        //We have a target, how far are they?
+        float d = Utilities.FlatDistance(pos, _target);
+        d -= _HitboxRadius;
+        //We're too far away, move closer and do not attack
+        if (d > _attackThreshold)
+        {
+            _Move();
+            return;
+        }
+        else
+        {
+            RB.constraints = RigidbodyConstraints.FreezeAll;
+            _SetIsAttacking(true);
+            
+
+        }
+
+
+    }
 
 
 
@@ -164,11 +257,12 @@ public abstract class Enemy : MonoBehaviour
     #region StateMachineHelpers
     void _Move()
     {
+        _SetIsAttacking(false);
         //UpdateSpeed(1f);
         //Do not move if we are listening for a footstep
         //if (listeningForFootstep)
         //    return;
-        //_rb.constraints = RigidbodyConstraints.FreezeRotation;
+        RB.constraints = RigidbodyConstraints.FreezeRotation;
         Vector3 dir = _target - pos;
         dir.y = 0;
         dir = dir.normalized;
@@ -197,7 +291,68 @@ public abstract class Enemy : MonoBehaviour
         //var neighbors = Physics.OverlapSphere(pos, _HitboxRadius + 0.5f);//.SphereCast(pos, _HitboxRadius + 0.5f, transform.forward, out RaycastHit hit);
 
     }
+    protected virtual void SelectNewTarget()
+    {
+        if (_targetSelector != null) return;
+        _targetSelector = SelectNewTargetRoutine();
+        StartCoroutine(_targetSelector);
+    }
+    protected virtual IEnumerator SelectNewTargetRoutine()
+    {
+        currentTarget = null;
+        //Wait a frame
+        yield return null;
+        //Cull all invalid targets
+        _CullTargets();
 
+        //Do nothing if no towers in range
+        if (_targets.Count == 0)
+        {
+            if (nextPoint.nextPoint != null)
+            {
+                _SetTarget(nextPoint.nextPoint);
+            }
+            else
+                _SetTarget(nextPoint);
+            yield break;
+        }
+
+
+        //Find the closest tower to us
+        var closest = _targets.OrderBy(t => Utilities.FlatDistance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
+        //Set closest tower as new target
+        _target = closest.GetPosition();
+        //_target = closest.GetHealthController().transform.position;
+        currentTarget = closest;
+
+        currentTarget.GetHealthController().OnDeath += OnTargetDeath;
+
+        _targetSelector = null;
+    }
+    /// <summary>
+    /// Checks current target list, removes all missing / null refs
+    /// </summary>
+    protected virtual void _CullTargets()
+    {
+        var copy = _targets.ToArray();
+        var valid = new List<IEnemyTargetable>();
+        //Makes a deep copy of all tested and valid targets
+        for (int i = 0; i < copy.Count(); i++)
+        {
+            var t = copy[i];
+            try { var h = t.GetHealthController(); var x = h.transform.position; }
+            catch (NullReferenceException e) { continue; }
+            catch (MissingReferenceException e) { continue; }
+            
+            valid.Add(t);
+        }
+        _targets = valid.ToHashSet();   
+    }
+
+    protected virtual void OnTargetDeath()
+    {
+        currentTarget = null;
+    }
 
     void _EnableRagdollRBs(bool enabled = false)
     {
@@ -242,6 +397,10 @@ public abstract class Enemy : MonoBehaviour
         //Ensure all components have references
         if (animator == null) animator = GetComponent<Animator>();
         if (healthController == null) healthController = GetComponent<HealthController>();
+
+        if (_detectionSphere == null) { _detectionSphere = GetComponent<SphereCollider>(); }
+        float range = Random.Range(enemyStats.MinRange, enemyStats.MaxRange);
+        _detectionSphere.radius = range;
     }
     /// <summary>
     /// Initialize health controller
@@ -251,6 +410,9 @@ public abstract class Enemy : MonoBehaviour
         healthController.OnDeath += HealthControllerOnOnDeath;
         healthController.OnDeath += OnEnemyDie;
         healthController.OnTakeDamage += OnEnemyTakeDamage;
+        healthController.OnTakeDamageFrom += OnEnemyTakeDamageFrom;
+
+        healthController.SetMaxHealth(_health);
     }
 
     #endregion
@@ -266,6 +428,7 @@ public abstract class Enemy : MonoBehaviour
         nextPoint = target;
         _target = nextPoint.GetPoint(_HitboxRadius);
     }
+    
 
     #endregion
 
@@ -275,9 +438,21 @@ public abstract class Enemy : MonoBehaviour
         speed = Mathf.Clamp01(speed);
         animator.SetFloat("Speed", speed);
     }
+    protected virtual void _SetIsAttacking(bool isAttacking)
+    {
+        animator.SetBool("IsAttacking", isAttacking);
+    }
     public virtual void Footstep()
     {
         footstepController.PlayClip();
+    }
+    public virtual void Impact()
+    {
+        if (currentTarget == null) return;
+        attackSFXController.PlayClip();
+        currentTarget.GetHealthController().TakeDamage(_damage);
+        print("thud, from the chud");
+
     }
     #endregion
 

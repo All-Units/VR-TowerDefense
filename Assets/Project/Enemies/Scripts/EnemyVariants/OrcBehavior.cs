@@ -7,6 +7,9 @@ public class OrcBehavior : Enemy
 
     [Header("Debug vars")]
     public Vector3 rb_velocity;
+
+    public int _TargetsInRange;
+    public float _distanceToTarget;
     
 
     // Start is called before the first frame update
@@ -42,13 +45,22 @@ public class OrcBehavior : Enemy
     {
         base.Update();
         rb_velocity = ragdollRB.velocity;
-        
+        _TargetsInRange = _targets.Count;
+        _distanceToTarget = Utilities.FlatDistance(pos, _target);
+        _distanceToTarget -= _HitboxRadius;
+
     }
     private void OnDrawGizmosSelected()
     {
         //Gizmos.color = Color.cyan;
         //Vector3 dir = pos + RB.velocity.normalized * 3f;
         //Gizmos.DrawLine(pos, );
+        if (healthController.isDead)
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawLine(ragdollRB.position, ragdollRB.position + ragdollRB.velocity);
+            return;
+        }
         Gizmos.color = Color.green;
         Gizmos.DrawLine (pos, _target + Vector3.up);
     }

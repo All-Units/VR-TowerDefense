@@ -15,17 +15,17 @@ MonoBehaviour:
   type: 0
   KillValue: 4
   Health: 20
-  RagdollTime: 8
-  RagdollForce: 600
+  RagdollTime: 12
+  RagdollForce: 35
   MaxRagdollForce: 60
   MinRagdollYForce: 4.5
-  MinRange: 5
-  MaxRange: 10
-  Damage: 4
-  attackThreshold: 1.2
+  MinRange: 20
+  MaxRange: 30
+  Damage: 6
+  attackThreshold: 3
   MoveSpeed: 100
   MoveSpeedVariance: 0.4
   rotateDamping: 1
   targetTolerance: 1
-  StuckTimeTolerance: 1
+  CheckForNeighborsRate: 1
   StuckAngleOffset: 15

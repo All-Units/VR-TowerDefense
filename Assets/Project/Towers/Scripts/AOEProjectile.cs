@@ -20,7 +20,9 @@ public class AOEProjectile : Projectile
             {
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
-                healthController.TakeDamage(Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius))));
+                int dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
+                healthController.TakeDamageFrom(dmg, pos);
+
                 
                 ApplyEffects(healthController);
             }
