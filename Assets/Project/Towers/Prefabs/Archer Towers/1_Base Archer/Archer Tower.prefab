@@ -92,7 +92,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3442691951729211522}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.38, z: 0}
+  m_LocalPosition: {x: 0, y: 2.4, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -308,8 +308,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1.2, y: 1.5, z: 1.2}
-  m_Center: {x: 0, y: 0.747865, z: 0}
+  m_Size: {x: 2.4, y: 2.4, z: 2.4}
+  m_Center: {x: 0, y: 1.2, z: 0}
 --- !u!1001 &336770778587348634
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -373,45 +373,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4558295779913406416, guid: bced4d20203e2e944971ef3da6c1b6c3,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4558295779913406416, guid: bced4d20203e2e944971ef3da6c1b6c3,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4558295779913406416, guid: bced4d20203e2e944971ef3da6c1b6c3,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4558295779913406416, guid: bced4d20203e2e944971ef3da6c1b6c3,
-        type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5320695028833954898, guid: bced4d20203e2e944971ef3da6c1b6c3,
         type: 3}
       propertyPath: m_Name
       value: Selected
-      objectReference: {fileID: 0}
-    - target: {fileID: 5320695028833954898, guid: bced4d20203e2e944971ef3da6c1b6c3,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6379461146015819363, guid: bced4d20203e2e944971ef3da6c1b6c3,
-        type: 3}
-      propertyPath: m_Layer
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9026803095429892771, guid: bced4d20203e2e944971ef3da6c1b6c3,
-        type: 3}
-      propertyPath: ShapeModule.radius.value
-      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -536,7 +501,7 @@ PrefabInstance:
     - target: {fileID: 562976872983492393, guid: 078e64b743a501649a607509884f5830,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 2.3
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 562976872983492393, guid: 078e64b743a501649a607509884f5830,
         type: 3}
@@ -558,6 +523,11 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5368649729684537483, guid: 078e64b743a501649a607509884f5830,
+        type: 3}
+      propertyPath: healthController
+      value: 
+      objectReference: {fileID: 5764481117411547575}
     - target: {fileID: 6928277851612195147, guid: 078e64b743a501649a607509884f5830,
         type: 3}
       propertyPath: m_Name
