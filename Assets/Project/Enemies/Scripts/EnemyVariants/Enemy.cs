@@ -139,6 +139,10 @@ public abstract class Enemy : MonoBehaviour
             EnemyManager.Enemies.Remove(this);
         EnemyManager.EnemyCount--;
         EnemyManager.GregKilled();
+
+
+        //Add kill value to currency
+        CurrencyManager.GiveToPlayer(enemyStats.KillValue);
     }
     /// <summary>
     /// Invoked when the healthController takes damage
