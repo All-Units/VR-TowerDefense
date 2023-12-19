@@ -13,12 +13,17 @@ public class LiveCurrencyTracker : MonoBehaviour
     void Start()
     {
         //Todo: Not sure what intended function is for these, but they never unsubscribe from static events. May cause problems -Z
-        CurrencyManager.OnChangeMoneyAmount.AddListener(_RefreshCurrencyText);
+        CurrencyManager.OnChangeMoneyAmount += _RefreshCurrencyText;
         CurrencyManager.instance.StartCoroutine(waitThenRefresh(this));
         TowerSpawnManager.OnTowerSet.AddListener(()=>_RefreshCurrencyText(CurrencyManager.CurrentCash));
     }
 
-    
+    private void OnDestroy()
+    {
+        CurrencyManager.OnChangeMoneyAmount -= _RefreshCurrencyText;
+    }
+
+
     static IEnumerator waitThenRefresh(LiveCurrencyTracker tracker)
     {
         yield return new WaitForSeconds(0.1f);
@@ -32,7 +37,7 @@ public class LiveCurrencyTracker : MonoBehaviour
         
         if (towerSO != null && s.Contains("TOWERCOST"))
         {
-            string color = CurrencyManager.CanAfford(towerSO) ? "green" : "red";
+            string color = CurrencyManager.CanAfford(towerSO.cost) ? "green" : "red";
             string coloredCost = $"<color={color}>COST: {towerSO.cost} gp</color>";
             s = s.Replace("[TOWERCOST]", coloredCost);
         }

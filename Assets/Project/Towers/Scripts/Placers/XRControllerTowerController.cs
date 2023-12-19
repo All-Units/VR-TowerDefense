@@ -82,9 +82,11 @@ public class XRControllerTowerController : MonoBehaviour
 
         var ray = new Ray(firePointTransform.position, firePointTransform.forward);
         Vector3 point = firePointTransform.position + firePointTransform.forward * 100;
-        if (Physics.SphereCast(ray, .33f, out var hit, 1000, layerMask.value))
+        if (Physics.SphereCast(ray, .5f, out var hit, 100, layerMask.value))
         {
             var tower = hit.transform.GetComponent<Tower>();
+            if(tower.isPlayerControlled) return;
+            
             if (tower)
             {
                 if(_selectedTower != tower && _selectedTower)
@@ -177,7 +179,7 @@ public class XRControllerTowerController : MonoBehaviour
             icon.transform.position += Vector3.down * .07f;
             icon.transform.rotation = Quaternion.identity;
             icon.transform.localScale *= 2;
-            newBubble.Initialize(()=>SetTowerToPlace(towerSo), $"${towerSo.cost}\n{towerSo.name}");
+            newBubble.Initialize(()=>SetTowerToPlace(towerSo), towerSo.name, towerSo.cost);
         }
         
         var currencyBubble = Instantiate(currencyBubblePrefab, towersBubbleRoot);

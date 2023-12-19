@@ -10587,6 +10587,7 @@ GameObject:
   - component: {fileID: 6446158073777730323}
   - component: {fileID: 3570543108695348473}
   - component: {fileID: 810747033556209314}
+  - component: {fileID: 42719702723348455}
   m_Layer: 10
   m_Name: crystal 2
   m_TagString: Untagged
@@ -10637,7 +10638,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -5857886671465511977, guid: 3b33325458518194eb9bbf90fb26c252, type: 3}
+  - {fileID: 2100000, guid: 5cdfbd6717ac4cb4d8935f3b314c0fbe, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -10659,6 +10660,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &42719702723348455
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7639056193312516676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b70699bad41440f8a50bc4d833c3bb9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  min: -4.15
+  max: 4.5
 --- !u!1 &8886954538361350757
 GameObject:
   m_ObjectHideFlags: 0
@@ -10673,6 +10688,8 @@ GameObject:
   - component: {fileID: 4699089827677196890}
   - component: {fileID: 6963277726937522235}
   - component: {fileID: 3306868054554300043}
+  - component: {fileID: 1582919525084345284}
+  - component: {fileID: 2845043830282051212}
   m_Layer: 10
   m_Name: Magic Staff
   m_TagString: Untagged
@@ -10952,6 +10969,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   chargingSFX: {fileID: 3752629361061422153}
   spellEffect: {fileID: 3139434857812769591}
+  manaModule: {fileID: 1582919525084345284}
+  manaPerSecond: 1
 --- !u!114 &3306868054554300043
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10965,6 +10984,57 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 1e5750d5d8a7067408fcbf9b7f4c860f, type: 2}
+--- !u!114 &1582919525084345284
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8886954538361350757}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af3e9b9c4ed948d0b1e38e211cbf5b7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxMana: 5
+  onManaChange:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 42719702723348455}
+        m_TargetAssemblyTypeName: FillShaderController, Project
+        m_MethodName: LerpColor
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!136 &2845043830282051212
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8886954538361350757}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Height: 0.14
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.62, z: 0}
 --- !u!1001 &5833771820494633930
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -10,12 +7,13 @@ public class CurrencyDisplayController : MonoBehaviour
 
     private void Start()
     {
-        CurrencyManager.OnChangeMoneyAmount.AddListener(OnCurrencyChange);
+        CurrencyManager.OnChangeMoneyAmount += OnCurrencyChange;
+        OnCurrencyChange(CurrencyManager.CurrentCash);
     }
 
     private void OnDestroy()
     {
-        CurrencyManager.OnChangeMoneyAmount.RemoveListener(OnCurrencyChange);
+        CurrencyManager.OnChangeMoneyAmount -= OnCurrencyChange;
     }
 
     private void OnCurrencyChange(int amt)

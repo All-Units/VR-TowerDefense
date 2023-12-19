@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class ReloadableProjectileSpawner : ProjectileSpawner
 {
@@ -8,6 +7,8 @@ public class ReloadableProjectileSpawner : ProjectileSpawner
 
     public override void Fire()
     {
+        if(CheckCantFireModules()) return;
+
         if (_currentAmmo <= 0) return;
         
         _currentAmmo--;

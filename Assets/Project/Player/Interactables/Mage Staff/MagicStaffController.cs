@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class MagicStaffController : MonoBehaviour
 {
@@ -7,12 +8,15 @@ public class MagicStaffController : MonoBehaviour
 
     [SerializeField] private AudioClipController chargingSFX;
     [SerializeField] private ParticleSystem spellEffect;
+    [SerializeField] private ManaModule manaModule;
+    [SerializeField] private float manaPerSecond = 1;
 
     public void BeginSpell()
     {
         if (chargingCoroutine == null)
         {
-            chargingCoroutine = StartCoroutine(ChargeAttack());
+            if(manaModule.TryUseMana(manaPerSecond * Time.deltaTime))
+                chargingCoroutine = StartCoroutine(ChargeAttack());
         }
     }
 
@@ -38,11 +42,12 @@ public class MagicStaffController : MonoBehaviour
     {
         spellEffect.Play(true);
 
-        while (true)
+        do
         {
             yield return null;
-        }
+        } while (manaModule.TryUseMana(manaPerSecond * Time.deltaTime));
 
+        spellEffect.Stop(true);
         chargingCoroutine = null;
     }
 }

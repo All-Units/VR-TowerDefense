@@ -10,7 +10,7 @@ public class ResetOnDrop : MonoBehaviour
     [SerializeField] private XRBaseInteractable table;
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float resetTime = 2f;
-    [SerializeField] private Vector3 offset = new Vector3(0f, 2f, 0.5f);
+    [SerializeField] private Vector3 offset = new Vector3(0f, 4f, 0.5f);
 
     private Quaternion startRot;
 
@@ -105,7 +105,6 @@ public class ResetOnDrop : MonoBehaviour
         t.position = pos;
         t.rotation = startRot;
         _currentResetter = null;
-        //print($"Reset position to {pos}");
         rb.useGravity = false;
         
         //Constrain it

@@ -1,5 +1,5 @@
+using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -16,9 +16,18 @@ public class GattlingController : MonoBehaviour
     private float fireRate;
 
     public UnityEvent OnFire;
-    
+    [SerializeField] private OverheatModule overheatModule;
+
+    private void Start()
+    {
+        overheatModule.OnOverHeat.AddListener(OnDeactivate);
+    }
+
     public void OnActivate()
     {
+        if(overheatModule.IsOverheated())
+            return;
+        
         _isActive = true;
         if (_spinRoutine == null)
             _spinRoutine = StartCoroutine(Spin());

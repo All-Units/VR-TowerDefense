@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using PlasticGui.WorkspaceWindow;
 using UnityEngine;
 
 public class ProjectileSpawner : MonoBehaviour
@@ -16,13 +18,25 @@ public class ProjectileSpawner : MonoBehaviour
     [Tooltip("The speed at which the projectile is launched")]
     float m_LaunchSpeed = 1.0f;
 
+    public event Action OnFire;
+
+    [SerializeField] protected OverheatModule overheatModule;
+
     public virtual void Fire()
     {
+        if(CheckCantFireModules()) return;
+        
         var newObject = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
         
         newObject.Fire();
         
         Destroy(newObject, 15f);
+        OnFire?.Invoke();
+    }
+
+    protected bool CheckCantFireModules()
+    {
+        return overheatModule && overheatModule.IsOverheated();
     }
     
 }
