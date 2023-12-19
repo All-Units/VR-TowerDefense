@@ -117,6 +117,7 @@ public abstract class Enemy : MonoBehaviour
         _InitComponents();
 
         _InitHC();
+        
 
         
         spawnTime = Time.realtimeSinceStartup;
@@ -270,12 +271,9 @@ public abstract class Enemy : MonoBehaviour
         //Scale velocity
         dir *= _MoveSpeed;
 
-        //Set our velocity in the horizontal plane
-        Vector3 velocity = RB.velocity;
-
-        velocity.x = dir.x; velocity.z = dir.z;
-        velocity.y = 0f;
-        RB.AddForce(velocity);
+        
+        RB.AddForce(dir);
+        print($"Adding force {dir.magnitude} in dir {dir}");
         //RB.velocity = velocity;
         _rotateTowards(_target);
 
@@ -356,13 +354,17 @@ public abstract class Enemy : MonoBehaviour
 
     void _EnableRagdollRBs(bool enabled = false)
     {
+        
         if (_ragdollRBs.Count == 0) 
-            _ragdollRBs = ragdollRB.GetComponentsInChildren<Rigidbody>(true).ToList();
+            _ragdollRBs = GetComponentsInChildren<Rigidbody>(true).ToList();
 
         //Invert because isKinematic = TRUE
         //Means physics DOES NOT affect rb
         foreach (var rb in _ragdollRBs)
-            rb.isKinematic = !enabled;
+        {
+            if (rb.gameObject == gameObject) continue;
+            rb.isKinematic = !enabled; 
+        }
     }
     /// <summary>
     /// Finds all colliders on the ragdoll, and turns them on/off
@@ -370,13 +372,17 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="enabled">Whether to enable the ragdoll cols or not. Defaults to off</param>
     void _EnableRagdollColliders(bool enabled = false)
     {
+        
         //Get list of colliders if empty
         if (_ragdollColliders.Count == 0) 
-            _ragdollColliders = ragdollRB.GetComponentsInChildren<Collider>(true).ToList();
+            _ragdollColliders = GetComponentsInChildren<Collider>(true).ToList();
 
         //Set col.enabled to parameter enabled
         foreach (var collider in _ragdollColliders) 
-            { collider.enabled = enabled; }
+        { 
+            if (collider.gameObject == gameObject) continue; 
+            collider.enabled = enabled; 
+        }
     }
     /// <summary>
     /// Rotates us towards the given target

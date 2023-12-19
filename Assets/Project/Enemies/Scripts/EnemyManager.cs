@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -327,9 +328,10 @@ public class EnemyManager : MonoBehaviour
         var e = enemy.GetComponent<Enemy>();
         if (e)
             e._SetTarget(point.SpawnPoint.nextPoint);
-        //Minimap.SpawnHead(e);
-        //SpawnHead(e);
-        //e.nextPoint = ;
+
+        //print("Pausing");
+        //EditorApplication.isPaused = true;
+        
     }
     void _win()
     {

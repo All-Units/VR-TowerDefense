@@ -456,18 +456,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -40
+    limit: -58.959747
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 25
+    limit: 48.3457
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 25
+    limit: 54.559013
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -809,18 +809,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -39.488388
+    limit: -72.392365
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 20
+    limit: 85.76797
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 23.252106
+    limit: 58.84634
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -2308,6 +2308,7 @@ MonoBehaviour:
   _hitParticles: {fileID: 377973097247513787}
   rb_velocity: {x: 0, y: 0, z: 0}
   _TargetsInRange: 0
+  _distanceToTarget: 0
 --- !u!114 &7157983635303586135
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2698,7 +2699,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -20
+    limit: -100.5508
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
@@ -2709,7 +2710,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 30
+    limit: 41.511887
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -3610,7 +3611,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -20
+    limit: -113.730804
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
@@ -3621,7 +3622,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 30
+    limit: 50.534775
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -3661,7 +3662,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8732958797833335711}
   m_LocalRotation: {x: -0.07943537, y: 0.0459474, z: -0.19202463, w: 0.9770903}
-  m_LocalPosition: {x: -0.25068295, y: -1.4210854e-16, z: -8.881784e-18}
+  m_LocalPosition: {x: -0.25068295, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:

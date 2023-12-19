@@ -6,6 +6,7 @@ public class OrcBehavior : Enemy
 {
 
     [Header("Debug vars")]
+    public Vector3 ragdoll_velocity;
     public Vector3 rb_velocity;
 
     public int _TargetsInRange;
@@ -44,7 +45,8 @@ public class OrcBehavior : Enemy
     protected override void Update()
     {
         base.Update();
-        rb_velocity = ragdollRB.velocity;
+        ragdoll_velocity = ragdollRB.velocity;
+        rb_velocity = RB.velocity;
         _TargetsInRange = _targets.Count;
         _distanceToTarget = Utilities.FlatDistance(pos, _target);
         _distanceToTarget -= _HitboxRadius;
