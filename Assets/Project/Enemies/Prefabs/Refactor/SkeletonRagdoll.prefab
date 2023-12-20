@@ -1837,9 +1837,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.07637702
-  m_Height: 0.30550808
+  m_Height: 0.28229868
   m_Direction: 0
-  m_Center: {x: -0.15275404, y: 0, z: 0}
+  m_Center: {x: -0.16435897, y: 0.000000020677792, z: -0.00000006653268}
 --- !u!54 &6841282391467410953
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1886,11 +1886,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -70
+    limit: -134.01233
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 10
+    limit: -40.2496
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
@@ -1968,9 +1968,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.076376736
-  m_Height: 0.30550694
+  m_Height: 0.27218434
   m_Direction: 0
-  m_Center: {x: -0.15275347, y: 0, z: 0}
+  m_Center: {x: -0.13609216, y: -0.000000064946995, z: 0.000000013417804}
 --- !u!54 &7771441177917879056
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2017,18 +2017,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -70
+    limit: -123.24924
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 10
+    limit: -59.32684
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 50
+    limit: 37.984528
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -2161,9 +2161,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.05222022
-  m_Height: 0.1740674
+  m_Height: 0.13281357
   m_Direction: 0
-  m_Center: {x: -0.0870337, y: 0, z: 0}
+  m_Center: {x: -0.1026648, y: 0.0000000067971317, z: 0.00000009882114}
 --- !u!54 &1482092809923138108
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2210,18 +2210,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -20
+    limit: -66.58885
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 70
+    limit: 36.958527
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 30
+    limit: 48.9364
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -2292,9 +2292,9 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.052220408
-  m_Height: 0.17406802
+  m_Height: 0.15661947
   m_Direction: 0
-  m_Center: {x: -0.08703401, y: 0, z: 0}
+  m_Center: {x: -0.09575829, y: 0.000000007239481, z: -0.000000011770404}
 --- !u!54 &5850074573176824194
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2341,18 +2341,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -20
+    limit: -176.0479
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 70
+    limit: -31.424881
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 30
+    limit: 39.58728
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -2613,8 +2613,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.5055563, y: 0.2691227, z: 0.2581868}
-  m_Center: {x: -0.24404144, y: 0.03228405, z: -0.1290973}
+  m_Size: {x: 0.13536184, y: 0.39040676, z: 0.5280852}
+  m_Center: {x: -0.0589441, y: -0.028358154, z: 0.0058517847}
 --- !u!54 &4236483442147398056
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2990,8 +2990,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.20304696
-  m_Center: {x: 0, y: -0.20304696, z: 0}
+  m_Radius: 0.3202637
+  m_Center: {x: 0.00023353311, y: -0.08563397, z: 0.00002902078}
 --- !u!54 &4122376663621711754
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3031,25 +3031,25 @@ CharacterJoint:
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
-  m_ConnectedAnchor: {x: 0, y: 0, z: 0}
+  m_ConnectedAnchor: {x: -0.62593454, y: -0.12271729, z: 0.043123633}
   serializedVersion: 2
   m_SwingAxis: {x: 0, y: -1, z: 0}
   m_TwistLimitSpring:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -40
+    limit: -117.3248
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 25
+    limit: -17.348541
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 25
+    limit: 37.401978
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -3492,8 +3492,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.49878317, y: 0.27039564, z: 0.2695028}
-  m_Center: {x: 0.036475584, y: 0.032637224, z: 0.13474749}
+  m_Size: {x: 0.35714865, y: 0.27039564, z: 0.503779}
+  m_Center: {x: -0.03434169, y: 0.032637328, z: 0.017609412}
 --- !u!54 &6176903668146771558
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3540,18 +3540,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -20
+    limit: -138.44528
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 20
+    limit: -48.910034
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 10
+    limit: 43.50952
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -4097,10 +4097,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.016454384
-  m_Height: 0.08227192
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.04113596, z: 0}
+  m_Radius: 0.03672707
+  m_Height: 0.3054526
+  m_Direction: 0
+  m_Center: {x: -0.1415121, y: 0.015953379, z: 0.0049103107}
 --- !u!54 &3560056372115761343
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4147,18 +4147,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -90
+    limit: -120.47392
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 0
+    limit: -33.16115
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 0
+    limit: 36.996437
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -4228,10 +4228,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.023912186
-  m_Height: 0.11956093
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.059780464, z: 0}
+  m_Radius: 0.054794095
+  m_Height: 0.18999232
+  m_Direction: 0
+  m_Center: {x: -0.13881764, y: -0.0053890366, z: 0.00000045451773}
 --- !u!54 &1939719595107907556
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4278,22 +4278,22 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -90
+    limit: -117.64588
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 0
+    limit: -41.04015
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 0
+    limit: 29.240852
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 0
+    limit: 3
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 0
@@ -4485,10 +4485,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.06345743
-  m_Height: 0.25382972
+  m_Radius: 0.044251733
+  m_Height: 0.19581084
   m_Direction: 0
-  m_Center: {x: -0.12691486, y: 0, z: 0}
+  m_Center: {x: -0.17836544, y: -0.019205779, z: 0.000000036444384}
 --- !u!54 &9183524753641330740
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4535,18 +4535,18 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -80
+    limit: -112.575874
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 0
+    limit: -34.30542
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 0
+    limit: 26.858921
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
@@ -4616,10 +4616,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.05514103
-  m_Height: 0.22056413
+  m_Radius: 0.055141028
+  m_Height: 0.20111038
   m_Direction: 0
-  m_Center: {x: -0.11028206, y: 0, z: 0}
+  m_Center: {x: -0.12000895, y: -0.00000000995478, z: -0.00000002033678}
 --- !u!54 &1175940018459995152
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -4666,7 +4666,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -80
+    limit: -120.66553
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
@@ -4677,7 +4677,7 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_Swing1Limit:
-    limit: 0
+    limit: 36.823772
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
