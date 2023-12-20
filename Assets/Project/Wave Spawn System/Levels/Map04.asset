@@ -19,21 +19,20 @@ MonoBehaviour:
   - prefab: {fileID: 6692053662854930735, guid: 755ed82bc5c38b9449a4cc81e174a846,
       type: 3}
     type: 1
-  - prefab: {fileID: 3732419523249009799, guid: df62b2c5f1cef9c47a957b7e7b55b281,
-      type: 3}
+  - prefab: {fileID: 856478182163992432, guid: 00cffeeca8572d640a09ccc176cd0ec5, type: 3}
     type: 2
   - prefab: {fileID: 3824934994461625781, guid: 7ea8d31244111cf4eb068ed322e285e1,
       type: 3}
     type: 3
   waveStructs:
   - enemies:
-    - enemyType: 1
+    - enemyType: 2
       amountToSpawn: {x: 60, y: 60}
     subWaves: []
     WaveCompleteBounty: 100
-    preWaveDelay: 1
-    groupSizes: {x: 4, y: 8}
-    spawnRate: 8
+    preWaveDelay: 160
+    groupSizes: {x: 1, y: 1}
+    spawnRate: 12
     spawnPoints:
     - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
   - enemies:

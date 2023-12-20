@@ -153,7 +153,7 @@ public struct EnemyQuant
 {
     Orc,
     Skeleton,
-    Sweg,
+    BlackKnight,
     Breg,
 }
 
