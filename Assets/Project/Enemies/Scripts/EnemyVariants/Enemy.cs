@@ -21,7 +21,6 @@ public abstract class Enemy : MonoBehaviour
     [Header("Component references")]
     public PathPoint nextPoint;
     [SerializeField] protected EnemyDTO enemyStats;
-    [HideInInspector]
     public float _MoveSpeed;
     public float _TargetTolerance => enemyStats.targetTolerance;
     public float _RotateDamping => enemyStats.rotateDamping;
