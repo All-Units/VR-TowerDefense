@@ -28,10 +28,14 @@ MonoBehaviour:
   - enemies:
     - enemyType: 1
       amountToSpawn: {x: 60, y: 60}
+    - enemyType: 0
+      amountToSpawn: {x: 15, y: 15}
+    - enemyType: 2
+      amountToSpawn: {x: 3, y: 3}
     subWaves: []
     WaveCompleteBounty: 100
     preWaveDelay: 1
-    groupSizes: {x: 1, y: 4}
+    groupSizes: {x: 1, y: 10}
     spawnRate: 8
     spawnPoints:
     - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
