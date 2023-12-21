@@ -21,7 +21,7 @@ public class BasicEnemy : Enemy
 
     #region InternalVariables
     [HideInInspector] EnemyType enemyType;
-    public Vector3 pos;
+    public Vector3 _OLD_pos;
     [HideInInspector]
     public PathPoint nextWaypoint;
     public IEnemyTargetable currentTarget;
@@ -146,9 +146,9 @@ public class BasicEnemy : Enemy
     /// </summary>
     private void _EnemyStateMachine()
     {
-        pos = transform.position;
+        _OLD_pos = transform.position;
         Attacking = false;
-        float distance = Utilities.FlatDistance(pos, _target);
+        float distance = Utilities.FlatDistance(_OLD_pos, _OLD_target);
         distanceToTarget = distance;
         //If we are dead, perform no further logic
         if (_hc.isDead) return;
@@ -189,7 +189,7 @@ public class BasicEnemy : Enemy
             StartCoroutine(_targetSelector);
             if (currentTarget == null) return;
         }
-        float d = Utilities.FlatDistance(pos, _target);
+        float d = Utilities.FlatDistance(_OLD_pos, _OLD_target);
         d -= hitboxRadius;
         if (d > enemyDTO.attackThreshold)
         {
@@ -224,7 +224,7 @@ public class BasicEnemy : Enemy
 
 
 
-        float distance = Utilities.FlatDistance(pos, _target);
+        float distance = Utilities.FlatDistance(_OLD_pos, _OLD_target);
         distanceToTarget = distance;
         //We've reached our current target
         if (distance <= enemyDTO.targetTolerance)
@@ -239,7 +239,7 @@ public class BasicEnemy : Enemy
             }
             else
             {
-                _target = nextWaypoint.GetPoint(hitboxRadius);
+                _OLD_target = nextWaypoint.GetPoint(hitboxRadius);
             }
         }
         _Move();
@@ -253,7 +253,7 @@ public class BasicEnemy : Enemy
         if (listeningForFootstep)
             return;
         _rb.constraints = RigidbodyConstraints.FreezeRotation;
-        Vector3 dir = _target - pos;
+        Vector3 dir = _OLD_target - _OLD_pos;
         dir.y = 0;
         dir = dir.normalized;
 
@@ -265,14 +265,14 @@ public class BasicEnemy : Enemy
 
         velocity.x = dir.x; velocity.z = dir.z;
         _rb.velocity = velocity;
-        _rotateTowards(_target);
+        _rotateTowards(_OLD_target);
 
     }
 
     #endregion
 
     #region LifeCycle
-    List<Collider> _ragdollColliders = new List<Collider>();
+    List<Collider> _OLD_ragdollColliders = new List<Collider>();
     void OnSpawn()
     {
         if (EnemyManager.Enemies.Contains(this) == false)
@@ -282,9 +282,9 @@ public class BasicEnemy : Enemy
         foreach (Transform t in transform)
         {
             if (t == transform) continue;
-            _ragdollColliders.AddRange(t.GetComponentsInChildren<Collider>().ToList());
+            _OLD_ragdollColliders.AddRange(t.GetComponentsInChildren<Collider>().ToList());
         }
-        foreach (var col in _ragdollColliders)
+        foreach (var col in _OLD_ragdollColliders)
             col.enabled = false;
     }
 
@@ -299,7 +299,7 @@ public class BasicEnemy : Enemy
             return;
         lastCollisionTime = t;
         other.lastCollisionTime = t;
-        other.NewWaypoint(nextWaypoint, _target);
+        other.NewWaypoint(nextWaypoint, _OLD_target);
     }
     [HideInInspector]
     public float lastCollisionTime = 0f;
@@ -316,7 +316,7 @@ public class BasicEnemy : Enemy
         EnemyManager.EnemyCount--;
         EnemyManager.GregKilled();
         StartCoroutine(_FreezeLocalHipsPos());
-        foreach (var col in _ragdollColliders)
+        foreach (var col in _OLD_ragdollColliders)
             col.enabled = true;
     }
     /// <summary>
@@ -337,7 +337,7 @@ public class BasicEnemy : Enemy
             
             RB.velocity = Vector3.ClampMagnitude(RB.velocity, enemyDTO.MaxRagdollForce);
             _hipsRB.velocity = RB.velocity;
-            _hipsRB.transform.position = pos;
+            _hipsRB.transform.position = _OLD_pos;
             
             yield return null;
 
@@ -381,7 +381,7 @@ public class BasicEnemy : Enemy
         if (healthController.isDead == false) return;
         foreach (var col in GetComponents<Collider>())
             col.excludeLayers = _ignoreGregLayer;
-        Vector3 dir = pos - target;
+        Vector3 dir = _OLD_pos - target;
         dir.y = 0f; dir = dir.normalized;
         dir.y = 1f;
         dir = dir.normalized;
@@ -421,8 +421,8 @@ public class BasicEnemy : Enemy
             try
             {
                 //Selects the closest tower in range
-                var closest = _targets.OrderBy(t => Vector3.Distance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
-                _target = closest.GetHealthController().transform.position;
+                var closest = _targets.OrderBy(t => Vector3.Distance(t.GetHealthController().transform.position, _OLD_pos)).FirstOrDefault();
+                _OLD_target = closest.GetHealthController().transform.position;
                 currentTarget = closest;
                 break;
             }
@@ -452,11 +452,11 @@ public class BasicEnemy : Enemy
     }
 
     public float distanceToTarget;
-    public Vector3 _target;
+    public Vector3 _OLD_target;
     void _FaceWaypoint()
     {
         if (nextWaypoint == null) return;
-        _target = nextWaypoint.GetPoint(hitboxRadius);
+        _OLD_target = nextWaypoint.GetPoint(hitboxRadius);
         Vector3 dir = nextWaypoint.nextPoint.transform.position - nextWaypoint.transform.position;
         dir.y = 0f;
         transform.rotation = Quaternion.LookRotation(dir);
@@ -482,7 +482,7 @@ public class BasicEnemy : Enemy
     void _rotateTowards(Vector3 nextPos)
     {
         //Rotate to face our next target
-        Vector3 dir = nextPos - pos;
+        Vector3 dir = nextPos - _OLD_pos;
         dir.y = 0f;
         var rot = Quaternion.LookRotation(dir);
         transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotateDamping * Time.deltaTime);
@@ -549,16 +549,17 @@ public class BasicEnemy : Enemy
         if (_targets.Count == 0)
         {
             //_target = nextWaypoint.GetPoint(hitboxRadius);
-            float _targetDistance = nextWaypoint.DistanceToGoalFrom(_target);
-            float d = nextWaypoint.DistanceToGoalFrom(pos);
+            if (nextWaypoint == null) print("Why next waypoint null on target death?");
+            float _targetDistance = nextWaypoint.DistanceToGoalFrom(_OLD_target);
+            float d = nextWaypoint.DistanceToGoalFrom(_OLD_pos);
             do
             {
                 if (nextWaypoint.nextPoint != null)
                     NewWaypoint(nextWaypoint.nextPoint, nextWaypoint.nextPoint.GetPoint(hitboxRadius));
                 else
                     NewWaypoint(nextWaypoint, nextWaypoint.GetPoint(hitboxRadius));
-                _targetDistance = nextWaypoint.DistanceToGoalFrom(_target);
-                d = nextWaypoint.DistanceToGoalFrom(pos);
+                _targetDistance = nextWaypoint.DistanceToGoalFrom(_OLD_target);
+                d = nextWaypoint.DistanceToGoalFrom(_OLD_pos);
                 
             } while (_targetDistance > d);
 
@@ -568,7 +569,7 @@ public class BasicEnemy : Enemy
     void NewWaypoint(PathPoint point, Vector3 target)
     {
         nextWaypoint = point;
-        _target = target;
+        _OLD_target = target;
     }
     #endregion
     #region Legacy
@@ -589,8 +590,8 @@ public class BasicEnemy : Enemy
             nextWaypoint = nextWaypoint.GetNext();
         distanceToTarget = distance;*/
 
-        pos = transform.position;
-        float distance = Vector3.Distance(pos, _target);
+        _OLD_pos = transform.position;
+        float distance = Vector3.Distance(_OLD_pos, _OLD_target);
 
         //If we've reached our current target
         if (distance <= targetTolerance)
@@ -600,7 +601,7 @@ public class BasicEnemy : Enemy
             //If there is a next target
             if (nextWaypoint != null)
             {
-                _target = nextWaypoint.GetPoint(hitboxRadius);
+                _OLD_target = nextWaypoint.GetPoint(hitboxRadius);
             }
             else
             {
@@ -611,11 +612,11 @@ public class BasicEnemy : Enemy
         //Move towards next target
         if (reachedEnd == false)
         {
-            Vector3 velocity = Vector3.Normalize(_target - pos) * moveSpeed;
+            Vector3 velocity = Vector3.Normalize(_OLD_target - _OLD_pos) * moveSpeed;
             velocity.y = 0f;
             _rb.velocity += velocity;
         }
-        _rotateTowards(_target);
+        _rotateTowards(_OLD_target);
 
     }
 
@@ -623,13 +624,13 @@ public class BasicEnemy : Enemy
     {
         if (attacking == false || currentTarget == null)
             return;
-        pos = transform.position;
+        _OLD_pos = transform.position;
         Vector3 target = currentTarget.GetPosition();
         _rotateTowards(target);
         _zeroVelocity();
-        if (Vector3.Distance(pos, target) > 1)
+        if (Vector3.Distance(_OLD_pos, target) > 1)
         {
-            Vector3 velocity = Vector3.Normalize(target - pos) * moveSpeed;
+            Vector3 velocity = Vector3.Normalize(target - _OLD_pos) * moveSpeed;
             velocity.y = 0f;
             _rb.velocity += velocity;
         }
@@ -642,7 +643,7 @@ public class BasicEnemy : Enemy
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.cyan;
-        Vector3 p = pos + Vector3.up;
+        Vector3 p = _OLD_pos + Vector3.up;
         Vector3 dir = p + RB.velocity.normalized * 3f;
 
         Gizmos.DrawLine(p, dir);

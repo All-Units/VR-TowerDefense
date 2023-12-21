@@ -88,10 +88,10 @@ public class Arrow : MonoBehaviour
         var colliderGameObject = other.collider.gameObject;
         Vector3 pos = transform.position;
         HealthController healthController = colliderGameObject.GetComponentInParent<HealthController>();
-        BasicEnemy e = colliderGameObject.GetComponentInParent<BasicEnemy>();
+        Enemy e = colliderGameObject.GetComponentInParent<Enemy>();
         if (healthController && e)
         {
-            healthController.TakeDamage(damage);
+            healthController.TakeDamageFrom(damage, startPos);
             
             if(statusModifier)
             {
@@ -101,7 +101,6 @@ public class Arrow : MonoBehaviour
             }
 
             enemyHit.PlayClipAt(pos);
-            e.FlingRagdoll(startPos);
             
         }
         else

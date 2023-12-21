@@ -36,7 +36,8 @@ public class EnemyDTO : ScriptableObject
     public float rotateDamping = 1;
     public float targetTolerance = 1;
 
-    public float StuckTimeTolerance = 1f;
+    public float CheckForNeighborsRate = 1f;
+
     public float StuckAngleOffset = 15f;
 
 }

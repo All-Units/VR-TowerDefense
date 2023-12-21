@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -312,7 +313,7 @@ public class EnemyManager : MonoBehaviour
         {
             return SpawnPoints.GetRandom();
         }
-
+        
         //Else choose from the specific list
         var points = spawnPoints;
         return points.GetRandom();
@@ -324,10 +325,13 @@ public class EnemyManager : MonoBehaviour
         float r = enemy.GetComponent<CapsuleCollider>().radius;
         Vector3 pos = point.SpawnPoint.GetPoint(r);
         enemy.transform.position = pos;
-        var e = enemy.GetComponent<BasicEnemy>();
-        Minimap.SpawnHead(e);
-        //SpawnHead(e);
-        e.nextWaypoint = point.SpawnPoint.nextPoint;
+        var e = enemy.GetComponent<Enemy>();
+        if (e)
+            e._SetTarget(point.SpawnPoint.nextPoint);
+
+        //print("Pausing");
+        //EditorApplication.isPaused = true;
+        
     }
     void _win()
     {

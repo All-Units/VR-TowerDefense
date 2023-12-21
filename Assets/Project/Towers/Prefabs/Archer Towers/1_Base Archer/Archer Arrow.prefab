@@ -256,7 +256,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.91
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3071368436360838454
 MonoBehaviour:
@@ -272,11 +272,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 1
   speed: 50
-  RagdollForce: 300
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 4359639538064573319}
   _hitGround: {fileID: 5308158447713014252}
   flyingVFX: {fileID: 0}
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0

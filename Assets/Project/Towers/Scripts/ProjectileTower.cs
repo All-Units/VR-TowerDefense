@@ -9,6 +9,7 @@ public class ProjectileTower : PlayerControllableTower
 
     [SerializeField] private Transform firePoint;
     [SerializeField] private Transform pivotPoint;
+    [SerializeField] private float EnemyHeightOffset = 2f;
 
     [Header("VFX")] 
     [SerializeField] private GameObject attackVFX;
@@ -68,7 +69,7 @@ public class ProjectileTower : PlayerControllableTower
     {
         var oldestTarget = targetingSystem.GetOldestTarget();
         var target = oldestTarget.transform.position;
-        target += Vector3.up;
+        target += Vector3.up * EnemyHeightOffset;
         if(oldestTarget)
             pivotPoint.LookAt(target);
     }

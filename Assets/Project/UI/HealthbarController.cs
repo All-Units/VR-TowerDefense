@@ -23,8 +23,9 @@ public class HealthbarController : MonoBehaviour
                 Debug.LogError($"Unable to find health component on {transform.parent.gameObject.name}!", gameObject);
                 return;
             }
-            healthController.onDeath.AddListener(_Destroy);
+            
         }
+        healthController.onDeath.AddListener(_Destroy);
 
         var tower = GetComponentInParent<Tower>();
         if (tower)

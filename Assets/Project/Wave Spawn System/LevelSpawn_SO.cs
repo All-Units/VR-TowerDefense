@@ -151,8 +151,9 @@ public struct EnemyQuant
 
 [Serializable] public enum EnemyType
 {
-    Greg,
-    Sweg,
+    Orc,
+    Skeleton,
+    BlackKnight,
     Breg,
 }
 

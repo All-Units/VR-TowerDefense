@@ -40,7 +40,7 @@ public class Projectile : MonoBehaviour
     {
         if (isDestroying) return;
 
-        if (other.collider.isTrigger) return;
+        //if (other.collider.isTrigger) return;
         
         OnCollision(other.collider);
     }
@@ -48,10 +48,13 @@ public class Projectile : MonoBehaviour
     protected virtual void OnCollision(Collider other)
     {
 
-        var colliderGameObject = other.gameObject;
-        if (colliderGameObject.TryGetComponent(out HealthController healthController))
+        //var colliderGameObject = other.gameObject;
+        var healthController = other.GetComponentInParent<HealthController>();  
+        if (healthController != null)
         {
-            healthController.TakeDamage(damage);
+            Vector3 pos = transform.position;
+            healthController.TakeDamageFrom(damage, startPos);
+            //healthController.TakeDamage(damage);
 
             ApplyEffects(healthController);
             
@@ -65,8 +68,8 @@ public class Projectile : MonoBehaviour
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
         }
-        BasicEnemy.FlingRagdoll(colliderGameObject, startPos);
-
+        //We hit a trigger that didn't have a HC
+        if (other.isTrigger && healthController == null) return;
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);

@@ -10,6 +10,7 @@ public class HealthController : MonoBehaviour
     public int CurrentHealth => _currentHealth;
     public int MaxHealth => maxHealth;
     public event Action<int> OnTakeDamage;
+    public event Action<int, Vector3> OnTakeDamageFrom;
     public event Action OnDeath;
     
     public UnityEvent<int> onTakeDamage;
@@ -19,6 +20,13 @@ public class HealthController : MonoBehaviour
     {
         _currentHealth = maxHealth;
     }
+
+    public void TakeDamageFrom(int dmg, Vector3 from)
+    {
+        TakeDamage(dmg);
+        OnTakeDamageFrom?.Invoke(_currentHealth, from);
+    }
+
 
     /// <summary>
     /// Generic take damage. Will Invoke OnTakeDamage(currentHealth) event and if health is >= 0 will invoke OnDeath.
