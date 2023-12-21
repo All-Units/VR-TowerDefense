@@ -411,6 +411,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72db718d318044b4187697dc05dc17f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  invert: 1
 --- !u!222 &2381874830062759155
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -519,7 +520,7 @@ Transform:
   - {fileID: 7135963722991543703}
   - {fileID: 2711761415615884734}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7670546113526427436
 MonoBehaviour:

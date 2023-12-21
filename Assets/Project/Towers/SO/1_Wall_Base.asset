@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Name: 1_Wall_Base
+  m_EditorClassIdentifier: 
+  ghostObject: {fileID: 1389164637993757956, guid: d04d1998d8327e94a8cbf1263855fe7c,
+    type: 3}
+  towerPrefab: {fileID: 5843902716089996411, guid: da95d1e0babcac14690429b60531a42d,
+    type: 3}
+  iconPrefab: {fileID: 1389164637993757956, guid: 24de0632138fd9d4cb78087dd0819167,
+    type: 3}
+  minimapPrefab: {fileID: 1389164637993757956, guid: 24de0632138fd9d4cb78087dd0819167,
+    type: 3}
+  cost: 10
+  name: Wall
+  description: Protects
+  stats: {fileID: 11400000, guid: 620b9e9be54f025479e9b270b02952a5, type: 2}
+  playerItem_SO: {fileID: 0}
+  upgrades: []

@@ -25,7 +25,7 @@ public class CameraBasedTowerPlacer : MonoBehaviour
 
             if (tile != selectedTile && tile.selectable)
             {
-                TowerSpawnManager.Instance.PlaceGhost(tile.transform.position);
+                // TowerSpawnManager.Instance.PlaceGhost(tile.transform.position, transform.position);
                 selectedTile = tile;
             }
         }

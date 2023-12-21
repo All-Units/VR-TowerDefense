@@ -228,17 +228,18 @@ public class Minimap : MonoBehaviour
     }
     public void SpawnTowerAt(Vector3 pos, Tower_SO dto)
     {
-        GameObject tower = Instantiate(dto.minimapPrefab, zeroPoint.transform);
+        /*GameObject tower = Instantiate(dto.minimapPrefab, zeroPoint.transform);
         var selector = tower.GetComponent<TowerSelectPointController>();
         foreach (var mr in tower.GetComponentsInChildren<MeshRenderer>())
             AddMaskTo(mr);
         selector.towerDTO = dto;
         selector.RefreshText();
-        selector.originTower = TowerSpawnManager._towersByPos[pos];
+        if(TowerSpawnManager._towersByPos[pos] is PlayerControllableTower playerControllableTower)
+            selector.originTower = playerControllableTower;
         //tower.transform.position = _WorldPosToMinimapPos(pos);
         tower.transform.localPosition = pos * _scale;
         //tower.transform.rotation = zeroPoint.rotation;
-        towersByPos.Add(pos, tower);
+        towersByPos.Add(pos, tower);*/
     }
 
     public static void DestroyTower(Vector3 pos)

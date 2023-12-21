@@ -13,7 +13,7 @@ public class TowerSelectPointController : MonoBehaviour
 
     [SerializeField] private XRBaseInteractable table;
     private TextMeshProUGUI secondText;
-    public Tower originTower;
+    public PlayerControllableTower originTower;
     private void Awake()
     {
         if(towerDTO != null)

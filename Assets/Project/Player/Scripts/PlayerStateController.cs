@@ -37,8 +37,8 @@ public class PlayerStateController : MonoBehaviour
 
     public GameObject penthouse;
     public GameObject penthouseInterior;
-    public static Tower CurrentTower => instance._currentControlledTower;
-    private Tower _currentControlledTower;
+    public static PlayerControllableTower CurrentTower => instance._currentControlledTower;
+    private PlayerControllableTower _currentControlledTower;
     [SerializeField] private bool StartInPenthouse = false;
 
     private void Awake()
@@ -59,7 +59,7 @@ public class PlayerStateController : MonoBehaviour
         OnStateChange?.Invoke(prevState, state);
     }
 
-    public static void TakeControlOfTower(Tower tower)
+    public static void TakeControlOfTower(PlayerControllableTower tower)
     {
         if(IsInstanced() == false) return;
         StartTeleportingReset();
@@ -67,14 +67,12 @@ public class PlayerStateController : MonoBehaviour
         instance.SetPlayerToTower(tower);
     }
 
-    public Tower CurrentTowerPublic;
-    public void SetPlayerToTower(Tower tower)
+    public void SetPlayerToTower(PlayerControllableTower tower)
     { 
         if(_currentControlledTower != null)
             _currentControlledTower.PlayerReleaseControl();
         
         _currentControlledTower = tower;
-        CurrentTowerPublic = tower;
         tower.PlayerTakeControl();
 
         var playerControlPoint = tower.GetPlayerControlPoint();

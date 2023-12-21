@@ -62016,12 +62016,17 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 64
-  selectTowerModeActionReference: {fileID: 187161793506945269, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
-  controlTowerConfirmActionReference: {fileID: 83097790271614945, guid: c348712bda248c246b8c49b3db54643f,
-    type: 3}
   openTowerMenuActionReference: {fileID: 0}
+  openTowerPlacementActionReference: {fileID: 0}
+  closeTowerPlacementActionReference: {fileID: 0}
   playerHand: {fileID: 8376328348228677832}
+  availableTowers: []
+  towersBubblePrefab: {fileID: 0}
+  currencyBubblePrefab: {fileID: 0}
+  towersBubbleRoot: {fileID: 0}
+  bubbleMenuRadius: 0
+  bubbleMenuMaxAngle: 0
+  towerPlacer: {fileID: 0}
   timeToQuickTakeOver: 2.5
 --- !u!120 &7813586892867595897
 LineRenderer:

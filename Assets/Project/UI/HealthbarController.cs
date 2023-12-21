@@ -8,8 +8,8 @@ public class HealthbarController : MonoBehaviour
     [SerializeField] private Slider slider;
 
     [SerializeField] private HealthController healthController;
-    [Tooltip("Unless more damage is taken, hides after this many seconds")]
-    public int HideAfter = 4;
+    /*[Tooltip("Unless more damage is taken, hides after this many seconds")]
+    public int HideAfter = 1;*/
 
     private bool _isShowing = false;
 
@@ -60,13 +60,13 @@ public class HealthbarController : MonoBehaviour
         if(_isShowing) return;
         if (gameObject.activeInHierarchy == false) return;
         StartCoroutine(Fade(.5f, true));
-        if (_currentFader != null)
+        /*if (_currentFader != null)
             StopCoroutine(_currentFader);
         _currentFader = _FadeAfterDelay();
-        StartCoroutine(_currentFader);
+        StartCoroutine(_currentFader);*/
         _isShowing = true;
     }
-    IEnumerator _currentFader = null;
+    /*IEnumerator _currentFader = null;
     IEnumerator _FadeAfterDelay()
     {
 
@@ -74,7 +74,7 @@ public class HealthbarController : MonoBehaviour
         _currentFader = null;
         Hide();
 
-    }
+    }*/
 
     private void Hide()
     {

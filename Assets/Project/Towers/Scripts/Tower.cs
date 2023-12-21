@@ -3,16 +3,11 @@ using System.Collections;
 using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
-using UnityEngine.XR.Interaction.Toolkit;
 
 [RequireComponent(typeof(HealthController))]
 public class Tower : MonoBehaviour, IEnemyTargetable
 {
     public HealthController healthController;
-    
-    public bool isPlayerControlled { get; private set; } = false;
-    [SerializeField] private Transform playerControlPosition;
-    [SerializeField] private Transform playerReleasePosition;
     
     [Header("Tower VFX")] 
     [SerializeField] private GameObject deathParticles;
@@ -114,34 +109,13 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     {
         onEndFocus?.Invoke();
     }
-    
-    public virtual void PlayerTakeControl()
-    {
-        isPlayerControlled = true;
-    }
-
-    public virtual void PlayerReleaseControl()
-    {
-        isPlayerControlled = false;
-    }
-
-    public Transform GetPlayerControlPoint()
-    {
-        return playerControlPosition;
-    }
 
     #endregion
 
     public virtual void Die()
     {
         TowerSpawnManager.PlayDeathSounds(transform.position);
-        if (isPlayerControlled)
-        {
-            PlayerStateController.DiedInTower();
-            
-            PlayerReleaseControl();
-            InventoryManager.instance.ReleaseAllItems();
-        }
+
         if (deathParticles == null)
         {
             GameObject g = gameObject;
@@ -168,4 +142,38 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         }
 
     #endregion
+}
+
+public class PlayerControllableTower : Tower
+{
+    public bool isPlayerControlled { get; private set; } = false;
+    [SerializeField] private Transform playerControlPosition;
+
+    public override void Die()
+    {
+        if (isPlayerControlled)
+        {
+            PlayerStateController.DiedInTower();
+            
+            PlayerReleaseControl();
+            InventoryManager.instance.ReleaseAllItems();
+        }
+        
+        base.Die();
+    }
+    
+    public virtual void PlayerTakeControl()
+    {
+        isPlayerControlled = true;
+    }
+
+    public virtual void PlayerReleaseControl()
+    {
+        isPlayerControlled = false;
+    }
+
+    public Transform GetPlayerControlPoint()
+    {
+        return playerControlPosition;
+    }
 }

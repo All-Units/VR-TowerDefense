@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class MageTower : Tower
+public class MageTower : PlayerControllableTower
 {
     [SerializeField] private float radius = 5f;
     [SerializeField] private RadialTargetingSystem targetingSystem;

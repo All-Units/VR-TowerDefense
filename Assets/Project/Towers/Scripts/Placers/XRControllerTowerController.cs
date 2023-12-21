@@ -4,7 +4,6 @@ using System.Linq;
 using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
 /// <summary>
@@ -85,7 +84,7 @@ public class XRControllerTowerController : MonoBehaviour
         if (Physics.SphereCast(ray, .5f, out var hit, 100, layerMask.value))
         {
             var tower = hit.transform.GetComponent<Tower>();
-            if(tower.isPlayerControlled) return;
+            if(tower is PlayerControllableTower { isPlayerControlled: true }) return;
             
             if (tower)
             {
@@ -239,11 +238,11 @@ public class XRControllerTowerController : MonoBehaviour
 
     public void EndSelection(InputAction.CallbackContext context)
     {
-        if (_selectedTower != null)
+        if (_selectedTower != null && _selectedTower is PlayerControllableTower playerControllableTower)
         {
             _selectedTower.Deselected();
             
-            PlayerStateController.TakeControlOfTower(_selectedTower);
+            PlayerStateController.TakeControlOfTower(playerControllableTower);
             _selectedTower = null;
         }
         
@@ -252,10 +251,10 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void OnConfirm()
     {
-        if(_selectedTower != null)
+        if(_selectedTower != null && _selectedTower is PlayerControllableTower playerControllableTower)
         {
             _selectedTower.Deselected();
-            PlayerStateController.TakeControlOfTower(_selectedTower);
+            PlayerStateController.TakeControlOfTower(playerControllableTower);
             _selectedTower = null;
             _selecting = false;
         }   

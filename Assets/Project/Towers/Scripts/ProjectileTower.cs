@@ -2,7 +2,7 @@
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
-public class ProjectileTower : Tower
+public class ProjectileTower : PlayerControllableTower
 {
     [Header("Projectile Tower")] 
     [SerializeField] private RadialTargetingSystem targetingSystem;

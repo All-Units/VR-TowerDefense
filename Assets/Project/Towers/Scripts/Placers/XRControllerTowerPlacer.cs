@@ -69,7 +69,7 @@ public class XRControllerTowerPlacer : MonoBehaviour
             Vector3 hitPos = hit.point;
             if (valid && lastTowerPos != hitPos)
             {
-                TowerSpawnManager.Instance.PlaceGhost(hitPos);
+                TowerSpawnManager.Instance.PlaceGhost(hitPos, transform.position);
                 lastTowerPos = hitPos;
             }
             DrawRay(pos, hit.point);

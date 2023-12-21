@@ -29,7 +29,7 @@ namespace Project.Towers.Scripts
         {
             if (lastPos.y < -100000 || _isGhostOpen())
                 return;
-            Instance.PlaceGhost(lastPos);
+            Instance.PlaceGhost(lastPos, lastPos);
         }
 
         private static bool _isGhostOpen()
@@ -42,7 +42,7 @@ namespace Project.Towers.Scripts
         }
 
         private static Vector3 lastPos = Vector3.negativeInfinity;
-        public void PlaceGhost(Vector3 targetPos)
+        public void PlaceGhost(Vector3 targetPos, Vector3 fromPos)
         {
             if (ghostObjects.ContainsKey(currentTower) == false)
             {
@@ -50,6 +50,8 @@ namespace Project.Towers.Scripts
             }
             
             ghostObjects[currentTower].transform.position = targetPos;
+            var rotation = ghostObjects[currentTower].transform.rotation;
+            ghostObjects[currentTower].transform.LookAt(new Vector3(fromPos.x, targetPos.y, fromPos.z));
             lastPos = targetPos;
             if(ghostObjects[currentTower].activeSelf == false)
                 ghostObjects[currentTower].SetActive(true);
@@ -85,7 +87,10 @@ namespace Project.Towers.Scripts
             {
                 return;
             }
-            var tower = Instantiate(currentTower.towerPrefab, targetPos, Quaternion.identity);
+
+            var targetTransform = ghostObjects[currentTower].transform;
+            
+            var tower = Instantiate(currentTower.towerPrefab, targetTransform.position, targetTransform.rotation);
             tower.transform.SetParent(towersRoot);
             tower.SpawnTower();
             
