@@ -11,9 +11,10 @@ GameObject:
   - component: {fileID: 8964768561982890719}
   - component: {fileID: 5843902716089996411}
   - component: {fileID: 4908015616640267259}
-  m_Layer: 0
+  - component: {fileID: 1960798539017618262}
+  m_Layer: 6
   m_Name: Wall
-  m_TagString: Untagged
+  m_TagString: Tower
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,7 +36,7 @@ Transform:
   - {fileID: 311576468346183645}
   - {fileID: 4464572269576070797}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5843902716089996411
 MonoBehaviour:
@@ -83,6 +84,27 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   isDead: 0
+--- !u!65 &1960798539017618262
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1389164637993757956}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 3.2386835, y: 1.1570787, z: 0.20546383}
+  m_Center: {x: 0, y: 0.58284426, z: 0}
 --- !u!1001 &253021119539702004
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -211,6 +233,21 @@ PrefabInstance:
       propertyPath: m_PresetInfoIsWorld
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1482494366143865503, guid: 078e64b743a501649a607509884f5830,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2206472783534491682, guid: 078e64b743a501649a607509884f5830,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2386416700782160520, guid: 078e64b743a501649a607509884f5830,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 5368649729684537483, guid: 078e64b743a501649a607509884f5830,
         type: 3}
       propertyPath: healthController
@@ -220,6 +257,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Healthbar
+      objectReference: {fileID: 0}
+    - target: {fileID: 6928277851612195147, guid: 078e64b743a501649a607509884f5830,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 7626878253680776496, guid: 078e64b743a501649a607509884f5830,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -310,6 +357,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: Selected
       objectReference: {fileID: 0}
+    - target: {fileID: 5320695028833954898, guid: bced4d20203e2e944971ef3da6c1b6c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379461146015819363, guid: bced4d20203e2e944971ef3da6c1b6c3,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -339,6 +396,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CFXR3 Construct Misc Smoke
+      objectReference: {fileID: 0}
+    - target: {fileID: 141433446842962269, guid: 1794ff1ac2a81c64b84ac882bf99e001,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 141433446842962274, guid: 1794ff1ac2a81c64b84ac882bf99e001,
         type: 3}
@@ -395,6 +457,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2544005474996212862, guid: 1794ff1ac2a81c64b84ac882bf99e001,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8122789944495389005, guid: 1794ff1ac2a81c64b84ac882bf99e001,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 8632830370936962459, guid: 1794ff1ac2a81c64b84ac882bf99e001,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -424,6 +501,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SM_Fence_01_A
+      objectReference: {fileID: 0}
+    - target: {fileID: 3565214191429547628, guid: baa107cfb390be74c83da9056921f45a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4193413955787861206, guid: baa107cfb390be74c83da9056921f45a,
         type: 3}
