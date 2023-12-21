@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 3_Cannon_Nuke
   m_EditorClassIdentifier: 
   ghostObject: {fileID: 6139709382012762173, guid: 121ed10e14230fb4480ee56d994bb237,
@@ -20,9 +20,13 @@ MonoBehaviour:
     type: 3}
   minimapPrefab: {fileID: 2899096153814601545, guid: a297d228d5652e140b720ee6ca08c7b1,
     type: 3}
-  cost: 25
   name: Nuke
   description: Blasts entire groups of enemies!
-  stats: {fileID: 11400000, guid: 7f816baf101b34b4a9d202dc5b886862, type: 2}
-  playerItem_SO: {fileID: 11400000, guid: 31082de44fd92f247b9054b3d8169c4e, type: 2}
+  cost: 25
+  maxHeath: 0
   upgrades: []
+  radius: 20
+  shotCooldown: 1
+  projectile: {fileID: 3071368436360838454, guid: 6ed388395ed76cf4fa9254a16f1c9119,
+    type: 3}
+  playerItem_SO: {fileID: 11400000, guid: 31082de44fd92f247b9054b3d8169c4e, type: 2}

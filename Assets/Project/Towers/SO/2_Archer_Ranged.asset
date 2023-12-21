@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 2_Archer_Ranged
   m_EditorClassIdentifier: 
   ghostObject: {fileID: 6139709382012762173, guid: a27f088cf90dd444584cbb709eb4dcec,
@@ -20,13 +20,17 @@ MonoBehaviour:
     type: 3}
   minimapPrefab: {fileID: 1918884645610000673, guid: c5248cb323ad2ca49ae960fe6519bbe1,
     type: 3}
-  cost: 80
   name: Ranged
   description: Shoots arrows at foes
-  stats: {fileID: 11400000, guid: 6f0d5fe532196464a92b57491cd47e71, type: 2}
-  playerItem_SO: {fileID: 11400000, guid: c18089523b7ea6b4d9a6f23cdb61f5fb, type: 2}
+  cost: 80
+  maxHeath: 0
   upgrades:
   - upgrade: {fileID: 11400000, guid: eb8fb503c91b15341a720d79d03f2d98, type: 2}
     cost: 0
   - upgrade: {fileID: 11400000, guid: 577e7aeefc8fd734ba76f2e0faf6c4e5, type: 2}
     cost: 0
+  radius: 35
+  shotCooldown: 1
+  projectile: {fileID: 3071368436360838454, guid: d56a8c24380e6ad4ab7a02eb3e10d6e7,
+    type: 3}
+  playerItem_SO: {fileID: 11400000, guid: c18089523b7ea6b4d9a6f23cdb61f5fb, type: 2}

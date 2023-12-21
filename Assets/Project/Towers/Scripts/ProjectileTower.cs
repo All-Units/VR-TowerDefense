@@ -9,7 +9,7 @@ public class ProjectileTower : PlayerControllableTower
 
     [SerializeField] private Transform firePoint;
     [SerializeField] private Transform pivotPoint;
-    [SerializeField] private float EnemyHeightOffset = 2f;
+    [FormerlySerializedAs("EnemyHeightOffset")] [SerializeField] private float enemyHeightOffset = 2f;
 
     [Header("VFX")] 
     [SerializeField] private GameObject attackVFX;
@@ -19,12 +19,13 @@ public class ProjectileTower : PlayerControllableTower
     private float _currentCooldown;
 
     public UnityEvent onTakeover;
-    public UnityEvent onRelease;    
+    public UnityEvent onRelease;
+    private ProjectileTower_SO projectileTowerSo => dto as ProjectileTower_SO;
 
     protected override void Awake()
     {
         base.Awake();
-        targetingSystem.SetRadius(dto.stats.radius);
+        targetingSystem.SetRadius(projectileTowerSo.radius);
         if(attackVFX)
             attackVFX.SetActive(false);
     }
@@ -69,16 +70,16 @@ public class ProjectileTower : PlayerControllableTower
     {
         var oldestTarget = targetingSystem.GetOldestTarget();
         var target = oldestTarget.transform.position;
-        target += Vector3.up * EnemyHeightOffset;
+        target += Vector3.up * enemyHeightOffset;
         if(oldestTarget)
             pivotPoint.LookAt(target);
     }
 
     private void Fire()
     {
-        var projectile = Instantiate(dto.stats.projectile, firePoint.position, firePoint.rotation);
+        var projectile = Instantiate(projectileTowerSo.projectile, firePoint.position, firePoint.rotation);
         projectile.Fire();
-        _currentCooldown = dto.stats.shotCooldown;
+        _currentCooldown = projectileTowerSo.shotCooldown;
     }
 
     public override void PlayerTakeControl()
@@ -89,7 +90,7 @@ public class ProjectileTower : PlayerControllableTower
         turretModel.SetActive(false);
         playerPlatform.SetActive(true);
         
-        switch (dto.playerItem_SO)
+        switch (projectileTowerSo.playerItem_SO)
         {
             case PlayerItem_SO itemSo:
                 InventoryManager.instance.GivePlayerItem(itemSo);
@@ -119,7 +120,7 @@ public class ProjectileTower : PlayerControllableTower
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(targetingSystem.transform.position, dto.stats.radius);
+        Gizmos.DrawWireSphere(targetingSystem.transform.position, projectileTowerSo.radius);
         
         Gizmos.color = targetingSystem.HasTarget() ? Color.red : Color.blue;
 
