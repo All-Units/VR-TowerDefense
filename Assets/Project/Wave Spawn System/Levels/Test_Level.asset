@@ -12,9 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c7753b4123e1e4a94c9b18a65ad6b3, type: 3}
   m_Name: Test_Level
   m_EditorClassIdentifier: 
-  waves:
-  - {fileID: 11400000, guid: ccff98bceab289d418f77a7f107ae55a, type: 2}
-  - {fileID: 11400000, guid: 07ea3f4c43f37224ca523e3140d73a99, type: 2}
+  enemyPrefabs:
+  - prefab: {fileID: 0}
+    type: 0
+  - prefab: {fileID: 0}
+    type: 1
+  - prefab: {fileID: 0}
+    type: 2
+  - prefab: {fileID: 0}
+    type: 3
   waveStructs:
   - enemies:
     - enemyType: 0
@@ -23,10 +29,25 @@ MonoBehaviour:
       amountToSpawn: {x: 1, y: 5}
     - enemyType: 2
       amountToSpawn: {x: 0, y: 0}
+    subWaves: []
     WaveCompleteBounty: 7
+    preWaveDelay: 0
+    groupSizes: {x: 1, y: 1}
+    spawnRate: 0
+    spawnPoints: []
   - enemies:
     - enemyType: 0
       amountToSpawn: {x: 0, y: 0}
+    subWaves: []
     WaveCompleteBounty: 10
+    preWaveDelay: 0
+    groupSizes: {x: 1, y: 1}
+    spawnRate: 0
+    spawnPoints: []
   - enemies: []
+    subWaves: []
     WaveCompleteBounty: 11
+    preWaveDelay: 0
+    groupSizes: {x: 1, y: 1}
+    spawnRate: 0
+    spawnPoints: []

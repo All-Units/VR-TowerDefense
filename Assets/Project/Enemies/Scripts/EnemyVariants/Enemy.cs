@@ -28,6 +28,7 @@ public abstract class Enemy : MonoBehaviour
     public float _attackThreshold => enemyStats.attackThreshold;
     public int _damage => enemyStats.Damage;
     public int _health => enemyStats.Health;
+    public bool _IsAttacking = false;
     /// <summary>
     /// What type of enemy we are
     /// </summary>
@@ -154,7 +155,8 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="currentHealth">Enemy HP left</param>
     protected virtual void OnEnemyTakeDamage(int currentHealth)
     {
-        animator.Play("GetHit");
+        if (_IsAttacking == false)
+            animator.Play("GetHit");
         _hitParticles.Play();
     }
 
@@ -187,7 +189,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     protected virtual void _StateMachineUpdate()
     {
-        
+        _IsAttacking = false;
         //There is at least one target in range
         if (_targets.Count > 0)
         {
@@ -252,6 +254,7 @@ public abstract class Enemy : MonoBehaviour
 
             RB.constraints = RigidbodyConstraints.FreezeAll;
             _SetIsAttacking(true);
+            _IsAttacking = true;
         }
     }
     float _lastPowerAttackTime = -1f;
@@ -562,7 +565,7 @@ public abstract class Enemy : MonoBehaviour
     }
     public virtual void StartGetHit()
     {
-        _IsFrozenAfterHit = true;
+        //_IsFrozenAfterHit = true;
     }
     public virtual void EndGetHit()
     {
