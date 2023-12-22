@@ -3627,6 +3627,11 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 9ebb3345fd9e4df183a1c85d72a8af78, type: 3}
+    - target: {fileID: 477489831382338310, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: c0d5ee5fc7de70e4390f391485849ba8, type: 2}
     - target: {fileID: 927573271698861262, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
         type: 3}
       propertyPath: m_Layer
@@ -3869,6 +3874,7 @@ MonoBehaviour:
   _fireballPrefab: {fileID: 337958517151354589, guid: 08b2433ec2c986d44a46366e71b3ff06,
     type: 3}
   _firePoint: {fileID: 6899089379767308477}
+  _fireRate: 1
 --- !u!136 &3607500018686826552 stripped
 CapsuleCollider:
   m_CorrespondingSourceObject: {fileID: 5479825940066521054, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,

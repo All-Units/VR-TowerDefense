@@ -13,12 +13,7 @@ public class OrcBehavior : Enemy
     public float _distanceToTarget;
     
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-        //StartCoroutine(_fling());
-    }
+    
     IEnumerator _fling()
     {
         yield return new WaitForSeconds(3f);

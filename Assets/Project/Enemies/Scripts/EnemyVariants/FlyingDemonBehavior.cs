@@ -57,7 +57,7 @@ public class FlyingDemonBehavior : Enemy
     float _timeSinceLastAttack = 0f;
     public override void Impact()
     {
-        if (currentTarget == null) return;
+        if (currentTarget == null || currentTarget == null) return;
         attackSFXController.PlayClip();
         Vector3 target = currentTarget.GetPosition() + Vector3.up * 2f;
         _firePoint.LookAt(target);

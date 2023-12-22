@@ -2271,7 +2271,7 @@ Animator:
   m_GameObject: {fileID: 6162612218955197706}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 1b1c0636a9064e88bf6df6272afee809, type: 3}
-  m_Controller: {fileID: 9100000, guid: c0d5ee5fc7de70e4390f391485849ba8, type: 2}
+  m_Controller: {fileID: 9100000, guid: f73347c00dc9c4c499856f14764cc525, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -2297,6 +2297,7 @@ MonoBehaviour:
   nextPoint: {fileID: 0}
   enemyStats: {fileID: 11400000, guid: f813470742b702d408e0be92537d34e7, type: 2}
   _MoveSpeed: 0
+  _IsAttacking: 0
   animator: {fileID: 477489831382338310}
   healthController: {fileID: 7157983635303586135}
   _RB: {fileID: 4647373904632249376}
@@ -2306,6 +2307,7 @@ MonoBehaviour:
   footstepController: {fileID: 2729351952081208690}
   attackSFXController: {fileID: 6258780508827971606}
   _hitParticles: {fileID: 377973097247513787}
+  ragdoll_velocity: {x: 0, y: 0, z: 0}
   rb_velocity: {x: 0, y: 0, z: 0}
   _TargetsInRange: 0
   _distanceToTarget: 0
