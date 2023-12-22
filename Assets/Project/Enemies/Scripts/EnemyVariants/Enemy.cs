@@ -28,6 +28,7 @@ public abstract class Enemy : MonoBehaviour
     public float _attackThreshold => enemyStats.attackThreshold;
     public int _damage => enemyStats.Damage;
     public int _health => enemyStats.Health;
+    [HideInInspector]
     public bool _IsAttacking = false;
     /// <summary>
     /// What type of enemy we are
@@ -82,7 +83,7 @@ public abstract class Enemy : MonoBehaviour
     {
         OnEnemySpawn();
     }
-    
+
     protected virtual void Update()
     {
         //Cache position first
@@ -92,7 +93,7 @@ public abstract class Enemy : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         //If we don't have this enemy in our target list
-        if (other.TryGetComponent(out IEnemyTargetable enemy) 
+        if (other.TryGetComponent(out IEnemyTargetable enemy)
             && _targets.Contains(enemy) == false)
         {
             _targets.Add(enemy);
@@ -122,9 +123,9 @@ public abstract class Enemy : MonoBehaviour
         _InitComponents();
 
         _InitHC();
-        
 
-        
+
+
         spawnTime = Time.realtimeSinceStartup;
         _EnableRagdoll(false);
         _SetSpeed(1f);
@@ -202,9 +203,9 @@ public abstract class Enemy : MonoBehaviour
     private void _MoveState()
     {
         if (nextPoint == null) return;
-        
+
         _CompareNeighbors();
-        
+
         float distance = Utilities.FlatDistance(pos, _target);
         //We've reached our current target
         if (distance <= _TargetTolerance)
@@ -249,13 +250,7 @@ public abstract class Enemy : MonoBehaviour
             return;
         }
         else
-        {
-            _UpdatePowerAttackTime();
-
-            RB.constraints = RigidbodyConstraints.FreezeAll;
-            _SetIsAttacking(true);
-            _IsAttacking = true;
-        }
+            _Attack();
     }
     float _lastPowerAttackTime = -1f;
 
@@ -303,7 +298,15 @@ public abstract class Enemy : MonoBehaviour
             }
         }
     }
-    void _Move()
+    protected virtual void _Attack()
+    {
+        _UpdatePowerAttackTime();
+
+        RB.constraints = RigidbodyConstraints.FreezeAll;
+        _SetIsAttacking(true);
+        _IsAttacking = true;
+    }
+    protected virtual void _Move()
     {
         _SetIsAttacking(false);
         if (_IsFrozenAfterHit)
@@ -313,10 +316,7 @@ public abstract class Enemy : MonoBehaviour
             RB.velocity = velocity;
             return;
         }
-        //UpdateSpeed(1f);
-        //Do not move if we are listening for a footstep
-        //if (listeningForFootstep)
-        //    return;
+        
         RB.constraints = RigidbodyConstraints.FreezeRotation;
         Vector3 dir = _target - pos;
         dir.y = 0;
@@ -325,7 +325,7 @@ public abstract class Enemy : MonoBehaviour
         //Scale velocity
         dir *= _MoveSpeed;
 
-        
+
         RB.AddForce(dir);
         _rotateTowards(_target);
 
@@ -335,7 +335,7 @@ public abstract class Enemy : MonoBehaviour
         _EnableRagdollRBs(enabled);
         _EnableRagdollColliders(enabled);
     }
-    public List<Enemy> _neighbors;
+
     protected virtual void _CompareNeighbors()
     {
         if (Time.time - _lastNeighborCheckTime <= enemyStats.CheckForNeighborsRate) return;
@@ -344,17 +344,13 @@ public abstract class Enemy : MonoBehaviour
 
         Enemy closestNeighbor = this;
         float distance = GetDistanceFromGoal();
-        int i = 0;
-        _neighbors.Clear();
         //Iterate over each enemy neighbor
-        foreach (var neighbor in neighbors )
+        foreach (var neighbor in neighbors)
         {
-            if (neighbor.isTrigger) continue;   
+            if (neighbor.isTrigger) continue;
             Enemy e = neighbor.GetComponent<Enemy>();
             if (e == null || e == this) { continue; }
             //if (pos.FlatDistance(e.Pos) >= _HitboxRadius + 1.5) continue;
-            i++;
-            _neighbors.Add(e);
             float d = e.GetDistanceFromGoal();
             if (d < distance)
             {
@@ -367,7 +363,7 @@ public abstract class Enemy : MonoBehaviour
             _SetPoint(closestNeighbor.nextPoint, closestNeighbor._target);
             //Debug.Log($"{gameObject.name} adopted the target of {closestNeighbor.gameObject.name}", closestNeighbor.gameObject);
         }
-        
+
 
 
     }
@@ -376,6 +372,11 @@ public abstract class Enemy : MonoBehaviour
         if (_targetSelector != null) return;
         _targetSelector = SelectNewTargetRoutine();
         StartCoroutine(_targetSelector);
+    }
+    protected virtual IEnemyTargetable _GetNextTarget()
+    {
+        var closest = _targets.OrderBy(t => Utilities.FlatDistance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
+        return closest;
     }
     protected virtual IEnumerator SelectNewTargetRoutine()
     {
@@ -399,7 +400,7 @@ public abstract class Enemy : MonoBehaviour
 
 
         //Find the closest tower to us
-        var closest = _targets.OrderBy(t => Utilities.FlatDistance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
+        var closest = _GetNextTarget();
         //Set closest tower as new target
         _target = closest.GetPosition();
         //_target = closest.GetHealthController().transform.position;
@@ -471,7 +472,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     /// <param name="pos">our current position</param>
     /// <param name="nextPos">current target's position</param>
-    void _rotateTowards(Vector3 nextPos)
+    protected virtual void _rotateTowards(Vector3 nextPos)
     {
         //Rotate to face our next target
         Vector3 dir = nextPos - pos;
@@ -559,7 +560,7 @@ public abstract class Enemy : MonoBehaviour
         attackSFXController.PlayClip();
         float dmg = _damage;
         if (_IsPowerAttacking)
-            dmg *= 1.5f;
+            dmg *= enemyStats.PowerAttackScalar;
         currentTarget.GetHealthController().TakeDamage((int)dmg);
 
     }

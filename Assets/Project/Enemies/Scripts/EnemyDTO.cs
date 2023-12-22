@@ -36,6 +36,7 @@ public class EnemyDTO : ScriptableObject
 
     public float PowerAttackChance = 0.1f;
 
+    public float PowerAttackScalar = 1.5f;
 
 
 

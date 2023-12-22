@@ -40,10 +40,11 @@ public class Projectile : MonoBehaviour
     {
         if (isDestroying) return;
 
-        //if (other.collider.isTrigger) return;
+        if (other.collider.isTrigger) return;
         
         OnCollision(other.collider);
     }
+    bool _isFireball => gameObject.name.ToLower().Contains("fireball");
 
     protected virtual void OnCollision(Collider other)
     {
@@ -54,6 +55,8 @@ public class Projectile : MonoBehaviour
         {
             Vector3 pos = transform.position;
             healthController.TakeDamageFrom(damage, startPos);
+            if (_isFireball)
+                print($"Hit {healthController.gameObject}");
             //healthController.TakeDamage(damage);
 
             ApplyEffects(healthController);
@@ -64,6 +67,8 @@ public class Projectile : MonoBehaviour
         }
         else
         {
+            if (gameObject.name.ToLower().Contains("fireball"))
+                print($"Hit {other.gameObject}, NOT HEALTH CONTROLLER");
             // Todo Refactor out to event based
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);

@@ -57,11 +57,7 @@ public class OrcBehavior : Enemy
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(pos, _HitboxRadius + 1.5f);
 
-        Gizmos.color = Color.cyan;
-        foreach (var e in _neighbors)
-        {
-            Gizmos.DrawLine(pos, e.Pos);
-        }
+        
         Gizmos.color = Color.green;
         Gizmos.DrawLine(pos, _target);
 
