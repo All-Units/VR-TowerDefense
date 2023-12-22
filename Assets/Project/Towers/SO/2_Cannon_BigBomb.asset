@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 2_Cannon_BigBomb
   m_EditorClassIdentifier: 
   ghostObject: {fileID: 6139709382012762173, guid: e6d66c7f4b78e0c49be22cb13bba0a7e,
@@ -20,13 +20,17 @@ MonoBehaviour:
     type: 3}
   minimapPrefab: {fileID: 2899096153814601545, guid: a297d228d5652e140b720ee6ca08c7b1,
     type: 3}
-  cost: 25
   name: Big Bombs
   description: Blasts entire groups of enemies!
-  stats: {fileID: 11400000, guid: 7f816baf101b34b4a9d202dc5b886862, type: 2}
-  playerItem_SO: {fileID: 11400000, guid: 0bff36d924c40054183a96ca1886d82f, type: 2}
+  cost: 25
+  maxHeath: 0
   upgrades:
   - upgrade: {fileID: 11400000, guid: d18255d8af21b8f44821968ddcc165e6, type: 2}
     cost: 0
   - upgrade: {fileID: 11400000, guid: af1af252afae8f34391b6a6263da79f8, type: 2}
     cost: 0
+  radius: 20
+  shotCooldown: 1
+  projectile: {fileID: 3071368436360838454, guid: 564aa02aa7da8514199cecfa3b2f21ed,
+    type: 3}
+  playerItem_SO: {fileID: 11400000, guid: 0bff36d924c40054183a96ca1886d82f, type: 2}

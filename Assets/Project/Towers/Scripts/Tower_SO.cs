@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Tower", fileName = "New Tower")]
-    public class Tower_SO : ScriptableObject
-    {
-        public GameObject ghostObject;
-        public Tower towerPrefab;
-        public GameObject iconPrefab;
-        public GameObject minimapPrefab;
-        public int cost;
+public class Tower_SO : ScriptableObject
+{
+    [Header("Prefabs")]
+    public GameObject ghostObject;
+    public Tower towerPrefab;
+    public GameObject iconPrefab;
+    public GameObject minimapPrefab;
+    
+    [Header("Base Data")]
+    public new string name;
+    public string description;
+    public int cost;
+    public int maxHeath;
 
-        public new string name;
-        public string description;
-        public TowerStats stats;
-        public TowerTakeoverObject playerItem_SO;
+    [SerializeField] private List<TowerUpgrade> upgrades = new();
 
-        [SerializeField] private List<TowerUpgrade> upgrades = new();
-
-        public List<TowerUpgrade> GetUpgrades() => upgrades;
-    }
+    public List<TowerUpgrade> GetUpgrades() => upgrades;
+}
 
 [Serializable]
 public struct TowerUpgrade

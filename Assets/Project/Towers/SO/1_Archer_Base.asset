@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 1_Archer_Base
   m_EditorClassIdentifier: 
   ghostObject: {fileID: 6139709382012762173, guid: 786403fc3ff8d9844b50481bbaba47ec,
@@ -20,13 +20,17 @@ MonoBehaviour:
     type: 3}
   minimapPrefab: {fileID: 1918884645610000673, guid: c5248cb323ad2ca49ae960fe6519bbe1,
     type: 3}
-  cost: 12
   name: Archer
   description: Shoots arrows at foes
-  stats: {fileID: 11400000, guid: 620b9e9be54f025479e9b270b02952a5, type: 2}
-  playerItem_SO: {fileID: 11400000, guid: b0953c5b8266f7f46b78a3aa6e33f2c8, type: 2}
+  cost: 12
+  maxHeath: 50
   upgrades:
   - upgrade: {fileID: 11400000, guid: cd9719d80a0f3914481939631efcc2ec, type: 2}
     cost: 60
   - upgrade: {fileID: 11400000, guid: 329047c5a4e9a404d922a78758bfcf3d, type: 2}
     cost: 50
+  radius: 20
+  shotCooldown: 1
+  projectile: {fileID: 3071368436360838454, guid: d56a8c24380e6ad4ab7a02eb3e10d6e7,
+    type: 3}
+  playerItem_SO: {fileID: 11400000, guid: b0953c5b8266f7f46b78a3aa6e33f2c8, type: 2}

@@ -9,7 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
+  m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 3_Archer_Arrowstorm
   m_EditorClassIdentifier: 
   ghostObject: {fileID: 6139709382012762173, guid: 27e7e69799efc1341a7919854b28fa01,
@@ -20,9 +20,13 @@ MonoBehaviour:
     type: 3}
   minimapPrefab: {fileID: 1918884645610000673, guid: c5248cb323ad2ca49ae960fe6519bbe1,
     type: 3}
-  cost: 12
   name: Arrowstorm
   description: Shoots arrows at foes
-  stats: {fileID: 11400000, guid: 8f5f8d1d9e6624541a1b0aa4200142ff, type: 2}
-  playerItem_SO: {fileID: 11400000, guid: 8537e0f83fc30754989a45b1a1d9e16f, type: 2}
+  cost: 12
+  maxHeath: 0
   upgrades: []
+  radius: 7
+  shotCooldown: 0.3
+  projectile: {fileID: 3071368436360838454, guid: ce63a61a34d24c14fb727ba80d5bc737,
+    type: 3}
+  playerItem_SO: {fileID: 11400000, guid: 8537e0f83fc30754989a45b1a1d9e16f, type: 2}
