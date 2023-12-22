@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using static UnityEngine.GraphicsBuffer;
 using Random = UnityEngine.Random;
@@ -47,7 +48,7 @@ public abstract class Enemy : MonoBehaviour
 
 
     #region InternalVariables
-
+    public Vector3 Pos => pos;
     /// <summary>
     /// Updated every frame, caches transform.position
     /// </summary>
@@ -67,6 +68,10 @@ public abstract class Enemy : MonoBehaviour
     protected IEnumerator _targetSelector;
     protected IEnemyTargetable currentTarget;
     protected bool _IsMovementFrozen = false;
+    protected float _lastNeighborCheckTime = 0f;
+
+
+    protected bool _IsFrozenAfterHit = false;
 
     #endregion
 
@@ -149,6 +154,7 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="currentHealth">Enemy HP left</param>
     protected virtual void OnEnemyTakeDamage(int currentHealth)
     {
+        animator.Play("GetHit");
         _hitParticles.Play();
     }
 
@@ -173,7 +179,6 @@ public abstract class Enemy : MonoBehaviour
 
         dir *= enemyStats.RagdollForce * 8;
         ragdollRB.AddForce(dir, ForceMode.Impulse);
-        print($"Flinging ragdoll in dir {dir.normalized}, magnitude {dir.magnitude}");
 
     }
 
@@ -182,6 +187,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     protected virtual void _StateMachineUpdate()
     {
+        
         //There is at least one target in range
         if (_targets.Count > 0)
         {
@@ -194,6 +200,7 @@ public abstract class Enemy : MonoBehaviour
     private void _MoveState()
     {
         if (nextPoint == null) return;
+        
         _CompareNeighbors();
         
         float distance = Utilities.FlatDistance(pos, _target);
@@ -241,14 +248,13 @@ public abstract class Enemy : MonoBehaviour
         }
         else
         {
+            _UpdatePowerAttackTime();
+
             RB.constraints = RigidbodyConstraints.FreezeAll;
             _SetIsAttacking(true);
-            
-
         }
-
-
     }
+    float _lastPowerAttackTime = -1f;
 
 
 
@@ -259,9 +265,51 @@ public abstract class Enemy : MonoBehaviour
 
 
     #region StateMachineHelpers
+    protected bool _IsPowerAttacking = false;
+
+    void _UpdatePowerAttackTime()
+    {
+        if (_lastPowerAttackTime == -1f)
+            _lastPowerAttackTime = enemyStats.MinPowerAttackTime;
+        //It hasn't been long enough, just add deltaTime and move on
+        if (_lastPowerAttackTime < enemyStats.MinPowerAttackTime)
+            _lastPowerAttackTime += Time.deltaTime;
+        else
+        {
+            //The time since we reached the threshold
+            float t = _lastPowerAttackTime - enemyStats.MinPowerAttackTime;
+            //We need to wait more
+            if (t < enemyStats.PowerAttackTime)
+                _lastPowerAttackTime += Time.deltaTime;
+            else
+            {
+                float r = Random.value;
+                //We hit the power attack
+                if (r <= enemyStats.PowerAttackChance)
+                {
+                    _SetAttackStrength(1f);
+                    _lastPowerAttackTime = 0f;
+
+                }
+
+                else {
+                    _SetAttackStrength(0f);
+                    _lastPowerAttackTime = enemyStats.MinPowerAttackTime;
+                }
+
+            }
+        }
+    }
     void _Move()
     {
         _SetIsAttacking(false);
+        if (_IsFrozenAfterHit)
+        {
+            Vector3 velocity = RB.velocity;
+            velocity.x = 0f; velocity.z = 0f;
+            RB.velocity = velocity;
+            return;
+        }
         //UpdateSpeed(1f);
         //Do not move if we are listening for a footstep
         //if (listeningForFootstep)
@@ -276,8 +324,6 @@ public abstract class Enemy : MonoBehaviour
 
         
         RB.AddForce(dir);
-        print($"Adding force {dir.magnitude} in dir {dir}");
-        //RB.velocity = velocity;
         _rotateTowards(_target);
 
     }
@@ -286,10 +332,40 @@ public abstract class Enemy : MonoBehaviour
         _EnableRagdollRBs(enabled);
         _EnableRagdollColliders(enabled);
     }
-    void _CompareNeighbors()
+    public List<Enemy> _neighbors;
+    protected virtual void _CompareNeighbors()
     {
-        //if (Time.time - _lastNeighborCheckTime <= enemyStats.CheckForNeighborsRate) return;
-        //var neighbors = Physics.OverlapSphere(pos, _HitboxRadius + 0.5f);//.SphereCast(pos, _HitboxRadius + 0.5f, transform.forward, out RaycastHit hit);
+        if (Time.time - _lastNeighborCheckTime <= enemyStats.CheckForNeighborsRate) return;
+        _lastNeighborCheckTime = Time.time;
+        var neighbors = Physics.OverlapSphere(pos, _HitboxRadius + 1.5f);
+
+        Enemy closestNeighbor = this;
+        float distance = GetDistanceFromGoal();
+        int i = 0;
+        _neighbors.Clear();
+        //Iterate over each enemy neighbor
+        foreach (var neighbor in neighbors )
+        {
+            if (neighbor.isTrigger) continue;   
+            Enemy e = neighbor.GetComponent<Enemy>();
+            if (e == null || e == this) { continue; }
+            //if (pos.FlatDistance(e.Pos) >= _HitboxRadius + 1.5) continue;
+            i++;
+            _neighbors.Add(e);
+            float d = e.GetDistanceFromGoal();
+            if (d < distance)
+            {
+                distance = d;
+                closestNeighbor = e;
+            }
+        }
+        if (closestNeighbor != this)
+        {
+            _SetPoint(closestNeighbor.nextPoint, closestNeighbor._target);
+            //Debug.Log($"{gameObject.name} adopted the target of {closestNeighbor.gameObject.name}", closestNeighbor.gameObject);
+        }
+        
+
 
     }
     protected virtual void SelectNewTarget()
@@ -427,6 +503,12 @@ public abstract class Enemy : MonoBehaviour
     #endregion
 
     #region HelperFunctions
+    public float GetDistanceFromGoal()
+    {
+        if (nextPoint == null)
+            return 0f;
+        return nextPoint.DistanceToGoalFrom(pos);
+    }
     /// <summary>
     /// Updates the current path point we are targeting
     /// </summary>
@@ -436,6 +518,12 @@ public abstract class Enemy : MonoBehaviour
         if (target == null) return;
         nextPoint = target;
         _target = nextPoint.GetPoint(_HitboxRadius);
+    }
+    protected virtual void _SetPoint(PathPoint target, Vector3 pos)
+    {
+        if (target == null) return;
+        nextPoint = target;
+        _target = pos;
     }
     
 
@@ -451,6 +539,13 @@ public abstract class Enemy : MonoBehaviour
     {
         animator.SetBool("IsAttacking", isAttacking);
     }
+    protected virtual void _SetAttackStrength(float strength)
+    {
+        
+        strength = Mathf.Clamp01(strength);
+        _IsPowerAttacking = strength == 1;
+        animator.SetFloat("AttackStrength", strength);
+    }
     public virtual void Footstep()
     {
         footstepController.PlayClip();
@@ -459,9 +554,19 @@ public abstract class Enemy : MonoBehaviour
     {
         if (currentTarget == null) return;
         attackSFXController.PlayClip();
-        currentTarget.GetHealthController().TakeDamage(_damage);
-        print("thud, from the chud");
+        float dmg = _damage;
+        if (_IsPowerAttacking)
+            dmg *= 1.5f;
+        currentTarget.GetHealthController().TakeDamage((int)dmg);
 
+    }
+    public virtual void StartGetHit()
+    {
+        _IsFrozenAfterHit = true;
+    }
+    public virtual void EndGetHit()
+    {
+        _IsFrozenAfterHit = false;
     }
     #endregion
 

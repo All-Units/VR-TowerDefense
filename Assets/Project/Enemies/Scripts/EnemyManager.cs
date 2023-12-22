@@ -328,7 +328,7 @@ public class EnemyManager : MonoBehaviour
         var e = enemy.GetComponent<Enemy>();
         if (e)
             e._SetTarget(point.SpawnPoint.nextPoint);
-
+        e.gameObject.name = $"{e.gameObject.name.Replace("(Clone)", "")} {e.transform.GetSiblingIndex()}";
         //print("Pausing");
         //EditorApplication.isPaused = true;
         

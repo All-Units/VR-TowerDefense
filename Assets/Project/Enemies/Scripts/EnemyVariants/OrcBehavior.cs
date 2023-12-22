@@ -54,17 +54,17 @@ public class OrcBehavior : Enemy
     }
     private void OnDrawGizmosSelected()
     {
-        //Gizmos.color = Color.cyan;
-        //Vector3 dir = pos + RB.velocity.normalized * 3f;
-        //Gizmos.DrawLine(pos, );
-        if (healthController.isDead)
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(pos, _HitboxRadius + 1.5f);
+
+        Gizmos.color = Color.cyan;
+        foreach (var e in _neighbors)
         {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(ragdollRB.position, ragdollRB.position + ragdollRB.velocity);
-            return;
+            Gizmos.DrawLine(pos, e.Pos);
         }
         Gizmos.color = Color.green;
-        Gizmos.DrawLine (pos, _target + Vector3.up);
+        Gizmos.DrawLine(pos, _target);
+
     }
 
 }
