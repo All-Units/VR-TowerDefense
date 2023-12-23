@@ -156,6 +156,7 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="currentHealth">Enemy HP left</param>
     protected virtual void OnEnemyTakeDamage(int currentHealth)
     {
+        print("playing get hit anim");
         if (_IsAttacking == false)
             animator.Play("GetHit");
         _hitParticles.Play();
@@ -542,6 +543,11 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void _SetIsAttacking(bool isAttacking)
     {
         animator.SetBool("IsAttacking", isAttacking);
+        if (isAttacking && _IsAttacking == false)
+        {
+            animator.Play("Attack");
+        }
+        
     }
     protected virtual void _SetAttackStrength(float strength)
     {
