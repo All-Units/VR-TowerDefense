@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Codice.CM.Common.CmCallContext;
 
 #if UNITY_EDITOR
 
@@ -126,7 +125,6 @@ public class SpawnPoint : PathPoint
         Gizmos.DrawSphere(position, .6f);
         if (data)
         {
-
 
         }
         var next = nextPoint;

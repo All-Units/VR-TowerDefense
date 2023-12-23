@@ -59,9 +59,10 @@ public class PathPoint : MonoBehaviour
         return d;
     }
 
+Vector3 lastPoint = Vector3.zero;
 
 #if UNITY_EDITOR
-    Vector3 lastPoint = Vector3.zero;
+    
 
     protected virtual void OnDrawGizmos()
     {
