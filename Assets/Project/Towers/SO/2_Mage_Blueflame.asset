@@ -22,15 +22,15 @@ MonoBehaviour:
     type: 3}
   name: Blueflame
   description: Uses arcane arts to incinerate foes
-  cost: 35
-  maxHeath: 0
+  cost: 45
+  maxHeath: 100
   upgrades:
   - upgrade: {fileID: 11400000, guid: 2a647f905f90fda4c9b126c39db2ba4b, type: 2}
     cost: 0
   - upgrade: {fileID: 11400000, guid: 360fc7907952aa147803ca476dbd61fd, type: 2}
     cost: 0
-  radius: 5
-  shotCooldown: 1
+  radius: 20
+  shotCooldown: 0.8
   projectile: {fileID: 3071368436360838454, guid: 9c9f192521bb8974da284192094fb318,
     type: 3}
   playerItem_SO: {fileID: 11400000, guid: 141e15234838008448fbcc2e35007bf2, type: 2}

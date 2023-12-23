@@ -26,11 +26,11 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Player-facing wave count, offset by 1
     /// </summary>
-    public static int CurrentWave => instance._wave_i + 1;
+    public static int CurrentWave => instance ? instance._wave_i + 1 : -1;
     /// <summary>
     /// Returns the time until next wave
     /// </summary>
-    public static int TimeUntilNextWave => instance.levelData.waveStructs[instance._wave_i].preWaveDelay;
+    public static int TimeUntilNextWave => instance ? instance.levelData.waveStructs[instance._wave_i].preWaveDelay : -1;
     /// <summary>
     /// Gets the wave complete bonus for the last wave completed, or 0 if just started
     /// </summary>
@@ -353,7 +353,7 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector]
     private int waveDelay = 20;
 
-    public static int WaveDelay => instance.waveDelay;
+    public static int WaveDelay => instance ? instance.waveDelay : -1;
     [HideInInspector]
     private List<GameObject> enemyPrefabs;
     [HideInInspector]
@@ -407,7 +407,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
-    public static int MaxWaves => instance.waveTotals.Count;
+    public static int MaxWaves => instance ? instance.waveTotals.Count : -1;
     private int old_wave_i = 0;
 
 

@@ -13,10 +13,10 @@ GameObject:
   - component: {fileID: 3071368436360838454}
   - component: {fileID: 1382009744870101265}
   - component: {fileID: 6529085469557916620}
-  - component: {fileID: 1469913216974998939}
+  - component: {fileID: 4263279412211458661}
   - component: {fileID: 2864799162137029931}
   - component: {fileID: 4920861282781409616}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: 3_Guided Missile Projectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -81,9 +81,9 @@ MonoBehaviour:
   OnFire:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1469913216974998939}
-        m_TargetAssemblyTypeName: MissileController, Project
-        m_MethodName: FireReachCruisingAltitude
+      - m_Target: {fileID: 4263279412211458661}
+        m_TargetAssemblyTypeName: GuidedMissileController, Project
+        m_MethodName: HitTarget
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -96,7 +96,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  splashRadius: 3
+  splashRadius: 1
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
@@ -256,7 +256,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1469913216974998939
+--- !u!114 &4263279412211458661
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -265,17 +265,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 337958517151354589}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6239be60ae506454896ea080d7cf714e, type: 3}
+  m_Script: {fileID: 11500000, guid: 64270f695be3469691d118d8aac5ba42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitTime: 0.5
-  rotationSpeed: 1
-  moveSpeed: 3000
-  maxSpeed: 200
-  rb: {fileID: 0}
+  pursueWaitTime: 0.2
+  rotationSpeed: 7
+  moveSpeed: 2000
+  maxSpeed: 10
+  rb: {fileID: 1382009744870101265}
   flamesVFX: {fileID: 8976034639397686167}
-  cluster: 0
-  prefab: {fileID: 0}
+  targeter: {fileID: 0}
+  index: 0
 --- !u!114 &2864799162137029931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -333,7 +333,7 @@ GameObject:
   - component: {fileID: 6319154247366289539}
   - component: {fileID: 9012213662161589843}
   - component: {fileID: 8344763197491498016}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Missile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1182,6 +1182,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1630128530127841439}
     m_Modifications:
+    - target: {fileID: 3199283261846579216, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4893118513826488098, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
       propertyPath: playOnAwake
@@ -1197,6 +1202,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4893118513826488103, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6294508012652817956, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
       propertyPath: playOnAwake
@@ -1206,6 +1216,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294508012652817959, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6294508013172393185, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
@@ -1336,6 +1351,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: CFXR Fire
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294508013172393196, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7539286505454239565, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}

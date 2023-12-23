@@ -3,7 +3,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class TowerRangeVisualization : MonoBehaviour
 {
-    [SerializeField] private TowerStats stats;
+    [SerializeField] private ProjectileTower_SO stats;
 
     private void Start()
     {

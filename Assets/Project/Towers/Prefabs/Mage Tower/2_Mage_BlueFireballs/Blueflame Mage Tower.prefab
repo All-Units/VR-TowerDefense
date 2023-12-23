@@ -219,8 +219,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   healthController: {fileID: 5764481117411547575}
-  playerControlPosition: {fileID: 6208005074393136047}
-  playerReleasePosition: {fileID: 2335260489334345643}
   deathParticles: {fileID: 754336113746814313}
   constructionParticles: {fileID: 4421642806989300263}
   selectedVfx: {fileID: 37483902079555549}
@@ -257,9 +255,11 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
   removeFromDict: 1
+  playerControlPosition: {fileID: 6208005074393136047}
   targetingSystem: {fileID: 6674742477994217249}
   firePoint: {fileID: 5189835444252146732}
   pivotPoint: {fileID: 5189835444252146732}
+  enemyHeightOffset: 2
   attackVFX: {fileID: 5018020794659350070}
   turretModel: {fileID: 260109540466612344}
   playerPlatform: {fileID: 789477411806127998}
@@ -403,7 +403,7 @@ PrefabInstance:
         type: 3}
       propertyPath: stats
       value: 
-      objectReference: {fileID: 11400000, guid: f50fbb9a16ab24643a71ddf294addfd2,
+      objectReference: {fileID: 11400000, guid: 71f95904e8108f343960dfeaa435a2b8,
         type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
