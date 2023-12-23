@@ -3607,6 +3607,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6773527392141064983, guid: 755ed82bc5c38b9449a4cc81e174a846,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 1435545855816321079}
     - target: {fileID: 7038608513566546514, guid: 755ed82bc5c38b9449a4cc81e174a846,
         type: 3}
       propertyPath: m_IsActive
@@ -3733,7 +3738,7 @@ MonoBehaviour:
   _RB: {fileID: 2169015961586884186}
   ragdollRB: {fileID: 1844639739250554803}
   _Hitbox: {fileID: 1327275321181695396}
-  _detectionSphere: {fileID: 4706329628654153602}
+  _detectionSphere: {fileID: 7749987306146117915}
   footstepController: {fileID: 8901283661091858184}
   attackSFXController: {fileID: 629530612433932908}
   _hitParticles: {fileID: 6582567141421629121}
@@ -3761,12 +3766,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eae91ddbcc274c0aad737eded9ced4e7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &4706329628654153602 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: 1615698095159607773, guid: 755ed82bc5c38b9449a4cc81e174a846,
-    type: 3}
-  m_PrefabInstance: {fileID: 6285935497568071263}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &6397168722316388732 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 1151635114396501795, guid: 755ed82bc5c38b9449a4cc81e174a846,
@@ -3776,6 +3775,12 @@ Animator:
 --- !u!198 &6582567141421629121 stripped
 ParticleSystem:
   m_CorrespondingSourceObject: {fileID: 893358659475083422, guid: 755ed82bc5c38b9449a4cc81e174a846,
+    type: 3}
+  m_PrefabInstance: {fileID: 6285935497568071263}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &7749987306146117915 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 4373379393224972100, guid: 755ed82bc5c38b9449a4cc81e174a846,
     type: 3}
   m_PrefabInstance: {fileID: 6285935497568071263}
   m_PrefabAsset: {fileID: 0}

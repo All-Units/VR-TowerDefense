@@ -3777,6 +3777,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlyingDemonRagdoll
       objectReference: {fileID: 0}
+    - target: {fileID: 6294742786871506738, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
+        type: 3}
+      propertyPath: parent
+      value: 
+      objectReference: {fileID: 4535493899127146150}
     - target: {fileID: 8426587042154182089, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
         type: 3}
       propertyPath: m_Layer
@@ -3862,7 +3867,7 @@ MonoBehaviour:
   _RB: {fileID: 4495405510214790086}
   ragdollRB: {fileID: 714488692099168612}
   _Hitbox: {fileID: 3607500018686826552}
-  _detectionSphere: {fileID: 7001753974872594974}
+  _detectionSphere: {fileID: 5473698310542216327}
   footstepController: {fileID: 6628368104604308116}
   attackSFXController: {fileID: 2938472560829769712}
   _hitParticles: {fileID: 8872933528027679581}
@@ -3887,6 +3892,12 @@ Rigidbody:
     type: 3}
   m_PrefabInstance: {fileID: 9087184945715730406}
   m_PrefabAsset: {fileID: 0}
+--- !u!135 &5473698310542216327 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 3885006771247356769, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
+    type: 3}
+  m_PrefabInstance: {fileID: 9087184945715730406}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5795054597918944652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3346176704499038826, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
@@ -3905,12 +3916,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3598f888e85115a45857a40b027a3e9c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!135 &7001753974872594974 stripped
-SphereCollider:
-  m_CorrespondingSourceObject: {fileID: 2249284866683964920, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
-    type: 3}
-  m_PrefabInstance: {fileID: 9087184945715730406}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &8699908806652337376 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 477489831382338310, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,

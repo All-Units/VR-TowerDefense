@@ -10,7 +10,6 @@ public class AOEProjectile : Projectile
     
     protected override void OnCollision(Collider other)
     {
-        Debug.Log($"Hit: {other.gameObject}", other.gameObject);
         Vector3 pos = transform.position;
         var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)

@@ -67,6 +67,14 @@ public abstract class Enemy : MonoBehaviour
     /// The current list of towers in range
     /// </summary>
     protected HashSet<IEnemyTargetable> _targets = new HashSet<IEnemyTargetable>();
+    /// <summary>
+    /// If the target list contains a given enemy
+    /// </summary>
+    /// <param name="target"></param>
+    /// <returns></returns>
+    public bool TargetsContains(IEnemyTargetable target) => _targets.Contains(target);
+    public void AddTarget(IEnemyTargetable target) => _targets.Add(target);
+    public void RemoveTarget(IEnemyTargetable target) => _targets.Remove(target);
     protected IEnumerator _targetSelector;
     protected IEnemyTargetable currentTarget;
     protected bool _IsMovementFrozen = false;
@@ -156,7 +164,6 @@ public abstract class Enemy : MonoBehaviour
     /// <param name="currentHealth">Enemy HP left</param>
     protected virtual void OnEnemyTakeDamage(int currentHealth)
     {
-        print("playing get hit anim");
         if (_IsAttacking == false)
             animator.Play("GetHit");
         _hitParticles.Play();
@@ -488,7 +495,7 @@ public abstract class Enemy : MonoBehaviour
         if (animator == null) animator = GetComponent<Animator>();
         if (healthController == null) healthController = GetComponent<HealthController>();
 
-        if (_detectionSphere == null) { _detectionSphere = GetComponent<SphereCollider>(); }
+        if (_detectionSphere == null) { _detectionSphere = GetComponentInChildren<SphereCollider>(); }
         float range = Random.Range(enemyStats.MinRange, enemyStats.MaxRange);
         _detectionSphere.radius = range;
     }
