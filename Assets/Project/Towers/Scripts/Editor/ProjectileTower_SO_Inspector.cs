@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 
@@ -32,3 +33,4 @@ public class ProjectileTower_SO_Inspector : Editor
     }
 }
 
+#endif

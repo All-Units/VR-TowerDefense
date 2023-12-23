@@ -1,7 +1,8 @@
+#if UNITY_EDITOR
+
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
-using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class TowerDatabaseView : EditorWindow
@@ -34,3 +35,4 @@ public class TowerDatabaseView : EditorWindow
         }
     }
 }
+#endif

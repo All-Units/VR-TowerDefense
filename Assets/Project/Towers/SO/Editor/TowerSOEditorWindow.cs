@@ -1,3 +1,6 @@
+#if UNITY_EDITOR
+
+
 using System;
 using UnityEditor;
 using UnityEngine;
@@ -103,3 +106,5 @@ public class TowerSOEditorWindow : EditorWindow
         EditorGUILayout.EndScrollView();
     }
 }
+
+#endif
