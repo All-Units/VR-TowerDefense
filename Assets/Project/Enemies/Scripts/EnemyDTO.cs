@@ -29,6 +29,16 @@ public class EnemyDTO : ScriptableObject
     public int Damage = 1;
     public float attackThreshold = 1.2f;
 
+    [Header("Power attack variables")]
+    public float MinPowerAttackTime = 2f;
+    [Tooltip("How long we should wait before checking for another power attack")]
+    public float PowerAttackTime = 1f;
+
+    public float PowerAttackChance = 0.1f;
+
+    public float PowerAttackScalar = 1.5f;
+
+
 
     [Header("Movement values")]
     public float MoveSpeed = 5f;

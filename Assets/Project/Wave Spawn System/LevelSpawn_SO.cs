@@ -154,7 +154,7 @@ public struct EnemyQuant
     Orc,
     Skeleton,
     BlackKnight,
-    Breg,
+    FlyingDemon,
 }
 
 [Serializable]

@@ -13,12 +13,7 @@ public class OrcBehavior : Enemy
     public float _distanceToTarget;
     
 
-    // Start is called before the first frame update
-    void Start()
-    {
-       
-        //StartCoroutine(_fling());
-    }
+    
     IEnumerator _fling()
     {
         yield return new WaitForSeconds(3f);
@@ -54,17 +49,13 @@ public class OrcBehavior : Enemy
     }
     private void OnDrawGizmosSelected()
     {
-        //Gizmos.color = Color.cyan;
-        //Vector3 dir = pos + RB.velocity.normalized * 3f;
-        //Gizmos.DrawLine(pos, );
-        if (healthController.isDead)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawLine(ragdollRB.position, ragdollRB.position + ragdollRB.velocity);
-            return;
-        }
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(pos, _HitboxRadius + 1.5f);
+
+        
         Gizmos.color = Color.green;
-        Gizmos.DrawLine (pos, _target + Vector3.up);
+        Gizmos.DrawLine(pos, _target);
+
     }
 
 }
