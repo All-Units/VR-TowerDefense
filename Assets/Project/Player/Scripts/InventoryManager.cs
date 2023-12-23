@@ -32,6 +32,7 @@ public class InventoryManager : MonoBehaviour
     public XRInstantiateGrabbableObject cannonAmmoPouch;
 
     [SerializeField] private FireballGlovesController leftFireballGlovesController, rightFireballGlovesController;
+    [SerializeField] private FireLanceGlovesController leftFlameLanceGlovesController, rightFlameLanceGlovesController;
 
     #endregion
 
@@ -113,10 +114,22 @@ public class InventoryManager : MonoBehaviour
 
     public void GivePlayerPower(PlayerPower playerPower)
     {
-        leftFireballGlovesController.gameObject.SetActive(true);
-        rightFireballGlovesController.gameObject.SetActive(true);
-        leftFireballGlovesController.SetThrowable(playerPower.throwable);
-        rightFireballGlovesController.SetThrowable(playerPower.throwable);
+        switch (playerPower.type)
+        {
+            case PlayerPowerType.FIREBALLS:
+                leftFireballGlovesController.gameObject.SetActive(true);
+                rightFireballGlovesController.gameObject.SetActive(true);
+                leftFireballGlovesController.SetThrowable(playerPower.throwable);
+                rightFireballGlovesController.SetThrowable(playerPower.throwable);
+                break;
+            case PlayerPowerType.FLAMELANCE:
+                leftFlameLanceGlovesController.gameObject.SetActive(true);
+                rightFlameLanceGlovesController.gameObject.SetActive(true);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+
         
         playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
         playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
@@ -226,6 +239,8 @@ public class InventoryManager : MonoBehaviour
         
         leftFireballGlovesController.gameObject.SetActive(false);
         rightFireballGlovesController.gameObject.SetActive(false);
+        leftFlameLanceGlovesController.gameObject.SetActive(false);
+        rightFlameLanceGlovesController.gameObject.SetActive(false);
     }
 
     #endregion

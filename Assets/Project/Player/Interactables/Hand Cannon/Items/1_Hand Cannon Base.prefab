@@ -378,6 +378,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 96465223918091920, guid: f49dc5cd64a1e004c988509fc919b348,
         type: 3}
+      propertyPath: m_MovementType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 96465223918091920, guid: f49dc5cd64a1e004c988509fc919b348,
+        type: 3}
       propertyPath: m_Activated.m_PersistentCalls.m_Calls.Array.size
       value: 2
       objectReference: {fileID: 0}
@@ -758,6 +763,7 @@ MonoBehaviour:
   m_StartPoint: {fileID: 8047319213455469517}
   m_LaunchSpeed: 500
   overheatModule: {fileID: 2063788382864755783}
+  _targeter: {fileID: 0}
   maxAmmo: 1
 --- !u!114 &2405190930013075983
 MonoBehaviour:

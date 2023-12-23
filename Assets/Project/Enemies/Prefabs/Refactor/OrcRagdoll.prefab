@@ -2230,7 +2230,7 @@ GameObject:
   - component: {fileID: 6294742786871506738}
   - component: {fileID: 3885006771247356769}
   - component: {fileID: 6728243821214734408}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: Targeting
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2265,6 +2265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parent: {fileID: 1559782698129869771}
+  targets: []
 --- !u!135 &3885006771247356769
 SphereCollider:
   m_ObjectHideFlags: 0
