@@ -11,11 +11,23 @@ public class GuidedMissileController : MonoBehaviour
     [SerializeField] private ParticleSystem flamesVFX;
 
     public GuidedMissileTargeter targeter;
+    public Enemy target;
     public int index = 0;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        target = targeter.GetEnemy(index);
+        Enemy.OnDeath += OnDeath;
+    }
+
+    private void OnDeath(Enemy obj)
+    {
+        if (obj == target)
+        {
+            targeter.OnEnemyDeath(obj);
+            targeter.GetEnemy(index);
+        }
     }
 
     public void HitTarget()
@@ -39,7 +51,7 @@ public class GuidedMissileController : MonoBehaviour
         {
             var targetRotation = Quaternion.Euler(90, 0, 0);
             if(targeter.IsTargeting())
-                targetRotation = Quaternion.LookRotation(targeter.GetEnemy(index).transform.position - transform.position);
+                targetRotation = Quaternion.LookRotation((target.transform.position + Vector3.up) - transform.position);
             if (transform.rotation != targetRotation)
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 

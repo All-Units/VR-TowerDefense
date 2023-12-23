@@ -31,10 +31,30 @@ public class ProjectileSpawner : MonoBehaviour
         
         newObject.Fire();
         if (_targeter && newObject.TryGetComponent(out GuidedMissileController guidedMissileController))
+        {
             guidedMissileController.targeter = _targeter;
+            guidedMissileController.index = 0;
+        }   
         
         Destroy(newObject, 15f);
         OnFire?.Invoke();
+
+        if (_targeter && _targeter.targets.Count > 1)
+        {
+            for (int i = 1; i < _targeter.targets.Count; i++)
+            {
+                var projectile = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
+        
+                projectile.Fire();
+                if (_targeter && projectile.TryGetComponent(out GuidedMissileController guidedMissile))
+                {
+                    guidedMissile.targeter = _targeter;
+                    guidedMissile.index = i;
+                }        
+                
+                Destroy(projectile, 15f);
+            }
+        }
     }
 
     protected bool CheckCantFireModules()

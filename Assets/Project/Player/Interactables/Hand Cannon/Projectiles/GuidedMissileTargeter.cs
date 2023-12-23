@@ -27,7 +27,8 @@ public class GuidedMissileTargeter : MonoBehaviour
 
     public Enemy GetEnemy(int idx)
     {
-        return targets[idx % targets.Count];
+        targets.RemoveAll(e=> e == null);
+        return targets.Count >= 1 ? targets[idx % targets.Count] : null;
     }
     
     private void Start()
@@ -39,12 +40,30 @@ public class GuidedMissileTargeter : MonoBehaviour
             targetAction.canceled += TargetActionOnCanceled;
         }
 
+        Enemy.OnDeath += OnEnemyDeath;
         _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
     }
 
+    public void OnEnemyDeath(Enemy obj)
+    {
+        targets.Remove(obj);
+    }
+
+    [SerializeField] private float scanRate = .25f;
+    private float _currentRate = 0;
     private void Update()
     {
-        ScanForEnemies();
+        _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
+
+        _currentRate += Time.deltaTime;
+        
+        if(_currentRate >= scanRate)
+        {
+            ScanForEnemies();
+            _currentRate = 0;
+        }
+        
+        DrawLine();
     }
 
     public bool IsTargeting()
@@ -56,8 +75,6 @@ public class GuidedMissileTargeter : MonoBehaviour
     private float t = 0;
     private void ScanForEnemies()
     {
-        _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
-
         if (Physics.SphereCast(_castRay,radius, out var hit,length, layerMask))
         {
             if (hit.transform.TryGetComponent(out Enemy e) && !targets.Contains(e))
@@ -85,7 +102,6 @@ public class GuidedMissileTargeter : MonoBehaviour
             }
         }
         
-        DrawLine();
     }
     
     
