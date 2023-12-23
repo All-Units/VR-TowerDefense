@@ -4,7 +4,7 @@ public class ReloadableProjectileSpawner : ProjectileSpawner
 {
     [SerializeField] private int maxAmmo;
     private int _currentAmmo;
-
+    
     public override void Fire()
     {
         if(CheckCantFireModules()) return;

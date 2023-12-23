@@ -1,3 +1,4 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 using System.Collections.Generic;
@@ -37,17 +38,55 @@ public class TowerSOEditorWindow : EditorWindow
 
         foreach (Tower_SO towerSO in towerSOs)
         {
+            bool isDirty = false;
             EditorGUILayout.BeginHorizontal("box");
 
             // Display select fields (e.g., cost and maxHealth) in columns
             EditorGUILayout.LabelField(towerSO.name, GUILayout.Width(100));
             EditorGUILayout.LabelField("|", GUILayout.Width(10));
-            towerSO.cost = EditorGUILayout.IntField("Cost: $", towerSO.cost, GUILayout.Width(200));
-            towerSO.maxHeath = EditorGUILayout.IntField("Max Health: ", towerSO.maxHeath, GUILayout.Width(200));
+            var cost = EditorGUILayout.IntField("Cost: $", towerSO.cost, GUILayout.Width(200));
+            if (cost != towerSO.cost)
+            {
+                towerSO.cost = cost;
+                isDirty = true;
+            }
+            
+            var health = EditorGUILayout.IntField("Max Health: ", towerSO.maxHeath, GUILayout.Width(200));
+            if (health != towerSO.maxHeath)
+            {
+                towerSO.maxHeath = health;
+                isDirty = true;
+            }
+            
             if (towerSO is ProjectileTower_SO projectileTowerSo)
             {
-                projectileTowerSo.radius = EditorGUILayout.FloatField("Radius: ", projectileTowerSo.radius, GUILayout.Width(200));
-                projectileTowerSo.shotCooldown = EditorGUILayout.FloatField("Cooldown: ", projectileTowerSo.shotCooldown, GUILayout.Width(200));
+                var radius = EditorGUILayout.FloatField("Radius: ", projectileTowerSo.radius, GUILayout.Width(200));
+                if (Math.Abs(radius - projectileTowerSo.radius) > 0.01f)
+                {
+                    projectileTowerSo.radius = radius;
+                    isDirty = true;
+                }
+                
+                var shotCooldown = EditorGUILayout.FloatField("Cooldown: ", projectileTowerSo.shotCooldown, GUILayout.Width(200));
+                if (Math.Abs(shotCooldown - projectileTowerSo.shotCooldown) > 0.01f)
+                {
+                    projectileTowerSo.shotCooldown = shotCooldown;
+                    isDirty = true;
+                }
+                
+                var damage = EditorGUILayout.IntField("Damage", projectileTowerSo.projectile.damage);
+                if (damage != projectileTowerSo.projectile.damage)
+                {
+                    projectileTowerSo.projectile.damage = damage;
+                    EditorUtility.SetDirty(projectileTowerSo.projectile);
+                }   
+                
+                var speed = EditorGUILayout.FloatField("Speed", projectileTowerSo.projectile.speed);
+                if (Math.Abs(speed - projectileTowerSo.projectile.speed) > 0.01f)
+                {
+                    projectileTowerSo.projectile.speed = speed;
+                    EditorUtility.SetDirty(projectileTowerSo.projectile);
+                }
             }
             else
             {
@@ -55,6 +94,9 @@ public class TowerSOEditorWindow : EditorWindow
             }
 
             EditorGUILayout.EndHorizontal();
+
+            if (isDirty)
+                EditorUtility.SetDirty(towerSO);
         }
 
         EditorGUILayout.EndVertical();

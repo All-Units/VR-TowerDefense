@@ -1,0 +1,121 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using UnityEditor.Search;
+using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.Pool;
+using UnityEngine.Serialization;
+
+public class GuidedMissileTargeter : MonoBehaviour
+{
+    [SerializeField]
+    [Tooltip("The reference to the action to confirm tower takeover selection.")]
+    private InputActionReference targetActionReference;
+
+    [SerializeField] private GameObject castPoint;
+    [SerializeField] private LayerMask layerMask;
+    [SerializeField] private TargetVFXController targetVFXPrefab;
+    [SerializeField] private LineRenderer lineRenderer;
+    [SerializeField] private float radius = 2;
+    [SerializeField] private float length = 50;
+    [SerializeField] private int totalTargets = 1;
+    
+    private bool isTargeting;
+
+    public List<Enemy> targets = new();
+
+    public Enemy GetEnemy(int idx)
+    {
+        return targets[idx % targets.Count];
+    }
+    
+    private void Start()
+    {
+        var targetAction = Utilities.GetInputAction(targetActionReference);
+        if (targetAction != null)
+        {
+            targetAction.started += TargetActionOnStarted;
+            targetAction.canceled += TargetActionOnCanceled;
+        }
+
+        _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
+    }
+
+    private void Update()
+    {
+        ScanForEnemies();
+    }
+
+    public bool IsTargeting()
+    {
+        return targets.Any();
+    }
+
+    private Ray _castRay;
+    private float t = 0;
+    private void ScanForEnemies()
+    {
+        _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
+
+        if (Physics.SphereCast(_castRay,radius, out var hit,length, layerMask))
+        {
+            if (hit.transform.TryGetComponent(out Enemy e) && !targets.Contains(e))
+            {
+                Debug.Log($"Enemy {e.gameObject} targeted");
+                TargetVFXController oldVFX = null;
+                if(targets.Count == totalTargets)
+                {
+                    if(targets[0])
+                        oldVFX = targets[0].GetComponentInChildren<TargetVFXController>();
+                    targets.RemoveAt(0);
+                }   
+                
+                targets.Add(e);
+                if (oldVFX)
+                {
+                    oldVFX.transform.SetParent(e.transform);
+                }
+                else
+                {
+                    oldVFX = Instantiate(targetVFXPrefab, e.transform);
+                }
+                
+                oldVFX.transform.localPosition = Vector3.zero;
+            }
+        }
+        
+        DrawLine();
+    }
+    
+    
+
+    private void OnDrawGizmos()
+    {
+        DrawGizmoViz();
+    }
+
+    private void DrawGizmoViz()
+    {
+        t += Time.deltaTime;
+        if (t > 1)
+            t = 0;
+        Gizmos.DrawWireSphere(_castRay.GetPoint(Mathf.Lerp(0, length, t)), radius);
+    }
+
+    private void DrawLine()
+    {
+        lineRenderer.SetPosition(0, _castRay.GetPoint(0));
+        lineRenderer.SetPosition(1, _castRay.GetPoint(50));
+    }
+
+    private void TargetActionOnCanceled(InputAction.CallbackContext obj)
+    {
+        isTargeting = false;
+    }
+
+    private void TargetActionOnStarted(InputAction.CallbackContext obj)
+    {
+        isTargeting = true;
+    }
+}

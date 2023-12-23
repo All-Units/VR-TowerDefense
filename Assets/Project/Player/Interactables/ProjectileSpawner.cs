@@ -21,6 +21,7 @@ public class ProjectileSpawner : MonoBehaviour
     public event Action OnFire;
 
     [SerializeField] protected OverheatModule overheatModule;
+    [SerializeField] private GuidedMissileTargeter _targeter;
 
     public virtual void Fire()
     {
@@ -29,6 +30,8 @@ public class ProjectileSpawner : MonoBehaviour
         var newObject = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
         
         newObject.Fire();
+        if (_targeter && newObject.TryGetComponent(out GuidedMissileController guidedMissileController))
+            guidedMissileController.targeter = _targeter;
         
         Destroy(newObject, 15f);
         OnFire?.Invoke();

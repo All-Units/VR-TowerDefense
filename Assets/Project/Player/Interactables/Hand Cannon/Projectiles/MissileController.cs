@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class MissileController : MonoBehaviour
 {
-    public float waitTime;
+    public float orbitalWaitTime;
+    public float pursueWaitTime;
     public float rotationSpeed;
     public float moveSpeed;
     public float maxSpeed = 200;
@@ -46,7 +47,7 @@ public class MissileController : MonoBehaviour
 
     IEnumerator ReachCruisingAltitude()
     {
-        yield return new WaitForSeconds(waitTime);
+        yield return new WaitForSeconds(orbitalWaitTime);
 
         flamesVFX.Play(true);
 
@@ -83,6 +84,8 @@ public class MissileController : MonoBehaviour
 
     IEnumerator PursueTarget(Transform target)
     {
+        yield return new WaitForSeconds(pursueWaitTime);
+        
         if(rb == null)
             rb = GetComponent<Rigidbody>();
 
