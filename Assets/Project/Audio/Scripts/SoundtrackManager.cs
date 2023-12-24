@@ -46,6 +46,7 @@ public class SoundtrackManager : MonoBehaviour
 
     public static void Stop()
     {
+        if (instance == null) return;
         instance._source.Stop();
     }
 
