@@ -10689,6 +10689,7 @@ GameObject:
   - component: {fileID: 6963277726937522235}
   - component: {fileID: 3306868054554300043}
   - component: {fileID: 8751443811950158856}
+  - component: {fileID: 3539422330309977503}
   m_Layer: 10
   m_Name: Dragons breath Staff
   m_TagString: Untagged
@@ -10995,7 +10996,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af3e9b9c4ed948d0b1e38e211cbf5b7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxMana: 10
+  maxMana: 20
   onManaChange:
     m_PersistentCalls:
       m_Calls:
@@ -11011,6 +11012,29 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!136 &3539422330309977503
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8886954538361350757}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Height: 0.14
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.62, z: 0}
 --- !u!1001 &5833771820494633930
 PrefabInstance:
   m_ObjectHideFlags: 0

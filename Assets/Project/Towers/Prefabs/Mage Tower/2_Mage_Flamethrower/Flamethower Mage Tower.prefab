@@ -530,6 +530,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 28647b8f108b7d84cbfb6418297b6b50,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 11cb563e1c92c3b449715d99a09202a5, type: 2}
     - target: {fileID: 919132149155446097, guid: 28647b8f108b7d84cbfb6418297b6b50,
         type: 3}
       propertyPath: m_Name
@@ -1273,6 +1278,11 @@ PrefabInstance:
       propertyPath: yVariance
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 4867604580317151035, guid: a187c78981256314abf90881b4d5630f,
+        type: 3}
+      propertyPath: amountPerSecond
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5804718281253936425, guid: a187c78981256314abf90881b4d5630f,
         type: 3}
       propertyPath: m_RootOrder
@@ -1286,7 +1296,7 @@ PrefabInstance:
     - target: {fileID: 5804718281253936425, guid: a187c78981256314abf90881b4d5630f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 3
+      value: 3.5
       objectReference: {fileID: 0}
     - target: {fileID: 5804718281253936425, guid: a187c78981256314abf90881b4d5630f,
         type: 3}

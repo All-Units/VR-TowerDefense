@@ -5,4 +5,11 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class PlayerPower : TowerTakeoverObject
 {
     public XRGrabInteractable throwable;
+    public PlayerPowerType type;
+}
+
+public enum PlayerPowerType
+{
+    FIREBALLS,
+    FLAMELANCE
 }

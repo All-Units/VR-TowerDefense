@@ -35,6 +35,8 @@ public class FireballGlovesController : MonoBehaviour
 
         private void createFireballActionOnStarted(InputAction.CallbackContext obj)
         {
+                if(isActiveAndEnabled == false) return;
+                
                 isCharging = true;
                 if (chargingCoroutine == null)
                 {
@@ -44,6 +46,8 @@ public class FireballGlovesController : MonoBehaviour
 
         private void createFireballActionOnReleased(InputAction.CallbackContext obj)
         {
+                                if(isActiveAndEnabled == false) return;
+
                 isCharging = false;
                 if(chargeTime >= minChargeTime)
                 {
@@ -74,7 +78,6 @@ public class FireballGlovesController : MonoBehaviour
                                 {
                                         SpawnAndGrabObject();
                                 }
-
                         }
                         else
                         {
