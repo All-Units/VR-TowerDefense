@@ -54,7 +54,9 @@ public class HealthbarController : MonoBehaviour
 
     private void UpdateValue(int curr)
     {
-        slider.value = curr;
+        slider.maxValue = 1f;
+        slider.minValue = 0f;
+        slider.value = ((float)healthController.CurrentHealth / (float)healthController.MaxHealth);
         
         if (healthController.CurrentHealth < healthController.MaxHealth)
         {

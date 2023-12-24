@@ -25,6 +25,8 @@ public class WaveEditorWindow : EditorWindow
     Vector2 pos;
     [SerializeField]
     public List<SpawnPointData> spawnPoints;
+
+   
     
     private void OnGUI()
     {

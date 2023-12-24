@@ -60,6 +60,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     public void SpawnTower()
     {
         StartCoroutine(PlayBuildingAnimation());
+        
         OnTowerSpawn?.Invoke(this);
     }
 
@@ -80,7 +81,8 @@ public class Tower : MonoBehaviour, IEnemyTargetable
             constructionParticles.Stop();
 
         transform.localScale = Vector3.one;
-        isInitialized = true; 
+        isInitialized = true;
+        healthController.SetMaxHealth(dto.maxHeath);
     }
 
     #endregion
@@ -119,7 +121,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         if (deathParticles == null)
         {
             GameObject g = gameObject;
-            Debug.LogError($"{g.name} had no death particles", g);
+            //Debug.LogError($"{g.name} had no death particles", g);
             Destroy(gameObject,.01f);
             return;
         }

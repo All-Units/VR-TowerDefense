@@ -42,7 +42,7 @@ public class OverheatModule : MonoBehaviour
 
         var rate = 1 / cooldownRate * Time.deltaTime * _rb.velocity.magnitude;
         currentHeat = Mathf.Max(0, currentHeat-rate);
-        Debug.Log($"Coolingdown: {currentHeat} | vel: {_rb.velocity.magnitude} : rate: {rate}");
+        //Debug.Log($"Coolingdown: {currentHeat} | vel: {_rb.velocity.magnitude} : rate: {rate}");
         if (_isOverheated && currentHeat < shotsToOverheat / 3f)
         {
             _isOverheated = false;
