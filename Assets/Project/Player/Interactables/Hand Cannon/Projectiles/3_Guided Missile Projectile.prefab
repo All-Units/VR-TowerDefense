@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 25
   speed: 5
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 0}
@@ -269,12 +269,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   pursueWaitTime: 0.2
-  rotationSpeed: 7
+  rotationSpeed: 9
   moveSpeed: 2000
   maxSpeed: 10
   rb: {fileID: 1382009744870101265}
   flamesVFX: {fileID: 8976034639397686167}
   targeter: {fileID: 0}
+  target: {fileID: 0}
   index: 0
 --- !u!114 &2864799162137029931
 MonoBehaviour:
