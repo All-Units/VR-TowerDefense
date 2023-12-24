@@ -43,6 +43,9 @@ public class GuidedMissileTargeter : MonoBehaviour
     public void OnEnemyDeath(Enemy obj)
     {
         targets.Remove(obj);
+        var vfx = obj.GetComponentInChildren<TargetVFXController>();
+        if(vfx)
+            Destroy(vfx.gameObject);
     }
 
     [SerializeField] private float scanRate = .25f;

@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8247834531028761563}
   - component: {fileID: 3792436386088077422}
   - component: {fileID: 1407043019135757325}
+  - component: {fileID: -7382345083506912401}
   m_Layer: 0
   m_Name: Longsight
   m_TagString: Untagged
@@ -326,6 +327,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 7587d174894318f47a31ac7920d26fc8, type: 2}
+--- !u!114 &-7382345083506912401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 209599039139707765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9c721afd763ad48b1fb44460bc6416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  table: {fileID: 8870679060618430855}
+  rb: {fileID: 8303082872657306100}
+  resetTime: 2
+  offset: {x: 0, y: 3, z: 0.5}
 --- !u!1 &436761672132067608
 GameObject:
   m_ObjectHideFlags: 0
