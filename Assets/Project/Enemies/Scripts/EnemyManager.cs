@@ -75,6 +75,7 @@ public class EnemyManager : MonoBehaviour
         StartCoroutine(_LevelCoroutine());
         OnGregSpawned.AddListener(onGregChange);
         OnGregKilled.AddListener(onGregChange);
+        OnRoundEnded.AddListener(() => CurrencyManager.GiveToPlayer(levelData.waveStructs[_wave_i].WaveCompleteBounty));
         //parseCSV();
         //_spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
 
