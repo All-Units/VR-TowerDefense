@@ -92,15 +92,16 @@ public class ResetOnDrop : MonoBehaviour
     {
         yield return new WaitForSeconds(resetTime);
         //Do nothing if there is no tower
-        if (PlayerStateController.CurrentTower == null)
+        var playerControllableTower = PlayerStateController.CurrentTower;
+        if (playerControllableTower == null)
         {
             //print($"Was no tower, NOT resetting");
             yield break;
         }
-        Transform tower = PlayerStateController.CurrentTower.transform;
-        Vector3 pos = tower.position;
-        pos.y += offset.y;
-        pos += (tower.forward * offset.z);
+        Transform currentTowerTransform = playerControllableTower.GetPlayerControlPoint();
+        Vector3 pos = currentTowerTransform.position;
+        pos.y += 1.5f;//offset.y;
+        pos += (currentTowerTransform.forward * offset.z);
         rb.velocity = Vector3.zero;
         t.position = pos;
         t.rotation = startRot;

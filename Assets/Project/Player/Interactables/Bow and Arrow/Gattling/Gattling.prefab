@@ -134,6 +134,7 @@ GameObject:
   - component: {fileID: 7439189050815062011}
   - component: {fileID: 543670844771645246}
   - component: {fileID: 103644683228260689}
+  - component: {fileID: 585198897092579454}
   m_Layer: 10
   m_Name: Gattling
   m_TagString: Untagged
@@ -519,6 +520,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &585198897092579454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4757615584691518507}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d9c721afd763ad48b1fb44460bc6416, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  table: {fileID: 3826609837220626509}
+  rb: {fileID: 8799213642573837017}
+  resetTime: 2
+  offset: {x: 0, y: 2, z: 0.5}
 --- !u!1 &5182077233360398257
 GameObject:
   m_ObjectHideFlags: 0
