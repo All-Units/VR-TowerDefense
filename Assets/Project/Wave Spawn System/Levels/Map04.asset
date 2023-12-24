@@ -27,33 +27,85 @@ MonoBehaviour:
   waveStructs:
   - enemies:
     - enemyType: 1
-      amountToSpawn: {x: 25, y: 25}
+      amountToSpawn: {x: 9, y: 10}
     subWaves: []
-    WaveCompleteBounty: 100
-    preWaveDelay: 1
-    groupSizes: {x: 2, y: 5}
-    spawnRate: 14
+    WaveCompleteBounty: 75
+    preWaveDelay: 5
+    groupSizes: {x: 1, y: 6}
+    spawnRate: 20
     spawnPoints:
     - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
   - enemies:
     - enemyType: 1
-      amountToSpawn: {x: 40, y: 50}
-    - enemyType: 0
-      amountToSpawn: {x: 9, y: 15}
+      amountToSpawn: {x: 20, y: 25}
     subWaves: []
     WaveCompleteBounty: 150
-    preWaveDelay: 15
-    groupSizes: {x: 4, y: 8}
+    preWaveDelay: 20
+    groupSizes: {x: 8, y: 12}
     spawnRate: 12
     spawnPoints: []
   - enemies:
-    - enemyType: 0
-      amountToSpawn: {x: 7, y: 75}
     - enemyType: 1
-      amountToSpawn: {x: 20, y: 30}
-    subWaves: []
-    WaveCompleteBounty: 150
+      amountToSpawn: {x: 30, y: 35}
+    subWaves:
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 1, y: 1}
+      delayType: 0
+      DelayCount: 5
+      groupSizes: {x: 1, y: 3}
+      spawnRate: 10
+      spawnPoints: []
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 4, y: 6}
+      delayType: 0
+      DelayCount: 45
+      groupSizes: {x: 1, y: 3}
+      spawnRate: 9
+      spawnPoints: []
+    WaveCompleteBounty: 350
     preWaveDelay: 15
-    groupSizes: {x: 4, y: 8}
+    groupSizes: {x: 10, y: 15}
     spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 45, y: 50}
+    - enemyType: 3
+      amountToSpawn: {x: 12, y: 14}
+    subWaves:
+    - enemies:
+      - enemyType: 0
+        amountToSpawn: {x: 5, y: 6}
+      delayType: 0
+      DelayCount: 5
+      groupSizes: {x: 1, y: 3}
+      spawnRate: 7
+      spawnPoints: []
+    WaveCompleteBounty: 500
+    preWaveDelay: 20
+    groupSizes: {x: 10, y: 15}
+    spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 75, y: 100}
+    - enemyType: 0
+      amountToSpawn: {x: 9, y: 17}
+    - enemyType: 3
+      amountToSpawn: {x: 20, y: 20}
+    subWaves:
+    - enemies:
+      - enemyType: 2
+        amountToSpawn: {x: 1, y: 1}
+      delayType: 0
+      DelayCount: 60
+      groupSizes: {x: 1, y: 1}
+      spawnRate: 0
+      spawnPoints: []
+    WaveCompleteBounty: 0
+    preWaveDelay: 30
+    groupSizes: {x: 9, y: 15}
+    spawnRate: 11
     spawnPoints: []

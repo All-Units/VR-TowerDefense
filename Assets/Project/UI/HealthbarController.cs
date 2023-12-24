@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.XR.Content.Interaction;
 using Image = UnityEngine.UI.Image;
 using Slider = UnityEngine.UI.Slider;
 
@@ -30,8 +31,14 @@ public class HealthbarController : MonoBehaviour
         var tower = GetComponentInParent<Tower>();
         if (tower)
         {
-            tower.OnSelected += () => gameObject.SetActive(false);
-            tower.OnDeselected += () => gameObject.SetActive(true);
+            tower.OnSelected += () => slider.gameObject.SetActive(false);
+            tower.OnDeselected += () => slider.gameObject.SetActive(true);
+            
+            if (tower is ProjectileTower projectileTower)
+            {
+                projectileTower.onTakeover.AddListener(() => slider.gameObject.SetActive(false));
+                projectileTower.onRelease.AddListener(() => slider.gameObject.SetActive(true));
+            }
         }
 
         healthController.OnTakeDamage += UpdateValue;
@@ -39,12 +46,17 @@ public class HealthbarController : MonoBehaviour
         slider.value = healthController.CurrentHealth;
         _isShowing = true;
         //UpdateValue(healthController.CurrentHealth);
-        HideInstantly();    
+        HideInstantly();
+
+        
     }
+    
 
     private void UpdateValue(int curr)
     {
-        slider.value = curr;
+        slider.maxValue = 1f;
+        slider.minValue = 0f;
+        slider.value = ((float)healthController.CurrentHealth / (float)healthController.MaxHealth);
         
         if (healthController.CurrentHealth < healthController.MaxHealth)
         {
