@@ -1,24 +1,18 @@
-using System;
-
-#if UNITY_EDITOR
-using System.Collections.Generic;
-using System.Linq;
-using Unity.Mathematics;
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
-[CustomEditor(typeof(PrefabPlacer))]
-class PrefabPlacerEditor : Editor
+
+[CustomEditor(typeof(ScriptablePrefabPlacer))]
+class ScriptablePrefabPlacerEditor : Editor
 {
-    private PrefabPlacer p => ((PrefabPlacer)target);
+    private ScriptablePrefabPlacer p => ((ScriptablePrefabPlacer)target);
     public override void OnInspectorGUI()
     {
-        
-        bool bttn = p.objectLists.Count > 0;
+        bool bttn = p.prefabs;
         if (bttn)
-            p.gameObject.name = $"{p.current.ListName}Placer";
-        if (bttn && GUILayout.Button($"Place {p.current.ListName}"))
+            p.gameObject.name = $"{p.prefabs.name}Placer";
+        if (bttn && GUILayout.Button($"Place {p.prefabs.name}"))
         {
             p.PlaceObjects();
         }
@@ -38,13 +32,9 @@ class PrefabPlacerEditor : Editor
         Handles.CircleHandleCap(0, pos, p.transform.rotation * Quaternion.LookRotation(p.transform.up), p.SpawnRadius, EventType.Repaint);
     }
 }
-public class PrefabPlacer : MonoBehaviour
+public class ScriptablePrefabPlacer : MonoBehaviour
 {
-    [Header("Generates based on the first TerrainList in the List of Lists")]
-    public List<TerrainGridList> objectLists = new List<TerrainGridList>();
-
-    [HideInInspector]
-    public TerrainGridList current => objectLists.First();
+    public PrefabList_SO prefabs;
     public float SpawnRadius = 5f;
     public int NumberToSpawn = 1;
     public bool ClearOnSpawn = true;
@@ -83,7 +73,7 @@ public class PrefabPlacer : MonoBehaviour
                 return;
             
                 
-            GameObject spawned = Instantiate(current.terrainSquares.GetRandom(), transform);
+            GameObject spawned = Instantiate(prefabs.GetRandom(), transform);
             spawned.name = spawned.name.Replace("(Clone)", "");
             spawned.transform.position = hit.point;
             Vector3 rot = spawned.transform.localEulerAngles;
@@ -93,5 +83,4 @@ public class PrefabPlacer : MonoBehaviour
         }
     }
 }
-
 #endif
