@@ -264,6 +264,9 @@ public class TerrainGridGenerator : MonoBehaviour
         parent.localPosition = new Vector3(pos.x * 100, 0f, pos.y * 100);
         spawned.transform.localScale *= scale;
         parent.localEulerAngles = new Vector3(0, directions.GetRandom(), 0);
+
+        
+
         //spawned.transform.localPosition = new Vector3(-50f, 0f, -50f);
     }
 

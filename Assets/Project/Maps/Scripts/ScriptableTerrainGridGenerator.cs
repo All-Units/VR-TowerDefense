@@ -263,6 +263,12 @@ public class ScriptableTerrainGridGenerator : MonoBehaviour
         parent.localPosition = new Vector3(pos.x * 100, 0f, pos.y * 100);
         spawned.transform.localScale *= scale;
         parent.localEulerAngles = new Vector3(0, directions.GetRandom(), 0);
+
+        foreach (MeshRenderer mr in spawned.GetComponentsInChildren<MeshRenderer>())
+        {
+            mr.material = terrainList.texture;
+        }
+
     }
 
     public void ClearChildren()
