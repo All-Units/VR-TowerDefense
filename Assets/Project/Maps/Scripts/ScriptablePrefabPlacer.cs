@@ -10,8 +10,13 @@ class ScriptablePrefabPlacerEditor : Editor
     public override void OnInspectorGUI()
     {
         bool bttn = p.prefabs;
+        
         if (bttn)
-            p.gameObject.name = $"{p.prefabs.name}Placer";
+
+        {
+            Vector3 pos = p.gameObject.transform.position; 
+            p.gameObject.name = $"{p.prefabs.name} ({pos.x}, {pos.z})"; 
+        }
         if (bttn && GUILayout.Button($"Place {p.prefabs.name}"))
         {
             p.PlaceObjects();
@@ -74,8 +79,12 @@ public class ScriptablePrefabPlacer : MonoBehaviour
             
                 
             GameObject spawned = Instantiate(prefabs.GetRandom(), transform);
+            spawned.transform.localScale = Vector3.one * Random.Range(prefabs.PrefabScaleBounds.x, prefabs.PrefabScaleBounds.y);
             spawned.name = spawned.name.Replace("(Clone)", "");
             spawned.transform.position = hit.point;
+            spawned.layer = 7;
+            foreach (Transform c in spawned.transform)
+                c.gameObject.layer = 7;
             Vector3 rot = spawned.transform.localEulerAngles;
             rot.y = Random.Range(0f, 360f);
             spawned.transform.eulerAngles = rot;
