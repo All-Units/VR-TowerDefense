@@ -48,17 +48,6 @@ public class PrefabPlacer : MonoBehaviour
     public float SpawnRadius = 5f;
     public int NumberToSpawn = 1;
     public bool ClearOnSpawn = true;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 
     public void ToggleColliders()
     {
