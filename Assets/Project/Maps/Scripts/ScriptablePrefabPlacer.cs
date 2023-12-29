@@ -80,6 +80,12 @@ public class ScriptablePrefabPlacer : MonoBehaviour
             rot.y = Random.Range(0f, 360f);
             spawned.transform.eulerAngles = rot;
 
+            if (prefabs.texture != null)
+            {
+                foreach (MeshRenderer mr in spawned.GetComponentsInChildren<MeshRenderer>())
+                    mr.material = prefabs.texture;
+            }
+
         }
     }
 }
