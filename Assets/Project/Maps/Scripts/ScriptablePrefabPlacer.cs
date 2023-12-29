@@ -34,7 +34,7 @@ class ScriptablePrefabPlacerEditor : Editor
         if (Event.current.type != EventType.Repaint) return;
         Vector3 pos = p.transform.position;
         Handles.color = Color.green;
-        Handles.CircleHandleCap(0, pos, p.transform.rotation * Quaternion.LookRotation(p.transform.up), p.SpawnRadius, EventType.Repaint);
+        Handles.RectangleHandleCap(0, pos, p.transform.rotation * Quaternion.LookRotation(p.transform.up), p.SpawnRadius, EventType.Repaint);
     }
 }
 public class ScriptablePrefabPlacer : MonoBehaviour
