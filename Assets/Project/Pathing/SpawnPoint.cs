@@ -57,7 +57,7 @@ public class SpawnPoint : PathPoint
             pos.y += 100f;
             var target = _currentTarget.transform.position;
             bool left = true;
-            while (pos.FlatDistance(target) >= _currentTarget.Variance)
+            while (pos.FlatDistance(target) >= roadSpacing)
             {
                 Vector3 dir = target - pos; dir.y = 0f;
                 dir = dir.normalized;

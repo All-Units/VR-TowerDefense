@@ -75,7 +75,8 @@ Vector3 lastPoint = Vector3.zero;
             Gizmos.DrawSphere(position, .5f);
         }
 
-
+        if (nextPoint == this)
+            nextPoint = null;
 
         var next = nextPoint;
         var start = next;

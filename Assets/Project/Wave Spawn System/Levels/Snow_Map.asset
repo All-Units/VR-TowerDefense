@@ -1,0 +1,110 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c7753b4123e1e4a94c9b18a65ad6b3, type: 3}
+  m_Name: Snow_Map
+  m_EditorClassIdentifier: 
+  enemyPrefabs:
+  - prefab: {fileID: 6162612218955197706, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
+      type: 3}
+    type: 0
+  - prefab: {fileID: 6692053662854930735, guid: 755ed82bc5c38b9449a4cc81e174a846,
+      type: 3}
+    type: 1
+  - prefab: {fileID: 856478182163992432, guid: 00cffeeca8572d640a09ccc176cd0ec5, type: 3}
+    type: 2
+  - prefab: {fileID: 3141777125869599468, guid: aabe4c301a1df3143a410af95c057e31,
+      type: 3}
+    type: 3
+  waveStructs:
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 9, y: 10}
+    subWaves: []
+    WaveCompleteBounty: 75
+    preWaveDelay: 5
+    groupSizes: {x: 1, y: 6}
+    spawnRate: 20
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 20, y: 25}
+    subWaves: []
+    WaveCompleteBounty: 150
+    preWaveDelay: 20
+    groupSizes: {x: 8, y: 12}
+    spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 30, y: 35}
+    subWaves:
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 1, y: 1}
+      delayType: 0
+      DelayCount: 5
+      groupSizes: {x: 1, y: 3}
+      spawnRate: 10
+      spawnPoints: []
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 4, y: 6}
+      delayType: 0
+      DelayCount: 45
+      groupSizes: {x: 1, y: 3}
+      spawnRate: 9
+      spawnPoints: []
+    WaveCompleteBounty: 350
+    preWaveDelay: 15
+    groupSizes: {x: 10, y: 15}
+    spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 45, y: 50}
+    - enemyType: 3
+      amountToSpawn: {x: 12, y: 14}
+    subWaves:
+    - enemies:
+      - enemyType: 0
+        amountToSpawn: {x: 5, y: 6}
+      delayType: 0
+      DelayCount: 5
+      groupSizes: {x: 1, y: 3}
+      spawnRate: 7
+      spawnPoints: []
+    WaveCompleteBounty: 500
+    preWaveDelay: 20
+    groupSizes: {x: 10, y: 15}
+    spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 75, y: 100}
+    - enemyType: 0
+      amountToSpawn: {x: 9, y: 17}
+    - enemyType: 3
+      amountToSpawn: {x: 20, y: 20}
+    subWaves:
+    - enemies:
+      - enemyType: 2
+        amountToSpawn: {x: 1, y: 1}
+      delayType: 0
+      DelayCount: 60
+      groupSizes: {x: 1, y: 1}
+      spawnRate: 0
+      spawnPoints: []
+    WaveCompleteBounty: 0
+    preWaveDelay: 30
+    groupSizes: {x: 9, y: 15}
+    spawnRate: 11
+    spawnPoints: []

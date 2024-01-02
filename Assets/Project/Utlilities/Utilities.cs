@@ -58,6 +58,26 @@ public static class Utilities
         result = Vector3.zero;
         return false;
     }
+    /// <summary>
+    /// Gets all children in a transform, then gets all THEIR children, recursively
+    /// </summary>
+    /// <param name="t">The transform to get the children of</param>
+    /// <param name="returnSelf"></param>
+    /// <returns></returns>
+    public static HashSet<Transform> GetAllDescendants(this Transform t, bool returnSelf = true)
+    {
+        HashSet<Transform> result = new HashSet<Transform>();
+        if (returnSelf)
+            result.Add(t);
+        for (int i = 0; i < t.childCount; i++)
+        {
+            var child = t.GetChild(i);
+            result.Add(child);
+            var children = child.GetAllDescendants();
+            result.UnionWith(children);
+        }
+        return result;
+    }
     
     /// <summary>
     /// Prints a formatted Vector 2 string, to an arbitrary precision

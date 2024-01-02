@@ -57,13 +57,35 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         if (ClearOnSpawn)
             transform.DestroyChildrenImmediate();
         Vector3 pos = transform.position;
-        pos.y += 10f;
+        pos.y += 1000f;
         down = transform.up;
         down.y *= -1;
         for (int i = 0; i < NumberToSpawn; i++)
         {
             _SpawnObject(pos);
         }
+    }
+    bool _Blacklist(RaycastHit hit)
+    {
+        string name = hit.collider.name.ToLower();
+        string[] blacklist = new string[] { "water", "walkway", "wall"};
+        foreach (string black in blacklist)
+        {
+            if (name.Contains(black))
+                return true;
+        }
+        var parent = hit.collider.transform;
+        while (parent != null)
+        {
+            
+            name = parent.gameObject.name.ToLower();
+            if (name.Contains("castle"))
+                return true;
+            parent = parent.parent;
+
+        }
+        
+        return false;
     }
 
     void _SpawnObject(Vector3 pos)
@@ -74,7 +96,7 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(pos, Vector3.down, out hit))
         {
-            if (hit.collider.name.ToLower().Contains("water"))
+            if (_Blacklist(hit))
                 return;
             
                 
@@ -83,7 +105,7 @@ public class ScriptablePrefabPlacer : MonoBehaviour
             spawned.name = spawned.name.Replace("(Clone)", "");
             spawned.transform.position = hit.point;
             spawned.layer = 7;
-            foreach (Transform c in spawned.transform)
+            foreach (Transform c in spawned.transform.GetAllDescendants())
                 c.gameObject.layer = 7;
             Vector3 rot = spawned.transform.localEulerAngles;
             rot.y = Random.Range(0f, 360f);
