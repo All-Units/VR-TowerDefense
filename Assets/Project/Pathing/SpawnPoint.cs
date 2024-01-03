@@ -41,6 +41,8 @@ public class SpawnPoint : PathPoint
 
     PathPoint _currentTarget;
     PathPoint _current;
+
+    [SerializeField] PathPoint _lastPoint;
     Dictionary<Vector3, Vector3> points = new Dictionary<Vector3, Vector3>();
     public void PlaceRoads()
     {
@@ -51,7 +53,7 @@ public class SpawnPoint : PathPoint
         
         var pos = transform.position;
         points.Clear();
-        while ( _currentTarget.nextPoint != null )
+        while ( _currentTarget.nextPoint != null)
         {
             pos = _current.transform.position;
             pos.y += 100f;
@@ -67,6 +69,8 @@ public class SpawnPoint : PathPoint
             }
             _current = _currentTarget;
             _currentTarget = _currentTarget.nextPoint;
+            if (_lastPoint != null && _lastPoint == _currentTarget)
+                break;
 
         }
     }
