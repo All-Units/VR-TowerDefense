@@ -37,12 +37,14 @@ class ScriptablePrefabPlacerEditor : Editor
         Handles.RectangleHandleCap(0, pos, p.transform.rotation * Quaternion.LookRotation(p.transform.up), p.SpawnRadius, EventType.Repaint);
     }
 }
+[CanEditMultipleObjects]
 public class ScriptablePrefabPlacer : MonoBehaviour
 {
     public PrefabList_SO prefabs;
     public float SpawnRadius = 5f;
     public int NumberToSpawn = 1;
     public bool ClearOnSpawn = true;
+    public bool IsMountains;
 
     public void ToggleColliders()
     {
@@ -93,17 +95,22 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         
         pos.x += Random.Range((SpawnRadius * -1), SpawnRadius);
         pos.z += Random.Range((SpawnRadius * -1), SpawnRadius);
+        
         RaycastHit hit;
         if (Physics.Raycast(pos, Vector3.down, out hit))
         {
-            if (_Blacklist(hit))
+            if (_Blacklist(hit) && IsMountains == false)
                 return;
             
                 
             GameObject spawned = Instantiate(prefabs.GetRandom(), transform);
             spawned.transform.localScale = Vector3.one * Random.Range(prefabs.PrefabScaleBounds.x, prefabs.PrefabScaleBounds.y);
             spawned.name = spawned.name.Replace("(Clone)", "");
-            spawned.transform.position = hit.point;
+            Vector3 point = hit.point;
+            if (IsMountains)
+                point.y = 0f;
+            spawned.transform.position = point;
+            
             spawned.layer = 7;
             foreach (Transform c in spawned.transform.GetAllDescendants())
                 c.gameObject.layer = 7;
