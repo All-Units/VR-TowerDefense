@@ -13,6 +13,7 @@ public class HealthbarController : MonoBehaviour
     public int HideAfter = 1;*/
 
     private bool _isShowing = false;
+    public bool AlwaysShowing;
 
     private void Start()
     {
@@ -47,6 +48,10 @@ public class HealthbarController : MonoBehaviour
         _isShowing = true;
         //UpdateValue(healthController.CurrentHealth);
         HideInstantly();
+        if (AlwaysShowing)
+        {
+            Show();
+        }
 
         
     }
@@ -92,6 +97,7 @@ public class HealthbarController : MonoBehaviour
     private void Hide()
     {
         if(!_isShowing) return;
+        if(AlwaysShowing) return;
 
         StartCoroutine(Fade(.5f, false));
         _isShowing = false;
