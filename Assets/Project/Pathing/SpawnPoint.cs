@@ -53,7 +53,7 @@ public class SpawnPoint : PathPoint
         
         var pos = transform.position;
         points.Clear();
-        while ( _currentTarget.nextPoint != null)
+        while ( _currentTarget != null)
         {
             pos = _current.transform.position;
             pos.y += 100f;
