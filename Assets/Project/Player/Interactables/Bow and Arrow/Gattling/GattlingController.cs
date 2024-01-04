@@ -47,7 +47,7 @@ public class GattlingController : MonoBehaviour
             t = Mathf.Clamp(t, 0, spinUpTime);
             
             var spinSpeed = Mathf.Lerp(0, maxSpinSpeed, t / spinUpTime);
-            barrels.Rotate(Vector3.up, spinSpeed);
+            barrels.Rotate(Vector3.forward, spinSpeed);
             if (spinSpeed > maxSpinSpeed / 4 && _isActive)
             {
                 fireRate += spinSpeed;
