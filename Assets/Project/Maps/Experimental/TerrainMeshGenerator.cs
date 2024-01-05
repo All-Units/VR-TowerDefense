@@ -4,25 +4,40 @@ using Unity.Burst;
 using Unity.Collections;
 using Unity.Jobs;
 using Unity.Mathematics;
+using UnityEditor;
+using Random = UnityEngine.Random;
+
+#if UNITY_EDITOR
+
+[CustomEditor(typeof(TerrainMeshGenerator))]
+class TerrainMeshEditor : Editor
+{
+    private TerrainMeshGenerator tmg => (TerrainMeshGenerator)target;
+    public override void OnInspectorGUI()
+    {
+        if (GUILayout.Button("New Seed"))
+        {
+            tmg.seed = Random.Range(0f, 10f);
+            tmg.GenerateMap();
+        }
+        if (GUILayout.Button("Regenerate Map"))
+            tmg.GenerateMap();
+        base.OnInspectorGUI();
+    }
+}
+
+
+
+#endif
 
 public class TerrainMeshGenerator : MonoBehaviour
 {
-    private static TerrainMeshGenerator _instance;
     
     public MeshFilter meshFilter;
     public TerrainMeshVariables meshVariables;
     public TerrainHeightmapVariables heightmapVariables;
     public Gradient heightmapGradient;
     public float seed;
-
-    private void Awake() {
-        if (_instance == null) _instance = this;
-        else Destroy(gameObject);
-    }
-    
-    public void OnValidate(){
-        GenerateMap();
-    }
 
     public void GenerateMap()
     {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -20,11 +21,26 @@ public class LevelSelectRefactor : MonoBehaviour
     Vector3 _textSelectedSize = Vector3.one;
 
     public float ChangeSizeTime = 0.5f;
-
+    private void OnDrawGizmos()
+    {
+        if (levelSelectData == null) return;
+#if UNITY_EDITOR
+        if (text == null)
+            text = GetComponentInChildren<TextMeshProUGUI>();
+        if (gameObject.name != levelSelectData.title ||
+            text.text != levelSelectData.title)
+            EditorUtility.SetDirty(gameObject);
+        
+        gameObject.name = levelSelectData.title;
+        
+        text.text = levelSelectData.title;
+#endif
+    }
+    TextMeshProUGUI text;
     private void Awake()
     {
         _Deselect();
-        var text = GetComponentInChildren<TextMeshProUGUI>();
+        text = GetComponentInChildren<TextMeshProUGUI>();
         if (text != null)
             text.text = levelSelectData.title;
         if (interactable == null) interactable = GetComponent<XRSimpleInteractable>();
@@ -41,7 +57,18 @@ public class LevelSelectRefactor : MonoBehaviour
 
         //On trigger pull
         interactable.activated.AddListener(OnSelectLevel);
+        _SetColor();
 
+    }
+    MeshRenderer mr;
+    public void _SetColor()
+    {
+        if (levelSelectData.OverrideTowerColor == null) return;
+        if (mr == null) mr = GetComponentInChildren<MeshRenderer>();
+        var colors = mr.materials;
+
+        colors[1] = levelSelectData.OverrideTowerColor;
+        
     }
 
     

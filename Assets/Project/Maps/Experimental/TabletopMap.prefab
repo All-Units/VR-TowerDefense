@@ -132,9 +132,151 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 424714552847597483}
+  - {fileID: 6934610698792272456}
   m_Father: {fileID: 3152573386830388829}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1756397640090733111
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6934610698792272456}
+  - component: {fileID: 6054528203468757025}
+  - component: {fileID: 8868075084398478481}
+  - component: {fileID: 7700950662405385968}
+  m_Layer: 0
+  m_Name: MapTerrain (2)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6934610698792272456
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756397640090733111}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 1.1000063, y: 0.80001616, z: -47.199997}
+  m_LocalScale: {x: 0.6, y: 0.80000025, z: 0.80000025}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 2592360912923788186}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &6054528203468757025
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756397640090733111}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 9f2502ad27d956540ba40221d2f8bf26, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &8868075084398478481
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756397640090733111}
+  m_Mesh: {fileID: 0}
+--- !u!114 &7700950662405385968
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1756397640090733111}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8a5df2a96028f242b6921af29c3b637, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  meshFilter: {fileID: 8868075084398478481}
+  meshVariables:
+    terrainMeshDetail: 255
+    terrainWidth: 250
+    height: 1
+  heightmapVariables:
+    noiseScale: 1.4
+    frequency: 2.14
+    lacunarity: 2.33
+    octaves: 10
+    weight: 4.12
+    falloffSteepness: 0.47
+    falloffOffset: 3.36
+    waterLevel: 8.59
+  heightmapGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0.37785387, b: 1, a: 1}
+    key1: {r: 0.85490197, g: 0.8267965, b: 0.5137255, a: 1}
+    key2: {r: 0.85490197, g: 0.827451, b: 0.5137255, a: 0}
+    key3: {r: 0.51532596, g: 0.9150943, b: 0.38416696, a: 0}
+    key4: {r: 0.5137255, g: 0.91372555, b: 0.38431376, a: 0}
+    key5: {r: 0.6886792, g: 0.6886792, b: 0.6886792, a: 0}
+    key6: {r: 0.4245283, g: 0.4245283, b: 0.4245283, a: 0}
+    key7: {r: 1, g: 1, b: 1, a: 0}
+    ctime0: 5707
+    ctime1: 7625
+    ctime2: 9256
+    ctime3: 10551
+    ctime4: 11990
+    ctime5: 14292
+    ctime6: 17649
+    ctime7: 19375
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: 0
+    m_NumColorKeys: 8
+    m_NumAlphaKeys: 2
+  seed: 5.7300634
 --- !u!1 &2347442152686588967
 GameObject:
   m_ObjectHideFlags: 0
