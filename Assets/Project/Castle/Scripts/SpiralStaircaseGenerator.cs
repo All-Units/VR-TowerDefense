@@ -36,13 +36,21 @@ public class SpiralStaircaseGenerator : MonoBehaviour
         {
             GameObject stair = Instantiate(staircasePrefab, transform);
             stair.transform.position = center;
-            stair.transform.GetChild(0).localPosition = new Vector3(distanceFromCenter, 0f, 0f);
+            _SetCenter(stair.transform);
             center.y += staircaseHeight;
             stair.transform.localEulerAngles = new Vector3(0f, current_angle, 0f);
             current_angle += angle;
             stair.name = $"Step {i}";
         }
         print("Staircase generated");
+    }
+    void _SetCenter(Transform t)
+    {
+        Vector3 pos = new Vector3(distanceFromCenter, 0f, 0f);
+        if (t.childCount == 0)
+            t.localPosition = pos;
+        else
+            t.GetChild(0).localPosition = pos;
     }
     
     // Start is called before the first frame update
