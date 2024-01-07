@@ -101,9 +101,10 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         {
             if (_Blacklist(hit) && IsMountains == false)
                 return;
-            
-                
-            GameObject spawned = Instantiate(prefabs.GetRandom(), transform);
+
+
+            //GameObject spawned = Instantiate(prefabs.GetRandom(), transform);
+            GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(prefabs.GetRandom(), transform); 
             spawned.transform.localScale = Vector3.one * Random.Range(prefabs.PrefabScaleBounds.x, prefabs.PrefabScaleBounds.y);
             spawned.name = spawned.name.Replace("(Clone)", "");
             Vector3 point = hit.point;

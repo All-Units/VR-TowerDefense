@@ -20,12 +20,7 @@ class _bookGenInspector : Editor
         if (GUILayout.Button("Regenerate ALL shelving"))
         {
             var g = (BookshelfGenerator)target;
-            var shelves = g.transform.root.GetComponentsInChildren<BookshelfGenerator>();
-            foreach (var gen in shelves)
-            {
-                //BookshelfGenerator gen = c.GetComponent<BookshelfGenerator>();
-                gen.RegenShelves();
-            }
+            g.RegenAllShelving();
             
         }
         base.OnInspectorGUI();
@@ -52,6 +47,15 @@ public class BookshelfGenerator : MonoBehaviour
     void Update()
     {
         
+    }
+    public void RegenAllShelving()
+    {
+        var shelves = transform.root.GetComponentsInChildren<BookshelfGenerator>();
+        foreach (var gen in shelves)
+        {
+            //BookshelfGenerator gen = c.GetComponent<BookshelfGenerator>();
+            gen.RegenShelves();
+        }
     }
 
     public void RegenShelves()
