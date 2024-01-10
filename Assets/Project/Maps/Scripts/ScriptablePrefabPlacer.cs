@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 [CustomEditor(typeof(ScriptablePrefabPlacer))]
+[CanEditMultipleObjects]
 class ScriptablePrefabPlacerEditor : Editor
 {
     private ScriptablePrefabPlacer p => ((ScriptablePrefabPlacer)target);
@@ -20,6 +21,14 @@ class ScriptablePrefabPlacerEditor : Editor
         if (bttn && GUILayout.Button($"Place {p.prefabs.name}"))
         {
             p.PlaceObjects();
+            foreach (var go in Selection.objects)
+            {
+                var placer = ((GameObject)go).GetComponent<ScriptablePrefabPlacer>();
+                if (placer && placer != p)
+                {
+                    placer.PlaceObjects();
+                }
+            }
         }
 
         if (GUILayout.Button(($"Toggle colliders")))
