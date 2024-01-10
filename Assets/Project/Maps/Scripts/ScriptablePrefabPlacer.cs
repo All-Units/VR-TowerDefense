@@ -71,6 +71,8 @@ public class ScriptablePrefabPlacer : MonoBehaviour
     {
         string name = hit.collider.name.ToLower();
         string[] blacklist = new string[] { "water", "walkway", "wall"};
+        if (hit.collider.gameObject.layer != 7)
+            return false;
         foreach (string black in blacklist)
         {
             if (name.Contains(black))
@@ -97,7 +99,8 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         pos.z += Random.Range((SpawnRadius * -1), SpawnRadius);
         
         RaycastHit hit;
-        if (Physics.Raycast(pos, Vector3.down, out hit))
+        LayerMask mask = LayerMask.GetMask("Ground");
+        if (Physics.Raycast(pos, Vector3.down, out hit, float.PositiveInfinity, mask))
         {
             if (_Blacklist(hit) && IsMountains == false)
                 return;

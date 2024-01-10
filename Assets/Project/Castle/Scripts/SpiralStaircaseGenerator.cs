@@ -42,6 +42,14 @@ public class SpiralStaircaseGenerator : MonoBehaviour
             current_angle += angle;
             stair.name = $"Step {i}";
         }
+        var shelf = GetComponentInChildren<BookshelfGenerator>();
+        if (shelf)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                shelf.RegenShelves();
+            }
+        }
         print("Staircase generated");
     }
     void _SetCenter(Transform t)
