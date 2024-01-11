@@ -57,7 +57,7 @@ public class ArrowSpawner : MonoBehaviour
             currentController.SendHapticImpulse(3, 0.5f);
             
             _currentArrow.transform.SetParent(notch.transform);
-            _currentArrow.transform.localPosition = Vector3.zero;
+            _currentArrow.transform.localPosition = Vector3.forward * .05f;
             _currentArrow.transform.localRotation = Quaternion.identity;
         }
     }
