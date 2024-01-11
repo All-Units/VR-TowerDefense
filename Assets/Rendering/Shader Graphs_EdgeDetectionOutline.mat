@@ -7,14 +7,17 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Blue_tower
-  m_Shader: {fileID: -6465566751694194690, guid: 0c57d6fb24edecc4281bae9931e8d746,
+  m_Name: Shader Graphs_EdgeDetectionOutline
+  m_Shader: {fileID: -6465566751694194690, guid: e54fe2b32d05eaa43a6365c6061ac5a7,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords: []
-  m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_ValidKeywords:
+  - REQUIRE_DEPTH_TEXTURE
+  - REQUIRE_OPAQUE_TEXTURE
+  m_InvalidKeywords:
+  - 
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -24,6 +27,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _MainTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -38,19 +45,21 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Metallic: 0
-    - _QueueControl: 0
-    - _QueueOffset: 0
-    - _Smoothness: 0
-    - _cutOffHieght: 1.43
-    - _edgeWidth: 0.05
-    - _noiseScale: 10.5
-    - _noiseStrength: 0.28
+    - REQUIRE_DEPTH_TEXTURE: 1
+    - REQUIRE_OPAQUE_TEXTURE: 1
+    - _BUILTIN_QueueControl: 0
+    - _BUILTIN_QueueOffset: 0
+    - _Thickness: 0.00005
+    - _colorStrength: 56
+    - _colorThickness: 0.87
+    - _colorThreshold: 2.14
+    - _depthStrength: 56
+    - _depthThickness: 0.87
+    - _depthThreshold: 0.0075
     m_Colors:
-    - _albeto: {r: 0.44544324, g: 0.46550372, b: 0.6603774, a: 1}
-    - _edgeColor: {r: 1.396226, g: 0.5881741, b: 0.2831969, a: 1}
+    - _Color: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
---- !u!114 &6458074642440415931
+--- !u!114 &1056337366724413869
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -59,7 +68,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
+  m_Script: {fileID: 11500000, guid: 639247ca83abc874e893eb93af2b5e44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 7
+  version: 0
