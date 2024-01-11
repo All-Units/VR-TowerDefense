@@ -138,6 +138,7 @@ public abstract class Enemy : MonoBehaviour
         spawnTime = Time.realtimeSinceStartup;
         _EnableRagdoll(false);
         _SetSpeed(1f);
+        StartCoroutine(_DelayRunAnim());
     }
     protected virtual void OnEnemyDie()
     {
@@ -272,6 +273,15 @@ public abstract class Enemy : MonoBehaviour
 
 
     #region StateMachineHelpers
+    IEnumerator _DelayRunAnim()
+    {
+        float delay = Random.Range(0, 0.5f);
+        animator.Play("Attack");
+        yield return null;
+        yield return new WaitForSeconds(delay);
+        animator.Play("Move");
+        print($"Waited {delay} seconds to start running");
+    }
     protected bool _IsPowerAttacking = false;
 
     void _UpdatePowerAttackTime()

@@ -183,7 +183,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: b6b8faffd68c6f44f92daa7d473c9701, type: 3}
   - {fileID: 8300000, guid: c051b9af999e1b941ad0b630c11be689, type: 3}
   - {fileID: 8300000, guid: 08ebcaf7f680ddd41805fe50bd1283bc, type: 3}
-  _maxInclusivePitchVariance: 0.1
+  _maxInclusivePitchVariance: 0.2
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
@@ -200,17 +200,17 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 0.734
-  m_Pitch: 1
+  m_Pitch: 0.9
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
   DopplerLevel: 1
-  MinDistance: 4.58
+  MinDistance: 0
   MaxDistance: 75
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -226,6 +226,24 @@ AudioSource:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3052937
+      value: 0.44639564
+      inSlope: -1.1444271
+      outSlope: -1.1444271
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.22520979
+    - serializedVersion: 3
+      time: 0.58674204
+      value: 0.075876534
+      inSlope: -0.4197306
+      outSlope: -0.4197306
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.11222017
     - serializedVersion: 3
       time: 1
       value: 0

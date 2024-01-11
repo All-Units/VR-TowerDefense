@@ -13,6 +13,7 @@ public class CloudMover : MonoBehaviour
 
     public Vector2 cloudBunchMinMax = new Vector2(2, 5);
     public Vector2 cloudSpeedMinMax = new Vector2(2, 5);
+    public float cloudScalar = 4f;
 
     Vector3 center;
     // Start is called before the first frame update
@@ -40,7 +41,7 @@ public class CloudMover : MonoBehaviour
         float x = Random.Range(-MaxDistanceFromCenter, MaxDistanceFromCenter);
         float z = Random.Range(-MaxDistanceFromCenter, MaxDistanceFromCenter);
         cloud.transform.position = new Vector3(x, CloudHeight, z);
-        cloud.transform.localScale *= 20f;
+        cloud.transform.localScale *= cloudScalar;
         StartCoroutine(_MoveCloud(cloud));  
     }
     IEnumerator _MoveCloud(GameObject cloud)
