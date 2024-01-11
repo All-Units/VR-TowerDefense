@@ -4,6 +4,7 @@ using UnityEngine;
 
 
 [CustomEditor(typeof(ScriptablePrefabPlacer))]
+[CanEditMultipleObjects]
 class ScriptablePrefabPlacerEditor : Editor
 {
     private ScriptablePrefabPlacer p => ((ScriptablePrefabPlacer)target);
@@ -20,6 +21,14 @@ class ScriptablePrefabPlacerEditor : Editor
         if (bttn && GUILayout.Button($"Place {p.prefabs.name}"))
         {
             p.PlaceObjects();
+            foreach (var go in Selection.objects)
+            {
+                var placer = ((GameObject)go).GetComponent<ScriptablePrefabPlacer>();
+                if (placer && placer != p)
+                {
+                    placer.PlaceObjects();
+                }
+            }
         }
 
         if (GUILayout.Button(($"Toggle colliders")))
@@ -71,6 +80,8 @@ public class ScriptablePrefabPlacer : MonoBehaviour
     {
         string name = hit.collider.name.ToLower();
         string[] blacklist = new string[] { "water", "walkway", "wall"};
+        if (hit.collider.gameObject.layer != 7)
+            return false;
         foreach (string black in blacklist)
         {
             if (name.Contains(black))
@@ -97,13 +108,15 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         pos.z += Random.Range((SpawnRadius * -1), SpawnRadius);
         
         RaycastHit hit;
-        if (Physics.Raycast(pos, Vector3.down, out hit))
+        LayerMask mask = LayerMask.GetMask("Ground");
+        if (Physics.Raycast(pos, Vector3.down, out hit, float.PositiveInfinity, mask))
         {
             if (_Blacklist(hit) && IsMountains == false)
                 return;
-            
-                
-            GameObject spawned = Instantiate(prefabs.GetRandom(), transform);
+
+
+            //GameObject spawned = Instantiate(prefabs.GetRandom(), transform);
+            GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(prefabs.GetRandom(), transform); 
             spawned.transform.localScale = Vector3.one * Random.Range(prefabs.PrefabScaleBounds.x, prefabs.PrefabScaleBounds.y);
             spawned.name = spawned.name.Replace("(Clone)", "");
             Vector3 point = hit.point;
