@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d2c7753b4123e1e4a94c9b18a65ad6b3, type: 3}
-  m_Name: test
+  m_Name: Village
   m_EditorClassIdentifier: 
   enemyPrefabs:
   - prefab: {fileID: 6162612218955197706, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
@@ -30,9 +30,9 @@ MonoBehaviour:
       amountToSpawn: {x: 30, y: 50}
     subWaves: []
     WaveCompleteBounty: 75
-    preWaveDelay: 20
-    groupSizes: {x: 9, y: 9}
-    spawnRate: 10
+    preWaveDelay: 1
+    groupSizes: {x: 1, y: 1}
+    spawnRate: 25
     spawnPoints:
     - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
   - enemies:
