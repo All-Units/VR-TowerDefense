@@ -3,6 +3,7 @@ using System.Collections;
 using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Playables;
 
 [RequireComponent(typeof(HealthController))]
 public class Tower : MonoBehaviour, IEnemyTargetable
@@ -11,7 +12,6 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     
     [Header("Tower VFX")] 
     [SerializeField] private GameObject deathParticles;
-    [SerializeField] private ParticleSystem constructionParticles;
     [SerializeField] protected GameObject selectedVfx;
 
     [SerializeField] protected bool isInitialized = false;
@@ -66,21 +66,12 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     private IEnumerator PlayBuildingAnimation()
     {
-        var time = buildTime;
-        if(constructionParticles)
-            constructionParticles.Play();
-
-        while (time > 0)
-        {
-            transform.localScale = Vector3.Lerp(Vector3.one, Vector3.zero, time / buildTime);
-            time -= Time.deltaTime;
-            yield return null;
-        }
-
-        if(constructionParticles)
-            constructionParticles.Stop();
-
         transform.localScale = Vector3.one;
+
+        var director = GetComponentInChildren<PlayableDirector>();
+
+        yield return new WaitForSeconds((float)director.duration);
+        
         isInitialized = true;
         healthController.SetMaxHealth(dto.maxHeath);
     }
