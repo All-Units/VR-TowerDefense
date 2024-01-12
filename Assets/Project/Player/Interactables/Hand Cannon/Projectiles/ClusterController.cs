@@ -1,10 +1,14 @@
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ClusterController : MonoBehaviour
 {
     [SerializeField] private float vertMin, vertMax;
     [SerializeField] private int spawnMin, spawnMax;
+    [SerializeField] private float speedMin = 1, speedMax = 5;
     [SerializeField] private Projectile spawnable;
+
 
     public void SpawnExtras()
     {
@@ -23,7 +27,7 @@ public class ClusterController : MonoBehaviour
 
         var proj = Instantiate(spawnable, transform.position + fireDirection,
             Quaternion.FromToRotation(transform.position, fireDirection));
-        proj.speed *= Random.Range(.001f, .5f);
+        proj.speed *= Random.Range(speedMin, speedMax);
         proj.Fire();
     }
 }

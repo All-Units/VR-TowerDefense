@@ -13,14 +13,14 @@ GameObject:
   - component: {fileID: 8959840421233287734}
   - component: {fileID: 619308174058264511}
   - component: {fileID: 3071368436360838454}
-  - component: {fileID: -3209575759116085165}
   - component: {fileID: 1382009744870101265}
   - component: {fileID: 7097409660520499029}
+  - component: {fileID: 9086957218216809312}
   - component: {fileID: 6529085469557916620}
   - component: {fileID: 2864799162137029931}
   - component: {fileID: 4920861282781409616}
   m_Layer: 10
-  m_Name: 3_Cluster Bomb Projectile
+  m_Name: Cluster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108,7 +108,7 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -124,8 +124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
-  speed: 50
+  damage: 5
+  speed: 20
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 0}
   _hitGround: {fileID: 0}
@@ -135,21 +135,9 @@ MonoBehaviour:
       m_Calls: []
   OnHit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: -3209575759116085165}
-        m_TargetAssemblyTypeName: ClusterController, Project
-        m_MethodName: SpawnExtras
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  splashRadius: 4
-  hitParticles: {fileID: 2433282508537954060, guid: 2b3452126ce8c24438f1e6990e6097d5,
+      m_Calls: []
+  splashRadius: 5
+  hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
     serializedVersion: 2
@@ -185,27 +173,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _audioClipController: {fileID: 2864799162137029931}
-  _clusterProjectile: {fileID: 0}
---- !u!114 &-3209575759116085165
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 337958517151354589}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a2130ae7d517da4ab412e7e69e4adae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  vertMin: 1
-  vertMax: 2
-  spawnMin: 5
-  spawnMax: 7
-  speedMin: -0.05
-  speedMax: -0.5
-  spawnable: {fileID: 3071368436360838454, guid: 68eef2e6ef9dcc844a583db72d57b11e,
-    type: 3}
+  _clusterProjectile: {fileID: 9086957218216809312}
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -346,6 +314,21 @@ TrailRenderer:
   m_Autodestruct: 1
   m_Emitting: 1
   m_ApplyActiveColorSpace: 1
+--- !u!114 &9086957218216809312
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337958517151354589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 938e68fec9864da28a4a85dc076183df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  collider: {fileID: 619308174058264511}
+  waitTime: 0.3
+  ready: 0
 --- !u!82 &6529085469557916620
 AudioSource:
   m_ObjectHideFlags: 0
