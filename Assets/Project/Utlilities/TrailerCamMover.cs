@@ -1,10 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.XR;
 
 public class TrailerCamMover : MonoBehaviour
 {
+    public List<GameObject> towerList = new List<GameObject>();
+    public float towerTimeLapseRate = 0.4f;
     public GameObject playerPref;
     public float moveSpeed;
     public Vector3 moveDir = new Vector3(1f, 0f, 0f);
@@ -17,7 +20,9 @@ public class TrailerCamMover : MonoBehaviour
         if (playerPref.activeInHierarchy)
         {
             gameObject.SetActive(false);
+            return;
         }
+        StartCoroutine(_TowerTimeLapse());
         
     }
 
@@ -33,6 +38,22 @@ public class TrailerCamMover : MonoBehaviour
             Vector3 pos = transform.position;
             pos += (moveDir * moveSpeed * Time.deltaTime);
             transform.position = pos;
+        }
+    }
+    IEnumerator _TowerTimeLapse()
+    {
+        LinkedList<GameObject> inactive = new LinkedList<GameObject>();
+        foreach (GameObject tower in towerList)
+        {
+            tower.SetActive(false );
+            inactive.AddLast(tower);
+        }
+        while (inactive.Count > 0)
+        {
+            GameObject tower = inactive.First.Value;
+            tower.SetActive(true);
+            inactive.RemoveFirst();
+            yield return new WaitForSeconds(towerTimeLapseRate);
         }
     }
 }
