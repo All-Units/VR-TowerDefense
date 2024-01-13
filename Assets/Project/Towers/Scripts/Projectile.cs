@@ -47,7 +47,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void OnCollision(Collider other)
     {
-
+        
         //var colliderGameObject = other.gameObject;
         var healthController = other.GetComponentInParent<HealthController>();  
         if (healthController != null)

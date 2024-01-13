@@ -4,6 +4,7 @@ using UnityEngine.Serialization;
 
 public class ProjectileTower : PlayerControllableTower
 {
+    public bool CanFire = true;
     [Header("Projectile Tower")] 
     [SerializeField] private RadialTargetingSystem targetingSystem;
 
@@ -28,6 +29,7 @@ public class ProjectileTower : PlayerControllableTower
         targetingSystem.SetRadius(projectileTowerSo.radius);
         if(attackVFX)
             attackVFX.SetActive(false);
+        CanFire = true;
     }
    
     private void Update()
@@ -35,7 +37,7 @@ public class ProjectileTower : PlayerControllableTower
         if(!isInitialized) return; 
         
         if(isPlayerControlled) return;
-        
+        if (CanFire == false)return;
         if(targetingSystem.HasTarget())
         {
             AimAtTarget();

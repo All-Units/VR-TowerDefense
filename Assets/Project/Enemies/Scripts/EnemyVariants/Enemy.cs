@@ -13,6 +13,8 @@ using Random = UnityEngine.Random;
 [RequireComponent(typeof(HealthController))]
 public abstract class Enemy : MonoBehaviour
 {
+    public bool CanMove = true;
+
     #region PublicVariables
     public float spawnTime { get; private set; }
     public static Action<Enemy> OnDeath;
@@ -326,6 +328,7 @@ public abstract class Enemy : MonoBehaviour
     }
     protected virtual void _Move()
     {
+        if (CanMove == false) return;
         _SetIsAttacking(false);
         if (_IsFrozenAfterHit)
         {

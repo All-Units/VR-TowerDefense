@@ -123,14 +123,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 2
+  damage: 25
   speed: 50
-  RagdollForce: 300
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 0}
   _hitGround: {fileID: 0}
   flyingVFX: {fileID: 0}
-  splashRadius: 3
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  splashRadius: 9
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
@@ -139,12 +144,21 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -0.004573574
       value: 0.99475145
-      inSlope: -2.790245
-      outSlope: -2.790245
+      inSlope: 0.0016546937
+      outSlope: 0.0016546937
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.11060789
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.50862473
+      value: 0.8838953
+      inSlope: -0.21551055
+      outSlope: -0.21551055
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.5885699
+      outWeight: 0.40592545
     - serializedVersion: 3
       time: 1
       value: 0.025829673

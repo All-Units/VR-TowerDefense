@@ -27,11 +27,14 @@ public class AOEProjectile : Projectile
                 ApplyEffects(healthController);
             }
             BasicEnemy.FlingRagdoll(colliderGameObject, pos);
+            Time.timeScale = 0.5f;
+            print($"Time scale PROJECTILE SET TO {Time.timeScale}");
         }
         if(hitParticles)
         {
             var particles = Instantiate(hitParticles, pos, Quaternion.identity);
-            Destroy(particles, 2f);
+            print("NOT DESTROYING PARTICLES");
+            //Destroy(particles, 2f);
         }
         
         // Todo Refactor out to event based
