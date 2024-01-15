@@ -39,7 +39,11 @@ public class AudioClipController : MonoBehaviour
     {
         return _clips.GetRandom();
     }
-
+    public void PlayClipAtPos()
+    {
+        var pos = transform.position;
+        PlayClipAt(pos);
+    }
     public void PlayClipAt(Vector3 pos)
     {
         AudioClip clip = GetClip();

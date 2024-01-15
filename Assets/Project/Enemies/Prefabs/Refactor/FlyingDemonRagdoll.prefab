@@ -3863,6 +3863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5edbb2d3878728e48a8e7890ead02f83, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  CanMove: 1
   nextPoint: {fileID: 0}
   enemyStats: {fileID: 11400000, guid: 1bc7e038edec93c478868f67461098ef, type: 2}
   _MoveSpeed: 0
@@ -3876,8 +3877,8 @@ MonoBehaviour:
   footstepController: {fileID: 6628368104604308116}
   attackSFXController: {fileID: 2938472560829769712}
   _hitParticles: {fileID: 8872933528027679581}
-  FlightHeight: 5
-  HeightVariance: 3
+  FlightHeight: 8
+  HeightVariance: 4
   _groundLayer:
     serializedVersion: 2
     m_Bits: 128
