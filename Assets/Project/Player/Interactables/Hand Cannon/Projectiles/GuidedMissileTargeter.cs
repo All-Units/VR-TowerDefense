@@ -52,16 +52,30 @@ public class GuidedMissileTargeter : MonoBehaviour
     private float _currentRate = 0;
     private void Update()
     {
+        if (isTargeting)
+        {
+            ScanForTargets();
+        }
+        else
+        {
+            lineRenderer.SetPosition(0, castPoint.transform.position);
+            lineRenderer.SetPosition(1, castPoint.transform.position);
+        }
+
+    }
+
+    private void ScanForTargets()
+    {
         _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
 
         _currentRate += Time.deltaTime;
-        
-        if(_currentRate >= scanRate)
+
+        if (_currentRate >= scanRate)
         {
             ScanForEnemies();
             _currentRate = 0;
         }
-        
+
         DrawLine();
     }
 
