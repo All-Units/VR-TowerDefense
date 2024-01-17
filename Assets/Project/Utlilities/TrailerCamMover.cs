@@ -5,11 +5,13 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.XR;
 
-[ExecuteInEditMode]
 public class TrailerCamMover : MonoBehaviour
 {
-    public List<GameObject> towerList = new List<GameObject>();
-    public float towerTimeLapseRate = 0.4f;
+    public Transform TitleLayoutParent;
+    public float TimeToGrow = 0.4f;
+    public float TimeBetween = 0.1f;
+    public AnimationCurve growCurve;
+    
     public GameObject playerPref;
     public float moveSpeed;
     public Vector3 moveDir = new Vector3(1f, 0f, 0f);
@@ -65,7 +67,8 @@ public class TrailerCamMover : MonoBehaviour
             Vector3 pos = transform.localPosition;
             var dir = transform.forward; dir.y = 0f;
             pos += (dir * moveSpeed * Time.deltaTime);
-            transform.localPosition = pos;
+            //transform.localPosition = pos;
+            transform.localPosition += (moveDir * moveSpeed * Time.deltaTime);
 
             Vector3 rot = transform.localEulerAngles;
             rot += (rotateDir * rotateSpeed * Time.deltaTime);
@@ -97,18 +100,34 @@ public class TrailerCamMover : MonoBehaviour
     }
     IEnumerator _TowerTimeLapse()
     {
-        LinkedList<GameObject> inactive = new LinkedList<GameObject>();
-        foreach (GameObject tower in towerList)
+        if (TitleLayoutParent == null)
+            yield break;
+        
+        List<Transform> texts = new List<Transform>();
+        for (int i = 0; i < TitleLayoutParent.childCount; i++)
         {
-            tower.SetActive(false );
-            inactive.AddLast(tower);
+            Transform t = TitleLayoutParent.GetChild(i);
+            t.gameObject.SetActive(false);
+            t.localScale = Vector3.zero;
+            texts.Add(t);
         }
-        while (inactive.Count > 0)
+        yield return new WaitForSeconds(1f);
+        foreach (Transform text in texts)
         {
-            GameObject tower = inactive.First.Value;
-            tower.SetActive(true);
-            inactive.RemoveFirst();
-            yield return new WaitForSeconds(towerTimeLapseRate);
+            float time = 0f;
+            text.gameObject.SetActive(true);
+            while (time <= TimeToGrow)
+            {
+                yield return null;
+                time += Time.deltaTime;
+                float t = time / TimeToGrow;
+                float scale = Mathf.Lerp(0, 1, t);
+                scale = growCurve.Evaluate(t);
+                text.localScale = Vector3.one * scale;
+                float x = Mathf.Lerp(90f, 0f, t);
+                text.localEulerAngles = new Vector3(x, 0f, 0f);
+            }
+            yield return new WaitForSeconds(TimeBetween);
         }
     }
 }
