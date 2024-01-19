@@ -50,7 +50,8 @@ public class StatusEffectController : MonoBehaviour
 
         while (_burnCountdown > 0)
         {
-            _healthController.TakeDamage(1 + _burnLevel);
+            if (_healthController.isDead == false)
+                _healthController.TakeDamageFrom(5 + _burnLevel, transform.position);
             var startTime = Time.time;
             yield return new WaitForSeconds(1f);
             var elapsedTime = Time.time - startTime;

@@ -9,6 +9,7 @@ public class TrailerCamMover : MonoBehaviour
 {
     public Transform TitleLayoutParent;
     public float TimeToGrow = 0.4f;
+    public float FirstTimeToGrow = 0.4f;
     public float TimeBetween = 0.1f;
     public AnimationCurve growCurve;
     
@@ -108,25 +109,13 @@ public class TrailerCamMover : MonoBehaviour
         {
             Transform t = TitleLayoutParent.GetChild(i);
             t.gameObject.SetActive(false);
-            t.localScale = Vector3.zero;
+            //t.localScale = Vector3.zero;
             texts.Add(t);
         }
         yield return new WaitForSeconds(1f);
         foreach (Transform text in texts)
         {
-            float time = 0f;
             text.gameObject.SetActive(true);
-            while (time <= TimeToGrow)
-            {
-                yield return null;
-                time += Time.deltaTime;
-                float t = time / TimeToGrow;
-                float scale = Mathf.Lerp(0, 1, t);
-                scale = growCurve.Evaluate(t);
-                text.localScale = Vector3.one * scale;
-                float x = Mathf.Lerp(90f, 0f, t);
-                text.localEulerAngles = new Vector3(x, 0f, 0f);
-            }
             yield return new WaitForSeconds(TimeBetween);
         }
     }
