@@ -32,7 +32,15 @@ MonoBehaviour:
       amountToSpawn: {x: 20, y: 20}
     - enemyType: 3
       amountToSpawn: {x: 5, y: 5}
-    subWaves: []
+    subWaves:
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 5, y: 5}
+      delayType: 0
+      DelayCount: 0
+      groupSizes: {x: 1, y: 1}
+      spawnRate: 3
+      spawnPoints: []
     WaveCompleteBounty: 75
     preWaveDelay: 20
     groupSizes: {x: 8, y: 12}

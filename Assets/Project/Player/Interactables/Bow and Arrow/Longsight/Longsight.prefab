@@ -1124,7 +1124,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_AttachTransform: {fileID: 2090678355773352653}
-  m_SecondaryAttachTransform: {fileID: 0}
+  m_SecondaryAttachTransform: {fileID: 9171757316180069536}
   m_UseDynamicAttach: 0
   m_MatchAttachPosition: 1
   m_MatchAttachRotation: 1
@@ -1197,6 +1197,8 @@ MonoBehaviour:
   projectile: {fileID: 8292857905257819297, guid: 31c3bd57f8efe954e807841598eec586,
     type: 3}
   projectileSpawnpoint: {fileID: 5708917388868593433}
+  handle: {fileID: 3263809802125008248}
+  colDelay: 0.8
   OnFire:
     m_PersistentCalls:
       m_Calls:
@@ -8362,18 +8364,6 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 3263809802125008248}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
         m_CallState: 2
   start: {fileID: 6244108875712460600}
   end: {fileID: 6594586134003481406}
