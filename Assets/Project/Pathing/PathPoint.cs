@@ -158,7 +158,7 @@ Vector3 lastPoint = Vector3.zero;
 
         Selection.objects = newPoints.ToArray();
     }
-    [MenuItem("PathPoint/CreateNewPathPointAfterSelected ^h"), MenuItem("GameObject/Pathing/New Connected Path Point")]
+    [MenuItem("PathPoint/CreateNewPathPointAfterSelected ^h"), MenuItem("GameObject/Pathing/New AFTER Path Point")]
     public static void CreateNewPointAfterSelected(MenuCommand menuCommand)
     {
         Debug.Log("Creating Point AFTER");

@@ -34,7 +34,8 @@ public class SpiralStaircaseGenerator : MonoBehaviour
         float current_angle = 0f;
         for (int i = 0; i < stairCount; i++)
         {
-            GameObject stair = Instantiate(staircasePrefab, transform);
+            //GameObject stair = Instantiate(staircasePrefab, transform);
+            GameObject stair = (GameObject)PrefabUtility.InstantiatePrefab(staircasePrefab, transform);
             stair.transform.position = center;
             _SetCenter(stair.transform);
             center.y += staircaseHeight;
@@ -47,9 +48,14 @@ public class SpiralStaircaseGenerator : MonoBehaviour
         {
             for (int i = 0; i < 6; i++)
             {
-                shelf.RegenShelves();
+                shelf.RegenAllShelving();
             }
         }
+        var flowers = GetComponentsInChildren<FlowerPlacer>();
+        foreach (FlowerPlacer f in flowers)
+            f.SpawnFlower();
+        foreach (var painting in GetComponentsInChildren<PaintingPlacer>())
+            painting.ChangePainting();
         print("Staircase generated");
     }
     void _SetCenter(Transform t)
