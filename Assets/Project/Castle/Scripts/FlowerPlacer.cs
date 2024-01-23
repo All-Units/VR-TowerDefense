@@ -18,6 +18,9 @@ public class FlowerPlacer : MonoBehaviour
     {
         if (placementSpot == null) return;
         GameObject flower = (GameObject)PrefabUtility.InstantiatePrefab(flowers.GetRandom());
+        flower.transform.parent = transform;
+        
+
         float y = Random.Range(0f, 360f);
         flower.transform.eulerAngles = new Vector3(0f, y, 0f);
         flower.transform.localScale *= scale;
@@ -25,6 +28,7 @@ public class FlowerPlacer : MonoBehaviour
         flower.transform.localPosition = Vector3.zero;
         print("Ran in editor!");
         DestroyImmediate(this);
+        
         
     }
 
