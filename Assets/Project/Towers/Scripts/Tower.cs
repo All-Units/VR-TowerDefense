@@ -136,37 +136,3 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     #endregion
 }
-
-public class PlayerControllableTower : Tower
-{
-    public bool isPlayerControlled { get; private set; } = false;
-    [SerializeField] private Transform playerControlPosition;
-
-    public override void Die()
-    {
-        if (isPlayerControlled)
-        {
-            PlayerStateController.DiedInTower();
-            
-            PlayerReleaseControl();
-            InventoryManager.instance.ReleaseAllItems();
-        }
-        
-        base.Die();
-    }
-    
-    public virtual void PlayerTakeControl()
-    {
-        isPlayerControlled = true;
-    }
-
-    public virtual void PlayerReleaseControl()
-    {
-        isPlayerControlled = false;
-    }
-
-    public Transform GetPlayerControlPoint()
-    {
-        return playerControlPosition;
-    }
-}

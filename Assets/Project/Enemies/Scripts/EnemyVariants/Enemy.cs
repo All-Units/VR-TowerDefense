@@ -280,7 +280,6 @@ public abstract class Enemy : MonoBehaviour
         yield return null;
         yield return new WaitForSeconds(delay);
         animator.Play("Move");
-        print($"Waited {delay} seconds to start running");
     }
     protected bool _IsPowerAttacking = false;
 

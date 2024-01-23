@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryFollowCamera : MonoBehaviour
@@ -53,8 +51,5 @@ public class InventoryFollowCamera : MonoBehaviour
         transform.rotation = Quaternion.Lerp(_startRot, _target, (_currentDampTime / rotateDamping));
 
         _currentDampTime += Time.deltaTime;
-
-        //transform.rotation = Quaternion.Slerp(transform.rotation, rot, rotateDamping * Time.deltaTime);
-        //transform.eulerAngles = Vector3.SmoothDamp(transform.eulerAngles, euler, ref _velocity, rotateDamping);
     }
 }

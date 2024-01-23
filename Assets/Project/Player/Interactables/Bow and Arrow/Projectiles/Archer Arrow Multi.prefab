@@ -166,10 +166,22 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 3475127899964608083}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  particles: {fileID: 0}
+  particles: {fileID: 2824366286324755507}
   statusModifier: {fileID: 0}
   woodHit: {fileID: 4003565438109291779}
   enemyHit: {fileID: 3202021467002785933}
@@ -967,11 +979,28 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arrow_model
       objectReference: {fileID: 0}
+    - target: {fileID: 8450359563915802786, guid: 95371a2ec25710a479b61530d5d54cbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95371a2ec25710a479b61530d5d54cbd, type: 3}
+--- !u!198 &2824366286324755507 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7083525621284854466, guid: 95371a2ec25710a479b61530d5d54cbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 5007887516866852593}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3475127899964608083 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8450359563915802786, guid: 95371a2ec25710a479b61530d5d54cbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 5007887516866852593}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6503364861877338844 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
