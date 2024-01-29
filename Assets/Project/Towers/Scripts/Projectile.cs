@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IPausable
 {
     public int damage;
     private Rigidbody rb;
@@ -20,6 +20,19 @@ public class Projectile : MonoBehaviour
     public UnityEvent OnFire;
     public UnityEvent OnHit;
     Vector3 startPos;
+    void Awake()
+    {
+        OnInit();
+    }
+    void OnDestroy()
+    {
+        OnDestroyPausable();
+    }
+    public void OnInit()
+    {
+        this.InitPausable();
+    }
+    public void OnDestroyPausable() { this.DestroyPausable(); }
     public void Fire()
     {
         transform.SetParent(null);
@@ -44,6 +57,16 @@ public class Projectile : MonoBehaviour
         OnCollision(other.collider);
     }
     bool _isFireball => gameObject.name.ToLower().Contains("fireball");
+
+    private IPausableComponents _ipComponents = null;
+    public IPausableComponents IPComponents
+    {
+        get
+        {
+            if (_ipComponents == null) _ipComponents = this.GetPausableComponents();
+            return _ipComponents;
+        }
+    }
 
     protected virtual void OnCollision(Collider other)
     {
@@ -87,5 +110,15 @@ public class Projectile : MonoBehaviour
             if (statusEffectController)
                 statusModifier.ApplyStatus(statusEffectController);
         }
+    }
+
+    void IPausable.OnPause()
+    {
+        this.BaseOnPause();
+    }
+
+    void IPausable.OnResume()
+    {
+        this.BaseOnResume();
     }
 }

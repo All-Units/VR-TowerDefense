@@ -1,8 +1,9 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Arrow : MonoBehaviour
+public class Arrow : MonoBehaviour, IPausable
 {
     public int damage;
     public float speed = 10f;
@@ -21,21 +22,36 @@ public class Arrow : MonoBehaviour
     public int RagdollForce = 20;
     Vector3 startPos;
 
+    private IPausableComponents _ipComponents = null;
+    public IPausableComponents IPComponents { 
+        get {
+            if (_ipComponents == null) _ipComponents = this.GetPausableComponents();
+            return _ipComponents; 
+        } 
+    }
+    
     private void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
         PullInteraction.PullActionStarted += PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased += PullInteractionOnPullActionReleased;
-        
         Stop();
+        OnInit();
     }
+    public void OnInit()
+    {
+        this.InitPausable();
+    }
+    public void OnDestroyPausable() { this.DestroyPausable(); }
 
 
 
     private void OnDestroy()
     {
+        OnDestroyPausable();
         PullInteraction.PullActionStarted -= PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased -= PullInteractionOnPullActionReleased;
+
     }
 
     private void PullInteractionOnPullActionStarted()
@@ -74,8 +90,11 @@ public class Arrow : MonoBehaviour
         yield return new WaitForFixedUpdate();
         while (_inAir)
         {
-            var newRot = Quaternion.LookRotation(_rigidbody.velocity, transform.up);
-            transform.rotation = newRot;
+            if (isPaused == false) 
+            { 
+                var newRot = Quaternion.LookRotation(_rigidbody.velocity, transform.up);
+                transform.rotation = newRot;
+            }
             yield return null;
         }
     }
@@ -127,5 +146,18 @@ public class Arrow : MonoBehaviour
     {
         _rigidbody.useGravity = b;
         _rigidbody.isKinematic = !b;
+    }
+
+    bool isPaused = false;
+    void IPausable.OnPause()
+    {
+        this.BaseOnPause();
+        isPaused = true;
+    }
+
+    void IPausable.OnResume()
+    {
+        this.BaseOnResume();
+        isPaused = false;
     }
 }

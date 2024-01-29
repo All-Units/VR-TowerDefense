@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class FadeScreen : MonoBehaviour
 {
+    public static FadeScreen instance;
     public bool fadeOnStart = true;
     public float fadeDuration = 2;
     public Color fadeColor;
@@ -14,6 +15,7 @@ public class FadeScreen : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        instance = this;
         rend = GetComponent<Renderer>();
         rend.enabled = false;
 

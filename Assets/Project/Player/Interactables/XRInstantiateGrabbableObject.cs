@@ -16,6 +16,10 @@ public class XRInstantiateGrabbableObject : XRBaseInteractable
 
     protected override void OnSelectEntered(SelectEnterEventArgs args)
     {
+        //Do nothing if we're paused
+        if (XRPauseMenu.IsPaused) return;
+
+
         // Instantiate object
         GameObject newObject = Instantiate(grabbableObject);
         
