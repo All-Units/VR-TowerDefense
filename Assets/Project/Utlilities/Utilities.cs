@@ -18,6 +18,17 @@ using Random = UnityEngine.Random;
 
 public static class Utilities
 {
+    public static IEnumerator _DestroyAfter(this GameObject go, float t)
+    {
+        float current = 0f;
+        while (current <= t)
+        {
+            if (XRPauseMenu.IsPaused == false)
+                current += Time.deltaTime;
+            yield return null;
+        }
+        Object.Destroy(go);
+    }
     public static Vector2 RandomPointOnUnitCircle()
     {
         var seed = Random.Range(0, 1f);

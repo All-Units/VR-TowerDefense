@@ -128,6 +128,10 @@ public abstract class Enemy : MonoBehaviour, IPausable
             _targets.Remove(enemy);
         }
     }
+    void OnDestroy()
+    {
+        OnDestroyPausable();
+    }
     #endregion
 
     #region StateMachine
@@ -162,7 +166,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _Hitbox.enabled = false;
 
         _EnableRagdoll(true);
-        Destroy(gameObject, enemyStats.RagdollTime);
+        StartCoroutine(gameObject._DestroyAfter(enemyStats.RagdollTime));
+        //Destroy(gameObject, enemyStats.RagdollTime);
 
         if (EnemyManager.Enemies.Contains(this))
             EnemyManager.Enemies.Remove(this);

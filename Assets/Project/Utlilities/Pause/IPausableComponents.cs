@@ -83,7 +83,6 @@ public static class IPExtenstions
             
 
 
-        Debug.Log($"Base on pause for GO {pausable.gameObject.name}, it had {pausable.IPComponents.rigidbodies.Count} rigidbodies");
     }
     static void _PauseRBs(IPausableComponents components)
     {

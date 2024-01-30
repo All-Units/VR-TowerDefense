@@ -44,22 +44,12 @@ public class Projectile : MonoBehaviour, IPausable
 
         if(flyingVFX)
             flyingVFX.SetActive(true);
-        StartCoroutine(_DestroyAfter(20f));
+        StartCoroutine(gameObject._DestroyAfter(20f));
         //Destroy(gameObject, 20f);
         startPos = transform.position;
         OnFire?.Invoke();
     }
-    IEnumerator _DestroyAfter(float t)
-    {
-        float current = 0f;
-        while (current <= t)
-        {
-            if (XRPauseMenu.IsPaused == false)
-                current += Time.deltaTime;
-            yield return null;
-        }
-        Destroy(gameObject);
-    }
+    
 
     private void OnCollisionEnter(Collision other)
     {
