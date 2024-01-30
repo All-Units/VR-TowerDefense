@@ -14,14 +14,17 @@ public class EnemyManager : MonoBehaviour
 
     #region PublicStats
     public static EnemyManager instance;
+    
     /// <summary>
     /// Player-facing wave count, offset by 1
     /// </summary>
     public static int CurrentWave => instance ? instance._wave_i + 1 : -1;
+    
     /// <summary>
     /// Returns the time until next wave
     /// </summary>
     public static int TimeUntilNextWave => instance ? instance.levelData.waveStructs[instance._wave_i].preWaveDelay : -1;
+    
     /// <summary>
     /// Gets the wave complete bonus for the last wave completed, or 0 if just started
     /// </summary>
@@ -63,7 +66,6 @@ public class EnemyManager : MonoBehaviour
         Enemies.Add(enemy);
         OnGregSpawned.Invoke();
     }
-    
 
     public static void EnemyKilled(Enemy enemy)
     {
