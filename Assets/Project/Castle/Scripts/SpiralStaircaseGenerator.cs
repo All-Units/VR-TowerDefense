@@ -18,7 +18,7 @@ class SpiralStaircaseEditor : Editor
         base.OnInspectorGUI();
     }
 }
-#endif
+
 
 public class SpiralStaircaseGenerator : MonoBehaviour
 {
@@ -79,3 +79,4 @@ public class SpiralStaircaseGenerator : MonoBehaviour
         
     }
 }
+#endif

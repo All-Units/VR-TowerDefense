@@ -1,7 +1,10 @@
 ﻿#if UNITY_EDITOR
+using System.Collections.Generic;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
-
+using UnityEngine.WSA;
+using Application = UnityEngine.Application;
 
 [CustomEditor(typeof(ScriptablePrefabPlacer))]
 [CanEditMultipleObjects]
@@ -30,6 +33,11 @@ class ScriptablePrefabPlacerEditor : Editor
                 }
             }
         }
+        if (bttn && GUILayout.Button("Add all gameobjects in folder"))
+        {
+            string path = EditorUtility.OpenFolderPanel("Folder", $"{Application.dataPath}/Imported/LMHPOLY/Low Poly Nature Bundle", "");
+            p.AddAllGOsInFolder(path);
+        }
 
         if (GUILayout.Button(($"Toggle colliders")))
         {
@@ -50,8 +58,8 @@ class ScriptablePrefabPlacerEditor : Editor
 public class ScriptablePrefabPlacer : MonoBehaviour
 {
     public PrefabList_SO prefabs;
-    public float SpawnRadius = 5f;
-    public int NumberToSpawn = 1;
+    public float SpawnRadius = 50f;
+    public int NumberToSpawn = 75;
     public bool ClearOnSpawn = true;
     public bool IsMountains;
 
@@ -138,6 +146,27 @@ public class ScriptablePrefabPlacer : MonoBehaviour
             }
 
         }
+    }
+
+    public void AddAllGOsInFolder(string path)
+    {
+        if (path == null || path == "") return;
+        string[] files = Directory.GetFiles(path, "*.prefab");
+        List<GameObject> prefabs = new List<GameObject>();
+        string shortPath = path.Replace(Application.dataPath, "Assets/");
+        foreach (var filePath in files)
+        {
+            string p = filePath.Replace(Application.dataPath, "Assets/");
+            GameObject go = AssetDatabase.LoadAssetAtPath<GameObject>(p);
+            if (go == null) continue;
+            print($"Adding {go.name} to list");
+            prefabs.Add(go);
+
+        }
+        this.prefabs.prefabs.AddRange(prefabs);
+        print($"Selected folder {shortPath}. It had {prefabs.Count} objs");
+        EditorUtility.SetDirty(this.prefabs);
+
     }
 }
 #endif

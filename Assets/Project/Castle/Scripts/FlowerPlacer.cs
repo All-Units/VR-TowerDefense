@@ -14,6 +14,7 @@ public class FlowerPlacer : MonoBehaviour
         
 
     }
+#if UNITY_EDITOR
     public void SpawnFlower()
     {
         if (placementSpot == null) return;
@@ -31,7 +32,7 @@ public class FlowerPlacer : MonoBehaviour
         
         
     }
-
+#endif
     // Update is called once per frame
     void Update()
     {

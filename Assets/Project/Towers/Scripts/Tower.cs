@@ -69,8 +69,8 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         transform.localScale = Vector3.one;
 
         var director = GetComponentInChildren<PlayableDirector>();
-
-        yield return new WaitForSeconds((float)director.duration);
+        if (director != null )
+            yield return new WaitForSeconds((float)director.duration);
         
         isInitialized = true;
         healthController.SetMaxHealth(dto.maxHeath);
