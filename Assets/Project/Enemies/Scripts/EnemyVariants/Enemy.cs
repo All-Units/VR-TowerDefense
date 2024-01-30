@@ -11,7 +11,7 @@ using Random = UnityEngine.Random;
 /// Base enemy logic
 /// </summary>
 [RequireComponent(typeof(HealthController))]
-public abstract class Enemy : MonoBehaviour
+public abstract class Enemy : MonoBehaviour, IPausable
 {
     #region PublicVariables
     public float spawnTime { get; private set; }
@@ -52,6 +52,18 @@ public abstract class Enemy : MonoBehaviour
 
     #region InternalVariables
     public Vector3 Pos => pos;
+
+
+    private IPausableComponents _ipComponents = null;
+    public IPausableComponents IPComponents
+    {
+        get
+        {
+            if (_ipComponents == null) _ipComponents = this.GetPausableComponents();
+            return _ipComponents;
+        }
+    }
+
     /// <summary>
     /// Updated every frame, caches transform.position
     /// </summary>
@@ -139,6 +151,7 @@ public abstract class Enemy : MonoBehaviour
         _EnableRagdoll(false);
         _SetSpeed(1f);
         StartCoroutine(_DelayRunAnim());
+        OnInitPausable();
     }
     protected virtual void OnEnemyDie()
     {
@@ -201,6 +214,7 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void _StateMachineUpdate()
     {
         _IsAttacking = false;
+        if (XRPauseMenu.IsPaused) return;
         //There is at least one target in range
         if (_targets.Count > 0)
         {
@@ -521,6 +535,14 @@ public abstract class Enemy : MonoBehaviour
 
         healthController.SetMaxHealth(_health);
     }
+    public void OnInitPausable()
+    {
+        this.InitPausable();
+    }
+    public void OnDestroyPausable()
+    {
+        this.DestroyPausable();
+    }
 
     #endregion
 
@@ -603,4 +625,16 @@ public abstract class Enemy : MonoBehaviour
     }
 
     
+
+    
+
+    public void OnPause()
+    {
+        this.BaseOnPause();
+    }
+
+    public void OnResume()
+    {
+        this.BaseOnResume();
+    }
 }

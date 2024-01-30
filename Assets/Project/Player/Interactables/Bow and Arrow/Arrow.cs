@@ -36,9 +36,9 @@ public class Arrow : MonoBehaviour, IPausable
         PullInteraction.PullActionStarted += PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased += PullInteractionOnPullActionReleased;
         Stop();
-        OnInit();
+        OnInitPausable();
     }
-    public void OnInit()
+    public void OnInitPausable()
     {
         this.InitPausable();
     }

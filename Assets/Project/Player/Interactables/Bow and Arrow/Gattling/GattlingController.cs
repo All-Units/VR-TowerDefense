@@ -21,11 +21,22 @@ public class GattlingController : MonoBehaviour
     private void Start()
     {
         overheatModule.OnOverHeat.AddListener(OnDeactivate);
-    }
 
+    }
+    private void OnEnable()
+    {
+        XRPauseMenu.OnPause += OnPause;
+        XRPauseMenu.OnResume += OnResume;
+    }
+    private void OnDisable()
+    {
+        XRPauseMenu.OnPause -= OnPause;
+        XRPauseMenu.OnResume -= OnResume;
+    }
     public void OnActivate()
     {
-        if(overheatModule.IsOverheated())
+        if(overheatModule.IsOverheated()
+            || XRPauseMenu.IsPaused)
             return;
         
         _isActive = true;
@@ -36,6 +47,17 @@ public class GattlingController : MonoBehaviour
     public void OnDeactivate()
     {
         _isActive = false;
+    }
+
+    bool _cachedIsActive = false;
+    void OnPause()
+    {
+        _cachedIsActive = _isActive;
+        _isActive = false;
+    }
+    void OnResume()
+    {
+        _isActive = _cachedIsActive;
     }
 
     private IEnumerator Spin()
@@ -54,11 +76,15 @@ public class GattlingController : MonoBehaviour
 
                 if (fireRate >= 90)
                 {
-                    var p = Instantiate(projectile, launchPoint.position, launchPoint.rotation);
-                    p.Fire();
                     fireRate -= 90;
-                    
-                    OnFire?.Invoke();
+
+                    if (XRPauseMenu.IsPaused == false)
+                    {
+                        var p = Instantiate(projectile, launchPoint.position, launchPoint.rotation);
+                        p.Fire();
+
+                        OnFire?.Invoke();
+                    }
                 }
             }
             

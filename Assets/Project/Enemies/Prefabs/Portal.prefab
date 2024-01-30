@@ -14335,6 +14335,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1166209344341191567}
+  - component: {fileID: 967323335967343842}
   m_Layer: 0
   m_Name: Portal
   m_TagString: Untagged
@@ -14360,6 +14361,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -16.38, z: 0}
+--- !u!114 &967323335967343842
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3812784990473247269}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a8ef10c288318f44ea3521abb8ec28a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5399154973657200794
 GameObject:
   m_ObjectHideFlags: 0

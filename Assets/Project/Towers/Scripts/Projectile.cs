@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -22,13 +23,13 @@ public class Projectile : MonoBehaviour, IPausable
     Vector3 startPos;
     void Awake()
     {
-        OnInit();
+        OnInitPausable();
     }
     void OnDestroy()
     {
         OnDestroyPausable();
     }
-    public void OnInit()
+    public void OnInitPausable()
     {
         this.InitPausable();
     }
@@ -43,9 +44,21 @@ public class Projectile : MonoBehaviour, IPausable
 
         if(flyingVFX)
             flyingVFX.SetActive(true);
-        Destroy(gameObject, 20f);
+        StartCoroutine(_DestroyAfter(20f));
+        //Destroy(gameObject, 20f);
         startPos = transform.position;
         OnFire?.Invoke();
+    }
+    IEnumerator _DestroyAfter(float t)
+    {
+        float current = 0f;
+        while (current <= t)
+        {
+            if (XRPauseMenu.IsPaused == false)
+                current += Time.deltaTime;
+            yield return null;
+        }
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter(Collision other)
