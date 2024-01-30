@@ -55,5 +55,6 @@ public class HealthController : MonoBehaviour
         _currentHealth = health;
         maxHealth = health;
     }
+    
     public bool isDead = false;
 }

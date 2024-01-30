@@ -25,13 +25,6 @@ public class RoundGUI : MonoBehaviour
         roundEndText.text = roundEndText.text.Replace("[TIME]", EnemyManager.WaveDelay.ToString());
         EnemyManager.OnRoundStarted.AddListener(_OnRoundStart);
         EnemyManager.OnRoundEnded.AddListener(_OnRoundEnd);
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     void _OnRoundStart()

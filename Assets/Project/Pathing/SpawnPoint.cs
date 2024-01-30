@@ -210,6 +210,6 @@ public class SpawnPoint : PathPoint
         data.pos = transform.position;
         data.enemyParent = enemyParent;
         data.SpawnPoint = this;
-        EnemyManager.SpawnPoints.Add(data);
+        EnemyManager.instance.SpawnPoints.Add(data);
     }
 }

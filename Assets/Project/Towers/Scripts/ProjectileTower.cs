@@ -4,7 +4,7 @@ using UnityEngine.Serialization;
 public class ProjectileTower : PlayerControllableTower
 {
     [Header("Projectile Tower")] 
-    [SerializeField] private RadialTargetingSystem targetingSystem;
+    [SerializeField] protected RadialTargetingSystem targetingSystem;
 
     [SerializeField] private Transform firePoint;
     [SerializeField] private Transform[] auxFirePoints;
@@ -78,6 +78,11 @@ public class ProjectileTower : PlayerControllableTower
     {
         var projectile = Instantiate(projectileTowerSo.projectile, firePoint.position, firePoint.rotation);
         projectile.Fire();
+        if (projectile.TryGetComponent(out GuidedMissileController missileController))
+        {
+            missileController.SetTarget(targetingSystem.GetOldestTarget());
+            missileController.HitTarget();
+        }
 
         foreach (var auxFirePoint in auxFirePoints)
         {

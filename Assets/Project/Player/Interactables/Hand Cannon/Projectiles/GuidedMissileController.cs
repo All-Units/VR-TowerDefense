@@ -17,16 +17,26 @@ public class GuidedMissileController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
-        target = targeter.GetEnemy(index);
+        if(targeter)
+            target = targeter.GetEnemy(index);
         Enemy.OnDeath += OnDeath;
+
+        StartCoroutine(ExplodeAfterSeconds(7));
     }
 
     private void OnDeath(Enemy obj)
     {
         if (obj == target)
         {
-            targeter.OnEnemyDeath(obj);
-            targeter.GetEnemy(index);
+            if (targeter)
+            {
+                targeter.OnEnemyDeath(obj);
+                target = targeter.GetEnemy(index);
+            }
+            else
+            {
+                target = null;
+            }
         }
     }
 
@@ -35,7 +45,7 @@ public class GuidedMissileController : MonoBehaviour
         StartCoroutine(PursueTarget());
     }
 
-    IEnumerator PursueTarget()
+    private IEnumerator PursueTarget()
     {
         yield return new WaitForSeconds(pursueWaitTime);
         
@@ -49,8 +59,9 @@ public class GuidedMissileController : MonoBehaviour
 
         while (true)
         {
-            var targetRotation = Quaternion.Euler(90, 0, 0);
-            if(targeter.IsTargeting())
+            var targetRotation = transform.rotation; //Quaternion.Euler(90, 0, 0);
+            
+            if(target)
                 targetRotation = Quaternion.LookRotation((target.transform.position + Vector3.up) - transform.position);
             if (transform.rotation != targetRotation)
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
@@ -61,5 +72,18 @@ public class GuidedMissileController : MonoBehaviour
                 rb.velocity = Vector3.ClampMagnitude(rb.velocity, maxSpeed);
             yield return null;
         }
+    }
+
+    public void SetTarget(Enemy t)
+    {
+        target = t;
+    }
+
+    private IEnumerator ExplodeAfterSeconds(float sec)
+    {
+        yield return new WaitForSeconds(sec);
+        
+        if(TryGetComponent(out AOEProjectile aoeProjectile))
+            aoeProjectile.ManualExplode();
     }
 }
