@@ -140,10 +140,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _MoveSpeed = enemyStats.MoveSpeed + Random.Range(-enemyStats.MoveSpeedVariance, enemyStats.MoveSpeedVariance);
 
 
-        if (EnemyManager.Enemies.Contains(this) == false)
-            EnemyManager.Enemies.Add(this);
-        EnemyManager.EnemyCount++;
-        EnemyManager.GregSpawned();
+        EnemyManager.EnemySpawned(this);
 
         _InitComponents();
 
@@ -169,10 +166,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
         StartCoroutine(gameObject._DestroyAfter(enemyStats.RagdollTime));
         //Destroy(gameObject, enemyStats.RagdollTime);
 
-        if (EnemyManager.Enemies.Contains(this))
-            EnemyManager.Enemies.Remove(this);
-        EnemyManager.EnemyCount--;
-        EnemyManager.GregKilled();
+
+        EnemyManager.EnemyKilled(this);
 
 
         //Add kill value to currency
@@ -641,5 +636,11 @@ public abstract class Enemy : MonoBehaviour, IPausable
     public void OnResume()
     {
         this.BaseOnResume();
+    }
+    public void KillOOB()
+    {
+        EnemyManager.EnemyKilled(this);
+
+        Destroy(gameObject);
     }
 }
