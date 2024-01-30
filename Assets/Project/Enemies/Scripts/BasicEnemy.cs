@@ -275,10 +275,8 @@ public class BasicEnemy : Enemy
     List<Collider> _OLD_ragdollColliders = new List<Collider>();
     void OnSpawn()
     {
-        if (EnemyManager.Enemies.Contains(this) == false)
-            EnemyManager.Enemies.Add(this);
-        EnemyManager.EnemyCount++;
-        EnemyManager.GregSpawned();
+        EnemyManager.EnemySpawned(this);
+        
         foreach (Transform t in transform)
         {
             if (t == transform) continue;
@@ -311,10 +309,8 @@ public class BasicEnemy : Enemy
     {
         //Turn off anim
         _anim.enabled = false;
-        if (EnemyManager.Enemies.Contains(this))
-            EnemyManager.Enemies.Remove(this);
-        EnemyManager.EnemyCount--;
-        EnemyManager.GregKilled();
+
+        EnemyManager.EnemyKilled(this);
         StartCoroutine(_FreezeLocalHipsPos());
         foreach (var col in _OLD_ragdollColliders)
             col.enabled = true;

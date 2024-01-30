@@ -17,10 +17,4 @@ public class RoundCounterDisplay : MonoBehaviour
     {
         displayText.text = $"{EnemyManager.CurrentWave} / {EnemyManager.MaxWaves}";
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

@@ -9,6 +9,9 @@ public class RadialTargetingSystem : MonoBehaviour
     public List<Enemy> _targetsInRange = new();
     [SerializeField] private SphereCollider _collider;
 
+    public Action<Enemy> OnEnter;
+    public Action<Enemy> OnExit;
+
     private void Awake()
     {
         if(_collider == null)
@@ -27,19 +30,22 @@ public class RadialTargetingSystem : MonoBehaviour
         if(other.TryGetComponent(out Enemy e) && _targetsInRange.Contains(e) == false)
         {
             _targetsInRange.Add(e);
+            OnEnter?.Invoke(e);
         }
     }
 
     private void OnTargetDeath(Enemy e)
     {
         _targetsInRange.Remove(e);
+        OnExit?.Invoke(e);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if(other.TryGetComponent(out Enemy e) && _targetsInRange.Contains(e))
-        {
+        { 
             _targetsInRange.Remove(e);
+            OnExit?.Invoke(e);
         }
         
     }

@@ -122,18 +122,12 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void OnEnemySpawn()
     {
         _MoveSpeed = enemyStats.MoveSpeed + Random.Range(-enemyStats.MoveSpeedVariance, enemyStats.MoveSpeedVariance);
-
-
-        if (EnemyManager.Enemies.Contains(this) == false)
-            EnemyManager.Enemies.Add(this);
-        EnemyManager.EnemyCount++;
-        EnemyManager.GregSpawned();
+        
+        EnemyManager.EnemySpawned(this);
 
         _InitComponents();
 
         _InitHC();
-
-
 
         spawnTime = Time.realtimeSinceStartup;
         _EnableRagdoll(false);
@@ -143,19 +137,14 @@ public abstract class Enemy : MonoBehaviour
     protected virtual void OnEnemyDie()
     {
         animator.enabled = false;
-
-
+        
         RB.isKinematic = true;
         _Hitbox.enabled = false;
 
         _EnableRagdoll(true);
         Destroy(gameObject, enemyStats.RagdollTime);
-
-        if (EnemyManager.Enemies.Contains(this))
-            EnemyManager.Enemies.Remove(this);
-        EnemyManager.EnemyCount--;
-        EnemyManager.GregKilled();
-
+        
+        EnemyManager.EnemyKilled(this);
 
         //Add kill value to currency
         CurrencyManager.GiveToPlayer(enemyStats.KillValue);
@@ -263,9 +252,6 @@ public abstract class Enemy : MonoBehaviour
             _Attack();
     }
     float _lastPowerAttackTime = -1f;
-
-
-
 
     #endregion
 
@@ -601,6 +587,11 @@ public abstract class Enemy : MonoBehaviour
     {
         OnDeath?.Invoke(this);
     }
-
     
+    public void KillOOB()
+    {
+        EnemyManager.EnemyKilled(this);
+        
+        Destroy(gameObject);
+    }
 }

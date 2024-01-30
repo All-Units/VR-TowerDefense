@@ -10,16 +10,7 @@ public class EnemyManager : MonoBehaviour
     #region InspectorFields
     [SerializeField] private LevelSpawn_SO levelData;
 
-    public int CurrentEnemiesAlive = 0;
-
-    void onGregChange() { CurrentEnemiesAlive = Enemies.Count; }
-
     #endregion
-
-
-
-
-
 
     #region PublicStats
     public static EnemyManager instance;
@@ -45,24 +36,50 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// The number of enemies currently alive
     /// </summary>
-    public static int EnemyCount = 0;
-    public static HashSet<Enemy> Enemies = new HashSet<Enemy>();
-    public static List<SpawnPointData> SpawnPoints = new List<SpawnPointData>();
+    public HashSet<Enemy> Enemies = new HashSet<Enemy>();
+    public List<SpawnPointData> SpawnPoints = new List<SpawnPointData>();
     #endregion
 
 
     #region UnityEvents
-    public static UnityEvent OnGameStart = new UnityEvent();
-    public static UnityEvent OnFirstRoundStarted = new UnityEvent();
-    public static UnityEvent OnRoundStarted = new UnityEvent();
-    public static UnityEvent OnRoundEnded = new UnityEvent();
+    public static UnityEvent OnGameStart = new ();
+    public static UnityEvent OnFirstRoundStarted = new ();
+    public static UnityEvent OnRoundStarted = new ();
+    public static UnityEvent OnRoundEnded = new ();
 
-    public static UnityEvent OnGregSpawned = new UnityEvent();
-    public static void GregSpawned() { OnGregSpawned.Invoke(); }
-    public static UnityEvent OnGregKilled = new UnityEvent();
-    public static void GregKilled() { OnGregKilled.Invoke(); }
+    public UnityEvent OnGregSpawned = new ();
+    public UnityEvent OnEnemyKilled = new ();
 
+    public static void EnemySpawned(Enemy enemy)
+    {
+        if (instance)
+        {
+            instance._EnemySpawned(enemy);
+        }
+    }
 
+    private void _EnemySpawned(Enemy enemy)
+    {
+        Enemies.Add(enemy);
+        OnGregSpawned.Invoke();
+    }
+    
+
+    public static void EnemyKilled(Enemy enemy)
+    {
+        if(instance)
+            instance._EnemyKilled(enemy);
+    }
+
+    private void _EnemyKilled(Enemy enemy)
+    {
+        if (Enemies.Contains(enemy))
+            Enemies.Remove(enemy);
+        
+        Debug.Log($"{Enemies.Count} enemies remaining!");
+        OnEnemyKilled.Invoke();
+    }
+    
     private void Awake()
     {
         instance = this;
@@ -73,22 +90,11 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(_LevelCoroutine());
-        OnGregSpawned.AddListener(onGregChange);
-        OnGregKilled.AddListener(onGregChange);
+
         OnRoundEnded.AddListener(() => CurrencyManager.GiveToPlayer(levelData.waveStructs[_wave_i].WaveCompleteBounty));
-        //parseCSV();
-        //_spawnPoints = GetComponentsInChildren<SpawnPoint>().ToList();
-
-
-        //StartCoroutine(WaveLoop());
-
     }
 
     #endregion
-
-
-
-
 
     #region LevelCoroutines
     //Internal variables
@@ -111,11 +117,11 @@ public class EnemyManager : MonoBehaviour
             //Wait until the current wave is complete before starting another
             while (_currentWaveComplete == false)
                 yield return null;
-            print("Waited until last wave done, starting next wave");
+            // print("Waited until last wave done, starting next wave");
             //Next wave
             _wave_i++;
         }
-        print("YOU WIN!!!!!!");
+        // print("YOU WIN!!!!!!");
         _win();
     }
 
@@ -132,7 +138,7 @@ public class EnemyManager : MonoBehaviour
             OnFirstRoundStarted.Invoke();
         OnRoundStarted.Invoke();
         _currentWaveComplete = false;
-        print($"Started wave {_wave_i + 1}");
+        // print($"Started wave {_wave_i + 1}");
         List<GameObject> toSpawn = _GetSpawnList(wave.enemies);
 
         //Start sequentially
@@ -174,15 +180,16 @@ public class EnemyManager : MonoBehaviour
             yield return null;
         }
 
-        print($"Finished wave {CurrentWave} in {Time.time - startTime}s. Enemies left: {Enemies.Count}");
+        // print($"Finished wave {CurrentWave} in {Time.time - startTime}s. Enemies left: {Enemies.Count}");
         _currentWaveComplete = true;
         OnRoundEnded.Invoke();
         yield return null;
         _spawns = null;
     }
+    
     IEnumerator _SubwaveCoroutine(SubWave subWave)
     {
-        print($"Started subwave");
+        // print($"Started subwave");
         var toSpawn = _GetSpawnList(subWave.enemies);
         _spawns = subWave.spawnPoints;
         var waveStuct = new _waveStruct();
@@ -201,14 +208,14 @@ public class EnemyManager : MonoBehaviour
         else if (subWave.delayType == DelayType.EnemiesRemaining)
         {
             //We have to get to the threshold first, i.e. enough have spawned
-            while (EnemyCount <= subWave.DelayCount)
+            while (enemies.Count <= subWave.DelayCount)
                 yield return null;
             //Wait in place until the enemy count drops to the desired
-            while (EnemyCount > subWave.DelayCount)
+            while (enemies.Count > subWave.DelayCount)
             {
                 yield return null;
             }
-            print($"Waited until there were {subWave.DelayCount} Gregs alive before spawning wave");
+            // print($"Waited until there were {subWave.DelayCount} Gregs alive before spawning wave");
         }
         //Start timer for next subwave
         if (_subwaves.Count > 0)
@@ -216,7 +223,7 @@ public class EnemyManager : MonoBehaviour
             var next = _subwaves.First();
             StartCoroutine(next);
             _subwaves.RemoveFirst();
-            print("Started next subwave delay");
+            // print("Started next subwave delay");
         }
 
 
@@ -246,7 +253,7 @@ public class EnemyManager : MonoBehaviour
         if (_currentWaves.Contains(self) == false)
             _currentWaves.Add(self);
         int count = wave.toSpawn.Count;
-        print($"Pool of {count} in wave {CurrentWave}");
+        // print($"Pool of {count} in wave {CurrentWave}");
         float time = Time.time;
         //While there are still enemies to spawn, keep spawning
         while (wave.toSpawn.Count > 0)
@@ -270,7 +277,6 @@ public class EnemyManager : MonoBehaviour
 
     }
     #endregion
-
 
     #region HelperFunctions
     GameObject _GetPrefab(EnemyType type)
@@ -345,8 +351,7 @@ public class EnemyManager : MonoBehaviour
     [HideInInspector]
     public bool IsStressTest = false;
     private float firstRoundDelay = 5f;
-    [HideInInspector]
-    public int old_EnemyCount = 0;
+
 
     [HideInInspector]
     public float enemySpawnDelay = 1f;
@@ -434,7 +439,7 @@ public class EnemyManager : MonoBehaviour
         yield return new WaitForEndOfFrame();
         if (old_wave_i >= waveTotals.Count)
         {
-            print($"FIRST WIN LOGIC");
+            // print($"FIRST WIN LOGIC");
             _win();
             yield break;
         }
@@ -472,7 +477,7 @@ public class EnemyManager : MonoBehaviour
         old_wave_i++;
         if (old_wave_i >= waveTotals.Count)
         {
-            print($"SECOND WIN LOGIC");
+            // print($"SECOND WIN LOGIC");
             _win();
             yield break;
         }

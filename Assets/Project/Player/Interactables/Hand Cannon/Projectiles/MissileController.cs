@@ -117,4 +117,9 @@ public class MissileController : MonoBehaviour
             yield return null;
         }
     }
+
+    public void SetTarget(Enemy target)
+    {
+        
+    }
 }
