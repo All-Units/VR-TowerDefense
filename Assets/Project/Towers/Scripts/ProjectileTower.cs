@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class ProjectileTower : PlayerControllableTower
@@ -8,6 +7,7 @@ public class ProjectileTower : PlayerControllableTower
     [SerializeField] private RadialTargetingSystem targetingSystem;
 
     [SerializeField] private Transform firePoint;
+    [SerializeField] private Transform[] auxFirePoints;
     [SerializeField] private Transform pivotPoint;
     [FormerlySerializedAs("EnemyHeightOffset")] [SerializeField] private float enemyHeightOffset = 2f;
 
@@ -18,8 +18,7 @@ public class ProjectileTower : PlayerControllableTower
     [SerializeField] private GameObject playerPlatform;
     private float _currentCooldown;
 
-    public UnityEvent onTakeover;
-    public UnityEvent onRelease;
+
     private ProjectileTower_SO projectileTowerSo => dto as ProjectileTower_SO;
 
     protected override void Awake()
@@ -79,12 +78,18 @@ public class ProjectileTower : PlayerControllableTower
     {
         var projectile = Instantiate(projectileTowerSo.projectile, firePoint.position, firePoint.rotation);
         projectile.Fire();
+
+        foreach (var auxFirePoint in auxFirePoints)
+        {
+            var auxProjectile = Instantiate(projectileTowerSo.projectile, auxFirePoint.position, auxFirePoint.rotation);
+            auxProjectile.Fire();
+        }
+        
         _currentCooldown = projectileTowerSo.shotCooldown;
     }
 
     public override void PlayerTakeControl()
     {
-        base.PlayerTakeControl();
         
         // Hide turret
         turretModel.SetActive(false);
@@ -100,19 +105,19 @@ public class ProjectileTower : PlayerControllableTower
                 break;
         }
         
-        onTakeover?.Invoke();
+        base.PlayerTakeControl();
     }
 
     public override void PlayerReleaseControl()
     {
-        base.PlayerReleaseControl();
         
         // Show turret
         turretModel.SetActive(true);
         playerPlatform.SetActive(false);
         
         InventoryManager.instance.ReleaseAllItems();
-        onRelease?.Invoke();
+        
+        base.PlayerReleaseControl();
     }
 
     #region Debugging
@@ -129,4 +134,3 @@ public class ProjectileTower : PlayerControllableTower
 
     #endregion
 }
-

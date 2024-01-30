@@ -139,11 +139,23 @@ MonoBehaviour:
       m_Calls: []
   OnRelease:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2481663948822775524}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  particles: {fileID: 0}
+  particles: {fileID: 815600242975216776}
   statusModifier: {fileID: 0}
   woodHit: {fileID: 4003565438109291779}
   enemyHit: {fileID: 3202021467002785933}
@@ -833,6 +845,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Arrow_model
+      objectReference: {fileID: 0}
+    - target: {fileID: 5434860870909085870, guid: 95371a2ec25710a479b61530d5d54cbd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5660182495944925794, guid: 95371a2ec25710a479b61530d5d54cbd,
         type: 3}
@@ -30344,6 +30361,18 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 95371a2ec25710a479b61530d5d54cbd, type: 3}
+--- !u!198 &815600242975216776 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7083525621284854466, guid: 95371a2ec25710a479b61530d5d54cbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7573969476447456842}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2481663948822775524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5434860870909085870, guid: 95371a2ec25710a479b61530d5d54cbd,
+    type: 3}
+  m_PrefabInstance: {fileID: 7573969476447456842}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8512689327725066855 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
