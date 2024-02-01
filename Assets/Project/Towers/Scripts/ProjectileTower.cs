@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Serialization;
 
 public class ProjectileTower : PlayerControllableTower
@@ -18,6 +19,8 @@ public class ProjectileTower : PlayerControllableTower
     [SerializeField] private GameObject playerPlatform;
     private float _currentCooldown;
 
+    [SerializeField] private int ammo = -1;
+    private int currentAmmo;
 
     private ProjectileTower_SO projectileTowerSo => dto as ProjectileTower_SO;
 
@@ -27,6 +30,9 @@ public class ProjectileTower : PlayerControllableTower
         targetingSystem.SetRadius(projectileTowerSo.radius);
         if(attackVFX)
             attackVFX.SetActive(false);
+
+        if (ammo > 0)
+            currentAmmo = ammo;
     }
    
     private void Update()
@@ -53,6 +59,10 @@ public class ProjectileTower : PlayerControllableTower
                     attackVFX.SetActive(false);
             }
         }
+        
+        if(ammo > 0 && currentAmmo <= 1)
+            return;
+        
         if (_currentCooldown <= 0)
         {
             if (!targetingSystem.HasTarget()) return;
@@ -80,22 +90,45 @@ public class ProjectileTower : PlayerControllableTower
         projectile.Fire();
         if (projectile.TryGetComponent(out GuidedMissileController missileController))
         {
-            missileController.SetTarget(targetingSystem.GetOldestTarget());
+            
+            missileController.SetTarget(targetingSystem._targetsInRange.GetRandom());
             missileController.HitTarget();
+            if (ammo > 0)
+            {
+                currentAmmo--;
+            }
         }
 
         foreach (var auxFirePoint in auxFirePoints)
         {
             var auxProjectile = Instantiate(projectileTowerSo.projectile, auxFirePoint.position, auxFirePoint.rotation);
             auxProjectile.Fire();
+            if (ammo > 0)
+            {
+                currentAmmo--;
+            }
         }
+
+        ReloadRoutine ??= StartCoroutine(Reload());
         
         _currentCooldown = projectileTowerSo.shotCooldown;
     }
 
+    private Coroutine ReloadRoutine;
+
+    private IEnumerator Reload()
+    {
+        while (currentAmmo < ammo)
+        {
+            yield return new WaitForSeconds(.35f);
+            currentAmmo++;
+        }
+
+        ReloadRoutine = null;
+    }
+
     public override void PlayerTakeControl()
     {
-        
         // Hide turret
         turretModel.SetActive(false);
         playerPlatform.SetActive(true);

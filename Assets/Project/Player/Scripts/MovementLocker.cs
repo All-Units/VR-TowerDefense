@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
@@ -7,6 +6,7 @@ public class MovementLocker : MonoBehaviour
 {
     private whichHand hand => inventory.hand;
     public Inventory inventory;
+    
     /// <summary>
     /// Can enable / disable movement
     /// </summary>
