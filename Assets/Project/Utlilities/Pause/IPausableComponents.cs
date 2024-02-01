@@ -65,6 +65,7 @@ public static class IPExtenstions
     {
         //Freeze all rigidbodies
         _PauseRBs(pausable.IPComponents);
+        pausable.IPComponents.particleSystems = pausable.gameObject.GetComponentsInChildren<ParticleSystem>(true).ToList();
 
         //Freeze all particles
         _PauseParticles(pausable.IPComponents);
@@ -126,7 +127,7 @@ public static class IPExtenstions
     {
         //Resume RBs
         _ResumeRBs(pausable.IPComponents);
-
+        pausable.IPComponents.particleSystems = pausable.gameObject.GetComponentsInChildren<ParticleSystem>(true).ToList();
         _ResumeParticles(pausable.IPComponents);
 
         _ResumeAnims(pausable.IPComponents);

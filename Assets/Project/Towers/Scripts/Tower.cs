@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(HealthController))]
-public class Tower : MonoBehaviour, IEnemyTargetable
+public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
 {
     public HealthController healthController;
     
@@ -43,6 +43,17 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     }
 
     [HideInInspector] public bool removeFromDict = true;
+
+    private IPausableComponents _ipComponents = null;
+    public IPausableComponents IPComponents
+    {
+        get
+        {
+            if (_ipComponents == null) _ipComponents = this.GetPausableComponents();
+            return _ipComponents;
+        }
+    }
+
     private void OnDestroy()
     {
         Vector3 pos = transform.position;
@@ -59,6 +70,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public void SpawnTower()
     {
+        OnInitPausable();
         StartCoroutine(PlayBuildingAnimation());
         
         OnTowerSpawn?.Invoke(this);
@@ -107,6 +119,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Die()
     {
+        OnDestroyPausable();
         TowerSpawnManager.PlayDeathSounds(transform.position);
 
         if (deathParticles == null)
@@ -133,6 +146,26 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         {
             return transform.position;
         }
+
+    public void OnInitPausable()
+    {
+        this.InitPausable();
+    }
+
+    public void OnDestroyPausable()
+    {
+        this.DestroyPausable();
+    }
+
+    public void OnPause()
+    {
+        this.BaseOnPause();
+    }
+
+    public void OnResume()
+    {
+        this.BaseOnResume();
+    }
 
     #endregion
 }

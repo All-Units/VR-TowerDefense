@@ -163,7 +163,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _Hitbox.enabled = false;
 
         _EnableRagdoll(true);
-        StartCoroutine(gameObject._DestroyAfter(enemyStats.RagdollTime));
+        gameObject.DestroyAfter(enemyStats.RagdollTime);
+        //StartCoroutine(gameObject._DestroyAfter(enemyStats.RagdollTime));
         //Destroy(gameObject, enemyStats.RagdollTime);
 
 

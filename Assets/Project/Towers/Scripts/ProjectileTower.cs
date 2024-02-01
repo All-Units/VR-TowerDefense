@@ -34,7 +34,7 @@ public class ProjectileTower : PlayerControllableTower
         if(!isInitialized) return; 
         
         if(isPlayerControlled) return;
-        
+        if (XRPauseMenu.IsPaused) return;
         if(targetingSystem.HasTarget())
         {
             AimAtTarget();

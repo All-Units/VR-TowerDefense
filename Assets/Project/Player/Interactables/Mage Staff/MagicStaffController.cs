@@ -10,9 +10,13 @@ public class MagicStaffController : MonoBehaviour
     [SerializeField] private ParticleSystem spellEffect;
     [SerializeField] private ManaModule manaModule;
     [SerializeField] private float manaPerSecond = 1;
+    [SerializeField] GameObject fireballSummonVFX;
 
     public void BeginSpell()
     {
+        if (XRPauseMenu.IsPaused) {
+            fireballSummonVFX.SetActive(false);
+            return; }
         if (chargingCoroutine == null)
         {
             if(manaModule.TryUseMana(manaPerSecond * Time.deltaTime))

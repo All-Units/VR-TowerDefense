@@ -5,123 +5,133 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class FireballGlovesController : MonoBehaviour
 {
-        [SerializeField]
-        [Tooltip("The reference to the action to start the select aiming mode for this controller.")]
-        private InputActionReference createFireballActionReference;
+    [SerializeField]
+    [Tooltip("The reference to the action to start the select aiming mode for this controller.")]
+    private InputActionReference createFireballActionReference;
         
-        public Projectile projectile;
-        public Transform firePoint;
+    public Projectile projectile;
+    public Transform firePoint;
     
-        private bool isCharging = false;
-        private Coroutine chargingCoroutine = null;
-        private float chargeTime;
-        [SerializeField] private float minChargeTime = .4f;
-        [SerializeField] private float maxChargeTime = 2f;
+    private bool isCharging = false;
+    private Coroutine chargingCoroutine = null;
+    private float chargeTime;
+    [SerializeField] private float minChargeTime = .4f;
+    [SerializeField] private float maxChargeTime = 2f;
 
-        [SerializeField] private GameObject spellVFX;
-        [SerializeField] private AudioClipController chargingSFX;
-        [SerializeField] private XRGrabInteractable throwable;
-        [SerializeField] private XRBaseInteractor hand;
+    [SerializeField] private GameObject spellVFX;
+    [SerializeField] private AudioClipController chargingSFX;
+    [SerializeField] private XRGrabInteractable throwable;
+    [SerializeField] private XRBaseInteractor hand;
 
-        private void Start()
+    private void Start()
+    {
+        var createFireballAction = Utilities.GetInputAction(createFireballActionReference);
+        if (createFireballAction != null)
         {
-                var createFireballAction = Utilities.GetInputAction(createFireballActionReference);
-                if (createFireballAction != null)
-                {
-                        createFireballAction.started += createFireballActionOnStarted;
-                        createFireballAction.canceled += createFireballActionOnReleased;
-                }
+                createFireballAction.started += createFireballActionOnStarted;
+                createFireballAction.canceled += createFireballActionOnReleased;
         }
+        XRPauseMenu.OnPause += DestroyFireballOnPause;
+    }
 
-        private void createFireballActionOnStarted(InputAction.CallbackContext obj)
+    void DestroyFireballOnPause()
+    {
+        if (lastFireball != null && hand.firstInteractableSelected != null)
+            Destroy(lastFireball);
+    }
+
+    private void createFireballActionOnStarted(InputAction.CallbackContext obj)
+    {
+        if(isActiveAndEnabled == false) return;
+        if (XRPauseMenu.IsPaused) return;
+        isCharging = true;
+        if (chargingCoroutine == null)
         {
-                if(isActiveAndEnabled == false) return;
-                
-                isCharging = true;
-                if (chargingCoroutine == null)
-                {
-                        chargingCoroutine = StartCoroutine(ChargeAttack());
-                }
+                chargingCoroutine = StartCoroutine(ChargeAttack());
         }
+    }
 
-        private void createFireballActionOnReleased(InputAction.CallbackContext obj)
+    private void createFireballActionOnReleased(InputAction.CallbackContext obj)
+    {
+        if(isActiveAndEnabled == false) return;
+
+        isCharging = false;
+        if(chargeTime >= minChargeTime)
         {
-                                if(isActiveAndEnabled == false) return;
-
-                isCharging = false;
-                if(chargeTime >= minChargeTime)
-                {
-                        // Fire();
-                        ResetChargingSequence();
-                }
+                // Fire();
+                ResetChargingSequence();
         }
+    }
         
-        private void ResetChargingSequence()
-        {
-                chargingSFX.Stop();
-                chargeTime = 0;
-                if (chargingCoroutine == null) return;
-                StopCoroutine(chargingCoroutine);
-                chargingCoroutine = null;
-        }
+    private void ResetChargingSequence()
+    {
+        chargingSFX.Stop();
+        chargeTime = 0;
+        if (chargingCoroutine == null) return;
+        StopCoroutine(chargingCoroutine);
+        chargingCoroutine = null;
+    }
         
-        private IEnumerator ChargeAttack()
+    private IEnumerator ChargeAttack()
+    {
+        chargingSFX.PlayClip();
+        do
         {
-                chargingSFX.PlayClip();
-                do
+                if (XRPauseMenu.IsPaused) break;
+                if (isCharging)
                 {
-                        if (isCharging)
+                        chargeTime += Time.deltaTime;
+                        chargeTime = Mathf.Min(chargeTime, maxChargeTime);
+                        if (chargeTime >= minChargeTime && hand.hasSelection == false)
                         {
-                                chargeTime += Time.deltaTime;
-                                chargeTime = Mathf.Min(chargeTime, maxChargeTime);
-                                if (chargeTime >= minChargeTime && hand.hasSelection == false)
-                                {
-                                        SpawnAndGrabObject();
-                                }
+                                SpawnAndGrabObject();
                         }
-                        else
-                        {
-                                chargeTime -= Time.deltaTime;
-                        }
+                }
+                else
+                {
+                        chargeTime -= Time.deltaTime;
+                }
 
-                        UpdateSpellVFX();
-                        yield return null;
-                } while (chargeTime > 0);
+                UpdateSpellVFX();
+                yield return null;
+        } while (chargeTime > 0);
 
-                chargingCoroutine = null;
-        }
+        chargingCoroutine = null;
+    }
         
-        private void UpdateSpellVFX()
-        {
-                spellVFX.transform.localScale = Vector3.one * Mathf.Max(0, chargeTime);
-        }
+    private void UpdateSpellVFX()
+    {
+            spellVFX.transform.localScale = Vector3.one * Mathf.Max(0, chargeTime);
+    }
 
-        public void Fire()
-        {
-                var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
-                go.damage = Mathf.FloorToInt(go.damage * chargeTime);
-                go.Fire();
-        }
+    public void Fire()
+    {
+        lastFireball = null;
+        var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
+        go.damage = Mathf.FloorToInt(go.damage * chargeTime);
+        go.Fire();
+    }
 
-        private void SpawnAndGrabObject()
-        {
-                var go = Instantiate(throwable, firePoint.position, firePoint.rotation);
-                go.interactionManager.SelectEnter((IXRSelectInteractor)hand, go);
-                
-                StopCoroutine(chargingCoroutine);
-                chargingCoroutine = null;
+    GameObject lastFireball = null;
+    private void SpawnAndGrabObject()
+    {
+        var go = Instantiate(throwable, firePoint.position, firePoint.rotation);
+        go.interactionManager.SelectEnter((IXRSelectInteractor)hand, go);
+        lastFireball = go.gameObject;
+        StopCoroutine(chargingCoroutine);
+        chargingCoroutine = null;
 
-                HapticFeedback();
-        }
+        HapticFeedback();
+    }
         
-        private void HapticFeedback()
-        {
-                var currentController = hand.transform.gameObject.GetComponentInParent<ActionBasedController>();
-                currentController.SendHapticImpulse(1, 0.5f);
-        }
+    private void HapticFeedback()
+    {
+            var currentController = hand.transform.gameObject.GetComponentInParent<ActionBasedController>();
+            currentController.SendHapticImpulse(1, 0.5f);
+    }
 
-        public void SetThrowable(XRGrabInteractable grabInteractable)
-        {
-                throwable = grabInteractable;
-        }
+    public void SetThrowable(XRGrabInteractable grabInteractable)
+    {
+            throwable = grabInteractable;
+    }
 }

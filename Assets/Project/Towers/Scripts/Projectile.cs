@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 public class Projectile : MonoBehaviour, IPausable
 {
@@ -25,13 +28,16 @@ public class Projectile : MonoBehaviour, IPausable
     {
         OnInitPausable();
     }
-    void OnDestroy()
-    {
-        OnDestroyPausable();
-    }
+    
     public void OnInitPausable()
     {
         this.InitPausable();
+    }
+    protected virtual void OnDestroy()
+    {
+        OnDestroyPausable();
+        
+        print($"Destroying pausable PROJECTILE at FC {Time.frameCount}. Position {transform.position}");
     }
     public void OnDestroyPausable() { this.DestroyPausable(); }
     public void Fire()
@@ -44,7 +50,8 @@ public class Projectile : MonoBehaviour, IPausable
 
         if(flyingVFX)
             flyingVFX.SetActive(true);
-        StartCoroutine(gameObject._DestroyAfter(20f));
+        gameObject.DestroyAfter(20f);
+        //StartCoroutine(gameObject._DestroyAfter(20f));
         //Destroy(gameObject, 20f);
         startPos = transform.position;
         OnFire?.Invoke();
@@ -53,6 +60,7 @@ public class Projectile : MonoBehaviour, IPausable
 
     private void OnCollisionEnter(Collision other)
     {
+        Debug.Log($"Hit {other.gameObject}", other.gameObject);
         if (isDestroying) return;
 
         if (other.collider.isTrigger) return;
@@ -73,7 +81,6 @@ public class Projectile : MonoBehaviour, IPausable
 
     protected virtual void OnCollision(Collider other)
     {
-
         //var colliderGameObject = other.gameObject;
         var healthController = other.GetComponentInParent<HealthController>();  
         if (healthController != null)
@@ -100,6 +107,7 @@ public class Projectile : MonoBehaviour, IPausable
         }
         //We hit a trigger that didn't have a HC
         if (other.isTrigger && healthController == null) return;
+        Debug.Log($"We hit {other.gameObject}, destroying self", other.gameObject);
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
@@ -118,10 +126,16 @@ public class Projectile : MonoBehaviour, IPausable
     void IPausable.OnPause()
     {
         this.BaseOnPause();
+        string s = "";
+        foreach (var v in IPComponents.rigidbodyCache)
+            s += $"{v.Value.velocity}, ";
+        print($"Paused projectile. Had velocities: {s}. Position {transform.position}");
     }
-
+    protected int lastFrameResumed = 0;
     void IPausable.OnResume()
     {
         this.BaseOnResume();
+        lastFrameResumed = Time.frameCount;
+        print($"RESUMED projectile. Frame count {Time.frameCount}. Position {transform.position}");
     }
 }

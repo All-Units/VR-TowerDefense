@@ -13,7 +13,7 @@ public class LongshotController : MonoBehaviour
     public void Fire()
     {
         if(_loadedProjectile == false) return;
-        
+        if (XRPauseMenu.IsPaused) return;
         _loadedProjectile.Fire();
         _loadedProjectile = null;
         OnFire?.Invoke();

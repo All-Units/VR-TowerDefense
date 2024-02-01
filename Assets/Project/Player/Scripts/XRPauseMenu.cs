@@ -40,6 +40,18 @@ public class XRPauseMenu : MonoBehaviour
 
         togglePauseAction.started += TogglePauseAction_started;
         InitBubbles();
+        OnPause += _PauseFlag;
+        OnResume += _ResumeFlag;
+    }
+    void _PauseFlag()
+    {
+        Material mat = Resources.Load<Material>("Materials/ShaderTest");
+        mat.SetInt("_Playing", 0);
+    }
+    void _ResumeFlag()
+    {
+        Material mat = Resources.Load<Material>("Materials/ShaderTest");
+        mat.SetInt("_Playing", 1);
     }
 
     private void TogglePauseAction_started(InputAction.CallbackContext obj)
