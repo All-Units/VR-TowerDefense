@@ -479,6 +479,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         foreach (var rb in _ragdollRBs)
         {
             if (rb.gameObject == gameObject) continue;
+            rb.gameObject.layer = 16;
             rb.isKinematic = !enabled; 
         }
     }
@@ -497,6 +498,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         foreach (var collider in _ragdollColliders) 
         { 
             if (collider.gameObject == gameObject) continue; 
+            collider.gameObject.layer = 16;
             collider.enabled = enabled; 
         }
     }
@@ -523,6 +525,9 @@ public abstract class Enemy : MonoBehaviour, IPausable
         if (_detectionSphere == null) { _detectionSphere = GetComponentInChildren<SphereCollider>(); }
         float range = Random.Range(enemyStats.MinRange, enemyStats.MaxRange);
         _detectionSphere.radius = range;
+
+        RB.mass *= 20f;
+        _MoveSpeed *= 20f;
     }
     /// <summary>
     /// Initialize health controller

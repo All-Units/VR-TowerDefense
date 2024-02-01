@@ -78,7 +78,6 @@ public class EnemyManager : MonoBehaviour
         if (Enemies.Contains(enemy))
             Enemies.Remove(enemy);
         
-        Debug.Log($"{Enemies.Count} enemies remaining!");
         OnEnemyKilled.Invoke();
     }
     

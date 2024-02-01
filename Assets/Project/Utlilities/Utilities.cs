@@ -40,7 +40,6 @@ public static class Utilities
                 current += 0f;
             yield return null;
         }
-        Debug.Log($"Destroying {go.name} after delay of {t}");
         yield return null;
         Object.Destroy(go);
     }

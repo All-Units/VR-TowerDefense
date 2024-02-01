@@ -20,9 +20,11 @@ public class AOEProjectile : Projectile
         {
             if (wasLastFrameResume)
                 _CopySelf();
-            print($"Destructing was INVALID!! Was last frame resume? {wasLastFrameResume}");
         }
     }
+    /// <summary>
+    /// Duplicates an AoE projectile if it was destroyed by OnResume
+    /// </summary>
     void _CopySelf()
     {
         GameObject copy = Instantiate(gameObject);
@@ -33,12 +35,10 @@ public class AOEProjectile : Projectile
         var rb = GetComponent<Rigidbody>();
         copy_rb.velocity = rb.velocity;
         copy_rb.constraints = rb.constraints;
-        print("Copied!");
     }
 
     protected override void OnCollision(Collider other)
     {
-        print("AoE on collision");
         Vector3 pos = transform.position;
         var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask("Enemy"));
         foreach (var hit in hits)
@@ -64,7 +64,6 @@ public class AOEProjectile : Projectile
         }
 
         validDestroy = true;
-        Debug.Log($"We hit {other.gameObject}, destroying self", other.gameObject);
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
@@ -96,7 +95,6 @@ public class AOEProjectile : Projectile
             Destroy(particles, 2f);
         }
         validDestroy = true;
-        print("Manual destroy aoe");
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);

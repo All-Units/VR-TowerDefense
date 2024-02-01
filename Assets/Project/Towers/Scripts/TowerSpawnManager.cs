@@ -178,6 +178,7 @@ namespace Project.Towers.Scripts
             Tower t = towerToRemove.GetComponentInChildren<Tower>(); 
             Vector3 pos = t.transform.position;
             _towersByPos.Remove(pos);
+            print($"Destroying {towerToRemove.gameObject.name}");
             Destroy(towerToRemove.gameObject);
         }
 

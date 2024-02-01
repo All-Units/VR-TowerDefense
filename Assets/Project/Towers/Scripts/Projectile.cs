@@ -37,7 +37,6 @@ public class Projectile : MonoBehaviour, IPausable
     {
         OnDestroyPausable();
         
-        print($"Destroying pausable PROJECTILE at FC {Time.frameCount}. Position {transform.position}");
     }
     public void OnDestroyPausable() { this.DestroyPausable(); }
     public void Fire()
@@ -60,7 +59,6 @@ public class Projectile : MonoBehaviour, IPausable
 
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log($"Hit {other.gameObject}", other.gameObject);
         if (isDestroying) return;
 
         if (other.collider.isTrigger) return;
@@ -87,9 +85,7 @@ public class Projectile : MonoBehaviour, IPausable
         {
             Vector3 pos = transform.position;
             healthController.TakeDamageFrom(damage, startPos);
-            if (_isFireball)
-                print($"Hit {healthController.gameObject}");
-            //healthController.TakeDamage(damage);
+           
 
             ApplyEffects(healthController);
             
@@ -107,7 +103,6 @@ public class Projectile : MonoBehaviour, IPausable
         }
         //We hit a trigger that didn't have a HC
         if (other.isTrigger && healthController == null) return;
-        Debug.Log($"We hit {other.gameObject}, destroying self", other.gameObject);
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
@@ -126,16 +121,12 @@ public class Projectile : MonoBehaviour, IPausable
     void IPausable.OnPause()
     {
         this.BaseOnPause();
-        string s = "";
-        foreach (var v in IPComponents.rigidbodyCache)
-            s += $"{v.Value.velocity}, ";
-        print($"Paused projectile. Had velocities: {s}. Position {transform.position}");
+        
     }
     protected int lastFrameResumed = 0;
     void IPausable.OnResume()
     {
         this.BaseOnResume();
         lastFrameResumed = Time.frameCount;
-        print($"RESUMED projectile. Frame count {Time.frameCount}. Position {transform.position}");
     }
 }

@@ -40,6 +40,7 @@ public class XRPauseMenu : MonoBehaviour
 
         togglePauseAction.started += TogglePauseAction_started;
         InitBubbles();
+        _ResumeFlag();
         OnPause += _PauseFlag;
         OnResume += _ResumeFlag;
     }
