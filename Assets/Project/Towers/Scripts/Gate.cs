@@ -9,7 +9,7 @@ public class Gate : MonoBehaviour, IEnemyTargetable
     [SerializeField] private bool isFinalGate = false;
     [SerializeField] private HealthController _controller;
     [SerializeField] private GameObject deathParticles;
-    
+    public static Transform FrontGate;
 
     private void Awake()
     {
@@ -22,6 +22,19 @@ public class Gate : MonoBehaviour, IEnemyTargetable
                 deathParticles = p.gameObject;
         }
         _controller.onDeath.AddListener(Die);
+
+        if (isFinalGate)
+        {
+            if (FrontGate != null) Destroy(FrontGate.gameObject);
+            FrontGate = new GameObject().transform;
+            FrontGate.gameObject.name = "Front Gate Teleport point";
+            FrontGate.parent = transform;
+            FrontGate.localPosition = Vector3.zero;
+            FrontGate.localRotation = Quaternion.identity;
+            FrontGate.localEulerAngles += new Vector3(0f, 95f, 0f);
+            FrontGate.localPosition += (transform.forward * 5f);
+            FrontGate.Translate(new Vector3(0f, 1f, 0f));
+        }
     }
 
     public void Die()

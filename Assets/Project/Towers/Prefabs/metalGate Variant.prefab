@@ -247,7 +247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d22f5d48f6d79084c9a4967c6a05a5fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isFinalGate: 1
+  isFinalGate: 0
   _controller: {fileID: 1495404433056792653}
   deathParticles: {fileID: 1973917933116511533}
 --- !u!64 &8428092792131443139
@@ -292,7 +292,6 @@ MonoBehaviour:
   onDeath:
     m_PersistentCalls:
       m_Calls: []
-  deathDelay: 1.4
   isDead: 0
 --- !u!4 &6490994700511996638 stripped
 Transform:

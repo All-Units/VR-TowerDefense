@@ -36,6 +36,7 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private float fadeAfterDeathTime = 4f;
 
     public GameObject penthouse;
+    public Transform frontGate;
     public GameObject penthouseInterior;
     public static PlayerControllableTower CurrentTower => instance._currentControlledTower;
     private PlayerControllableTower _currentControlledTower;
@@ -96,7 +97,7 @@ public class PlayerStateController : MonoBehaviour
     public static void DiedInTower()
     {
         ReleaseControlOfTower();
-        instance.TeleportPlayerToPenthouse();
+        instance.TeleportPlayerToWar();
         instance._fadeScreen.SetFadeInstant(1);
         instance.StartCoroutine(fadeInAfter());
     }
@@ -155,7 +156,7 @@ public class PlayerStateController : MonoBehaviour
     public void TeleportPlayerToWar()
     {
         ActivatePenthouseExterior();
-        Transform t = TeleportPoints.FrontOfGate;
+        Transform t = Gate.FrontGate;
         TeleportPlayerToPoint(t);
     }
     
