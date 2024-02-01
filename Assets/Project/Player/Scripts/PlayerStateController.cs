@@ -39,6 +39,7 @@ public class PlayerStateController : MonoBehaviour
     public GameObject penthouseInterior;
     public static PlayerControllableTower CurrentTower => instance._currentControlledTower;
     private PlayerControllableTower _currentControlledTower;
+    private bool _joiningTower;
     [SerializeField] private bool StartInPenthouse = false;
 
     private void Awake()
@@ -48,6 +49,11 @@ public class PlayerStateController : MonoBehaviour
         ActivatePenthouseExterior();
         if (StartInPenthouse)
             TeleportPlayerToPenthouse();
+    }
+
+    private void Start()
+    {
+        teleportationProvider.beginLocomotion += OnNextTeleport;
     }
 
     public void SetPlayerState(PlayerState newState)
@@ -62,25 +68,24 @@ public class PlayerStateController : MonoBehaviour
     public static void TakeControlOfTower(PlayerControllableTower tower)
     {
         if(IsInstanced() == false) return;
-        StartTeleportingReset();
         ActivatePenthouseExterior();
         instance.SetPlayerToTower(tower);
     }
 
-    public void SetPlayerToTower(PlayerControllableTower tower)
+    private void SetPlayerToTower(PlayerControllableTower tower)
     { 
         if(_currentControlledTower != null)
             _currentControlledTower.PlayerReleaseControl();
         
         _currentControlledTower = tower;
         tower.PlayerTakeControl();
-
-        var playerControlPoint = tower.GetPlayerControlPoint();
+        _joiningTower = true;
         
+        var playerControlPoint = tower.GetPlayerControlPoint();
         TeleportPlayerToPoint(playerControlPoint);
-
+        
         SetPlayerState(PlayerState.TOWER_CONTROL);
-        //print($"Set player to {tower.dto.name}");
+
         dynamicMoveProvider.CanMove = false;
         dynamicMoveProvider.useGravity = false;
     }
@@ -102,7 +107,7 @@ public class PlayerStateController : MonoBehaviour
         instance._fadeScreen.FadeIn();
         
     }
-    public static void ReleaseControlOfTower()
+    private static void ReleaseControlOfTower()
     {
         if(IsInstanced() == false) return;
         
@@ -121,6 +126,7 @@ public class PlayerStateController : MonoBehaviour
         SetPlayerState(PlayerState.IDLE);
         dynamicMoveProvider.CanMove = true;
         dynamicMoveProvider.useGravity = true;
+        
         InventoryManager.instance.ReleaseAllItems();
         InventoryManager.HideAllItems();
     }
@@ -137,8 +143,6 @@ public class PlayerStateController : MonoBehaviour
         };
 
         teleportationProvider.QueueTeleportRequest(request);
-
-        teleportationProvider.beginLocomotion += SetPlayerScale;
     }
 
     public void TeleportPlayerToPenthouse()
@@ -146,7 +150,6 @@ public class PlayerStateController : MonoBehaviour
         ActivatePenthouseExterior(false);
         Transform t = TeleportPoints.Penthouse;
         TeleportPlayerToPoint(t);
-        
     }
 
     public void TeleportPlayerToWar()
@@ -154,35 +157,21 @@ public class PlayerStateController : MonoBehaviour
         ActivatePenthouseExterior();
         Transform t = TeleportPoints.FrontOfGate;
         TeleportPlayerToPoint(t);
-        
     }
-
-    private void SetPlayerScale(LocomotionSystem obj)
-    {
-        playerGameObject.transform.localScale = Vector3.one * (_currentControlledTower == null ? normalScale : towerControlScale);
-        teleportationProvider.beginLocomotion -= SetPlayerScale;
-
-        if (_currentControlledTower)
-            teleportationProvider.beginLocomotion += OnNextTeleport;
-    }
-
-    public static bool IsTeleportingToTower = false;
-
+    
     private void OnNextTeleport(LocomotionSystem obj)
     {
-        teleportationProvider.beginLocomotion -= OnNextTeleport;
-
-        if (IsTeleportingToTower)
+        print("Tele called");
+        if (_joiningTower)
         {
-            //print($"Was teleporting to tower, not releasing control");
-            teleportationProvider.beginLocomotion += OnNextTeleport;
+            _joiningTower = false;
+            return;
         }
-        if (_currentControlledTower && IsTeleportingToTower == false)
+
+        if (_currentControlledTower)
         {
-            //print($"Had {_currentControlledTower.dto.name}, releasing control");
             ReleaseControlOfTower();
         }
-        //IsTeleportingToTower = false;
     }
 
     private static bool IsInstanced()
@@ -192,18 +181,6 @@ public class PlayerStateController : MonoBehaviour
 
         return instance != null;
     }
-
-    public static void StartTeleportingReset()
-    {
-        IsTeleportingToTower = true;
-        instance.StartCoroutine(instance._DelayThenResetTeleporting());
-    }
-    IEnumerator _DelayThenResetTeleporting()
-    {
-        yield return new WaitForSeconds(0.05f);
-        IsTeleportingToTower = false;
-    }
-
     
     /// <summary>
     /// Turns on or off the exterior of the Mages Tower
