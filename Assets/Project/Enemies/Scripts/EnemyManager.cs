@@ -333,7 +333,7 @@ public class EnemyManager : MonoBehaviour
         GameObject enemy = Instantiate(enemyPrefab, point.enemyParent);
         float r = enemy.GetComponent<CapsuleCollider>().radius;
         Vector3 pos = point.SpawnPoint.GetPoint(r);
-        enemy.transform.position = pos;
+        enemy.transform.position = pos + Vector3.up;
         var e = enemy.GetComponent<Enemy>();
         if (e)
             e._SetTarget(point.SpawnPoint.nextPoint);

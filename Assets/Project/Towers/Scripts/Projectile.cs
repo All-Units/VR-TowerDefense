@@ -21,6 +21,10 @@ public class Projectile : MonoBehaviour, IPausable
     public UnityEvent OnFire;
     public UnityEvent OnHit;
     Vector3 startPos;
+
+    [SerializeField] private float selfDestructTime = 20f;
+    
+    
     void Awake()
     {
         OnInitPausable();
@@ -44,7 +48,7 @@ public class Projectile : MonoBehaviour, IPausable
 
         if(flyingVFX)
             flyingVFX.SetActive(true);
-        StartCoroutine(gameObject._DestroyAfter(20f));
+        StartCoroutine(gameObject._DestroyAfter(selfDestructTime));
         //Destroy(gameObject, 20f);
         startPos = transform.position;
         OnFire?.Invoke();

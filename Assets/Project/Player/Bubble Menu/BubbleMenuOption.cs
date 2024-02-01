@@ -33,7 +33,7 @@ public class BubbleMenuOption : MonoBehaviour
         gameObject.SetActive(true);
         title.text = displayText;
 
-        _callback += ctx;
+        _callback = ctx;
     }
 
     private void CanAfford(int cash)

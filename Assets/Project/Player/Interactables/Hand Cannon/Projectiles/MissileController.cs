@@ -12,6 +12,7 @@ public class MissileController : MonoBehaviour
     public Rigidbody rb;
     [SerializeField] private ParticleSystem flamesVFX;
     public bool cluster;
+    public float upwardsCeiling = 100f;
 
     private Coroutine _cruisingCoroutine;
     public MissileController prefab;
@@ -19,6 +20,7 @@ public class MissileController : MonoBehaviour
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
+        upwardsCeiling += transform.position.y;
     }
 
     public void FireReachCruisingAltitude()
@@ -47,17 +49,19 @@ public class MissileController : MonoBehaviour
 
     IEnumerator ReachCruisingAltitude()
     {
+        rb.useGravity = false;
+        
+
         yield return new WaitForSeconds(orbitalWaitTime);
 
         flamesVFX.Play(true);
 
-        while (transform.position.y < 250)
+        while (transform.position.y < upwardsCeiling)
         {
             MoveToTarget(Quaternion.Euler(-90, 0, 1));
             yield return null;
         }
 
-        rb.useGravity = false;
         rb.velocity = Vector3.zero;
 
         _cruisingCoroutine = null;
