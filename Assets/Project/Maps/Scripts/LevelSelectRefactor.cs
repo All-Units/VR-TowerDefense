@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class LevelSelectRefactor : MonoBehaviour
@@ -106,6 +107,7 @@ public class LevelSelectRefactor : MonoBehaviour
 
     void _StartChangerRoutine(bool selected = true)
     {
+        if (gameObject.activeInHierarchy == false) return;
         if (_currentSizeChanger != null)
             StopCoroutine(_currentSizeChanger);
         _currentSizeChanger = _ChangeSizeRoutine(selected);
@@ -140,13 +142,22 @@ public class LevelSelectRefactor : MonoBehaviour
             Debug.LogError($"No level data assigned to {gameObject.name}", gameObject);
             return;
         }
-
+        FadeScreen.Fade_Out(1f);
+        StartCoroutine(_SelectAfter(1f));
+        //SceneManager.LoadSceneAsync(levelSelectData.sceneName);
+        return;
         if (levelSelectData.sceneName != "")
         {
             SceneTransitionManager.singleton.LoadScene(levelSelectData.sceneName);
             return;
         }
-        SceneTransitionManager.singleton.GoToScene(levelSelectData.sceneToLoad);
+        
+        //SceneTransitionManager.singleton.GoToScene(levelSelectData.sceneToLoad);
+    }
+    IEnumerator _SelectAfter(float t)
+    {
+        yield return new WaitForSeconds(t);
+        SceneManager.LoadSceneAsync(levelSelectData.sceneName);
     }
 
 }

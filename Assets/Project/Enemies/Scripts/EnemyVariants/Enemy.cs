@@ -528,8 +528,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
         float range = Random.Range(enemyStats.MinRange, enemyStats.MaxRange);
         _detectionSphere.radius = range;
 
-        RB.mass *= 20f;
-        _MoveSpeed *= 20f;
+        RB.mass *= 200f;
+        _MoveSpeed *= 200f;
     }
     /// <summary>
     /// Initialize health controller

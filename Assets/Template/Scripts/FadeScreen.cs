@@ -38,6 +38,11 @@ public class FadeScreen : MonoBehaviour
     {
         Fade(1, 0);
     }
+    public static void Fade_Out(float t = -1)
+    {
+        instance.StartCoroutine(instance.FadeRoutine(0, 1, t));
+        //instance.FadeOut();
+    }
     /// <summary>
     /// Starts see through, ends black
     /// </summary>
@@ -51,15 +56,16 @@ public class FadeScreen : MonoBehaviour
         StartCoroutine(FadeRoutine(alphaIn,alphaOut));
     }
 
-    public IEnumerator FadeRoutine(float alphaIn,float alphaOut)
+    public IEnumerator FadeRoutine(float alphaIn,float alphaOut, float t = -1)
     {
         rend.enabled = true;
-
+        if (t == -1)
+            t = fadeDuration;
         float timer = 0;
-        while(timer <= fadeDuration)
+        while(timer <= t)
         {
             Color newColor = fadeColor;
-            newColor.a = Mathf.Lerp(alphaIn, alphaOut, fadeCurve.Evaluate(timer / fadeDuration));
+            newColor.a = Mathf.Lerp(alphaIn, alphaOut, fadeCurve.Evaluate(timer / t));
 
             rend.material.SetColor(colorPropertyName, newColor);
 

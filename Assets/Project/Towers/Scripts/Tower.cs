@@ -56,12 +56,8 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
 
     private void OnDestroy()
     {
-        Vector3 pos = transform.position;
-        TowerSpawnManager._towersByPos.Remove(pos);
-        if (removeFromDict)
-        {
-            Minimap.DestroyTower(pos);
-        }
+        OnDestroyPausable();
+        
     }
 
     #endregion
@@ -119,7 +115,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
 
     public virtual void Die()
     {
-        OnDestroyPausable();
+        
         TowerSpawnManager.PlayDeathSounds(transform.position);
 
         if (deathParticles == null)
