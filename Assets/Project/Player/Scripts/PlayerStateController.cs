@@ -163,6 +163,7 @@ public class PlayerStateController : MonoBehaviour
     private void OnNextTeleport(LocomotionSystem obj)
     {
         //print("Tele called");
+        TeleportFloorPlacer.ManualRefresh();
         if (_joiningTower)
         {
             _joiningTower = false;

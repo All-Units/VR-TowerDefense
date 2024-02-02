@@ -32,15 +32,22 @@ public class TeleportFloorPlacer : MonoBehaviour
     public float refreshRate = 0.8f;
 
     public LayerMask ignore;
+    public static TeleportFloorPlacer instance;
+    IEnumerator _refresher;
     // Start is called before the first frame update
     void Start()
     {
         if (player == null && InventoryManager.instance != null)
             player = InventoryManager.instance.playerTransform;
         StartCoroutine(_RefreshTeleportHeightsLoop());
+        instance = this;
     }
 
-    
+    public static void ManualRefresh()
+    {
+        if (instance == null) return;
+        instance._RepositionSquares();
+    }
 
     IEnumerator _RefreshTeleportHeightsLoop()
     {
