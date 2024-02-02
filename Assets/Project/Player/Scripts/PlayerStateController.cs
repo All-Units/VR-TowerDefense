@@ -162,7 +162,7 @@ public class PlayerStateController : MonoBehaviour
     
     private void OnNextTeleport(LocomotionSystem obj)
     {
-        print("Tele called");
+        //print("Tele called");
         if (_joiningTower)
         {
             _joiningTower = false;

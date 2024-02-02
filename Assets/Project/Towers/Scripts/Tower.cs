@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using PlasticGui.WorkspaceWindow.BrowseRepository;
 using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +15,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     [SerializeField] private GameObject deathParticles;
     [SerializeField] protected GameObject selectedVfx;
 
+    public bool IsInitialized => isInitialized;
     [SerializeField] protected bool isInitialized = false;
     protected float buildTime = 2.5f;
 

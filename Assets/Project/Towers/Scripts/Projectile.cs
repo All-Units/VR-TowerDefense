@@ -95,9 +95,7 @@ public class Projectile : MonoBehaviour, IPausable
         }
         else
         {
-            if (gameObject.name.ToLower().Contains("fireball"))
-                print($"Hit {other.gameObject}, NOT HEALTH CONTROLLER");
-            // Todo Refactor out to event based
+            
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
         }
