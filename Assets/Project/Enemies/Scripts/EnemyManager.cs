@@ -78,7 +78,6 @@ public class EnemyManager : MonoBehaviour
         if (Enemies.Contains(enemy))
             Enemies.Remove(enemy);
         
-        Debug.Log($"{Enemies.Count} enemies remaining!");
         OnEnemyKilled.Invoke();
     }
     
@@ -260,6 +259,7 @@ public class EnemyManager : MonoBehaviour
         //While there are still enemies to spawn, keep spawning
         while (wave.toSpawn.Count > 0)
         {
+            while (XRPauseMenu.IsPaused) yield return null;
             int groupSize = Random.Range(wave.groupSizes.x, wave.groupSizes.y + 1);
             int startSize = wave.toSpawn.Count;
             for (int i = 0; i < groupSize; i++)
@@ -456,6 +456,7 @@ public class EnemyManager : MonoBehaviour
         OnRoundStarted.Invoke();
         while (available.Count != 0)
         {
+            while (XRPauseMenu.IsPaused) yield return null;
             //Choose a random index from available
             int i = available.GetRandom();
             //Subtract one 

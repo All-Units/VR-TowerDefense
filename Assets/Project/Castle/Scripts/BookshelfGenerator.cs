@@ -1,12 +1,13 @@
 using System;
+using System.Collections.Generic;
+using UnityEditor;
+
+using Random = UnityEngine.Random;
+using UnityEngine;
 #if UNITY_EDITOR
 
-using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using UnityEditor;
-using UnityEngine;
-using Random = UnityEngine.Random;
+
+
 
 [CustomEditor(typeof(BookshelfGenerator))]
 class _bookGenInspector : Editor
@@ -26,6 +27,7 @@ class _bookGenInspector : Editor
         base.OnInspectorGUI();
     }
 }
+#endif
 public class BookshelfGenerator : MonoBehaviour
 {
     public Transform booksParent;
@@ -37,17 +39,7 @@ public class BookshelfGenerator : MonoBehaviour
     [SerializeField] private TextAsset booklist;
 
     private List<string> lines = new List<string>();
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+#if UNITY_EDITOR
     public void RegenAllShelving()
     {
         var shelves = transform.root.GetComponentsInChildren<BookshelfGenerator>();
@@ -134,5 +126,5 @@ public class BookshelfGenerator : MonoBehaviour
             lines.Add(line);
         }
     }
+    #endif
 }
-#endif

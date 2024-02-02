@@ -73,6 +73,7 @@ public class SlideInteraction : XRBaseInteractable
 
     private void Lock()
     {
+        if (XRPauseMenu.IsPaused) return;
         isLocked = true;
         onLocked?.Invoke();
         interactionManager.SelectExit(pullingInteractor, this);

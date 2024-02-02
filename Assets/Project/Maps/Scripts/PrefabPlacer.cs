@@ -1,11 +1,12 @@
 using System;
-
-#if UNITY_EDITOR
+using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
+
 using Unity.Mathematics;
 using UnityEditor;
-using UnityEngine;
+
 using Random = UnityEngine.Random;
 
 [CustomEditor(typeof(PrefabPlacer))]
@@ -38,6 +39,7 @@ class PrefabPlacerEditor : Editor
         Handles.CircleHandleCap(0, pos, p.transform.rotation * Quaternion.LookRotation(p.transform.up), p.SpawnRadius, EventType.Repaint);
     }
 }
+#endif
 public class PrefabPlacer : MonoBehaviour
 {
     [Header("Generates based on the first TerrainList in the List of Lists")]
@@ -48,7 +50,7 @@ public class PrefabPlacer : MonoBehaviour
     public float SpawnRadius = 5f;
     public int NumberToSpawn = 1;
     public bool ClearOnSpawn = true;
-
+#if UNITY_EDITOR
     public void ToggleColliders()
     {
         var cols = GetComponentsInChildren<Collider>();
@@ -92,6 +94,6 @@ public class PrefabPlacer : MonoBehaviour
 
         }
     }
+    #endif
 }
 
-#endif

@@ -49,15 +49,13 @@ public class GattlingController : MonoBehaviour
         _isActive = false;
     }
 
-    bool _cachedIsActive = false;
     void OnPause()
     {
-        _cachedIsActive = _isActive;
         _isActive = false;
     }
     void OnResume()
     {
-        _isActive = _cachedIsActive;
+        _isActive = false;
     }
 
     private IEnumerator Spin()

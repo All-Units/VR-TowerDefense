@@ -163,7 +163,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _Hitbox.enabled = false;
 
         _EnableRagdoll(true);
-        StartCoroutine(gameObject._DestroyAfter(enemyStats.RagdollTime));
+        gameObject.DestroyAfter(enemyStats.RagdollTime);
+        //StartCoroutine(gameObject._DestroyAfter(enemyStats.RagdollTime));
         //Destroy(gameObject, enemyStats.RagdollTime);
 
 
@@ -464,6 +465,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
     protected virtual void OnTargetDeath()
     {
+        if (_targets.Contains(currentTarget))
+            _targets.Remove(currentTarget);
         currentTarget = null;
     }
 
@@ -478,6 +481,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         foreach (var rb in _ragdollRBs)
         {
             if (rb.gameObject == gameObject) continue;
+            rb.gameObject.layer = 16;
             rb.isKinematic = !enabled; 
         }
     }
@@ -496,6 +500,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         foreach (var collider in _ragdollColliders) 
         { 
             if (collider.gameObject == gameObject) continue; 
+            collider.gameObject.layer = 16;
             collider.enabled = enabled; 
         }
     }
@@ -522,6 +527,9 @@ public abstract class Enemy : MonoBehaviour, IPausable
         if (_detectionSphere == null) { _detectionSphere = GetComponentInChildren<SphereCollider>(); }
         float range = Random.Range(enemyStats.MinRange, enemyStats.MaxRange);
         _detectionSphere.radius = range;
+
+        RB.mass *= 200f;
+        _MoveSpeed *= 200f;
     }
     /// <summary>
     /// Initialize health controller

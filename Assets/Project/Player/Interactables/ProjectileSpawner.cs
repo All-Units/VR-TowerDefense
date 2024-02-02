@@ -23,7 +23,7 @@ public class ProjectileSpawner : MonoBehaviour
     public virtual void Fire()
     {
         if(CheckCantFireModules()) return;
-        
+        if (XRPauseMenu.IsPaused) return;
         var newObject = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
         
         newObject.Fire();
@@ -31,9 +31,9 @@ public class ProjectileSpawner : MonoBehaviour
         {
             guidedMissileController.targeter = _targeter;
             guidedMissileController.index = 0;
-        }   
-        
-        Destroy(newObject, 15f);
+        }
+        newObject.gameObject.DestroyAfter(15f);
+        //Destroy(newObject, 15f);
         OnFire?.Invoke();
 
         if (_targeter && _targeter.targets.Count > 1)
@@ -47,9 +47,9 @@ public class ProjectileSpawner : MonoBehaviour
                 {
                     guidedMissile.targeter = _targeter;
                     guidedMissile.index = i;
-                }        
-                
-                Destroy(projectile, 15f);
+                }
+                projectile.gameObject.DestroyAfter(15f);
+                //Destroy(projectile, 15f);
             }
         }
     }

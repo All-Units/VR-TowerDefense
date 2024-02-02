@@ -22,6 +22,14 @@ public class PullInteraction : XRBaseInteractable
     {
         base.Awake();
         _lineRenderer = GetComponent<LineRenderer>();
+        XRPauseMenu.OnPause += _DestroyArrow;
+    }
+    void _DestroyArrow()
+    {
+        if (notch.transform.childCount != 0)
+            Destroy(notch.transform.GetChild(0).gameObject);
+        return;
+        
     }
 
     public void SetPullInteractor(SelectEnterEventArgs args)

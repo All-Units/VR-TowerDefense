@@ -13,6 +13,8 @@ public class TowerRangeVisualization : MonoBehaviour
     [ContextMenu("Set Scale")]
     private void SetScale()
     {
-        transform.localScale = Vector3.one * stats.radius * 2;
+        float r = 1;
+        if (stats != null) r = stats.radius;
+        transform.localScale = Vector3.one * r * 2;
     }
 }

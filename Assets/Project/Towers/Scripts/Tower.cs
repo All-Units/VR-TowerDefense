@@ -1,12 +1,13 @@
 using System;
 using System.Collections;
+using PlasticGui.WorkspaceWindow.BrowseRepository;
 using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(HealthController))]
-public class Tower : MonoBehaviour, IEnemyTargetable
+public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
 {
     public HealthController healthController;
     
@@ -14,6 +15,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     [SerializeField] private GameObject deathParticles;
     [SerializeField] protected GameObject selectedVfx;
 
+    public bool IsInitialized => isInitialized;
     [SerializeField] protected bool isInitialized = false;
     protected float buildTime = 2.5f;
 
@@ -43,14 +45,21 @@ public class Tower : MonoBehaviour, IEnemyTargetable
     }
 
     [HideInInspector] public bool removeFromDict = true;
+
+    private IPausableComponents _ipComponents = null;
+    public IPausableComponents IPComponents
+    {
+        get
+        {
+            if (_ipComponents == null) _ipComponents = this.GetPausableComponents();
+            return _ipComponents;
+        }
+    }
+
     private void OnDestroy()
     {
-        Vector3 pos = transform.position;
-        TowerSpawnManager._towersByPos.Remove(pos);
-        if (removeFromDict)
-        {
-            Minimap.DestroyTower(pos);
-        }
+        OnDestroyPausable();
+        
     }
 
     #endregion
@@ -59,6 +68,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public void SpawnTower()
     {
+        OnInitPausable();
         StartCoroutine(PlayBuildingAnimation());
         
         OnTowerSpawn?.Invoke(this);
@@ -107,6 +117,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable
 
     public virtual void Die()
     {
+        
         TowerSpawnManager.PlayDeathSounds(transform.position);
 
         if (deathParticles == null)
@@ -133,6 +144,26 @@ public class Tower : MonoBehaviour, IEnemyTargetable
         {
             return transform.position;
         }
+
+    public void OnInitPausable()
+    {
+        this.InitPausable();
+    }
+
+    public void OnDestroyPausable()
+    {
+        this.DestroyPausable();
+    }
+
+    public void OnPause()
+    {
+        this.BaseOnPause();
+    }
+
+    public void OnResume()
+    {
+        this.BaseOnResume();
+    }
 
     #endregion
 }

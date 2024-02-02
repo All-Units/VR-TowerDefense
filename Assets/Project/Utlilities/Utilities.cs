@@ -18,15 +18,29 @@ using Random = UnityEngine.Random;
 
 public static class Utilities
 {
+    /// <summary>
+    /// Starts a coroutine that destroys GO after a delay. Pauses delay if game is paused
+    /// </summary>
+    /// <param name="go"></param>
+    /// <param name="t"></param>
+    public static void DestroyAfter(this GameObject go, float t)
+    {
+        MonoBehaviour monoBehaviour = go.GetComponent<MonoBehaviour>();
+        if (monoBehaviour == null) return;
+        monoBehaviour.StartCoroutine(go._DestroyAfter(t));
+    }
     public static IEnumerator _DestroyAfter(this GameObject go, float t)
     {
         float current = 0f;
-        while (current <= t)
+        while (current < t)
         {
             if (XRPauseMenu.IsPaused == false)
                 current += Time.deltaTime;
+            else
+                current += 0f;
             yield return null;
         }
+        yield return null;
         Object.Destroy(go);
     }
     public static Vector2 RandomPointOnUnitCircle()

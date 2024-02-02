@@ -40,6 +40,8 @@ public class XRControllerTowerController : MonoBehaviour
     [SerializeField] private XRControllerTowerPlacer towerPlacer;
 
     private bool _selectorLock = false;
+
+    [SerializeField] float deselectGracePeriod = 1f;
     
     private void Start()
     {
@@ -85,13 +87,15 @@ public class XRControllerTowerController : MonoBehaviour
         {
             var tower = hit.transform.GetComponent<Tower>();
             if(tower is PlayerControllableTower { isPlayerControlled: true }) return;
-            
+            if (tower && tower.IsInitialized == false) return;
             if (tower)
             {
                 if(_selectedTower != tower && _selectedTower)
                     _selectedTower.Deselected();
                 _selectedTower = tower;
                 _selectedTower.Selected();
+
+                _StopDeselectDelay();
             }
             
             //We hit something that isn't a tower
@@ -108,13 +112,29 @@ public class XRControllerTowerController : MonoBehaviour
         }
     }
 
+    IEnumerator _currentDeselector = null;
     void _deselectCurrent()
     {
+        if (_currentDeselector != null) return;
+        _currentDeselector = _DelayDeselect();
+        StartCoroutine(_currentDeselector);
+        
+    }
+    void _StopDeselectDelay()
+    {
+        if (_currentDeselector != null)
+            StopCoroutine(_currentDeselector);
+        _currentDeselector = null;
+    }
+    IEnumerator _DelayDeselect()
+    {
+        yield return new WaitForSeconds(deselectGracePeriod);
         if (_selectedTower != null)
         {
             _selectedTower.Deselected();
             _selectedTower = null;
         }
+        _currentDeselector = null;
     }
 
     private Coroutine _actionButtonCoroutine;

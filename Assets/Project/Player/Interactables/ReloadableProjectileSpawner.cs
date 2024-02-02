@@ -8,7 +8,7 @@ public class ReloadableProjectileSpawner : ProjectileSpawner
     public override void Fire()
     {
         if(CheckCantFireModules()) return;
-
+        if (XRPauseMenu.IsPaused) return;
         if (_currentAmmo <= 0) return;
         
         _currentAmmo--;

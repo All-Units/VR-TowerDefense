@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections;
+using System.Diagnostics;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.Events;
+using Debug = UnityEngine.Debug;
 
 public class Projectile : MonoBehaviour, IPausable
 {
@@ -21,21 +24,19 @@ public class Projectile : MonoBehaviour, IPausable
     public UnityEvent OnFire;
     public UnityEvent OnHit;
     Vector3 startPos;
-
-    [SerializeField] private float selfDestructTime = 20f;
-    
-    
     void Awake()
     {
         OnInitPausable();
     }
-    void OnDestroy()
-    {
-        OnDestroyPausable();
-    }
+    
     public void OnInitPausable()
     {
         this.InitPausable();
+    }
+    protected virtual void OnDestroy()
+    {
+        OnDestroyPausable();
+        
     }
     public void OnDestroyPausable() { this.DestroyPausable(); }
     public void Fire()
@@ -48,7 +49,8 @@ public class Projectile : MonoBehaviour, IPausable
 
         if(flyingVFX)
             flyingVFX.SetActive(true);
-        StartCoroutine(gameObject._DestroyAfter(selfDestructTime));
+        gameObject.DestroyAfter(20f);
+        //StartCoroutine(gameObject._DestroyAfter(20f));
         //Destroy(gameObject, 20f);
         startPos = transform.position;
         OnFire?.Invoke();
@@ -77,16 +79,13 @@ public class Projectile : MonoBehaviour, IPausable
 
     protected virtual void OnCollision(Collider other)
     {
-
         //var colliderGameObject = other.gameObject;
         var healthController = other.GetComponentInParent<HealthController>();  
         if (healthController != null)
         {
             Vector3 pos = transform.position;
             healthController.TakeDamageFrom(damage, startPos);
-            if (_isFireball)
-                print($"Hit {healthController.gameObject}");
-            //healthController.TakeDamage(damage);
+           
 
             ApplyEffects(healthController);
             
@@ -96,9 +95,7 @@ public class Projectile : MonoBehaviour, IPausable
         }
         else
         {
-            if (gameObject.name.ToLower().Contains("fireball"))
-                print($"Hit {other.gameObject}, NOT HEALTH CONTROLLER");
-            // Todo Refactor out to event based
+            
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
         }
@@ -122,10 +119,12 @@ public class Projectile : MonoBehaviour, IPausable
     void IPausable.OnPause()
     {
         this.BaseOnPause();
+        
     }
-
+    protected int lastFrameResumed = 0;
     void IPausable.OnResume()
     {
         this.BaseOnResume();
+        lastFrameResumed = Time.frameCount;
     }
 }
