@@ -465,6 +465,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
     protected virtual void OnTargetDeath()
     {
+        if (_targets.Contains(currentTarget))
+            _targets.Remove(currentTarget);
         currentTarget = null;
     }
 
