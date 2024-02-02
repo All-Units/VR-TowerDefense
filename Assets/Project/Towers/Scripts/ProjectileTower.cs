@@ -93,13 +93,18 @@ public class ProjectileTower : PlayerControllableTower
         {
             missileController.SetTarget(targetingSystem._targetsInRange.GetRandom());
             missileController.HitTarget();
-            
-            if (ammo > 0)
-            {
-                currentAmmo--;
-            }
         }
 
+        if (projectile.TryGetComponent(out MissileController component))
+        {
+            component.SetTarget(targetingSystem.GetOldestTarget());
+        }
+        
+        if (ammo > 0)
+        {
+            currentAmmo--;
+        }
+            
         foreach (var auxFirePoint in auxFirePoints)
         {
             if (ammo > 0 && currentAmmo <= 0) return;
