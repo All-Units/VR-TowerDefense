@@ -12,6 +12,7 @@ public class BubbleMenuController : MonoBehaviour
     [SerializeField] private BubbleMenuOption upgradeOption1;
     [SerializeField] private BubbleMenuOption upgradeOption2;
     [SerializeField] private BubbleMenuOption sellOption;
+    [SerializeField] private BubbleMenuOption takeoverOption;
     
     [SerializeField]
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
@@ -67,6 +68,13 @@ public class BubbleMenuController : MonoBehaviour
 
         ListUpgrades();
         sellOption.Initialize(SellTower, $"Sell: ${_currentTower.dto.cost/2}");
+
+        bool isTakeover = _currentTower is PlayerControllableTower;
+        takeoverOption.gameObject.SetActive(isTakeover);
+        
+        if(isTakeover)
+            takeoverOption.Initialize(TakeoverTower, "Takeover");
+            
     }
 
     private void ListUpgrades()
@@ -150,6 +158,14 @@ public class BubbleMenuController : MonoBehaviour
     private void SellTower()
     {
         TowerSpawnManager.SellTower(_currentTower);
+        Hide();
+    }  
+    
+    private void TakeoverTower()
+    {
+        if(_currentTower is PlayerControllableTower playerControllableTower)
+            PlayerStateController.TakeControlOfTower(playerControllableTower);
+
         Hide();
     }
 
