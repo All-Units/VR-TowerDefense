@@ -342,6 +342,8 @@ MonoBehaviour:
   attackVFX: {fileID: 0}
   turretModel: {fileID: 6660010794930149879}
   playerPlatform: {fileID: 1536221837531291880}
+  ammo: 2
+  reloadTime: 1.5
 --- !u!114 &5764481117411547575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,6 +917,11 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[1]
       value: 
       objectReference: {fileID: 2100000, guid: 993a35f913228994b970c988dff9683e, type: 2}
+    - target: {fileID: 7783257228807713126, guid: b97b4717c8d768b439bf20dc50ef3b0b,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.992
+      objectReference: {fileID: 0}
     - target: {fileID: 8295802879333502471, guid: b97b4717c8d768b439bf20dc50ef3b0b,
         type: 3}
       propertyPath: m_RootOrder

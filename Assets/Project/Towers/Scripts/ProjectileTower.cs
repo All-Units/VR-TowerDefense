@@ -20,6 +20,7 @@ public class ProjectileTower : PlayerControllableTower
     private float _currentCooldown;
 
     [SerializeField] private int ammo = -1;
+    [SerializeField] private float reloadTime = 2f;
     private int currentAmmo;
 
     private ProjectileTower_SO projectileTowerSo => dto as ProjectileTower_SO;
@@ -60,7 +61,7 @@ public class ProjectileTower : PlayerControllableTower
             }
         }
         
-        if(ammo > 0 && currentAmmo <= 1)
+        if(ammo > 0 && currentAmmo <= 0)
             return;
         
         if (_currentCooldown <= 0)
@@ -90,9 +91,9 @@ public class ProjectileTower : PlayerControllableTower
         projectile.Fire();
         if (projectile.TryGetComponent(out GuidedMissileController missileController))
         {
-            
             missileController.SetTarget(targetingSystem._targetsInRange.GetRandom());
             missileController.HitTarget();
+            
             if (ammo > 0)
             {
                 currentAmmo--;
@@ -101,15 +102,19 @@ public class ProjectileTower : PlayerControllableTower
 
         foreach (var auxFirePoint in auxFirePoints)
         {
+            if (ammo > 0 && currentAmmo <= 0) return;
+            
             var auxProjectile = Instantiate(projectileTowerSo.projectile, auxFirePoint.position, auxFirePoint.rotation);
             auxProjectile.Fire();
+            
             if (ammo > 0)
             {
                 currentAmmo--;
             }
         }
 
-        ReloadRoutine ??= StartCoroutine(Reload());
+        if (ammo > 0 && currentAmmo <= 0)
+            ReloadRoutine ??= StartCoroutine(Reload());
         
         _currentCooldown = projectileTowerSo.shotCooldown;
     }
@@ -117,13 +122,10 @@ public class ProjectileTower : PlayerControllableTower
     private Coroutine ReloadRoutine;
 
     private IEnumerator Reload()
-    {
-        while (currentAmmo < ammo)
-        {
-            yield return new WaitForSeconds(.35f);
-            currentAmmo++;
-        }
+    { 
+        yield return new WaitForSeconds(reloadTime);
 
+        currentAmmo = ammo;
         ReloadRoutine = null;
     }
 
