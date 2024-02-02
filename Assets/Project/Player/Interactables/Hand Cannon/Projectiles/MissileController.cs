@@ -16,6 +16,7 @@ public class MissileController : MonoBehaviour
 
     private Coroutine _cruisingCoroutine;
     public MissileController prefab;
+    private Enemy target;
 
     private void Start()
     {
@@ -26,14 +27,6 @@ public class MissileController : MonoBehaviour
     public void FireReachCruisingAltitude()
     {
         _cruisingCoroutine = StartCoroutine(ReachCruisingAltitude());
-    }
-
-    public void HitTarget(Transform target)
-    {
-        if(_cruisingCoroutine != null)
-            StopCoroutine(_cruisingCoroutine);
-
-        StartCoroutine(PursueTarget(target));
     }
 
     private void MoveToTarget(Quaternion targetRotation)
@@ -50,7 +43,6 @@ public class MissileController : MonoBehaviour
     IEnumerator ReachCruisingAltitude()
     {
         rb.useGravity = false;
-        
 
         yield return new WaitForSeconds(orbitalWaitTime);
 
@@ -66,29 +58,15 @@ public class MissileController : MonoBehaviour
 
         _cruisingCoroutine = null;
 
-        if (cluster)
-        {
-            var enemies = FindObjectsOfType<Enemy>().ToList();
-            Debug.Log($"Enemies found {enemies.Count}");
-
-            for (int i = 0; i < 5; i++)
-            {
-                var newMissile = Instantiate(prefab,
-                    transform.position +
-                    new Vector3(Random.Range(-15, 15), Random.Range(-15, 15), Random.Range(-15, 15)),
-                    Quaternion.identity);
-                newMissile.HitTarget(enemies.GetRandom().transform);
-            }
-        }
-
-        var enemy = FindObjectOfType<Enemy>();
-        if (enemy)
-            StartCoroutine(PursueTarget(enemy.transform));
+        if (target)
+            StartCoroutine(PursueTarget());
     }
 
-    IEnumerator PursueTarget(Transform target)
+    private IEnumerator PursueTarget()
     {
         yield return new WaitForSeconds(pursueWaitTime);
+        maxSpeed *= 2;
+        moveSpeed *= 2;
         
         if(rb == null)
             rb = GetComponent<Rigidbody>();
@@ -100,19 +78,12 @@ public class MissileController : MonoBehaviour
 
         while (true)
         {
-            if (target == null)
-            {
-                var e = FindObjectsOfType<Enemy>().ToList();
-                if (e.Count > 0)
-                    target = e.GetRandom().transform;
-                else { 
-                    target = null; 
-                    yield return null;
-                    continue; }
-            }
-                
+            var targetRotation = transform.rotation;
             
-            transform.LookAt(target);
+            if(target)
+                targetRotation = Quaternion.LookRotation((target.transform.position + Vector3.up) - transform.position);
+            if (transform.rotation != targetRotation)
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
 
             rb.AddForce(transform.forward * (moveSpeed * Time.deltaTime));
 
@@ -124,6 +95,6 @@ public class MissileController : MonoBehaviour
 
     public void SetTarget(Enemy target)
     {
-        
+        this.target = target;
     }
 }
