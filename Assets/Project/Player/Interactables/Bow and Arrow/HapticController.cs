@@ -6,7 +6,7 @@ public class HapticController : MonoBehaviour
 {
     [SerializeField] private float amp, dur;
     
-    private List<ActionBasedController> _controllers = new List<ActionBasedController>();
+    private List<ActionBasedController> _controllers = new();
     
     public void SelectEnter(SelectEnterEventArgs args)
     {
