@@ -144,6 +144,15 @@ public class InventoryManager : MonoBehaviour
             tors = tors.Concat(rightHandParent.GetComponentsInChildren<XRBaseInteractor>()).ToList();
         }
 
+        foreach (var itemsValue in _playerItems.Values)
+        {
+            var selectInteractors = itemsValue.interactorsSelecting;
+            for (var i = 1; i < selectInteractors.Count; i++)
+            {
+                _manager.SelectExit(selectInteractors[i], itemsValue);
+            }
+        }
+
         foreach (var tor in tors)
         {
             ReleaseAllSelected(tor);
