@@ -101,6 +101,7 @@ public class EnemyManager : MonoBehaviour
     //Internal variables
     bool _currentWaveComplete = false;
     int _wave_i = 0;
+    public static bool SkipToNextRound = false;
     IEnumerator _LevelCoroutine()
     {
         //Game started
@@ -111,7 +112,18 @@ public class EnemyManager : MonoBehaviour
             var wave = levelData.waveStructs[_wave_i];
 
             //Wait n seconds to start wave
-            yield return new WaitForSeconds(wave.preWaveDelay);
+            float t = 0;
+            while (t <= wave.preWaveDelay)
+            {
+                yield return null;
+                t += Time.deltaTime;
+                if (SkipToNextRound)
+                {
+                    SkipToNextRound = false;
+                    break;
+                }
+            }
+            //yield return new WaitForSeconds(wave.preWaveDelay);
             //Start the wave logic
             StartCoroutine(_WaveCoroutine(wave));
 

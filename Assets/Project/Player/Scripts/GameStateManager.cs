@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -42,5 +44,13 @@ public class GameStateManager : MonoBehaviour
         panel.SetActive(true);
         yield return new WaitForSeconds(waitBeforeEndingTime);
         SceneManager.LoadSceneAsync("MainMenu");
+    }
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+        return;
+#endif
+        Application.Quit();
     }
 }

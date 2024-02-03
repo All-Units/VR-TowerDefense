@@ -22,8 +22,16 @@ public class XRPauseMenu : MonoBehaviour
     public static bool IsPaused;
     bool isPaused = false;
 
-    Transform cam => InventoryManager.instance.playerCameraTransform;
-
+    Transform cam { 
+        get { 
+            if (InventoryManager.instance != null)
+                return InventoryManager.instance.playerCameraTransform;
+            if (_camera == null)
+                _camera = GetComponentInChildren<Camera>();
+            return _camera.transform;
+        }
+    }
+    Camera _camera;
 
     public static Action OnPause;
     public static Action OnResume;
@@ -74,6 +82,11 @@ public class XRPauseMenu : MonoBehaviour
     }
     #endregion
     #region PauseMenuFunctions
+    void NextRound(ActivateEventArgs args)
+    {
+        EnemyManager.SkipToNextRound = true;
+        TogglePauseAction_started(new InputAction.CallbackContext());
+    }
     void MainMenu(ActivateEventArgs args)
     {
         StartCoroutine(_QuitRoutine());
@@ -85,7 +98,7 @@ public class XRPauseMenu : MonoBehaviour
         yield return new WaitForSeconds(FadeScreen.instance.fadeDuration);
         SceneManager.LoadSceneAsync("MainMenu");
     }
-    void Quit(ActivateEventArgs args)
+    public void Quit(ActivateEventArgs args)
     {
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
@@ -106,7 +119,7 @@ public class XRPauseMenu : MonoBehaviour
         bubbleParent.position = cam.position;
         bubbleParent.Translate(new Vector3(0f, heightOffset, 0f));
     }
-    string[] bubbleNames = new string[] { "Settings", "Main Menu", "Quit"};
+    string[] bubbleNames = new string[] { "Next Round", "Main Menu", "Quit"};
     void InitBubbles()
     {
         bubbleParent.parent = null;
@@ -141,6 +154,8 @@ public class XRPauseMenu : MonoBehaviour
             }
             else if (name == "Quit")
                 xr.activated.AddListener(Quit);
+            else if (name == "Next Round")
+                xr.activated.AddListener(NextRound);
         }
         bubbleParent.gameObject.SetActive(false);
     }
