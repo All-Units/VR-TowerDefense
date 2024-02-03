@@ -96,7 +96,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  splashRadius: 3
+  splashRadius: 6
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
@@ -276,6 +276,7 @@ MonoBehaviour:
   rb: {fileID: 0}
   flamesVFX: {fileID: 8976034639397686167}
   cluster: 1
+  upwardsCeiling: 100
   prefab: {fileID: 1469913216974998939, guid: f26673615aaea2d44b0fe3223c33e8c2, type: 3}
 --- !u!114 &2864799162137029931
 MonoBehaviour:

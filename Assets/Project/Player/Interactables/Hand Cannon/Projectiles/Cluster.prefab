@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 15
   speed: 20
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 0}
@@ -136,7 +136,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  splashRadius: 5
+  splashRadius: 7
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
@@ -173,7 +173,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _audioClipController: {fileID: 2864799162137029931}
-  _clusterProjectile: {fileID: 9086957218216809312}
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -328,7 +327,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   collider: {fileID: 619308174058264511}
   waitTime: 0.3
-  ready: 0
 --- !u!82 &6529085469557916620
 AudioSource:
   m_ObjectHideFlags: 0
