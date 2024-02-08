@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -17,11 +18,15 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameObject YouWinPanel;
     [SerializeField] private GameObject YouLosePanel;
     
+
+
     private void Awake()
     {
         instance = this;
+        
+        
     }
-
+    
     public static void LoseGame()
     {
         instance._StartEndgame(instance.YouLosePanel);
