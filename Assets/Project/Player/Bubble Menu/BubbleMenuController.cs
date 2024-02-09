@@ -17,6 +17,7 @@ public class BubbleMenuController : MonoBehaviour
     [SerializeField]
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
     private InputActionReference closeMenuActionReference; 
+    InputAction closeBubbleMenuAction => Utilities.GetInputAction(closeMenuActionReference);
 
     private void Awake()
     {
@@ -26,17 +27,22 @@ public class BubbleMenuController : MonoBehaviour
         PlayerStateController.OnStateChange += PlayerStateControllerOnOnStateChange;
         CurrencyManager.OnChangeMoneyAmount += CurrencyManagerOnChangeMoneyAmount;
         
-        var closeBubbleMenuAction = Utilities.GetInputAction(closeMenuActionReference);
         if (closeBubbleMenuAction != null)
         {
             closeBubbleMenuAction.started += CloseTowerBubbles;
         }
+        XRPauseMenu.OnPause += _Hide;
     }
 
     private void OnDestroy()
     {
         PlayerStateController.OnStateChange -= PlayerStateControllerOnOnStateChange;
         CurrencyManager.OnChangeMoneyAmount -= CurrencyManagerOnChangeMoneyAmount;
+        XRPauseMenu.OnPause -= _Hide;
+        if (closeBubbleMenuAction != null)
+            closeBubbleMenuAction.started -= CloseTowerBubbles;
+
+        _instance = null;
     }
 
     private void PlayerStateControllerOnOnStateChange(PlayerState arg1, PlayerState arg2)
@@ -107,7 +113,7 @@ public class BubbleMenuController : MonoBehaviour
     public static void Open(Tower tower)
     {
         if(_instance == null) return;
-        
+        XRControllerTowerController._CloseBubbles();
         _instance.Initialize(tower);
     }
 
@@ -123,6 +129,7 @@ public class BubbleMenuController : MonoBehaviour
         gameObject.SetActive(false);
         if(_currentTower)
             _currentTower.EndFocus();
+        XRControllerTowerController.DeselectCurrent();
     }
     
     private void CloseTowerBubbles(InputAction.CallbackContext obj)

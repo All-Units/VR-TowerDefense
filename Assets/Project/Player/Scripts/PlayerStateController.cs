@@ -83,6 +83,8 @@ public class PlayerStateController : MonoBehaviour
         _joiningTower = true;
         
         var playerControlPoint = tower.GetPlayerControlPoint();
+        Vector3 dir = new Vector3(0f, InventoryManager.instance.playerCameraTransform.eulerAngles.y, 0f);
+        playerControlPoint.transform.eulerAngles = dir;
         TeleportPlayerToPoint(playerControlPoint);
         
         SetPlayerState(PlayerState.TOWER_CONTROL);

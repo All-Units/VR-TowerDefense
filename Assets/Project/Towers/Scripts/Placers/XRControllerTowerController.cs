@@ -19,14 +19,17 @@ public class XRControllerTowerController : MonoBehaviour
     [SerializeField]
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
     private InputActionReference openTowerMenuActionReference;
+    InputAction openTowerMenuAction => Utilities.GetInputAction(openTowerMenuActionReference);
     
     [SerializeField]
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
-    private InputActionReference openTowerPlacementActionReference;    
+    private InputActionReference openTowerPlacementActionReference;  
+    InputAction openTowerPlacementBubbleAction => Utilities.GetInputAction(openTowerPlacementActionReference);
     
     [SerializeField]
     [Tooltip("The reference to the action to confirm tower takeover selection.")]
     private InputActionReference closeTowerPlacementActionReference; 
+    InputAction closeTowerPlacementBubbleAction => Utilities.GetInputAction(closeTowerPlacementActionReference);
 
     public XRDirectInteractor playerHand;
     private List<XRBaseInteractor> otherInteractors;
@@ -42,41 +45,64 @@ public class XRControllerTowerController : MonoBehaviour
     private bool _selectorLock = false;
 
     [SerializeField] float deselectGracePeriod = 1f;
+
+    public static XRControllerTowerController instance;
     
     private void Start()
     {
+        instance = this;
         otherInteractors = transform.parent.GetComponentsInChildren<XRBaseInteractor>().ToList();
         
-        var openTowerMenuAction = Utilities.GetInputAction(openTowerMenuActionReference);
         if (openTowerMenuAction != null)
         {
             openTowerMenuAction.started += OpenTowerMenuActionOnStarted;
             openTowerMenuAction.canceled += OpenTowerMenuActionOnCanceled;
         }   
         
-        var openTowerPlacementBubbleAction = Utilities.GetInputAction(openTowerPlacementActionReference);
         if (openTowerPlacementBubbleAction != null)
         {
             openTowerPlacementBubbleAction.started += OpenTowerBubbles;
         }        
         
-        var closeTowerPlacementBubbleAction = Utilities.GetInputAction(closeTowerPlacementActionReference);
         if (closeTowerPlacementBubbleAction != null)
         {
             closeTowerPlacementBubbleAction.started += CloseTowerBubbles;
         }
 
         towerPlacer.OnPlaceTowerEvent += OnPlace;
+        XRPauseMenu.OnPause += _CloseBubbles;
     }
     
     private void Update()
     {
-        if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
+        if (XRPauseMenu.IsPaused) return;
+        if (otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
             return;
 
         SelectATower();
     }
-    
+    private void OnDestroy()
+    {
+        XRPauseMenu.OnPause -= _CloseBubbles;
+
+        if (openTowerMenuAction != null)
+        {
+            openTowerMenuAction.started -= OpenTowerMenuActionOnStarted;
+            openTowerMenuAction.canceled -= OpenTowerMenuActionOnCanceled;
+        }
+
+        if (openTowerPlacementBubbleAction != null)
+        {
+            openTowerPlacementBubbleAction.started -= OpenTowerBubbles;
+        }
+
+        if (closeTowerPlacementBubbleAction != null)
+        {
+            closeTowerPlacementBubbleAction.started -= CloseTowerBubbles;
+        }
+
+    }
+
     private void SelectATower()
     {
         var firePointTransform = transform;
@@ -142,7 +168,8 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void OpenTowerMenuActionOnStarted(InputAction.CallbackContext obj)
     {
-        if(towerPlacer.placing) return;
+        if (XRPauseMenu.IsPaused) return;
+        if (towerPlacer.placing) return;
         
         if (_actionButtonCoroutine == null) 
             _actionButtonCoroutine = StartCoroutine(ActionButtonCoroutine());
@@ -175,6 +202,7 @@ public class XRControllerTowerController : MonoBehaviour
 
     private void OpenTowerBubbles(InputAction.CallbackContext obj)
     {
+        if (XRPauseMenu.IsPaused) return;
         if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
             return;
         
@@ -207,8 +235,15 @@ public class XRControllerTowerController : MonoBehaviour
         currencyBubble.transform.LookAt(mainTransform, Vector3.up);
         
         towersBubbleRoot.SetParent(null);
+        DeselectCurrent();
+        BubbleMenuController.Hide();
     }
 
+    public static void _CloseBubbles()
+    {
+        if (instance == null) return;
+        instance.CloseTowerBubbles(new InputAction.CallbackContext());
+    }
     private void CloseTowerBubbles(InputAction.CallbackContext obj)
     {
         towersBubbleRoot.DestroyChildren();
@@ -255,7 +290,18 @@ public class XRControllerTowerController : MonoBehaviour
     {
         _selecting = true;
     }
+    public static void DeselectCurrent()
+    {
+        if (instance == null) return;
+        if (instance._selectedTower != null && instance._selectedTower is PlayerControllableTower playerControllableTower)
+        {
+            instance._selectedTower.Deselected();
 
+            instance._selectedTower = null;
+        }
+
+        instance._selecting = false;
+    }
     public void EndSelection(InputAction.CallbackContext context)
     {
         if (_selectedTower != null && _selectedTower is PlayerControllableTower playerControllableTower)
@@ -277,7 +323,8 @@ public class XRControllerTowerController : MonoBehaviour
             PlayerStateController.TakeControlOfTower(playerControllableTower);
             _selectedTower = null;
             _selecting = false;
-        }   
+        }
+        
     }
 
     #endregion

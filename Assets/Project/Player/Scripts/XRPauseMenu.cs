@@ -67,7 +67,15 @@ public class XRPauseMenu : MonoBehaviour
         OnResume += _TurnOffSettings;
         VolumeManager.InitValuesFromCache();
     }
-    
+    private void OnDestroy()
+    {
+        OnPause -= _PauseFlag;
+        OnResume -= _ResumeFlag;
+        OnResume -= _TurnOffSettings;
+
+        togglePauseAction.started -= TogglePauseAction_started;
+    }
+
 
     private void TogglePauseAction_started(InputAction.CallbackContext obj)
     {
@@ -109,6 +117,7 @@ public class XRPauseMenu : MonoBehaviour
     }
     void MainMenu(ActivateEventArgs args)
     {
+        
         StartCoroutine(_QuitRoutine());
     }
     IEnumerator _QuitRoutine()
@@ -116,6 +125,8 @@ public class XRPauseMenu : MonoBehaviour
         FadeScreen.instance.FadeOut();
 
         yield return new WaitForSeconds(FadeScreen.instance.fadeDuration);
+        IsPaused = false;
+        isPaused = false;
         SceneManager.LoadSceneAsync("MainMenu");
     }
     public void Quit(ActivateEventArgs args)
