@@ -56,7 +56,11 @@ namespace Project.Towers.Scripts
             if(ghostObjects[currentTower].activeSelf == false)
                 ghostObjects[currentTower].SetActive(true);
         }
-
+        public static void HideGhosts()
+        {
+            if (Instance == null)return;
+            Instance.HideGhost();
+        }
         public void HideGhost()
         {
             foreach (Transform tower in ghostsRoot)

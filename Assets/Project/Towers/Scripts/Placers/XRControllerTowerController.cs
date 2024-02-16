@@ -76,6 +76,7 @@ public class XRControllerTowerController : MonoBehaviour
     private void Update()
     {
         if (XRPauseMenu.IsPaused) return;
+        if (BubbleMenuOption.IsCurrentlyHovering) return;
         if (otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
             return;
 
@@ -248,6 +249,7 @@ public class XRControllerTowerController : MonoBehaviour
     {
         towersBubbleRoot.DestroyChildren();
         towerPlacer.Close();
+        TowerSpawnManager.HideGhosts();
     }
 
     private void SetTowerToPlace(Tower_SO so)

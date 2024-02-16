@@ -55,13 +55,18 @@ public class BubbleMenuOption : MonoBehaviour
     }
 
     private readonly Color _grey = new Color(.4f, .4f, .4f, 0);
+    public static bool IsCurrentlyHovering => _currentHoveredBubble != null;
+    static BubbleMenuOption _currentHoveredBubble = null;
     public void OnHoverStart()
     {
         title.color -= _grey;
+        _currentHoveredBubble = this;
+        XRControllerTowerController.DeselectCurrent();
     }
 
     public void OnHoverEnd()
     {
+        _currentHoveredBubble = null;
         CanAfford(CurrencyManager.CurrentCash);
     }
     
