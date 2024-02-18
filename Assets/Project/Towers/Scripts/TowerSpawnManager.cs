@@ -57,7 +57,11 @@ namespace Project.Towers.Scripts
             if(ghostObjects[currentTower].activeSelf == false)
                 ghostObjects[currentTower].SetActive(true);
         }
-
+        public static void HideGhosts()
+        {
+            if (Instance == null)return;
+            Instance.HideGhost();
+        }
         public void HideGhost()
         {
             foreach (Transform tower in ghostsRoot)
@@ -181,7 +185,7 @@ namespace Project.Towers.Scripts
             Tower t = towerToRemove.GetComponentInChildren<Tower>(); 
             Vector3 pos = t.transform.position;
             _towersByPos.Remove(pos);
-            print($"Destroying {towerToRemove.gameObject.name}");
+            //print($"Destroying {towerToRemove.gameObject.name}");
             Destroy(towerToRemove.gameObject);
         }
 

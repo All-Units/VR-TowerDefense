@@ -6,6 +6,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class XRPauseMenu : MonoBehaviour
@@ -15,6 +16,7 @@ public class XRPauseMenu : MonoBehaviour
     [SerializeField] float arcOffset;
 
     [SerializeField] GameObject bubblePrefab;
+    
     [SerializeField] Transform bubbleParent;
     [SerializeField] InputActionReference togglePauseButton;
     InputAction togglePauseAction => Utilities.GetInputAction(togglePauseButton);
@@ -22,13 +24,31 @@ public class XRPauseMenu : MonoBehaviour
     public static bool IsPaused;
     bool isPaused = false;
 
-    Transform cam => InventoryManager.instance.playerCameraTransform;
+    [Header("Settings Panel")]
+    [SerializeField] GameObject settingsPanelPrefab;
+    [SerializeField] float settingsDistance = 5f;
+    [SerializeField] float settingsHeight = 2f;
 
+
+    Transform cam { 
+        get { 
+            if (InventoryManager.instance != null)
+                return InventoryManager.instance.playerCameraTransform;
+            if (_camera == null)
+                _camera = GetComponentInChildren<Camera>();
+            return _camera.transform;
+        }
+    }
+    Camera _camera;
 
     public static Action OnPause;
     public static Action OnResume;
 
     #region UnityEvents
+    private void Awake()
+    {
+        VolumeManager.InitValuesFromCache();
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -43,17 +63,19 @@ public class XRPauseMenu : MonoBehaviour
         _ResumeFlag();
         OnPause += _PauseFlag;
         OnResume += _ResumeFlag;
+
+        OnResume += _TurnOffSettings;
+        VolumeManager.InitValuesFromCache();
     }
-    void _PauseFlag()
+    private void OnDestroy()
     {
-        Material mat = Resources.Load<Material>("Materials/ShaderTest");
-        mat.SetInt("_Playing", 0);
+        OnPause -= _PauseFlag;
+        OnResume -= _ResumeFlag;
+        OnResume -= _TurnOffSettings;
+
+        togglePauseAction.started -= TogglePauseAction_started;
     }
-    void _ResumeFlag()
-    {
-        Material mat = Resources.Load<Material>("Materials/ShaderTest");
-        mat.SetInt("_Playing", 1);
-    }
+
 
     private void TogglePauseAction_started(InputAction.CallbackContext obj)
     {
@@ -73,9 +95,29 @@ public class XRPauseMenu : MonoBehaviour
         
     }
     #endregion
+
     #region PauseMenuFunctions
+    GameObject _settingsPanel = null;
+    void SettingsPressed(ActivateEventArgs args)
+    {
+        //Toggle settings panel
+        if (_settingsPanel != null)
+        {
+            //If it's on, turn it off
+            //Or vice versa
+            _settingsPanel.SetActive(!_settingsPanel.activeInHierarchy);
+        }
+        _InitSettingsPanel();
+        _RepositionSettings();
+    }
+    void NextRound(ActivateEventArgs args)
+    {
+        EnemyManager.SkipToNextRound = true;
+        TogglePauseAction_started(new InputAction.CallbackContext());
+    }
     void MainMenu(ActivateEventArgs args)
     {
+        
         StartCoroutine(_QuitRoutine());
     }
     IEnumerator _QuitRoutine()
@@ -83,9 +125,11 @@ public class XRPauseMenu : MonoBehaviour
         FadeScreen.instance.FadeOut();
 
         yield return new WaitForSeconds(FadeScreen.instance.fadeDuration);
+        IsPaused = false;
+        isPaused = false;
         SceneManager.LoadSceneAsync("MainMenu");
     }
-    void Quit(ActivateEventArgs args)
+    public void Quit(ActivateEventArgs args)
     {
 #if UNITY_EDITOR
         EditorApplication.isPlaying = false;
@@ -95,6 +139,46 @@ public class XRPauseMenu : MonoBehaviour
     }
     #endregion
     #region HelperFunctions
+    void _InitSettingsPanel()
+    {
+        if (_settingsPanel != null) return;
+        
+        _settingsPanel = new GameObject();
+        _settingsPanel.name = "Settings Panel";
+        _settingsPanel.transform.position = bubbleParent.transform.position;
+        _settingsPanel.transform.parent = bubbleParent.transform;
+        GameObject panel = Instantiate(settingsPanelPrefab, _settingsPanel.transform);
+        panel.transform.localPosition = Vector3.zero;
+
+        panel.transform.localEulerAngles = Vector3.zero;
+        Vector3 dir = panel.transform.forward * settingsDistance;
+        dir += new Vector3(0f, settingsHeight, 0f);
+        panel.transform.localPosition += dir;
+        string[] sliderTypes = new[] { "master", "soundtrack", "sfx" };
+        foreach (Slider slider in panel.GetComponentsInChildren<Slider>())
+        {
+            foreach (string type in sliderTypes)
+            {
+
+                //The slider needs to load the value from cache
+                if (slider.gameObject.name.Contains(type) && PlayerPrefs.HasKey(type))
+                {
+                    slider.value = PlayerPrefs.GetFloat(type);
+                    slider.onValueChanged.Invoke(slider.value);
+                }
+            }
+        }
+
+
+    }
+
+    void _RepositionSettings()
+    {
+        _settingsPanel.transform.position = cam.transform.position;
+        Vector3 angle = new Vector3(0f, cam.transform.eulerAngles.y, 0f);
+        _settingsPanel.transform.eulerAngles = angle;
+        
+    }
     int bubbleCount = 3;
     void RepositionBubbles()
     {
@@ -141,8 +225,27 @@ public class XRPauseMenu : MonoBehaviour
             }
             else if (name == "Quit")
                 xr.activated.AddListener(Quit);
+            else if (name == "Next Round")
+                xr.activated.AddListener(NextRound);
+            else if (name == "Settings")
+                xr.activated.AddListener(SettingsPressed);
         }
         bubbleParent.gameObject.SetActive(false);
+    }
+    void _PauseFlag()
+    {
+        Material mat = Resources.Load<Material>("Materials/ShaderTest");
+        mat.SetInt("_Playing", 0);
+    }
+    void _ResumeFlag()
+    {
+        Material mat = Resources.Load<Material>("Materials/ShaderTest");
+        mat.SetInt("_Playing", 1);
+    }
+    void _TurnOffSettings()
+    {
+        if (_settingsPanel == null) return;
+        _settingsPanel.SetActive(false);
     }
     #endregion
 

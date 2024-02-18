@@ -1,8 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -15,11 +18,15 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameObject YouWinPanel;
     [SerializeField] private GameObject YouLosePanel;
     
+
+
     private void Awake()
     {
         instance = this;
+        
+        
     }
-
+    
     public static void LoseGame()
     {
         instance._StartEndgame(instance.YouLosePanel);
@@ -42,5 +49,13 @@ public class GameStateManager : MonoBehaviour
         panel.SetActive(true);
         yield return new WaitForSeconds(waitBeforeEndingTime);
         SceneManager.LoadSceneAsync("MainMenu");
+    }
+    public void Quit()
+    {
+#if UNITY_EDITOR
+        EditorApplication.isPlaying = false;
+        return;
+#endif
+        Application.Quit();
     }
 }

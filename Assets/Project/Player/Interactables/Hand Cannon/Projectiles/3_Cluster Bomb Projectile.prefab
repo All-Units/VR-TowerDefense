@@ -148,7 +148,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  splashRadius: 4
+  splashRadius: 9
   hitParticles: {fileID: 2433282508537954060, guid: 2b3452126ce8c24438f1e6990e6097d5,
     type: 3}
   damageDropOff:
@@ -185,7 +185,6 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _audioClipController: {fileID: 2864799162137029931}
-  _clusterProjectile: {fileID: 0}
 --- !u!114 &-3209575759116085165
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -355,10 +354,11 @@ AudioSource:
   m_GameObject: {fileID: 337958517151354589}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: -2618093544679358110, guid: e43dbee8ea90d4a42899da3a99818e17,
+    type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -367,9 +367,9 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 500
+  MaxDistance: 250
   Pan2D: 0
-  rolloffMode: 0
+  rolloffMode: 2
   BypassEffects: 0
   BypassListenerEffects: 0
   BypassReverbZones: 0
@@ -385,6 +385,24 @@ AudioSource:
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.1796456
+      value: 0.4860412
+      inSlope: -1.3916483
+      outSlope: -1.3916483
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.8419828
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.40616655
+      value: 0.16432083
+      inSlope: -0.09425264
+      outSlope: -0.09425264
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.27652654
+      outWeight: 0.15212753
     - serializedVersion: 3
       time: 1
       value: 0

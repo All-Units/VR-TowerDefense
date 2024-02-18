@@ -58,6 +58,9 @@ public class FlyingDemonBehavior : Enemy
     public override void Impact()
     {
         if (currentTarget == null || currentTarget == null) return;
+        try { currentTarget.GetPosition(); }
+        catch (MissingReferenceException e) { currentTarget = null; return; }
+
         attackSFXController.PlayClip();
         Vector3 target = currentTarget.GetPosition() + Vector3.up * 2f;
         _firePoint.LookAt(target);

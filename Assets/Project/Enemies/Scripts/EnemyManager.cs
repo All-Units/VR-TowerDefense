@@ -94,13 +94,24 @@ public class EnemyManager : MonoBehaviour
 
         OnRoundEnded.AddListener(() => CurrencyManager.GiveToPlayer(levelData.waveStructs[_wave_i].WaveCompleteBounty));
     }
+    private void Update()
+    {
+        IsCurrentRoundComplete = _currentWaveComplete;
+        WaveroutineCount = _currentWaves.Count;
+        EnemiesRemaining = Enemies.Count;
+
+    }
 
     #endregion
 
     #region LevelCoroutines
     //Internal variables
     bool _currentWaveComplete = false;
+    public bool IsCurrentRoundComplete;
+    public int WaveroutineCount;
+    public int EnemiesRemaining;
     int _wave_i = 0;
+    public static bool SkipToNextRound = false;
     IEnumerator _LevelCoroutine()
     {
         //Game started
@@ -111,16 +122,30 @@ public class EnemyManager : MonoBehaviour
             var wave = levelData.waveStructs[_wave_i];
 
             //Wait n seconds to start wave
-            yield return new WaitForSeconds(wave.preWaveDelay);
+            float t = 0;
+            while (t <= wave.preWaveDelay)
+            {
+                yield return null;
+                if (XRPauseMenu.IsPaused == false)
+                    t += Time.deltaTime;
+                if (SkipToNextRound)
+                {
+                    SkipToNextRound = false;
+                    break;
+                }
+            }
+            print($"Starting wave {CurrentWave}");
             //Start the wave logic
             StartCoroutine(_WaveCoroutine(wave));
 
             //Wait until the current wave is complete before starting another
             while (_currentWaveComplete == false)
                 yield return null;
-            // print("Waited until last wave done, starting next wave");
+            
             //Next wave
             _wave_i++;
+            print($"Waited until last wave done, starting wave {CurrentWave}");
+
         }
         // print("YOU WIN!!!!!!");
         _win();
@@ -155,8 +180,6 @@ public class EnemyManager : MonoBehaviour
                 first = false;
                 _subwaves.RemoveFirst();
             }
-
-            //StartCoroutine();
         }
 
         //Start main wave
@@ -176,12 +199,12 @@ public class EnemyManager : MonoBehaviour
         float startTime = Time.time;
         //Wait until all waves have finished
         yield return new WaitForSeconds(1f);
-        while (_currentWaves.Count > 0 || Enemies.Count > 0)
+        while (Enemies.Count > 0 || _currentWaves.Count > 0)
         {
             yield return null;
         }
 
-        // print($"Finished wave {CurrentWave} in {Time.time - startTime}s. Enemies left: {Enemies.Count}");
+        print($"Finished wave {CurrentWave} in {Time.time - startTime}s. Enemies left: {Enemies.Count}");
         _currentWaveComplete = true;
         OnRoundEnded.Invoke();
         yield return null;
@@ -190,7 +213,7 @@ public class EnemyManager : MonoBehaviour
     
     IEnumerator _SubwaveCoroutine(SubWave subWave)
     {
-        // print($"Started subwave");
+        //print($"Started subwave");
         var toSpawn = _GetSpawnList(subWave.enemies);
         _spawns = subWave.spawnPoints;
         var waveStuct = new _waveStruct();
@@ -200,7 +223,7 @@ public class EnemyManager : MonoBehaviour
         waveStuct.rate = subWave.spawnRate;
         //var wave = _spawnWave(toSpawn, subWave.groupSizes, subWave.spawnRate);
         var wave = _spawnWave(waveStuct);
-        _currentWaves.Add(wave);
+        //_currentWaves.Add(wave);
 
         //Delay logic
 
@@ -216,7 +239,7 @@ public class EnemyManager : MonoBehaviour
             {
                 yield return null;
             }
-            // print($"Waited until there were {subWave.DelayCount} Gregs alive before spawning wave");
+            print($"Waited until there were {subWave.DelayCount} enemies alive before spawning wave");
         }
         //Start timer for next subwave
         if (_subwaves.Count > 0)
@@ -224,7 +247,7 @@ public class EnemyManager : MonoBehaviour
             var next = _subwaves.First();
             StartCoroutine(next);
             _subwaves.RemoveFirst();
-            // print("Started next subwave delay");
+            print($"Started next subwave delay, there are {_subwaves.Count} remaining");
         }
 
 
@@ -254,7 +277,7 @@ public class EnemyManager : MonoBehaviour
         if (_currentWaves.Contains(self) == false)
             _currentWaves.Add(self);
         int count = wave.toSpawn.Count;
-        // print($"Pool of {count} in wave {CurrentWave}");
+        print($"Pool of {count} in wave {CurrentWave}. Subwaves remaining {_subwaves.Count}");
         float time = Time.time;
         //While there are still enemies to spawn, keep spawning
         while (wave.toSpawn.Count > 0)
@@ -276,6 +299,7 @@ public class EnemyManager : MonoBehaviour
 
         //Need to remove ourselves from list of active waves
         _currentWaves.Remove(self);
+        print($"Finished (sub)wave, removing self");
 
     }
     #endregion

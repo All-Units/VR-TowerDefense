@@ -21,6 +21,13 @@ public class AudioClipController : MonoBehaviour
             _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
             return;
+
+        if (_audioSource.outputAudioMixerGroup == null)
+        {
+            Debug.LogError($"MISSING AUDIO CHANNEL: {gameObject.FullPath()}", gameObject);
+        }
+        
+
         _audioSource.loop = loop;
         initialPitch = _audioSource.pitch;
         if (playOnAwake)
