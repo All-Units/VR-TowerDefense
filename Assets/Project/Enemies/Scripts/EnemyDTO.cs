@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -50,4 +51,29 @@ public class EnemyDTO : ScriptableObject
 
     public float StuckAngleOffset = 15f;
 
+    [Header("Resistances and Weaknesses")] 
+    public ResistancesWeakness resistancesWeakness;
+}
+
+[Serializable]
+public struct ResistancesWeakness
+{
+    public List<DamageType> resistances;
+    public List<DamageType> weaknesses;
+
+    public float GetModifier(List<DamageType> incoming)
+    {
+        float ret = 1;
+
+        foreach (var damageType in incoming)
+        {
+            if (resistances.Contains(damageType))
+                ret /= 2;
+
+            if (weaknesses.Contains(damageType))
+                ret *= 2;
+        }
+
+        return ret;
+    }
 }

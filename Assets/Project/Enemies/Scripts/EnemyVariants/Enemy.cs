@@ -49,7 +49,6 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
     #endregion
 
-
     #region InternalVariables
     public Vector3 Pos => pos;
 
@@ -284,7 +283,14 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
     #endregion
 
+    #region Combat
 
+    public float ApplyResistanceWeakness(List<DamageType> damageType)
+    {
+        return enemyStats.resistancesWeakness.GetModifier(damageType);
+    }
+
+        #endregion
 
 
     #region StateMachineHelpers

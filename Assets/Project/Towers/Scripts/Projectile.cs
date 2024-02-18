@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections;
-using System.Diagnostics;
-using UnityEditor;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using Debug = UnityEngine.Debug;
 
 public class Projectile : MonoBehaviour, IPausable
 {
     public int damage;
-    private Rigidbody rb;
     public float speed = 20f;
+    public DamageType damageType;
 
     protected bool isDestroying = false;
 
@@ -20,11 +16,13 @@ public class Projectile : MonoBehaviour, IPausable
     [SerializeField] protected AudioClipController _hitGround;
 
     [SerializeField] private GameObject flyingVFX;
+    private Rigidbody rb;
 
     public UnityEvent OnFire;
     public UnityEvent OnHit;
-    Vector3 startPos;
-    void Awake()
+    private Vector3 startPos;
+
+    private void Awake()
     {
         OnInitPausable();
     }
@@ -50,8 +48,7 @@ public class Projectile : MonoBehaviour, IPausable
         if(flyingVFX)
             flyingVFX.SetActive(true);
         gameObject.DestroyAfter(20f);
-        //StartCoroutine(gameObject._DestroyAfter(20f));
-        //Destroy(gameObject, 20f);
+        
         startPos = transform.position;
         OnFire?.Invoke();
     }
@@ -65,7 +62,8 @@ public class Projectile : MonoBehaviour, IPausable
         
         OnCollision(other.collider);
     }
-    bool _isFireball => gameObject.name.ToLower().Contains("fireball");
+
+    private bool _isFireball => gameObject.name.ToLower().Contains("fireball");
 
     private IPausableComponents _ipComponents = null;
     public IPausableComponents IPComponents
@@ -79,14 +77,10 @@ public class Projectile : MonoBehaviour, IPausable
 
     protected virtual void OnCollision(Collider other)
     {
-        //var colliderGameObject = other.gameObject;
         var healthController = other.GetComponentInParent<HealthController>();  
         if (healthController != null)
         {
-            Vector3 pos = transform.position;
-            healthController.TakeDamageFrom(damage, startPos);
-           
-
+            ApplyDamage(healthController, damage, startPos);
             ApplyEffects(healthController);
             
             // Todo Refactor out to event based
@@ -95,15 +89,22 @@ public class Projectile : MonoBehaviour, IPausable
         }
         else
         {
-            
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
         }
+        
         //We hit a trigger that didn't have a HC
         if (other.isTrigger && healthController == null) return;
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
+    }
+
+    protected void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
+    {
+        if (healthController.TryGetComponent(out Enemy enemy))
+            damageToApply = Mathf.FloorToInt(enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
+        healthController.TakeDamageFrom(damageToApply, pos);
     }
 
     protected void ApplyEffects(HealthController healthController)
