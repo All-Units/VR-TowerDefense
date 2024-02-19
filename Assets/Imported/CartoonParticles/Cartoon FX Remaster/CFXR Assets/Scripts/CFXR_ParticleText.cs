@@ -131,7 +131,10 @@ namespace CartoonFX
                 ps.gameObject.name = "MODEL";
             }
         }
-
+        public void UpdateTextTo(string text)
+        {
+            UpdateText(text);
+        }
         public void UpdateText(
             string newText = null,
             float? newSize = null,

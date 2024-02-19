@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d7f8542915e26e34a814916542d957cd, type: 3}
+  m_Name: GolemStats
+  m_EditorClassIdentifier: 
+  type: 0
+  KillValue: 25
+  Health: 5
+  RagdollTime: 12
+  RagdollForce: 15
+  MaxRagdollForce: 45
+  MinRagdollYForce: 4.5
+  MinRange: 20
+  MaxRange: 30
+  Damage: 40
+  attackThreshold: 3
+  MinPowerAttackTime: 2
+  PowerAttackTime: 1
+  PowerAttackChance: 0.3
+  PowerAttackScalar: 2
+  MoveSpeed: 100
+  MoveSpeedVariance: 0.4
+  rotateDamping: 1
+  targetTolerance: 1
+  CheckForNeighborsRate: 2
+  StuckAngleOffset: 15

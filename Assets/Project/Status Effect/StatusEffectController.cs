@@ -51,7 +51,7 @@ public class StatusEffectController : MonoBehaviour
         while (_burnCountdown > 0)
         {
             if (XRPauseMenu.IsPaused) { yield return null; continue; }
-            _healthController.TakeDamage(1 + _burnLevel);
+            _healthController.TakeDamageFrom(1 + _burnLevel, transform.position);
             var startTime = Time.time;
             yield return new WaitForSeconds(1f);
             var elapsedTime = Time.time - startTime;

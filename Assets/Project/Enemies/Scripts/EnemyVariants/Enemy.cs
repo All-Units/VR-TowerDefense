@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CartoonFX;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -182,6 +183,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
     {
         if (_IsAttacking == false)
             animator.Play("GetHit");
+        
         _hitParticles.Play();
     }
 

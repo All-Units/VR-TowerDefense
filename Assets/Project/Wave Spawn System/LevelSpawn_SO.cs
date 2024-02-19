@@ -155,6 +155,8 @@ public struct EnemyQuant
     Skeleton,
     BlackKnight,
     FlyingDemon,
+    Snake,
+    Golem,
 }
 
 [Serializable]

@@ -26,7 +26,8 @@ public class WaveEditorWindow : EditorWindow
     [SerializeField]
     public List<SpawnPointData> spawnPoints;
 
-   
+
+    bool _IsDisplayingPrefabs = false;
     
     private void OnGUI()
     {
@@ -45,11 +46,15 @@ public class WaveEditorWindow : EditorWindow
             return;
         if (currentLevel.enemyPrefabs == null || currentLevel.enemyPrefabs.Count == 0)
         {
-            currentLevel.enemyPrefabs = new List<EnemyPrefabByType>(3) {};
+            currentLevel.enemyPrefabs = new List<EnemyPrefabByType>(4) {};
         }
+        string display = _IsDisplayingPrefabs ? "Hide prefabs" : "Display prefabs";
+        if (GUILayout.Button(display))
+            _IsDisplayingPrefabs = !_IsDisplayingPrefabs;
         
         foreach (int j in Enum.GetValues(typeof(EnemyType)))
         {
+            if (_IsDisplayingPrefabs == false) break;
             EditorGUILayout.BeginHorizontal();
             GUILayout.Label($"{(EnemyType)j}:");
             while (j >= currentLevel.enemyPrefabs.Count)

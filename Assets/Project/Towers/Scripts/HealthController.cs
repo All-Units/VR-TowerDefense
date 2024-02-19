@@ -20,7 +20,11 @@ public class HealthController : MonoBehaviour
     {
         _currentHealth = maxHealth;
     }
-
+    /// <summary>
+    /// Takes damage from a given world position
+    /// </summary>
+    /// <param name="dmg"></param>
+    /// <param name="from"></param>
     public void TakeDamageFrom(int dmg, Vector3 from)
     {
         TakeDamage(dmg);

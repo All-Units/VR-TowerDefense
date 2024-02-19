@@ -7,7 +7,7 @@ public class ArrowstormParticleController : MonoBehaviour
         {
             if (other.TryGetComponent(out HealthController healthController))
             {
-                healthController.TakeDamage(damage);
+                healthController.TakeDamageFrom(damage, transform.position);
             }
         }
 }
