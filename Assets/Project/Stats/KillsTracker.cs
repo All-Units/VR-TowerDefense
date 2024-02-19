@@ -5,7 +5,7 @@ public class KillsTracker : StatTracker
 {
     [SerializeField] private EnemyDTO _enemyToTrack;
     
-    public override void Initialize()
+    protected override void InitTracker()
     {
         Enemy.OnDeath += OnDeath;
     }

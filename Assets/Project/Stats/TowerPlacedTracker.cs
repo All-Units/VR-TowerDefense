@@ -4,7 +4,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Stats/Tower Placed")]
 public class TowerPlacedTracker : TowerTracker
 {
-    public override void Initialize()
+    protected override void InitTracker()
     {
         TowerSpawnManager.OnTowerSpawned += OnTowerSpawned;
     }

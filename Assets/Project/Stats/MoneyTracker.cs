@@ -3,9 +3,9 @@
 [CreateAssetMenu(menuName = "SO/Stats/Money Earned")]
 public class MoneyTracker : StatTracker
 {
-    public override void Initialize()
+    protected override void InitTracker()
     {
-        throw new System.NotImplementedException();
+        
     }
     
     public override void Print()

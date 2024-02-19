@@ -7,8 +7,17 @@ public abstract class StatTracker : ScriptableObject
     public string statName;
 
     public int total = 0;
+    private bool _isInitialized = false;
 
-    public abstract void Initialize();
+    public void Initialize()
+    {
+        if(_isInitialized)
+            return;
+        InitTracker();
+        _isInitialized = true;
+    }
+
+    protected abstract void InitTracker();
 
     public void ResetTotal()
     {

@@ -3,7 +3,7 @@
 [CreateAssetMenu(menuName = "SO/Stats/Tower Destroyed")]
 public class TowerDestroyedTracker : TowerTracker
 {
-    public override void Initialize()
+    protected override void InitTracker()
     {
         Tower.OnTowerDestroy += TowerOnTowerDestroy;
     }
