@@ -196,8 +196,25 @@ public abstract class Enemy : MonoBehaviour, IPausable
     {
         if (_IsAttacking == false)
             animator.Play("GetHit");
-        
-        _hitParticles.Play();
+        int dmg = _lastHealthTotal - currentHealth;
+        if (dmg == 0) return;
+        float t = (float)dmg / (float)_health;
+        float size = Mathf.Lerp(0.4f, 3f, t);
+        GameObject particles = Instantiate(Resources.Load<GameObject>("POW"));
+        particles.transform.position = _hitParticles.transform.position;
+        Vector3 rot = _hitParticles.transform.eulerAngles;
+        rot.y += 180f;
+        particles.transform.eulerAngles = rot;
+        CFXR_ParticleText text = particles.GetComponent<CFXR_ParticleText>();
+        if (text != null )
+            text.UpdateText($"{dmg}", size);
+        ParticleSystem particleSystem = particles.GetComponent<ParticleSystem>();
+        if (particleSystem != null)
+            particleSystem.Play();
+
+        particles.DestroyAfter(4f);
+        _lastHealthTotal = currentHealth;
+        //_hitParticles.Play();
     }
 
     protected virtual void OnEnemyTakeDamageFrom(int currentHealth, Vector3 source)
@@ -571,9 +588,10 @@ public abstract class Enemy : MonoBehaviour, IPausable
         healthController.OnDeath += OnEnemyDie;
         healthController.OnTakeDamage += OnEnemyTakeDamage;
         healthController.OnTakeDamageFrom += OnEnemyTakeDamageFrom;
-
+        _lastHealthTotal = _health;
         healthController.SetMaxHealth(_health);
     }
+    int _lastHealthTotal;
     public void OnInitPausable()
     {
         this.InitPausable();

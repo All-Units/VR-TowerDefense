@@ -295,7 +295,7 @@ public class XRControllerTowerController : MonoBehaviour
     public static void DeselectCurrent()
     {
         if (instance == null) return;
-        if (instance._selectedTower != null && instance._selectedTower is PlayerControllableTower playerControllableTower)
+        if (instance._selectedTower != null)
         {
             instance._selectedTower.Deselected();
 
