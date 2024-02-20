@@ -49,10 +49,9 @@ public class AOEProjectile : Projectile
             {
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
-                int dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
-                healthController.TakeDamageFrom(dmg, pos);
+                var dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
 
-                
+                ApplyDamage(healthController, dmg, pos);
                 ApplyEffects(healthController);
             }
             BasicEnemy.FlingRagdoll(colliderGameObject, pos);

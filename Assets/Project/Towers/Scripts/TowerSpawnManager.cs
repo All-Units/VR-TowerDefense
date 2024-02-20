@@ -16,6 +16,7 @@ namespace Project.Towers.Scripts
 
         public static bool CouldAffordCurrentTower => CurrencyManager.CanAfford(Instance.currentTower.cost);
         public static TowerSpawnManager Instance;
+        public static Action<Tower_SO> OnTowerSpawned;
         private Tower_SO currentTower;
         public static Tower_SO GetCurrentTower => Instance ? Instance.currentTower : null;
 
@@ -97,6 +98,8 @@ namespace Project.Towers.Scripts
             var tower = Instantiate(currentTower.towerPrefab, targetTransform.position, targetTransform.rotation);
             tower.transform.SetParent(towersRoot);
             tower.SpawnTower();
+            
+            OnTowerSpawned?.Invoke(currentTower);
             
             // Todo refactor needed
             Tower t = tower.GetComponentInChildren<Tower>(); 

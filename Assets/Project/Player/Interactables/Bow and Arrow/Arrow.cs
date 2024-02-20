@@ -7,6 +7,7 @@ public class Arrow : MonoBehaviour, IPausable
 {
     public int damage;
     public float speed = 10f;
+    public DamageType damageType;
 
     public UnityEvent OnDrawnBack;
     public UnityEvent OnRelease;
@@ -69,7 +70,6 @@ public class Arrow : MonoBehaviour, IPausable
     public void Fire()
     {
         Fire(1);
-        
     }
 
     private void Fire(float obj)
@@ -110,14 +110,8 @@ public class Arrow : MonoBehaviour, IPausable
         Enemy e = colliderGameObject.GetComponentInParent<Enemy>();
         if (healthController && e)
         {
-            healthController.TakeDamageFrom(damage, startPos);
-            
-            if(statusModifier)
-            {
-                var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
-                if(statusEffectController)
-                    statusModifier.ApplyStatus(statusEffectController);
-            }
+            ApplyDamage(healthController, damage, startPos);
+            ApplyEffects(healthController);
 
             enemyHit.PlayClipAt(pos);
             
@@ -133,6 +127,22 @@ public class Arrow : MonoBehaviour, IPausable
 
         OnHit?.Invoke();
         Destroy(gameObject);
+    }
+    
+    private void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
+    {
+        if (healthController.TryGetComponent(out Enemy enemy))
+            damageToApply = Mathf.FloorToInt(enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
+        healthController.TakeDamageFrom(damageToApply, pos);
+    }
+    private void ApplyEffects(HealthController healthController)
+    {
+        if (statusModifier)
+        {
+            var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
+            if (statusEffectController)
+                statusModifier.ApplyStatus(statusEffectController);
+        }
     }
 
     private void Stop()
