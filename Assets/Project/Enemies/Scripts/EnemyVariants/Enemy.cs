@@ -133,6 +133,19 @@ public abstract class Enemy : MonoBehaviour, IPausable
     {
         OnDestroyPausable();
     }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Vector3 p = pos;
+        p.y += 5f;
+        Vector3 t = _target;
+        t.y = p.y;
+        Gizmos.DrawLine(p, t);
+        Gizmos.DrawSphere(t, .8f);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(p, .8f);
+    }
     #endregion
 
     #region StateMachine
@@ -233,7 +246,23 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
         _CompareNeighbors();
 
-        float distance = Utilities.FlatDistance(pos, _target);
+        //We're closer to nextnext than current target is, request new target and nextPoint
+        if (nextPoint.nextPoint != null && 
+            pos.FlatDistance(nextPoint.nextPoint.position) < _target.FlatDistance(nextPoint.nextPoint.position))
+        {
+            nextPoint = nextPoint.nextPoint;
+            _target = nextPoint.GetPoint(_HitboxRadius);
+        }
+        //If we're closer to NextPoint than Target is, request a new target
+        else if (pos.FlatDistance(nextPoint.position) < _target.FlatDistance(nextPoint.position))
+        {
+            _target = nextPoint.GetPoint(_HitboxRadius);
+        }
+
+        float distance = pos.FlatDistance(_target);
+        
+
+
         //We've reached our current target
         if (distance <= _TargetTolerance)
         {

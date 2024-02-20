@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7f8542915e26e34a814916542d957cd, type: 3}
   m_Name: BlackKnightStats
   m_EditorClassIdentifier: 
-  type: 0
+  type: 2
   KillValue: 4
   Health: 1000
   RagdollTime: 9
@@ -27,8 +27,8 @@ MonoBehaviour:
   PowerAttackTime: 1
   PowerAttackChance: 0.2
   PowerAttackScalar: 2
-  MoveSpeed: 70
-  MoveSpeedVariance: 10
+  MoveSpeed: 100
+  MoveSpeedVariance: 1
   rotateDamping: 1
   targetTolerance: 1
   CheckForNeighborsRate: 2

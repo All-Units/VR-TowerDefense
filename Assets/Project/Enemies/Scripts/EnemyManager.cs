@@ -226,16 +226,23 @@ public class EnemyManager : MonoBehaviour
         //_currentWaves.Add(wave);
 
         //Delay logic
-
+        print($"Started subwave, delay type {subWave.delayType.ToString()}");
         if (subWave.delayType == DelayType.TimeDelay)
             yield return new WaitForSeconds(subWave.DelayCount);
         else if (subWave.delayType == DelayType.EnemiesRemaining)
         {
             //We have to get to the threshold first, i.e. enough have spawned
-            while (enemies.Count <= subWave.DelayCount)
-                yield return null;
+            print("Started waiting for enemies remaining");
+            while (Enemies.Count <= subWave.DelayCount)
+            {
+                print($"SHIT, gonna wait another cycle. " +
+                    $"Currently {Enemies.Count}, waiting to be less than or equal to {subWave.DelayCount}");
+                yield return null; 
+            }
+
+            print("There are enough enemies alive, waiting until body count drops");
             //Wait in place until the enemy count drops to the desired
-            while (enemies.Count > subWave.DelayCount)
+            while (Enemies.Count > subWave.DelayCount)
             {
                 yield return null;
             }
@@ -250,7 +257,7 @@ public class EnemyManager : MonoBehaviour
             print($"Started next subwave delay, there are {_subwaves.Count} remaining");
         }
 
-
+        print("Actually started subwave");
         //Start subwave
 
 
