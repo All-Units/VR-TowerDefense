@@ -174,6 +174,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
 
         RB.isKinematic = true;
+        RB.constraints = RigidbodyConstraints.FreezeAll;
         _Hitbox.enabled = false;
 
         _EnableRagdoll(true);
