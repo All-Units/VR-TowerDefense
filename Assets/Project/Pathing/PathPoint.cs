@@ -53,7 +53,7 @@ public class PathPoint : MonoBehaviour
         var d = 0f;
         if (nextPoint == null)
             return d;
-        d += Vector3.Distance(position, nextPoint.position);
+        d += position.FlatDistance(nextPoint.position);// Vector3.Distance(position, nextPoint.position);
         d += nextPoint._CalculateDistance();
 
         return d;

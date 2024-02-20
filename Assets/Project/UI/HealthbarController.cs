@@ -40,6 +40,7 @@ public class HealthbarController : MonoBehaviour
                 projectileTower.onTakeover.AddListener(() => slider.gameObject.SetActive(false));
                 projectileTower.onRelease.AddListener(() => slider.gameObject.SetActive(true));
             }
+            
         }
 
         healthController.OnTakeDamage += UpdateValue;
@@ -55,7 +56,24 @@ public class HealthbarController : MonoBehaviour
 
         
     }
-    
+    private void OnDestroy()
+    {
+        var tower = GetComponentInParent<Tower>();
+        if (tower)
+        {
+            tower.OnSelected -= () => slider.gameObject.SetActive(false);
+            tower.OnDeselected -= () => slider.gameObject.SetActive(true);
+
+            if (tower is ProjectileTower projectileTower)
+            {
+                projectileTower.onTakeover.RemoveListener(() => slider.gameObject.SetActive(false));
+                projectileTower.onRelease.RemoveListener(() => slider.gameObject.SetActive(true));
+            }
+
+        }
+        healthController.OnTakeDamage -= UpdateValue;
+    }
+
 
     private void UpdateValue(int curr)
     {

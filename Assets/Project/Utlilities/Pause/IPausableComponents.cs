@@ -59,10 +59,18 @@ public static class IPExtenstions
         XRPauseMenu.OnPause -= pausable.OnPause;
 
         XRPauseMenu.OnResume -= pausable.OnResume;
+        if (_lastFramePaused.ContainsKey(pausable))
+            _lastFramePaused.Remove(pausable);
     }
     #region PauseFunctions
+    static Dictionary<IPausable, int> _lastFramePaused = new Dictionary<IPausable, int>();
     public static void BaseOnPause(this IPausable pausable)
     {
+        //If we've already paused this frame, return
+        if (_lastFramePaused.ContainsKey(pausable)
+            && _lastFramePaused[pausable] == Time.frameCount) return;
+
+
         //Freeze all rigidbodies
         _PauseRBs(pausable.IPComponents);
         pausable.IPComponents.particleSystems = pausable.gameObject.GetComponentsInChildren<ParticleSystem>(true).ToList();
@@ -81,6 +89,7 @@ public static class IPExtenstions
             cache.Add(trail, trail.time);
             trail.time = float.MaxValue;
         }
+        _lastFramePaused[pausable] = Time.frameCount;
             
 
 
@@ -136,6 +145,8 @@ public static class IPExtenstions
             trail.Key.time = trail.Value;
         }
         pausable.IPComponents.trailCache.Clear();
+
+
 
     }
     static void _ResumeRBs(IPausableComponents components)

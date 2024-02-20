@@ -19,10 +19,17 @@ public class FlyingDemonBehavior : Enemy
     [SerializeField] private float _fireRate = 1f;
 
 
+    
+
     #endregion
 
 
     #region EnemyOverrides
+    protected override void Update()
+    {
+        base.Update();
+
+    }
     protected override void OnEnemySpawn()
     {
         base.OnEnemySpawn();
@@ -55,15 +62,15 @@ public class FlyingDemonBehavior : Enemy
         _SetHeight();
     }
     float _timeSinceLastAttack = 0f;
+    Vector3 targetPosition => currentTarget.GetPosition() + Vector3.up * 2f;
     public override void Impact()
     {
         if (currentTarget == null || currentTarget == null) return;
         try { currentTarget.GetPosition(); }
         catch (MissingReferenceException e) { currentTarget = null; return; }
-
+        if (pos.FlatDistance(targetPosition) >= enemyStats.attackThreshold + 3f) {return;  }
         attackSFXController.PlayClip();
-        Vector3 target = currentTarget.GetPosition() + Vector3.up * 2f;
-        _firePoint.LookAt(target);
+        _firePoint.LookAt(targetPosition);
         _Fire();
         print("Shooting fireball!");
 
@@ -79,7 +86,9 @@ public class FlyingDemonBehavior : Enemy
         
         fireball.transform.position = _firePoint.position;
         fireball.transform.rotation = _firePoint.rotation;
+        fireball.transform.LookAt(targetPosition);
         projectile.Fire();
+        projectile.damage = enemyStats.Damage;
         Destroy(fireball, 10f);
     }
 

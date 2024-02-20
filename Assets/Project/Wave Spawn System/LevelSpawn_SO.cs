@@ -157,6 +157,7 @@ public struct EnemyQuant
     FlyingDemon,
     Snake,
     Golem,
+    Wasp,
 }
 
 [Serializable]
