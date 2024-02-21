@@ -18,8 +18,6 @@ public abstract class Enemy : MonoBehaviour, IPausable
     public float spawnTime { get; private set; }
     public static Action<Enemy> OnDeath;
 
-
-
     [Header("Component references")]
     public PathPoint nextPoint;
     [SerializeField] protected EnemyDTO enemyStats;

@@ -69,9 +69,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c4ba8bba61a47dc9118ea49199ddd4b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 5
+  damage: 25
   speed: 15
-  statusModifier: {fileID: 0}
+  damageType: {fileID: 0}
+  statusModifier: {fileID: 11400000, guid: 99073a77292d19548b9f06b83dcf201a, type: 2}
   _hitEnemy: {fileID: 6165563865059374877}
   _hitGround: {fileID: 6165563865059374877}
   flyingVFX: {fileID: 0}
