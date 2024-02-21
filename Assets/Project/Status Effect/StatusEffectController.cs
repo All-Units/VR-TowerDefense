@@ -46,12 +46,13 @@ public class StatusEffectController : MonoBehaviour
     private IEnumerator BurnEffect()
     {
         _burnCountdown = 5f;
+        _burnLevel = 1;
         burnedVFX.SetActive(true);
 
         while (_burnCountdown > 0)
         {
             if (XRPauseMenu.IsPaused) { yield return null; continue; }
-            _healthController.TakeDamage(1 + _burnLevel);
+            _healthController.TakeDamage(5 * _burnLevel);
             var startTime = Time.time;
             yield return new WaitForSeconds(1f);
             var elapsedTime = Time.time - startTime;
@@ -70,7 +71,7 @@ public class StatusEffectController : MonoBehaviour
 
     #endregion
     
-    #region Burn Effect
+    #region Poison Effect
 
     public void ApplyPoison(int level = 1)
     {

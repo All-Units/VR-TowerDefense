@@ -103,7 +103,7 @@ public class Projectile : MonoBehaviour, IPausable
     protected void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
     {
         if (healthController.TryGetComponent(out Enemy enemy))
-            damageToApply = Mathf.FloorToInt(enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
+            damageToApply = Mathf.FloorToInt(damageToApply * enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
         healthController.TakeDamageFrom(damageToApply, pos);
     }
 
