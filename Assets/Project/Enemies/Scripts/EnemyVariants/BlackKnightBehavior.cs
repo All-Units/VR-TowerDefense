@@ -12,8 +12,8 @@ public class BlackKnightBehavior : Enemy
         bool _playHit = _IsAttacking == false;
         _playHit = (currentTarget == null || pos.FlatDistance(_target) >= enemyStats.attackThreshold * 2f);
         if (_playHit)
-            animator.Play("GetHit");
-        _hitParticles.Play();
+            base.OnEnemyTakeDamage(currentHealth);
+        //_hitParticles.Play();
     }
     protected override IEnemyTargetable _GetNextTarget()
     {

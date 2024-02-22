@@ -43,6 +43,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
     [SerializeField] protected SphereCollider _detectionSphere;
     [SerializeField] protected AudioClipController footstepController;
     [SerializeField] protected AudioClipController attackSFXController;
+    [SerializeField] protected AudioClipController vocalizationController;
+    [SerializeField] protected AudioClipController attackVocalizationController;
     [SerializeField] protected ParticleSystem _hitParticles;
     public float _HitboxRadius => _Hitbox.radius;
 
@@ -163,6 +165,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _EnableRagdoll(false);
         _SetSpeed(1f);
         StartCoroutine(_DelayRunAnim());
+        StartCoroutine(_Vocalize());
         OnInitPausable();
     }
     protected virtual void OnEnemyDie()
@@ -182,7 +185,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
         EnemyManager.EnemyKilled(this);
 
-
+        _PlayDeathParticles();
         //Add kill value to currency
         CurrencyManager.GiveToPlayer(enemyStats.KillValue);
     }
@@ -195,7 +198,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         if (_IsAttacking == false)
             animator.Play("GetHit");
         int dmg = _lastHealthTotal - currentHealth;
-        if (dmg == 0) return;
+        if (dmg == 0 || currentHealth <= 0) return;
         float t = (float)dmg / (float)_health;
         float size = Mathf.Lerp(0.4f, 3f, t);
         GameObject particles = Instantiate(Resources.Load<GameObject>("POW"));
@@ -341,6 +344,43 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
 
     #region StateMachineHelpers
+    void _PlayDeathParticles()
+    {
+        GameObject particles = Instantiate(Resources.Load<GameObject>("WOW"));
+        particles.transform.position = _hitParticles.transform.position;
+        particles.transform.Translate(new Vector3(0f, 1f, 0f));
+        Vector3 rot = _hitParticles.transform.eulerAngles;
+        rot.y += 180f;
+        particles.transform.eulerAngles = rot;
+        CFXR_ParticleText text = particles.GetComponent<CFXR_ParticleText>();
+        if (text != null)
+            text.UpdateText($"+ ${enemyStats.KillValue}", 3f);
+        ParticleSystem particleSystem = particles.GetComponent<ParticleSystem>();
+        if (particleSystem != null)
+            particleSystem.Play();
+
+        particles.DestroyAfter(4f);
+    }
+    IEnumerator _Vocalize()
+    {
+        if (vocalizationController == null) yield break;
+        while (true)
+        {
+            float t = 0f;
+            while (t <= enemyStats.VocalizationCheckRate)
+            {
+                if (XRPauseMenu.IsPaused == false)
+                    t += Time.deltaTime;
+                yield return null;
+            }
+            float roll = Random.value;
+            //We rolled within range to vocalize
+            if (roll <= enemyStats.VocalizationChance)
+            {
+                vocalizationController.PlayClip();
+            }
+        }
+    }
     IEnumerator _DelayRunAnim()
     {
         float delay = Random.Range(0, 0.5f);
@@ -657,8 +697,12 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _IsPowerAttacking = strength == 1;
         animator.SetFloat("AttackStrength", strength);
     }
+
+    protected int _lastFootstepFrame = 0;
     public virtual void Footstep()
     {
+        if (Time.frameCount - _lastFootstepFrame <= 4) return;
+        _lastFootstepFrame = Time.frameCount;
         footstepController.PlayClip();
     }
     public virtual void Impact()
@@ -670,6 +714,13 @@ public abstract class Enemy : MonoBehaviour, IPausable
             dmg *= enemyStats.PowerAttackScalar;
         currentTarget.GetHealthController().TakeDamage((int)dmg);
 
+    }
+    public virtual void AttackVocalization()
+    {
+        if (attackVocalizationController == null) return;
+        float roll = Random.value;
+        if (roll <= enemyStats.AttackVocalizationChance)
+            attackVocalizationController.PlayClip();
     }
     public virtual void StartGetHit()
     {

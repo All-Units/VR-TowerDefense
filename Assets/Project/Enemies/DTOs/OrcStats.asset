@@ -22,7 +22,7 @@ MonoBehaviour:
   MinRange: 20
   MaxRange: 30
   Damage: 40
-  attackThreshold: 3
+  attackThreshold: 4
   MinPowerAttackTime: 2
   PowerAttackTime: 1
   PowerAttackChance: 0.3
@@ -33,3 +33,9 @@ MonoBehaviour:
   targetTolerance: 1
   CheckForNeighborsRate: 2
   StuckAngleOffset: 15
+  VocalizationCheckRate: 1
+  VocalizationChance: 0.3
+  AttackVocalizationChance: 0.3
+  resistancesWeakness:
+    resistances: []
+    weaknesses: []

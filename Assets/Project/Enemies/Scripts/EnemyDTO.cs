@@ -51,6 +51,16 @@ public class EnemyDTO : ScriptableObject
 
     public float StuckAngleOffset = 15f;
 
+    [Header("Vocalization variables")]
+    [Tooltip("How often this enemy should check to vocalize")]
+    public float VocalizationCheckRate = 1f;
+    [Tooltip("On each check, the chance that an enemy vocalizes")]
+    [Range(0f, 1f)]
+    public float VocalizationChance = 0.3f;
+    [Tooltip("On each attack, the chance that an enemy vocalizes")]
+    [Range(0f, 1f)]
+    public float AttackVocalizationChance = 0.3f;
+
     [Header("Resistances and Weaknesses")] 
     public ResistancesWeakness resistancesWeakness;
 }

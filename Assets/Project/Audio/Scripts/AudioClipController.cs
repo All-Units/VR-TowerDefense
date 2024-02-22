@@ -8,8 +8,13 @@ public class AudioClipController : MonoBehaviour
     public new string name;
     [SerializeField] private List<AudioClip> _clips;
     private AudioSource _audioSource;
+    [Range(0f, 1f)]
     [SerializeField]private float _maxInclusivePitchVariance;
+    [Range(0f, 1f)]
+    [SerializeField]private float _maxVolumeVariance;
+
     private float initialPitch;
+    float initialVolume;
 
     public bool playOnAwake = false;
     public bool playOnEnable = false;
@@ -30,6 +35,7 @@ public class AudioClipController : MonoBehaviour
 
         _audioSource.loop = loop;
         initialPitch = _audioSource.pitch;
+        initialVolume = _audioSource.volume;
         if (playOnAwake)
         {
             PlayClip();
@@ -54,10 +60,12 @@ public class AudioClipController : MonoBehaviour
     }
     public void PlayClip()
     {
+        if (_clips.Count == 0) return;
         var clip = _clips.GetRandom();
 
         _audioSource.clip = clip;
         _audioSource.pitch = initialPitch + Random.Range(-_maxInclusivePitchVariance, _maxInclusivePitchVariance);
+        _audioSource.volume = initialVolume + Random.Range(-_maxVolumeVariance, _maxVolumeVariance);
         _audioSource.Play();
     }
 
