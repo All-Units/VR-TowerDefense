@@ -200,7 +200,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         int dmg = _lastHealthTotal - currentHealth;
         if (dmg == 0 || currentHealth <= 0) return;
         float t = (float)dmg / (float)_health;
-        float size = Mathf.Lerp(0.4f, 3f, t);
+        float size = Mathf.Lerp(0.6f, 3f, t);
         GameObject particles = Instantiate(Resources.Load<GameObject>("POW"));
         particles.transform.position = _hitParticles.transform.position;
         Vector3 rot = _hitParticles.transform.eulerAngles;
@@ -705,9 +705,12 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _lastFootstepFrame = Time.frameCount;
         footstepController.PlayClip();
     }
+    protected int _lastAttackFrame = 0;
     public virtual void Impact()
     {
         if (currentTarget == null) return;
+        if (Time.frameCount - _lastAttackFrame <= 4) return;
+        _lastAttackFrame = Time.frameCount;
         attackSFXController.PlayClip();
         float dmg = _damage;
         if (_IsPowerAttacking)

@@ -6,6 +6,19 @@ using UnityEngine;
 
 public class BlackKnightBehavior : Enemy
 {
+    float _lastFootstepTime = 0f;
+    public override void Footstep()
+    {
+        _lastFootstepTime = Time.time;
+        base.Footstep();
+    }
+    public override void Impact()
+    {
+        //Do nothing if it's been less than n seconds since last footstep
+        if (Time.time - _lastFootstepTime <= 0.4f)
+            return;
+        base.Impact();
+    }
     protected override void OnEnemyTakeDamage(int currentHealth)
     {
         //Only play hit if No current target OR distance MORE THAN threshold * 2
