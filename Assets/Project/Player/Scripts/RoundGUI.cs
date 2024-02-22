@@ -26,6 +26,11 @@ public class RoundGUI : MonoBehaviour
         EnemyManager.OnRoundStarted.AddListener(_OnRoundStart);
         EnemyManager.OnRoundEnded.AddListener(_OnRoundEnd);
     }
+    private void OnDestroy()
+    {
+        EnemyManager.OnRoundStarted.RemoveListener(_OnRoundStart);
+        EnemyManager.OnRoundEnded.RemoveListener(_OnRoundEnd);
+    }
 
     void _OnRoundStart()
     {
