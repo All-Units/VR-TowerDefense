@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -14,22 +15,46 @@ public class GameStateManager : MonoBehaviour
     [Header("Public variables")] [SerializeField]
     private float waitBeforeEndingTime = 6f;
 
+
+    [SerializeField] float fireworkTime = 5f;
+    [SerializeField] int fireworkCount = 50;
+    [SerializeField] float _timeToDestroyCastle = 5f;
+
     [Header("References")]
     [SerializeField] private GameObject YouWinPanel;
     [SerializeField] private GameObject YouLosePanel;
-    
+    [SerializeField] GameObject _castleRoot;
+
+    public Action OnGameWin;
+    public Action OnGameLose;
 
 
     private void Awake()
     {
         instance = this;
+        OnGameLose += DetonateCastle;
         
         
     }
-    
+    bool winning = false;
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (winning == false)
+            {
+                winning = true;
+                DetonateCastle();
+            }
+        }
+            
+    }
+
+
     public static void LoseGame()
     {
-        instance._StartEndgame(instance.YouLosePanel);
+        //instance._StartEndgame(instance.YouLosePanel);
+        instance.OnGameLose.Invoke();
     }
 
     public void _StartEndgame(GameObject panel)
@@ -41,15 +66,80 @@ public class GameStateManager : MonoBehaviour
 
     public static void WinGame()
     {
-        instance._StartEndgame(instance.YouWinPanel);
+        //instance._StartEndgame(instance.YouWinPanel);
+        instance.StartCoroutine(_LaunchFireworks());
         SoundtrackManager.PlayMenu();
+        instance.OnGameWin.Invoke();
     } 
     IEnumerator _endgameLogic(GameObject panel)
     {
         panel.SetActive(true);
         yield return new WaitForSeconds(waitBeforeEndingTime);
+        ReturnToMenu();
+    }
+    static IEnumerator _LaunchFireworks()
+    {
+        float t = 0f;
+        float rate = instance.fireworkTime / instance.fireworkCount;
+        float i = 0f;
+        while (t <= instance.fireworkTime)
+        {
+            yield return null;
+            if (XRPauseMenu.IsPaused == false)
+            { 
+                t += Time.deltaTime;
+                i += Time.deltaTime;
+            }
+            if (i >= rate)
+            {
+                Firework.SpawnFirework();
+                i = 0f;
+            }
+        }
+    }
+    public void ReturnToMenu(float t = 0.5f)
+    {
+        FadeScreen.Fade_Out(t);
+        StartCoroutine(_DelayReturnToMenu(t));
+    }
+    IEnumerator _DelayReturnToMenu(float t)
+    {
+        yield return new WaitForSeconds(t);
         SceneManager.LoadSceneAsync("MainMenu");
     }
+    public void DetonateCastle()
+    {
+        _castleRenderers = _castleRoot.GetComponentsInChildren<MeshRenderer>().ToList();
+        _castleRenderers = _castleRenderers.OrderBy(x => x.transform.position.y * -1f).
+            ThenBy(x => x.transform.position.x).ToList();
+        StartCoroutine(_CastleDetonationRoutine());
+    }
+    List<MeshRenderer> _castleRenderers = new List<MeshRenderer>();
+    IEnumerator _CastleDetonationRoutine()
+    {
+        float timeBetween = _timeToDestroyCastle / (float)_castleRenderers.Count;
+        float t = 0f;
+        foreach (var renderer in _castleRenderers)
+        {
+            try { 
+            renderer.enabled = false;
+            foreach (var col in renderer.GetComponents<Collider>())
+                col.enabled = false;
+            }
+            catch (MissingReferenceException e) { continue; }
+            yield return new WaitForSeconds(timeBetween);
+            _SpawnExplosionAt(renderer.transform.position);
+
+        }
+        _castleRoot.gameObject.SetActive(false);
+    }
+    void _SpawnExplosionAt(Vector3 pos)
+    {
+        GameObject explosion = Instantiate(Resources.Load<GameObject>("Prefabs/explosion"));
+        explosion.DestroyAfter(5f);
+        explosion.transform.position = pos;
+    }
+
     public void Quit()
     {
 #if UNITY_EDITOR

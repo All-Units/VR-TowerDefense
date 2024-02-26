@@ -39,6 +39,8 @@ public class RoundGUI : MonoBehaviour
 
     void _OnRoundEnd()
     {
+        if (EnemyManager.IsWaveValid(EnemyManager.instance._public_wave_i + 1) == false)
+            return;
         StartCoroutine(fadeGOAfter(roundEndPanel));
     }
     void _RefreshTexts()
@@ -65,6 +67,7 @@ public class RoundGUI : MonoBehaviour
     /// <returns></returns>
     IEnumerator fadeGOAfter(GameObject go)
     {
+        
         yield return new WaitForSeconds(.1f);
         Vector3 dir = playerCam.transform.forward;
         dir.y = 0; dir = dir.normalized * distanceFromPlayer;

@@ -23,7 +23,8 @@ public class EnemyManager : MonoBehaviour
     /// <summary>
     /// Returns the time until next wave
     /// </summary>
-    public static int TimeUntilNextWave => instance ? instance.levelData.waveStructs[instance._wave_i].preWaveDelay : -1;
+    public static int TimeUntilNextWave => (instance && instance._wave_i < instance.levelData.waveStructs.Count) 
+    ? instance.levelData.waveStructs[instance._wave_i].preWaveDelay : -1;
     
     /// <summary>
     /// Gets the wave complete bonus for the last wave completed, or 0 if just started
@@ -110,6 +111,12 @@ public class EnemyManager : MonoBehaviour
     public bool IsCurrentRoundComplete;
     public int WaveroutineCount;
     public int EnemiesRemaining;
+    public int _public_wave_i => _wave_i;
+    public static bool IsWaveValid(int i)
+    {
+        if (instance == null) return false;
+        return i < instance.levelData.waveStructs.Count;
+    }
     int _wave_i = 0;
     public static bool SkipToNextRound = false;
     IEnumerator _LevelCoroutine()
