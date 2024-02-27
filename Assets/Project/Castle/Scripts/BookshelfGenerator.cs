@@ -86,7 +86,8 @@ public class BookshelfGenerator : MonoBehaviour
             if (skipPercent >= Random.Range(0, 100))
                 continue;
             Vector3 pos = Vector3.Lerp(start, end, t);
-            GameObject spawned = Instantiate(bookPrefabs.GetRandom().gameObject, shelf);
+            GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(bookPrefabs.GetRandom().gameObject, shelf);
+            // Instantiate();
             spawned.transform.position = pos;
             Vector3 angle = spawned.transform.localEulerAngles;
 
@@ -122,7 +123,9 @@ public class BookshelfGenerator : MonoBehaviour
         lines = new List<string>();
         foreach (string line in booklist.text.Split("\n"))
         {
-            if (line == "") continue;
+            if (line.Trim() == "") continue;
+            if (line.StartsWith("#")) continue;
+
             lines.Add(line);
         }
     }

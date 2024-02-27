@@ -12,12 +12,16 @@ public class VolumeManager : MonoBehaviour
 {
     
     private static AudioMixer mixer;
+    public bool CheckForInvalids = false;
     public float CheckAudioSourceRate = 1f;
     private void Awake()
     {
         if (mixer == null)
             mixer = Resources.Load<AudioMixer>("MainMixer");
-        StartCoroutine(_CheckForValidAudioSources());
+#if UNITY_EDITOR
+        if (CheckForInvalids)
+            StartCoroutine(_CheckForValidAudioSources());
+#endif
         string[] sliderTypes = new[] { "master", "soundtrack", "sfx" };
         foreach (string type in sliderTypes)
         {

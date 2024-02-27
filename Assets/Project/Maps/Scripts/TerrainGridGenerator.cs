@@ -71,7 +71,7 @@ public class TerrainGridGenerator : MonoBehaviour
         //We don't have a water prefab yet
         if (offset.Find("water") == null)
         {
-            GameObject water = Instantiate(waterPrefab);
+            GameObject water = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab); //Instantiate(waterPrefab);
             water.name = "water";
             water.transform.localScale = Vector3.one * 2f;
             water.transform.eulerAngles = Vector3.zero;
@@ -259,7 +259,7 @@ public class TerrainGridGenerator : MonoBehaviour
         offset.gameObject.name = "Offset";
         offset.parent = parent;
         offset.localPosition = new Vector3(-50f, 0f, -50f);
-        GameObject spawned = Instantiate(prefab, offset);
+        GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(prefab, offset); //Instantiate(prefab, offset);
         spawned.name = spawned.name.Replace("(Clone)", "");
         parent.localPosition = new Vector3(pos.x * 100, 0f, pos.y * 100);
         spawned.transform.localScale *= scale;
