@@ -123,7 +123,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104638594584595578}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.13, z: 0}
+  m_LocalPosition: {x: 0, y: 3.222, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -254,19 +254,22 @@ MonoBehaviour:
         m_CallState: 2
   removeFromDict: 1
   playerControlPosition: {fileID: 6208005074393136047}
-  targetingSystem: {fileID: 6674742477994217249}
-  firePoint: {fileID: 5189835444252146732}
-  pivotPoint: {fileID: 5189835444252146732}
-  enemyHeightOffset: 2
-  attackVFX: {fileID: 5018020794659350070}
-  turretModel: {fileID: 260109540466612344}
-  playerPlatform: {fileID: 789477411806127998}
   onTakeover:
     m_PersistentCalls:
       m_Calls: []
   onRelease:
     m_PersistentCalls:
       m_Calls: []
+  targetingSystem: {fileID: 6674742477994217249}
+  firePoint: {fileID: 5189835444252146732}
+  auxFirePoints: []
+  pivotPoint: {fileID: 5189835444252146732}
+  enemyHeightOffset: 2
+  attackVFX: {fileID: 5018020794659350070}
+  turretModel: {fileID: 260109540466612344}
+  playerPlatform: {fileID: 789477411806127998}
+  ammo: -1
+  reloadTime: 2
 --- !u!114 &5764481117411547575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -717,7 +720,7 @@ PrefabInstance:
     - target: {fileID: 1741693452841693106, guid: c4ed38c72957f2241ad144a1614956d9,
         type: 3}
       propertyPath: m_Intensity
-      value: 2.7437534
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7684677543225702287, guid: c4ed38c72957f2241ad144a1614956d9,
         type: 3}
@@ -737,7 +740,7 @@ PrefabInstance:
     - target: {fileID: 8764043878647920493, guid: c4ed38c72957f2241ad144a1614956d9,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8764373218812076563, guid: c4ed38c72957f2241ad144a1614956d9,
         type: 3}

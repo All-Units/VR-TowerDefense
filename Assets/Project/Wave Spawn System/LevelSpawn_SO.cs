@@ -8,7 +8,11 @@ public class LevelSpawn_SO : ScriptableObject
 {
     [SerializeField]
     public List<EnemyPrefabByType> enemyPrefabs = new List<EnemyPrefabByType>();
-    public List<WaveStruct> waveStructs = new List<WaveStruct>();  
+    public List<WaveStruct> waveStructs = new List<WaveStruct>();
+
+    [TextArea]
+    [SerializeField] private string notes;
+    
     [ExecuteInEditMode, ContextMenu("Test")]
     public void TestRunSpawn()
     {
