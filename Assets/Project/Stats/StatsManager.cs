@@ -25,10 +25,10 @@ public class StatsManager : MonoBehaviour
 
     private void OnRoundEnded()
     {
-        foreach (var stat in stats)
+        /*foreach (var stat in stats)
         {
             stat.Print();
-        }
+        }*/
     }
 
     private void Serialize()

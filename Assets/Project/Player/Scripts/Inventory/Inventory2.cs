@@ -37,11 +37,23 @@ public class Inventory2 : MonoBehaviour
 
     private void SecondaryPressed(InputAction.CallbackContext obj)
     {
+        if (BasicPauseMenu.instance == null)
+        {
+            Debug.LogError("BasicPauseMenu singleton is null");
+            return;
+        }
+        
         BasicPauseMenu.instance.IsSecondaryHeld = true;
         BasicPauseMenu.StartPauseFill();
     }
     private void SecondaryReleased(InputAction.CallbackContext obj)
     {
+        if (BasicPauseMenu.instance == null)
+        {
+            Debug.LogError("BasicPauseMenu singleton is null");
+            return;
+        }
+
         BasicPauseMenu.instance.IsSecondaryHeld = false;
     }
 

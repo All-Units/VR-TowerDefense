@@ -5,9 +5,9 @@ using UnityEngine;
 [CustomEditor(typeof(ProjectileTower_SO))]
 public class ProjectileTower_SO_Inspector : Editor
 {
-    public override void OnInspectorGUI()
+    /*public override void OnInspectorGUI()
     {
-        if (GUILayout.Button("Set From Stats"))
+        /*if (GUILayout.Button("Set From Stats"))
             SetDataFromStats();
             
         base.OnInspectorGUI();
@@ -24,13 +24,13 @@ public class ProjectileTower_SO_Inspector : Editor
                 // Copy other relevant fields
                 EditorUtility.SetDirty(pt);
             }
-        }
+        }#1#
     }
     
     private void SetDataFromStats()
     {
         EditorGUIUtility.ShowObjectPicker<TowerStats>(null, false, "t:TowerStats", 0);
-    }
+    }*/
 }
 
 #endif

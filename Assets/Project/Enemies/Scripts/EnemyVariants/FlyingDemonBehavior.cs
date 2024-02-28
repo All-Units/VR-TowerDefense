@@ -72,8 +72,6 @@ public class FlyingDemonBehavior : Enemy
         attackSFXController.PlayClip();
         _firePoint.LookAt(targetPosition);
         _Fire();
-        print("Shooting fireball!");
-
     }
     #endregion
 
