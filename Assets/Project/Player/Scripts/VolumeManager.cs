@@ -22,6 +22,8 @@ public class VolumeManager : MonoBehaviour
         if (CheckForInvalids)
             StartCoroutine(_CheckForValidAudioSources());
 #endif
+        InitValuesFromCache();
+        /*
         string[] sliderTypes = new[] { "master", "soundtrack", "sfx" };
         foreach (string type in sliderTypes)
         {
@@ -32,8 +34,21 @@ public class VolumeManager : MonoBehaviour
                 print($"Player prefs missing :{type}");
             }
 
-        }
+        }*/
 
+    }
+    private void Start()
+    {
+        InitValuesFromCache() ;
+        string[] sliderTypes = new[] { "master", "soundtrack", "sfx" };
+        foreach (Slider slider in GetComponentsInChildren<Slider>())
+        {
+            foreach (string t in sliderTypes)
+            {
+                if (slider.gameObject.name.ToLower().Contains(t))
+                    slider.value = PlayerPrefs.GetFloat(t);
+            }
+        }
     }
     public static void InitValuesFromCache()
     {
@@ -43,6 +58,7 @@ public class VolumeManager : MonoBehaviour
             if (PlayerPrefs.HasKey(type))
                 _SetVolume(type, PlayerPrefs.GetFloat(type));
         }
+        
     }
     string[] whitelist = new string[] { "TowerDeathSounds", "PlaceTowerSound", "RoundStart(Clone)",
         "SoundManager", "RoundEnded(Clone)" };

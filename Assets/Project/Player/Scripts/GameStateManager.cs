@@ -43,8 +43,9 @@ public class GameStateManager : MonoBehaviour
         {
             if (winning == false)
             {
-                winning = true;
-                DetonateCastle();
+                //winning = true;
+                //DetonateCastle();
+                GetComponentInChildren<GameOverPanel>().TestWin();
             }
         }
             

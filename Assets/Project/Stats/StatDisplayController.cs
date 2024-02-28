@@ -10,10 +10,12 @@ public class StatDisplayController : MonoBehaviour
 
     [SerializeField] private Animator animator;
 
-    private void Start()
+    private void OnEnable()
     {
         titleText.text = statTracker.displayName;
         valueText.text = $"{statTracker.statName}: {statTracker.getSerializeValue}";
+        if (animator != null)
+            OnDropItem();
     }
 
     public void OnPickupItem()

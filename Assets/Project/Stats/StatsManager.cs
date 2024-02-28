@@ -5,12 +5,14 @@ public class StatsManager : MonoBehaviour
 {
     [SerializeField] private List<StatTracker> stats = new();
 
+    
+
     private void Start()
     {
         foreach (var stat in stats)
         {
             stat.ResetTotal();
-            stat.Initialize();
+            stat.Initialize(true);
         }
         Deserialize();
         

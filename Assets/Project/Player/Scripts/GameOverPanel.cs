@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
@@ -8,6 +9,7 @@ using Image = UnityEngine.UI.Image;
 
 public class GameOverPanel : MonoBehaviour
 {
+    public List<StatTracker> stats = new List<StatTracker>();
     [Header("Gameplay variables")]
     [Range(0f, 7f)]
     [SerializeField] float _distanceFromPlayer = 3f;
@@ -25,6 +27,11 @@ public class GameOverPanel : MonoBehaviour
     [SerializeField] Transform canvasTransform;
     [SerializeField] TextMeshProUGUI WinLoseLabel;
     [SerializeField] Image WinLoseIcon;
+    [SerializeField] Transform _contentParent;
+    [SerializeField] GameObject statTextPrefab;
+
+
+    Dictionary<StatTracker, int> startValues = new Dictionary<StatTracker, int>();
     // Start is called before the first frame update
     void Start()
     {
@@ -32,7 +39,25 @@ public class GameOverPanel : MonoBehaviour
         canvasTransform.gameObject.SetActive(false);
         GameStateManager.instance.OnGameWin += OnGameWin;
         GameStateManager.instance.OnGameLose += OnGameLose;
+        foreach (var stat in stats)
+            startValues[stat] = stat.getSerializeValue;
     }
+
+    void UpdateStats()
+    {
+        _contentParent.DestroyChildren();
+
+        foreach (var stat in stats)
+        {
+            GameObject prefab = Instantiate(statTextPrefab, _contentParent);
+            prefab.SetActive(true);
+            TextMeshProUGUI text = prefab.GetComponentInChildren<TextMeshProUGUI>();
+            int count = stat.total - startValues[stat];
+            text.text = $"{stat.displayName} {stat.statName} : {count}";
+        }
+
+    }
+
     void OnGameWin()
     {
         OnGameEnd(_winString, _winColor, _winSprite);
@@ -41,9 +66,13 @@ public class GameOverPanel : MonoBehaviour
     {
         OnGameEnd(_loseString, _loseColor, _loseSprite);
     }
+    public void TestWin()
+    {
+        OnGameWin();
+    }
     void OnGameEnd(string endString, Color endColor, Sprite sprite)
     {
-
+        UpdateStats();
         canvasTransform.gameObject.SetActive(true);
         _RepositionPanel();
         WinLoseLabel.color = endColor;
@@ -68,11 +97,13 @@ public class GameOverPanel : MonoBehaviour
         LayerMask mask = LayerMask.GetMask("Ground");
         if (Physics.Raycast(center, Vector3.down, out hit, float.PositiveInfinity, mask))
         {
+            print($"Hit y level {hit.point.y}, canvas currently at {canvasPos.y}");
             if (hit.point.y > canvasPos.y)
             {
-                canvasPos.y = hit.point.y + _height;
+                float offset = Mathf.Max(_height, 0.3f);
+                canvasPos.y = hit.point.y + offset;
                 canvasTransform.position = canvasPos;
-                print("Canvas was too low, moving up");
+                print($"Canvas was too low, moving up to {canvasTransform.position.y}");
             }
         }
     }

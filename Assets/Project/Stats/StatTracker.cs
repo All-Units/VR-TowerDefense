@@ -9,9 +9,9 @@ public abstract class StatTracker : ScriptableObject
     public int total = 0;
     private bool _isInitialized = false;
 
-    public void Initialize()
+    public void Initialize(bool force = false)
     {
-        if(_isInitialized)
+        if(_isInitialized && force == false)
             return;
         InitTracker();
         _isInitialized = true;
