@@ -44,7 +44,8 @@ public class HealthController : MonoBehaviour
         
         OnTakeDamage?.Invoke(_currentHealth);
         onTakeDamage?.Invoke(_currentHealth);
-
+        //Clamp _currentHealth to 0, can't drop below 0 hp
+        if (_currentHealth < 0) _currentHealth = 0;
         if (_currentHealth <= 0)
         {
             isDead = true;

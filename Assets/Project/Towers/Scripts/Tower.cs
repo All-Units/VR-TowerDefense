@@ -38,9 +38,20 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
         if(healthController == null)
             healthController = GetComponent<HealthController>();
         healthController.onDeath.AddListener(Die);
+        _lastHealth = dto.maxHeath;
+        healthController.OnTakeDamage += OnTakeDamage;
         if (deathParticles)
             deathParticles.SetActive(false);
         selectedVfx.SetActive(false);
+    }
+    int _lastHealth = 0;
+    void OnTakeDamage(int currentHealth)
+    {
+        int dmg = _lastHealth - currentHealth;
+        _lastHealth = currentHealth;
+        if (dmg == 0) return;
+        Vector3 pos = transform.position + Vector3.up * 3f; 
+        ImpactText.ImpactTextAt(pos, dmg.ToString(), ImpactText._ImpactTypes.TowerDamage);
     }
 
     [HideInInspector] public bool removeFromDict = true;
@@ -78,6 +89,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
         transform.localScale = Vector3.one;
 
         var director = GetComponentInChildren<PlayableDirector>();
+        healthController.SetMaxHealth(dto.maxHeath / 2);
         if (director != null )
             yield return new WaitForSeconds((float)director.duration);
         

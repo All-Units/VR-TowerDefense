@@ -204,6 +204,8 @@ public class XRControllerTowerController : MonoBehaviour
     private void OpenTowerBubbles(InputAction.CallbackContext obj)
     {
         if (XRPauseMenu.IsPaused) return;
+        //print($"Trying to open tower bubbles, other interactors? {otherInteractors.Any(tor => tor.interactablesSelected.Any())}, " +
+        //    $"tower placing? {towerPlacer.placing}, _selectorLock? {_selectorLock}");
         if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
             return;
         
@@ -267,7 +269,7 @@ public class XRControllerTowerController : MonoBehaviour
     private IEnumerator SelectCooldown()
     {
         _selectorLock = true;
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.1f);//Was 1 second
         _selectorLock = false;
     }
 

@@ -18,7 +18,10 @@ public class GameStateManager : MonoBehaviour
 
     [SerializeField] float fireworkTime = 5f;
     [SerializeField] int fireworkCount = 50;
-    [SerializeField] float _timeToDestroyCastle = 5f;
+    [SerializeField] float _timeToDestroyCastle = 7f;
+    [SerializeField] Vector3 localRotateTarget = new Vector3(20f, 0f, 0f);
+    [SerializeField] Vector3 localPosTarget = new Vector3(0f, -7f, 0f);
+
 
     [Header("References")]
     [SerializeField] private GameObject YouWinPanel;
@@ -32,7 +35,7 @@ public class GameStateManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        OnGameLose += DetonateCastle;
+        //OnGameLose += DetonateCastle;
         
         
     }
@@ -43,9 +46,7 @@ public class GameStateManager : MonoBehaviour
         {
             if (winning == false)
             {
-                //winning = true;
-                //DetonateCastle();
-                GetComponentInChildren<GameOverPanel>().TestWin();
+                DetonateCastle.DetonateStatic();
             }
         }
             
@@ -108,14 +109,13 @@ public class GameStateManager : MonoBehaviour
         yield return new WaitForSeconds(t);
         SceneManager.LoadSceneAsync("MainMenu");
     }
-    public void DetonateCastle()
+    public void _DetonateCastle()
     {
-        _castleRenderers = _castleRoot.GetComponentsInChildren<MeshRenderer>().ToList();
-        _castleRenderers = _castleRenderers.OrderBy(x => x.transform.position.y * -1f).
-            ThenBy(x => x.transform.position.x).ToList();
+        return;
         StartCoroutine(_CastleDetonationRoutine());
+        StartCoroutine(_MoveExplodingCastle());
     }
-    List<MeshRenderer> _castleRenderers = new List<MeshRenderer>();
+    public List<MeshRenderer> _castleRenderers = new List<MeshRenderer>();
     IEnumerator _CastleDetonationRoutine()
     {
         float timeBetween = _timeToDestroyCastle / (float)_castleRenderers.Count;
@@ -132,7 +132,25 @@ public class GameStateManager : MonoBehaviour
             _SpawnExplosionAt(renderer.transform.position);
 
         }
-        _castleRoot.gameObject.SetActive(false);
+        //_castleRoot.gameObject.SetActive(false);
+    }
+    IEnumerator _MoveExplodingCastle()
+    {
+        yield return new WaitForSeconds(_timeToDestroyCastle / 2f);
+        Vector3 startRot = _castleRoot.transform.localEulerAngles;
+        Vector3 targetRot = startRot + localRotateTarget;
+        Vector3 startPos = _castleRoot.transform.localPosition;
+        Vector3 targetPos = startPos + localPosTarget;
+        float time = 0f;
+        while (time <= _timeToDestroyCastle)
+        {
+            float t = time / _timeToDestroyCastle;
+            _castleRoot.transform.localEulerAngles = Vector3.Slerp(startRot, targetRot, t);
+            _castleRoot.transform.localPosition = Vector3.Slerp(startPos, targetPos, t);
+            yield return null;
+            time += Time.deltaTime;
+        }
+        //yield break;
     }
     void _SpawnExplosionAt(Vector3 pos)
     {

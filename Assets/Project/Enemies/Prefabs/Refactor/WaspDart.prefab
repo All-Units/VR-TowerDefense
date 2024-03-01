@@ -72,6 +72,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 5
   speed: 40
+  damageType: {fileID: 0}
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 6165563865059374877}
   _hitGround: {fileID: 6165563865059374877}
@@ -627,7 +628,8 @@ MonoBehaviour:
   name: 
   _clips:
   - {fileID: 8300000, guid: 82ba09f106c7fd74aba01605695512b4, type: 3}
-  _maxInclusivePitchVariance: 0
+  _maxInclusivePitchVariance: 0.18
+  _maxVolumeVariance: 0.3
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
@@ -644,8 +646,8 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.8
-  m_Pitch: 0.9
+  m_Volume: 0.55
+  m_Pitch: 0.8
   Loop: 0
   Mute: 0
   Spatialize: 0

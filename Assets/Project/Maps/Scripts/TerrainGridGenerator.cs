@@ -65,30 +65,7 @@ public class TerrainGridGenerator : MonoBehaviour
         }
         return isRiver;
     }
-    void _SpawnWater(MeshFilter mf)
-    {
-        Transform offset = mf.transform.parent.parent;
-        //We don't have a water prefab yet
-        if (offset.Find("water") == null)
-        {
-            GameObject water = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab); //Instantiate(waterPrefab);
-            water.name = "water";
-            water.transform.localScale = Vector3.one * 2f;
-            water.transform.eulerAngles = Vector3.zero;
-            water.transform.parent = offset;
-            water.transform.localPosition = new Vector3(50f, WaterLevel, 50f);
-        }
-        else
-        {
-            var water = offset.Find("water");
-            water.parent = null;
-            water.transform.localScale = Vector3.one * 2f;
-            water.transform.eulerAngles = Vector3.zero;
-            water.transform.parent = offset;
-            water.transform.localPosition = new Vector3(50f, WaterLevel, 50f);
-        }
-
-    }
+    
     void _SmoothAllCorners(MeshFilter mf)
     {
         if (mf.gameObject.name == "water") return;
@@ -116,7 +93,36 @@ public class TerrainGridGenerator : MonoBehaviour
         mf.mesh.vertices = vertices.ToArray();
         mf.mesh.RecalculateBounds();
     }
+
+    void _SpawnWater(MeshFilter mf)
+    {
+        Transform offset = mf.transform.parent.parent;
+        //We don't have a water prefab yet
+        if (offset.Find("water") == null)
+        {
 #if UNITY_EDITOR
+            GameObject water = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab); //Instantiate(waterPrefab);
+#else
+GameObject water = Instantiate(waterPrefab);
+#endif
+            water.name = "water";
+            water.transform.localScale = Vector3.one * 2f;
+            water.transform.eulerAngles = Vector3.zero;
+            water.transform.parent = offset;
+            water.transform.localPosition = new Vector3(50f, WaterLevel, 50f);
+        }
+        else
+        {
+            var water = offset.Find("water");
+            water.parent = null;
+            water.transform.localScale = Vector3.one * 2f;
+            water.transform.eulerAngles = Vector3.zero;
+            water.transform.parent = offset;
+            water.transform.localPosition = new Vector3(50f, WaterLevel, 50f);
+        }
+
+    }
+    #if UNITY_EDITOR
     public void GenerateGrid()
     {
         if (clearPrevious)

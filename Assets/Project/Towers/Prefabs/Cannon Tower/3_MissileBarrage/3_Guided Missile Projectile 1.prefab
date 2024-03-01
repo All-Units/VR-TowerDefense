@@ -72,8 +72,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
+  damage: 100
   speed: 5
+  damageType: {fileID: 0}
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 0}
   _hitGround: {fileID: 0}
@@ -317,6 +318,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c7dacfcf883b23441be4f465a1423df5, type: 3}
   - {fileID: 8300000, guid: 4031ae53fc671f6449a92c1e661e4728, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
@@ -336,6 +338,7 @@ MonoBehaviour:
   _clips:
   - {fileID: 8300000, guid: ef155ce290061f74b806f13f3528d6c3, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 1
   playOnEnable: 0
   loop: 0

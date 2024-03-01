@@ -198,7 +198,10 @@ public abstract class Enemy : MonoBehaviour, IPausable
         if (_IsAttacking == false)
             animator.Play("GetHit");
         int dmg = _lastHealthTotal - currentHealth;
-        if (dmg == 0 || currentHealth <= 0) return;
+        if (dmg == 0) return;
+
+        ImpactText.ImpactTextAt(_hitParticles.transform.position, dmg.ToString(), ImpactText._ImpactTypes.Damage);
+        /*
         float t = (float)dmg / (float)_health;
         float size = Mathf.Lerp(0.6f, 3f, t);
         GameObject particles = Instantiate(Resources.Load<GameObject>("POW"));
@@ -213,7 +216,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         if (particleSystem != null)
             particleSystem.Play();
 
-        particles.DestroyAfter(4f);
+        particles.DestroyAfter(4f);*/
         _lastHealthTotal = currentHealth;
         //_hitParticles.Play();
     }
@@ -346,6 +349,12 @@ public abstract class Enemy : MonoBehaviour, IPausable
     #region StateMachineHelpers
     void _PlayDeathParticles()
     {
+        Vector3 pos = _hitParticles.transform.position;
+        pos += Vector3.one * 2f;
+        string s = $"+ ${enemyStats.KillValue}";
+        ImpactText.ImpactTextAt(pos, s, ImpactText._ImpactTypes.Kill, 2f);
+
+        return;
         GameObject particles = Instantiate(Resources.Load<GameObject>("WOW"));
         particles.transform.position = _hitParticles.transform.position;
         particles.transform.Translate(new Vector3(0f, 1f, 0f));
@@ -374,6 +383,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
                 yield return null;
             }
             float roll = Random.value;
+            if (healthController.isDead)
+                yield break;
             //We rolled within range to vocalize
             if (roll <= enemyStats.VocalizationChance)
             {

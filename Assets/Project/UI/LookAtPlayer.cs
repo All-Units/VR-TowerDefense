@@ -3,6 +3,7 @@ using UnityEngine;
 public class LookAtPlayer : MonoBehaviour
 {
     public bool invert;
+    public bool FreezeYAxis = false;
     public static Camera main;
     void Update()
     {
@@ -10,7 +11,12 @@ public class LookAtPlayer : MonoBehaviour
             main = Camera.main;
         if(main)
         {
-            var transformPosition = invert ? main.transform.position - transform.position : transform.position - main.transform.position;
+            Vector3 target = main.transform.position;
+            Vector3 pos = transform.position;
+            if (FreezeYAxis)
+                target.y = pos.y;
+            var transformPosition = invert ? target - pos : pos - target;
+            
             transform.rotation = Quaternion.LookRotation(transformPosition);
         }
     }

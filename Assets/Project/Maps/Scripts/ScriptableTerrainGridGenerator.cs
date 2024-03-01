@@ -71,7 +71,11 @@ public class ScriptableTerrainGridGenerator : MonoBehaviour
         //We don't have a water prefab yet
         if (offset.Find("water") == null)
         {
+#if UNITY_EDITOR
             GameObject water = (GameObject)PrefabUtility.InstantiatePrefab(waterPrefab); //Instantiate(waterPrefab);
+#else
+GameObject water = Instantiate(waterPrefab);
+#endif
             water.name = "water";
             water.transform.localScale = Vector3.one * 2f;
             water.transform.eulerAngles = Vector3.zero;
@@ -293,5 +297,5 @@ public class ScriptableTerrainGridGenerator : MonoBehaviour
         }
     }
     
-    #endif
+#endif
 }

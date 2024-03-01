@@ -66,13 +66,14 @@ public class FlyingDemonBehavior : Enemy
     public override void Impact()
     {
         if (currentTarget == null || currentTarget == null) return;
+        if (Time.frameCount - _lastAttackFrame <= 20) return;
+        _lastAttackFrame = Time.frameCount;
         try { currentTarget.GetPosition(); }
         catch (MissingReferenceException e) { currentTarget = null; return; }
         if (pos.FlatDistance(targetPosition) >= enemyStats.attackThreshold + 3f) {return;  }
         attackSFXController.PlayClip();
         _firePoint.LookAt(targetPosition);
         _Fire();
-        print("Shooting fireball!");
 
     }
     #endregion
