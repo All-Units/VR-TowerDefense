@@ -34,16 +34,25 @@ MonoBehaviour:
   waveStructs:
   - enemies:
     - enemyType: 1
-      amountToSpawn: {x: 20, y: 20}
+      amountToSpawn: {x: 30, y: 30}
     - enemyType: 6
-      amountToSpawn: {x: 15, y: 15}
+      amountToSpawn: {x: 20, y: 20}
     - enemyType: 0
-      amountToSpawn: {x: 4, y: 4}
-    subWaves: []
+      amountToSpawn: {x: 12, y: 12}
+    subWaves:
+    - enemies:
+      - enemyType: 6
+        amountToSpawn: {x: 20, y: 20}
+      delayType: 0
+      DelayCount: 25
+      groupSizes: {x: 5, y: 10}
+      spawnRate: 7
+      spawnPoints: []
     WaveCompleteBounty: 75
-    preWaveDelay: 30
-    groupSizes: {x: 5, y: 10}
-    spawnRate: 4
+    preWaveDelay: 25
+    groupSizes: {x: 6, y: 9}
+    spawnRate: 7.5
     spawnPoints:
     - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
+    - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
   notes: 

@@ -92,6 +92,12 @@ public class InventoryManager : MonoBehaviour
         {
             var newWeapon = Instantiate(playerItemType.itemGo,playerItemsTransformRoot);
             _playerItems.Add(playerItemType, newWeapon.GetComponent<XRGrabInteractable>());
+            ResetOnDrop drop = newWeapon.GetComponent<ResetOnDrop>();
+            if (drop != null)
+            {
+                drop.playerItem = playerItemType;
+                print($"Set {newWeapon.gameObject.name} player item to {playerItemType.name}");
+            }
         }
 
         var item = _playerItems[playerItemType];

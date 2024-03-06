@@ -45,8 +45,10 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
         selectedVfx.SetActive(false);
     }
     int _lastHealth = 0;
-    void OnTakeDamage(int currentHealth)
+    protected void OnTakeDamage(int currentHealth)
     {
+        if (this is PlayerControllableTower controllableTower && controllableTower.isPlayerControlled)
+            return;
         int dmg = _lastHealth - currentHealth;
         _lastHealth = currentHealth;
         if (dmg == 0) return;

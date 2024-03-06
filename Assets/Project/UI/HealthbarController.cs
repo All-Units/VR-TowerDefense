@@ -14,9 +14,16 @@ public class HealthbarController : MonoBehaviour
 
     private bool _isShowing = false;
     public bool AlwaysShowing;
+    PlayerControllableTower controllableTower;
 
     private void Start()
     {
+        if ( controllableTower == null)
+        {
+            controllableTower = GetComponentInParent<PlayerControllableTower>();
+            if (controllableTower == null)
+                controllableTower = GetComponentInChildren<PlayerControllableTower>();
+        }
         if (healthController == null)
         {
             healthController = GetComponentInParent<HealthController>();
@@ -80,7 +87,11 @@ public class HealthbarController : MonoBehaviour
         slider.maxValue = 1f;
         slider.minValue = 0f;
         slider.value = ((float)healthController.CurrentHealth / (float)healthController.MaxHealth);
-        
+        if (controllableTower != null && controllableTower.isPlayerControlled)
+        {
+            HideInstantly();
+            return;
+        }
         if (healthController.CurrentHealth < healthController.MaxHealth)
         {
             Show();

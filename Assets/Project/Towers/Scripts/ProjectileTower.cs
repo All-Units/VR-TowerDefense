@@ -75,9 +75,11 @@ public class ProjectileTower : PlayerControllableTower
             _currentCooldown -= Time.deltaTime;
         }
     }
-
+    public Transform GetCurrentTarget => (targetingSystem.HasTarget()) ? targetingSystem.GetOldestTarget().transform : null;
+    public float GetHeightOffset => enemyHeightOffset;
     private void AimAtTarget()
     {
+        return;
         var oldestTarget = targetingSystem.GetOldestTarget();
         var target = oldestTarget.transform.position;
         target += Vector3.up * enemyHeightOffset;

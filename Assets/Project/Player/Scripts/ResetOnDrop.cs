@@ -12,6 +12,8 @@ public class ResetOnDrop : MonoBehaviour
     [SerializeField] private float resetTime = 2f;
     [SerializeField] private Vector3 offset = new Vector3(0f, 4f, 0.5f);
 
+    public TowerTakeoverObject playerItem;
+
     private Quaternion startRot;
 
     private Transform t;
@@ -98,18 +100,30 @@ public class ResetOnDrop : MonoBehaviour
             //print($"Was no tower, NOT resetting");
             yield break;
         }
+        if (playerControllableTower.dto is ProjectileTower_SO ptso && ptso.playerItem_SO != playerItem)
+        {
+            Debug.Log($"Was in the wrong tower, not resetting! {gameObject.name}", gameObject);
+            t.position = new Vector3(0f, -1000f, 0f);
+            rb.useGravity = false;
+            yield break;
+        }
         Transform currentTowerTransform = playerControllableTower.GetPlayerControlPoint();
         Vector3 pos = currentTowerTransform.position;
         pos.y += 1.5f;//offset.y;
         pos += (currentTowerTransform.forward * offset.z);
         rb.velocity = Vector3.zero;
+        //Constrain it
+        rb.constraints = RigidbodyConstraints.FreezeAll;
+        yield return null;
+        //PEMDAS
+        rb.velocity = Vector3.zero;
+
         t.position = pos;
         t.rotation = startRot;
         _currentResetter = null;
         rb.useGravity = false;
         
-        //Constrain it
-        rb.constraints = RigidbodyConstraints.FreezeAll;
+        
         yield return null;
         t.rotation = startRot;
         yield return null;
