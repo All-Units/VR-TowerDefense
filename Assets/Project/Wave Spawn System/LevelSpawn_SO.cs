@@ -6,6 +6,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Spawn System/Level")]
 public class LevelSpawn_SO : ScriptableObject
 {
+    [SerializeField] public int StartingGold = 50;
     [SerializeField]
     public List<EnemyPrefabByType> enemyPrefabs = new List<EnemyPrefabByType>();
     public List<WaveStruct> waveStructs = new List<WaveStruct>();

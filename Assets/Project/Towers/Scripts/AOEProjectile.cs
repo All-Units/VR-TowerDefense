@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEditor;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class AOEProjectile : Projectile
 {
@@ -41,6 +42,7 @@ public class AOEProjectile : Projectile
     {
         Vector3 pos = transform.position;
         var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask("Enemy"));
+        int variance = Random.Range(DamageVariability * -1, DamageVariability);
         foreach (var hit in hits)
         {
             var colliderGameObject = hit.gameObject;
@@ -49,8 +51,8 @@ public class AOEProjectile : Projectile
             {
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
-                var dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
-
+                int var_dmg = damage + variance;
+                var dmg = Mathf.FloorToInt(var_dmg * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
                 ApplyDamage(healthController, dmg, pos);
                 ApplyEffects(healthController);
             }
@@ -81,6 +83,7 @@ public class AOEProjectile : Projectile
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
                 int dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
+                dmg = damage + Random.Range(DamageVariability * -1, DamageVariability);
                 healthController.TakeDamageFrom(dmg, pos);
 
                 

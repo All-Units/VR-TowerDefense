@@ -15,12 +15,19 @@ public class RoundGUI : MonoBehaviour
     [SerializeField] private float height = 2f;
     private string _roundStartString;
     private string _roundEndString;
+
+    Dictionary<TextMeshProUGUI, string> startStringsEndPanel = new Dictionary<TextMeshProUGUI, string>();
+
     // Start is called before the first frame update
     void Start()
     {
         roundStartPanel.SetActive(false);
         roundEndPanel.SetActive(false);
         _roundStartString = roundStartText.text;
+        foreach (TextMeshProUGUI text in roundEndPanel.GetComponentsInChildren<TextMeshProUGUI>())
+        {
+            startStringsEndPanel.Add(text, text.text);
+        }
         _roundEndString = roundEndText.text;
         roundEndText.text = roundEndText.text.Replace("[TIME]", EnemyManager.WaveDelay.ToString());
         EnemyManager.OnRoundStarted.AddListener(_OnRoundStart);
@@ -46,7 +53,12 @@ public class RoundGUI : MonoBehaviour
     void _RefreshTexts()
     {
         roundStartText.text = _FormatString(_roundStartString);
-        roundEndText.text = _FormatString(_roundEndString);
+        foreach (var t in startStringsEndPanel)
+        {
+            TextMeshProUGUI text = t.Key;
+            text.text = _FormatString(t.Value);
+        }
+        //roundEndText.text = _FormatString(_roundEndString);
     }
     string _FormatString(string start)
     {

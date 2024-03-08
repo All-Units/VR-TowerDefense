@@ -34,7 +34,7 @@ public class WaveEditorWindow : EditorWindow
         
         if (GUILayout.Button("Open Level", _centerButton))
         {
-            string path = EditorUtility.OpenFilePanel("Open level", "Assets/Project/Wave Spawn System/Levels", "asset");
+            string path = EditorUtility.OpenFilePanel("Open level", "Assets/Project/Wave Spawn System/Levels/Game", "asset");
             if (path.Length != 0)
             {
                 path = path.Replace(Application.dataPath, "Assets/");
@@ -75,6 +75,7 @@ public class WaveEditorWindow : EditorWindow
         
 
         GUILayout.Label($"Current Level: {currentLevel.name}");
+        int startingGold = EditorGUILayout.IntField("Starting gold: ", currentLevel.StartingGold);
         pos = GUILayout.BeginScrollView(pos);
 
         int i = 0;
@@ -137,8 +138,9 @@ public class WaveEditorWindow : EditorWindow
             EditorGUILayout.PropertyField(spawnProperty, new GUIContent("Spawn points:"), true);
             so.ApplyModifiedProperties();
             if (bounty != newBounty || save || spawnRate != newRate
-                || delay != newDelay || groupSizes != newSizes)
+                || delay != newDelay || groupSizes != newSizes || startingGold != currentLevel.StartingGold)
             {
+                currentLevel.StartingGold = startingGold;
                 currentLevel.EditBounty(i, newBounty);
                 currentLevel.EditDelay(i, newDelay);
                 currentLevel.EditGroupSizes(i, newSizes);

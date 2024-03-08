@@ -8,6 +8,7 @@ public class ProjectileTower_SO : Tower_SO
     public float radius = 5f;
     public float shotCooldown = 1f;
     public Projectile projectile;
+    public GameObject PlayerProjectile;
     
     public TowerTakeoverObject playerItem_SO;
     

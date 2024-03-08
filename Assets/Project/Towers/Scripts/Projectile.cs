@@ -5,6 +5,7 @@ using UnityEngine.Events;
 public class Projectile : MonoBehaviour, IPausable
 {
     public int damage;
+    public int DamageVariability = 1;
     public float speed = 20f;
     public DamageType damageType;
 
@@ -80,7 +81,8 @@ public class Projectile : MonoBehaviour, IPausable
         var healthController = other.GetComponentInParent<HealthController>();  
         if (healthController != null)
         {
-            ApplyDamage(healthController, damage, startPos);
+            int dmg = damage + Random.Range(DamageVariability * -1, DamageVariability);
+            ApplyDamage(healthController, dmg, startPos);
             ApplyEffects(healthController);
             
             // Todo Refactor out to event based

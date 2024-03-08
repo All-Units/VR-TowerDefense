@@ -50,6 +50,11 @@ public class CloudMover : MonoBehaviour
         float speed = Random.Range(cloudSpeedMinMax.x, cloudBunchMinMax.y);
         while (pos.FlatDistance(center) < MaxDistanceFromCenter * 2)
         {
+            if (XRPauseMenu.IsPaused)
+            {
+                yield return null;
+                continue;
+            }
             Vector3 dir = windDirection * speed * Time.deltaTime;
             cloud.transform.Translate(dir);
             yield return null;

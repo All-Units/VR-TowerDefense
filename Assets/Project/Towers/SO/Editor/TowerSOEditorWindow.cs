@@ -47,14 +47,15 @@ public class TowerSOEditorWindow : EditorWindow
             // Display select fields (e.g., cost and maxHealth) in columns
             EditorGUILayout.LabelField(towerSO.name, GUILayout.Width(100));
             EditorGUILayout.LabelField("|", GUILayout.Width(10));
-            var cost = EditorGUILayout.IntField("Cost: $", towerSO.cost, GUILayout.Width(200));
+            EditorGUIUtility.labelWidth = 75;
+            var cost = EditorGUILayout.IntField("Cost: $", towerSO.cost, GUILayout.Width(150));
             if (cost != towerSO.cost)
             {
                 towerSO.cost = cost;
                 isDirty = true;
             }
             
-            var health = EditorGUILayout.IntField("Max Health: ", towerSO.maxHeath, GUILayout.Width(200));
+            var health = EditorGUILayout.IntField("Max Health: ", towerSO.maxHeath, GUILayout.Width(150));
             if (health != towerSO.maxHeath)
             {
                 towerSO.maxHeath = health;
@@ -82,6 +83,12 @@ public class TowerSOEditorWindow : EditorWindow
                 {
                     projectileTowerSo.projectile.damage = damage;
                     EditorUtility.SetDirty(projectileTowerSo.projectile);
+                }
+                var damageVar = EditorGUILayout.IntField("Damage var", projectileTowerSo.projectile.DamageVariability);
+                if (damageVar != projectileTowerSo.projectile.DamageVariability)
+                {
+                    projectileTowerSo.projectile.DamageVariability = damageVar;
+                    EditorUtility.SetDirty(projectileTowerSo.projectile);
                 }   
                 
                 var speed = EditorGUILayout.FloatField("Speed", projectileTowerSo.projectile.speed);
@@ -89,6 +96,32 @@ public class TowerSOEditorWindow : EditorWindow
                 {
                     projectileTowerSo.projectile.speed = speed;
                     EditorUtility.SetDirty(projectileTowerSo.projectile);
+                }
+                
+                if (projectileTowerSo.PlayerProjectile != null)
+                {
+                    var arrow = projectileTowerSo.PlayerProjectile.GetComponent<Arrow>();
+                    if (arrow != null)
+                    {
+                        int playerDmg = EditorGUILayout.IntField("Player dmg: ", arrow.damage);
+                        if (playerDmg != arrow.damage)
+                        {
+                            arrow.damage = playerDmg;
+                            EditorUtility.SetDirty(arrow);
+                        }
+                    }
+                    var proj = projectileTowerSo.PlayerProjectile.GetComponent<Projectile>();
+                    if (proj != null)
+                    {
+                        int playerDmg = EditorGUILayout.IntField("Player dmg: ", proj.damage);
+                        if (playerDmg != proj.damage)
+                        {
+                            proj.damage = playerDmg;
+                            EditorUtility.SetDirty(proj);
+                        }
+                        _SetAoERange(proj);
+                    }
+                    
                 }
             }
             else
@@ -105,6 +138,23 @@ public class TowerSOEditorWindow : EditorWindow
         EditorGUILayout.EndVertical();
         EditorGUILayout.EndScrollView();
     }
+    void _SetAoERange(Projectile proj)
+    {
+        if (proj is AOEProjectile aoe)
+        {
+
+        }
+        else
+            return;
+        float radius = EditorGUILayout.FloatField("AoE radius:", aoe.splashRadius);
+        if (radius != aoe.splashRadius)
+        {
+            aoe.splashRadius = radius;
+            EditorUtility.SetDirty(aoe);
+        }
+    }
 }
+
+
 
 #endif

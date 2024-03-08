@@ -49,10 +49,20 @@ public class RadialTargetingSystem : MonoBehaviour
         }
         
     }
-
+    const float RecheckRate = 0.5f;
+    float _lastCheckTime = 0f;
+    Enemy _lastClosestEnemy = null;
     public Enemy GetClosestTarget(Vector3 pos)
     {
-        return _targetsInRange.OrderBy(t => Vector3.Distance(t.transform.position, pos)).FirstOrDefault();
+        //If we've check recently, return our cached value
+        if (Time.time - _lastCheckTime <= RecheckRate && _lastClosestEnemy != null)
+        {
+            return _lastClosestEnemy;
+        }
+        _lastCheckTime = Time.time;
+        _CullTargets();
+        _lastClosestEnemy = _targetsInRange.OrderBy(t => Utilities.FlatDistance(t.transform.position, pos)).FirstOrDefault();
+        return _lastClosestEnemy;
     }    
     
     public Enemy GetOldestTarget()

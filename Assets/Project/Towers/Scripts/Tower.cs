@@ -89,12 +89,12 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     private IEnumerator PlayBuildingAnimation()
     {
         transform.localScale = Vector3.one;
-
+        _lastHealth = dto.maxHeath;
         var director = GetComponentInChildren<PlayableDirector>();
         healthController.SetMaxHealth(dto.maxHeath / 2);
         if (director != null )
             yield return new WaitForSeconds((float)director.duration);
-        
+        _lastHealth = dto.maxHeath;
         isInitialized = true;
         healthController.SetMaxHealth(dto.maxHeath);
     }

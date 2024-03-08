@@ -121,6 +121,9 @@ public class EnemyManager : MonoBehaviour
     public static bool SkipToNextRound = false;
     IEnumerator _LevelCoroutine()
     {
+        //Give our starting gold
+        CurrencyManager.GiveToPlayer(levelData.StartingGold);
+
         //Game started
         OnGameStart.Invoke();
         while (_wave_i < levelData.waveStructs.Count)
@@ -141,7 +144,7 @@ public class EnemyManager : MonoBehaviour
                     break;
                 }
             }
-            print($"Starting wave {CurrentWave}");
+            //print($"Starting wave {CurrentWave}");
             //Start the wave logic
             StartCoroutine(_WaveCoroutine(wave));
 
@@ -151,7 +154,7 @@ public class EnemyManager : MonoBehaviour
             
             //Next wave
             _wave_i++;
-            print($"Waited until last wave done, starting wave {CurrentWave}");
+            //print($"Waited until last wave done, starting wave {CurrentWave}");
 
         }
         // print("YOU WIN!!!!!!");
@@ -233,27 +236,26 @@ public class EnemyManager : MonoBehaviour
         //_currentWaves.Add(wave);
 
         //Delay logic
-        print($"Started subwave, delay type {subWave.delayType.ToString()}");
+        //print($"Started subwave, delay type {subWave.delayType.ToString()}");
         if (subWave.delayType == DelayType.TimeDelay)
             yield return new WaitForSeconds(subWave.DelayCount);
         else if (subWave.delayType == DelayType.EnemiesRemaining)
         {
             //We have to get to the threshold first, i.e. enough have spawned
-            print("Started waiting for enemies remaining");
+            //print("Started waiting for enemies remaining");
             while (Enemies.Count <= subWave.DelayCount)
             {
-                print($"SHIT, gonna wait another cycle. " +
-                    $"Currently {Enemies.Count}, waiting to be less than or equal to {subWave.DelayCount}");
+                //print($"SHIT, gonna wait another cycle. Currently {Enemies.Count}, waiting to be less than or equal to {subWave.DelayCount}");
                 yield return null; 
             }
 
-            print("There are enough enemies alive, waiting until body count drops");
+            //print("There are enough enemies alive, waiting until body count drops");
             //Wait in place until the enemy count drops to the desired
             while (Enemies.Count > subWave.DelayCount)
             {
                 yield return null;
             }
-            print($"Waited until there were {subWave.DelayCount} enemies alive before spawning wave");
+            //print($"Waited until there were {subWave.DelayCount} enemies alive before spawning wave");
         }
         //Start timer for next subwave
         if (_subwaves.Count > 0)
@@ -261,10 +263,10 @@ public class EnemyManager : MonoBehaviour
             var next = _subwaves.First();
             StartCoroutine(next);
             _subwaves.RemoveFirst();
-            print($"Started next subwave delay, there are {_subwaves.Count} remaining");
+            //print($"Started next subwave delay, there are {_subwaves.Count} remaining");
         }
 
-        print("Actually started subwave");
+        //print("Actually started subwave");
         //Start subwave
 
 
@@ -291,7 +293,7 @@ public class EnemyManager : MonoBehaviour
         if (_currentWaves.Contains(self) == false)
             _currentWaves.Add(self);
         int count = wave.toSpawn.Count;
-        print($"Pool of {count} in wave {CurrentWave}. Subwaves remaining {_subwaves.Count}");
+        //print($"Pool of {count} in wave {CurrentWave}. Subwaves remaining {_subwaves.Count}");
         float time = Time.time;
         //While there are still enemies to spawn, keep spawning
         while (wave.toSpawn.Count > 0)

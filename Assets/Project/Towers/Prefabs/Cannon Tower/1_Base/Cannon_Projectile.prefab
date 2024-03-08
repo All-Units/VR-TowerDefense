@@ -124,6 +124,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 35
+  DamageVariability: 2
   speed: 50
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
@@ -136,7 +137,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  splashRadius: 3
+  splashRadius: 10
   hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
@@ -145,15 +146,33 @@ MonoBehaviour:
     - serializedVersion: 3
       time: -0.004573574
       value: 0.99475145
-      inSlope: -2.790245
-      outSlope: -2.790245
+      inSlope: 0.04839807
+      outSlope: 0.04839807
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.11060789
+      outWeight: 1
     - serializedVersion: 3
-      time: 1
-      value: 0.025829673
+      time: 0.13331757
+      value: 0.9953298
+      inSlope: -0.008716471
+      outSlope: -0.008716471
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0.19845462
+    - serializedVersion: 3
+      time: 0.5301845
+      value: 0.80329615
+      inSlope: -1.3906863
+      outSlope: -1.3906863
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3735323
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.9805908
+      value: 0.48832357
       inSlope: -0.0012240435
       outSlope: -0.0012240435
       tangentMode: 0
@@ -325,6 +344,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: c7dacfcf883b23441be4f465a1423df5, type: 3}
   - {fileID: 8300000, guid: 4031ae53fc671f6449a92c1e661e4728, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
@@ -459,6 +479,7 @@ MonoBehaviour:
   _clips:
   - {fileID: 8300000, guid: ef155ce290061f74b806f13f3528d6c3, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 1
   playOnEnable: 0
   loop: 0

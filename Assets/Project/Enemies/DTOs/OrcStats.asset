@@ -21,12 +21,13 @@ MonoBehaviour:
   MinRagdollYForce: 4.5
   MinRange: 20
   MaxRange: 30
-  Damage: 40
+  Damage: 15
+  DamageVariability: 5
   attackThreshold: 4
   MinPowerAttackTime: 2
   PowerAttackTime: 1
-  PowerAttackChance: 0.3
-  PowerAttackScalar: 2
+  PowerAttackChance: 0.2
+  PowerAttackScalar: 1.3
   MoveSpeed: 100
   MoveSpeedVariance: 0.4
   rotateDamping: 1

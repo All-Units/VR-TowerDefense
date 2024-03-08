@@ -25,6 +25,8 @@ public class ProjectileTower : PlayerControllableTower
 
     private ProjectileTower_SO projectileTowerSo => dto as ProjectileTower_SO;
 
+    public float ProjectileSpeed => projectileTowerSo.projectile.speed;
+
     protected override void Awake()
     {
         base.Awake();
@@ -67,15 +69,26 @@ public class ProjectileTower : PlayerControllableTower
         if (_currentCooldown <= 0)
         {
             if (!targetingSystem.HasTarget()) return;
+            StartCoroutine(_FireAfterDelay());
             
-            Fire();
+            //Fire();
         }
         else
         {
             _currentCooldown -= Time.deltaTime;
         }
     }
-    public Transform GetCurrentTarget => (targetingSystem.HasTarget()) ? targetingSystem.GetOldestTarget().transform : null;
+    bool _isFiring = false;
+    IEnumerator _FireAfterDelay()
+    {
+        if (_isFiring) yield break;
+        _isFiring = true;
+        yield return new WaitForSeconds(0.2f);
+        Fire();
+        _isFiring = false;
+    }
+    public Transform GetCurrentTarget => 
+        (targetingSystem.HasTarget()) ? targetingSystem.GetClosestTarget(transform.position).transform : null;
     public float GetHeightOffset => enemyHeightOffset;
     private void AimAtTarget()
     {

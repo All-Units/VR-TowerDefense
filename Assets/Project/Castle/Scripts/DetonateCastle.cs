@@ -13,6 +13,7 @@ public class DetonateCastle : MonoBehaviour
     void Start()
     {
         instance = this;
+        if (GameStateManager.instance == null) return;
         GameStateManager.instance.OnGameLose += Detonate;
     }
     static DetonateCastle instance;

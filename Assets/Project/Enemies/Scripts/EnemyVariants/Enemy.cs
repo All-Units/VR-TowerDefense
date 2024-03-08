@@ -27,6 +27,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
     public float _RotateDamping => enemyStats.rotateDamping;
     public float _attackThreshold => enemyStats.attackThreshold;
     public int _damage => enemyStats.Damage;
+    public int _damageVar => enemyStats.DamageVariability;
     public int _health => enemyStats.Health;
     [HideInInspector]
     public bool _IsAttacking = false;
@@ -720,13 +721,15 @@ public abstract class Enemy : MonoBehaviour, IPausable
     public virtual void Impact()
     {
         if (currentTarget == null) return;
-        if (Time.frameCount - _lastAttackFrame <= 4) return;
+        if (Time.frameCount - _lastAttackFrame <= 12) return;
         _lastAttackFrame = Time.frameCount;
         attackSFXController.PlayClip();
         float dmg = _damage;
+
         if (_IsPowerAttacking)
             dmg *= enemyStats.PowerAttackScalar;
-        currentTarget.GetHealthController().TakeDamage((int)dmg);
+        int damage = (int)dmg + Random.Range(_damageVar * -1, _damageVar);
+        currentTarget.GetHealthController().TakeDamage(damage);
 
     }
     public virtual void AttackVocalization()

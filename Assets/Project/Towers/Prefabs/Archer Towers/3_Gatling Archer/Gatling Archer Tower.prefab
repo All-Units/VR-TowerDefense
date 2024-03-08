@@ -765,8 +765,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 434442147531590488}
-  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
-  m_LocalPosition: {x: -0.039, y: 1.39, z: -1.3}
+  m_LocalRotation: {x: -0, y: -0, z: 1, w: 0}
+  m_LocalPosition: {x: -0.038999915, y: 0, z: -1.3}
   m_LocalScale: {x: 4.63, y: 4.63, z: 4.63}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -777,7 +777,7 @@ Transform:
   - {fileID: 2147555312544028397}
   - {fileID: 2676884331310811858}
   - {fileID: 7804958637227530788}
-  m_Father: {fileID: 7909712038951667230}
+  m_Father: {fileID: 7432124945340088849}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!1 &1137012648799956248
@@ -1717,6 +1717,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalColor: {r: 0.8490566, g: 0.43117452, b: 0.33241364, a: 1}
+--- !u!1 &1631461591384532352
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2448600694071413275}
+  m_Layer: 0
+  m_Name: FirePoint (1)
+  m_TagString: Untagged
+  m_Icon: {fileID: 7174288486110832750, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2448600694071413275
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1631461591384532352}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5749997, z: 4.185}
+  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7432124945340088849}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1718722937104859695
 GameObject:
   m_ObjectHideFlags: 0
@@ -16555,19 +16586,22 @@ MonoBehaviour:
         m_CallState: 2
   removeFromDict: 1
   playerControlPosition: {fileID: 6633924381212461763}
-  targetingSystem: {fileID: 6674742477994217249}
-  firePoint: {fileID: 5189835444252146732}
-  pivotPoint: {fileID: 7909712038951667230}
-  enemyHeightOffset: 2
-  attackVFX: {fileID: 0}
-  turretModel: {fileID: 7390162474951515300}
-  playerPlatform: {fileID: 3959487174918953517}
   onTakeover:
     m_PersistentCalls:
       m_Calls: []
   onRelease:
     m_PersistentCalls:
       m_Calls: []
+  targetingSystem: {fileID: 6674742477994217249}
+  firePoint: {fileID: 2448600694071413275}
+  auxFirePoints: []
+  pivotPoint: {fileID: 7909712038951667230}
+  enemyHeightOffset: 2
+  attackVFX: {fileID: 0}
+  turretModel: {fileID: 7390162474951515300}
+  playerPlatform: {fileID: 3959487174918953517}
+  ammo: -1
+  reloadTime: 2
 --- !u!114 &5764481117411547575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -22796,6 +22830,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finalColor: {r: 0.8490566, g: 0.43117452, b: 0.33241364, a: 1}
+--- !u!1 &8351880802433208954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7432124945340088849}
+  m_Layer: 0
+  m_Name: GunParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7432124945340088849
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8351880802433208954}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.39, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 3499602544101914581}
+  - {fileID: 2448600694071413275}
+  m_Father: {fileID: 7909712038951667230}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8684836895915128071
 GameObject:
   m_ObjectHideFlags: 0
@@ -24446,11 +24513,11 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6075051233193365921, guid: 922fda5a0cb1e27419be8b5437390c71,
         type: 3}
       insertIndex: 0
-      addedObject: {fileID: 7398327412300848015}
+      addedObject: {fileID: 7432124945340088849}
     - targetCorrespondingSourceObject: {fileID: 6075051233193365921, guid: 922fda5a0cb1e27419be8b5437390c71,
         type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3499602544101914581}
+      insertIndex: 1
+      addedObject: {fileID: 7398327412300848015}
     - targetCorrespondingSourceObject: {fileID: 2848265863952078528, guid: 922fda5a0cb1e27419be8b5437390c71,
         type: 3}
       insertIndex: -1
@@ -24464,16 +24531,14 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 652624083628795091}
+    - targetCorrespondingSourceObject: {fileID: 6846942873300650779, guid: 922fda5a0cb1e27419be8b5437390c71,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6010734238377207729}
   m_SourcePrefab: {fileID: 100100000, guid: 922fda5a0cb1e27419be8b5437390c71, type: 3}
 --- !u!4 &2165397370751041919 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2848265863952078528, guid: 922fda5a0cb1e27419be8b5437390c71,
-    type: 3}
-  m_PrefabInstance: {fileID: 4146157030057596863}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &5189835444252146732 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 8183009801281940371, guid: 922fda5a0cb1e27419be8b5437390c71,
     type: 3}
   m_PrefabInstance: {fileID: 4146157030057596863}
   m_PrefabAsset: {fileID: 0}
@@ -24504,6 +24569,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6010734238377207729
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7390162474951515300}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828303638d7282f46bffe8c89b05debe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunParent: {fileID: 7432124945340088849}
+  CurrentTarget: {x: 0, y: 0, z: 0}
 --- !u!4 &7909712038951667230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6075051233193365921, guid: 922fda5a0cb1e27419be8b5437390c71,

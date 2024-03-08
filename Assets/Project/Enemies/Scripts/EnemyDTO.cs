@@ -28,6 +28,7 @@ public class EnemyDTO : ScriptableObject
     public int MaxRange = 2;
 
     public int Damage = 1;
+    public int DamageVariability = 1;
     public float attackThreshold = 1.2f;
 
     [Header("Power attack variables")]
