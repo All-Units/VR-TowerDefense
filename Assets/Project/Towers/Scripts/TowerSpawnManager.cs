@@ -48,6 +48,11 @@ namespace Project.Towers.Scripts
             if (ghostObjects.ContainsKey(currentTower) == false)
             {
                 ghostObjects.Add(currentTower, Instantiate(currentTower.ghostObject, ghostsRoot));
+                TowerRangeVisualization rangeVZ = ghostObjects[currentTower].GetComponentInChildren<TowerRangeVisualization>();
+                if (rangeVZ != null && currentTower is ProjectileTower_SO projectile)
+                {
+                    rangeVZ.SetStats(projectile);
+                }
             }
             
             ghostObjects[currentTower].transform.position = targetPos;

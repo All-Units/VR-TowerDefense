@@ -14,15 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 6
   KillValue: 15
-  Health: 20
+  Health: 70
   RagdollTime: 12
   RagdollForce: 35
   MaxRagdollForce: 60
   MinRagdollYForce: 4.5
-  MinRange: 20
-  MaxRange: 30
-  Damage: 2
-  attackThreshold: 18
+  MinRange: 18
+  MaxRange: 25
+  Damage: 4
+  DamageVariability: 1
+  attackThreshold: 14
   MinPowerAttackTime: 2
   PowerAttackTime: 1
   PowerAttackChance: 0.3

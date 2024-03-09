@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c7753b4123e1e4a94c9b18a65ad6b3, type: 3}
   m_Name: demo_normal
   m_EditorClassIdentifier: 
-  StartingGold: 50
+  StartingGold: 500
   enemyPrefabs:
   - prefab: {fileID: 6162612218955197706, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
       type: 3}
@@ -37,24 +37,24 @@ MonoBehaviour:
   waveStructs:
   - enemies:
     - enemyType: 1
-      amountToSpawn: {x: 6, y: 9}
+      amountToSpawn: {x: 7, y: 9}
     subWaves: []
     WaveCompleteBounty: 150
-    preWaveDelay: 30
+    preWaveDelay: 10
     groupSizes: {x: 1, y: 4}
     spawnRate: 20
     spawnPoints:
     - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
   - enemies:
     - enemyType: 1
-      amountToSpawn: {x: 19, y: 20}
+      amountToSpawn: {x: 10, y: 12}
     - enemyType: 6
-      amountToSpawn: {x: 10, y: 10}
+      amountToSpawn: {x: 5, y: 7}
     subWaves: []
     WaveCompleteBounty: 175
-    preWaveDelay: 60
-    groupSizes: {x: 7, y: 10}
-    spawnRate: 11
+    preWaveDelay: 45
+    groupSizes: {x: 3, y: 7}
+    spawnRate: 16
     spawnPoints: []
   - enemies:
     - enemyType: 1

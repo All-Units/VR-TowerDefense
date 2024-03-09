@@ -81,7 +81,14 @@ public class GuidedMissileController : MonoBehaviour
 
     private IEnumerator ExplodeAfterSeconds(float sec)
     {
-        yield return new WaitForSeconds(sec);
+        float t = 0f;
+        while (t < sec)
+        {
+            if (XRPauseMenu.IsPaused == false)
+                t += Time.deltaTime;
+            yield return null;
+        }
+        //yield return new WaitForSeconds(sec);
         
         if(TryGetComponent(out AOEProjectile aoeProjectile))
             aoeProjectile.ManualExplode();

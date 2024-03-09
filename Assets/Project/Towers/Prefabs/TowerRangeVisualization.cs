@@ -4,7 +4,11 @@ using UnityEngine;
 public class TowerRangeVisualization : MonoBehaviour
 {
     [SerializeField] private ProjectileTower_SO stats;
-
+    public void SetStats(ProjectileTower_SO stats)
+    {
+        this.stats = stats;
+        SetScale();
+    }
     private void Start()
     {
         SetScale();

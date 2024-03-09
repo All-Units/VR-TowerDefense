@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ghostObject: {fileID: 6139709382012762173, guid: 6a2fb45205d1efb41b077425cc5bfed7,
     type: 3}
-  towerPrefab: {fileID: 7502261813038807644, guid: d339032daa9dbbd43b1b9fb9a8c337e6,
+  towerPrefab: {fileID: 5911623264021740989, guid: d339032daa9dbbd43b1b9fb9a8c337e6,
     type: 3}
   iconPrefab: {fileID: 2507574902089980903, guid: b9ef5d7630abb714a80f9a6fb830a944,
     type: 3}
@@ -23,14 +23,16 @@ MonoBehaviour:
   name: Mage
   description: Uses arcane arts to incinerate foes
   cost: 35
-  maxHeath: 100
+  maxHeath: 150
   upgrades:
   - upgrade: {fileID: 11400000, guid: 71f95904e8108f343960dfeaa435a2b8, type: 2}
     cost: 0
   - upgrade: {fileID: 11400000, guid: b6c94b25ddad4694db2cd20b5a08df01, type: 2}
     cost: 0
-  radius: 25
-  shotCooldown: 0.8
-  projectile: {fileID: 3071368436360838454, guid: 9c9f192521bb8974da284192094fb318,
+  radius: 30
+  shotCooldown: 1.5
+  projectile: {fileID: 3134687800318391017, guid: 9c9f192521bb8974da284192094fb318,
+    type: 3}
+  PlayerProjectile: {fileID: 8805872072579189874, guid: 03d46066c234adc428a66ce9935b1603,
     type: 3}
   playerItem_SO: {fileID: 11400000, guid: 33ed99ef6a51c634c941e18862293003, type: 2}

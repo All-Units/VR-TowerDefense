@@ -5,6 +5,7 @@ using UnityEngine;
 public class TowerAimer : MonoBehaviour
 {
     [SerializeField] Transform gunParent;
+    public bool CalculateArc = true;
     ProjectileTower tower;
     // Start is called before the first frame update
     void Start()
@@ -20,7 +21,7 @@ public class TowerAimer : MonoBehaviour
         _AimTower();
     }
     Vector3 _lastTarget;
-    bool BASIC = true;
+    bool BASIC = false;
     void _AimTower()
     {
         if (tower == null || tower.GetCurrentTarget == null) return;
@@ -44,11 +45,13 @@ public class TowerAimer : MonoBehaviour
         Vector3 ballisticTarget = solve_ballistic_arc(pos, tower.ProjectileSpeed, target);
         CurrentTarget = ballisticTarget;
         ballisticTarget += pos;
+        if (CalculateArc == false)
+            ballisticTarget = target;
         gunParent.LookAt(ballisticTarget);
     }
     private void OnDrawGizmos()
     {
-        return;
+        //return;
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(pos, _lastTarget);
 

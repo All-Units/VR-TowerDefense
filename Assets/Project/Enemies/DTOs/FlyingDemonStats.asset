@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   KillValue: 15
-  Health: 70
+  Health: 150
   RagdollTime: 12
   RagdollForce: 35
   MaxRagdollForce: 60
@@ -22,6 +22,7 @@ MonoBehaviour:
   MinRange: 30
   MaxRange: 40
   Damage: 15
+  DamageVariability: 1
   attackThreshold: 25
   MinPowerAttackTime: 2
   PowerAttackTime: 1
@@ -33,3 +34,9 @@ MonoBehaviour:
   targetTolerance: 1
   CheckForNeighborsRate: 0.5
   StuckAngleOffset: 15
+  VocalizationCheckRate: 1
+  VocalizationChance: 0.3
+  AttackVocalizationChance: 0.3
+  resistancesWeakness:
+    resistances: []
+    weaknesses: []

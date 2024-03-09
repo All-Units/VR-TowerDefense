@@ -5,6 +5,8 @@ using UnityEngine;
 public enum StatusEffectType
 {
     Burn,
+    Burn2,
+    Burn3,
     Freeze,
     Poison
 }
@@ -25,12 +27,12 @@ public class StatusEffectController : MonoBehaviour
 
     #region Burn Effect
 
-    public void ApplyBurn()
+    public void ApplyBurn(int scalar = 1)
     {
         if (_burnCoroutine == null)
         {
             _burnTime = 0;
-            _burnCoroutine = StartCoroutine(BurnEffect());
+            _burnCoroutine = StartCoroutine(BurnEffect(scalar));
         }
         else
         {
@@ -43,7 +45,7 @@ public class StatusEffectController : MonoBehaviour
     private int _burnLevel = 0;
     private float _burnTime = 0;
     public float burnTimeLevelUp = 3.5f;
-    private IEnumerator BurnEffect()
+    private IEnumerator BurnEffect(int scalar = 1)
     {
         _burnCountdown = 5f;
         _burnLevel = 1;
@@ -52,9 +54,12 @@ public class StatusEffectController : MonoBehaviour
         while (_burnCountdown > 0)
         {
             if (XRPauseMenu.IsPaused) { yield return null; continue; }
-            _healthController.TakeDamage(5 * _burnLevel);
+            
             var startTime = Time.time;
             yield return new WaitForSeconds(1f);
+            Vector3 forward = _healthController.transform.position + _healthController.transform.forward;
+            if (_healthController.isDead == false)
+                _healthController.TakeDamageFrom(5 * _burnLevel * scalar, forward);
             var elapsedTime = Time.time - startTime;
             _burnCountdown -= elapsedTime;
             _burnTime += elapsedTime;
@@ -115,6 +120,13 @@ public class StatusEffectController : MonoBehaviour
         {
             case StatusEffectType.Burn:
                 ApplyBurn();
+                break;
+
+            case StatusEffectType.Burn2:
+                ApplyBurn(2);
+                break;
+            case StatusEffectType.Burn3:
+                ApplyBurn(3);
                 break;
             case StatusEffectType.Freeze:
                 break;
