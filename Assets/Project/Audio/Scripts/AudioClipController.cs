@@ -67,6 +67,10 @@ public class AudioClipController : MonoBehaviour
         _audioSource.pitch = initialPitch + Random.Range(-_maxInclusivePitchVariance, _maxInclusivePitchVariance);
         _audioSource.volume = initialVolume + Random.Range(-_maxVolumeVariance, _maxVolumeVariance);
         _audioSource.Play();
+        if (this.name != "")
+        {
+            print($"{this.name} played clip {clip.name}");
+        }
     }
 
     public void Stop()

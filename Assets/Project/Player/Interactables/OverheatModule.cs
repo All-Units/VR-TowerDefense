@@ -24,7 +24,7 @@ public class OverheatModule : MonoBehaviour
     public UnityEvent OnCoolDown;
     public UnityEvent<float> OnHeatChange;
 
-
+    public float CurrentHeat;
     #region Unity Interface
 
     private void Start()
@@ -33,21 +33,24 @@ public class OverheatModule : MonoBehaviour
         if(projectileSpawner)
             projectileSpawner.OnFire += ProjectileSpawnerOnFire;
         
-        _rb = GetComponent<Rigidbody>();
+        if (_rb == null)
+            _rb = GetComponent<Rigidbody>();
     }
 
+    Vector3 lastPos = Vector3.zero;
     private void Update()
     {
         if(currentHeat <= 0.01) return;
-
         var rate = 1 / cooldownRate * Time.deltaTime * _rb.velocity.magnitude;
-        currentHeat = Mathf.Max(0, currentHeat-rate);
-        //Debug.Log($"Coolingdown: {currentHeat} | vel: {_rb.velocity.magnitude} : rate: {rate}");
+        //var rate = 1 / cooldownRate * Time.deltaTime * deltaP;
+        currentHeat = Mathf.Max(0, currentHeat - rate);
+        
         if (_isOverheated && currentHeat < shotsToOverheat / 3f)
         {
             _isOverheated = false;
             OnCoolDown?.Invoke();
         }
+        CurrentHeat = currentHeat;
     }
 
     #endregion

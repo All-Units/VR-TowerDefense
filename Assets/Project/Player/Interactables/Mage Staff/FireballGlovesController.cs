@@ -61,6 +61,7 @@ public class FireballGlovesController : MonoBehaviour
                 // Fire();
                 ResetChargingSequence();
         }
+        chargingSFX.Stop();
     }
         
     private void ResetChargingSequence()

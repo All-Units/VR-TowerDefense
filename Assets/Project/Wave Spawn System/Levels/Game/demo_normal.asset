@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d2c7753b4123e1e4a94c9b18a65ad6b3, type: 3}
   m_Name: demo_normal
   m_EditorClassIdentifier: 
-  StartingGold: 500
+  StartingGold: 50
   enemyPrefabs:
   - prefab: {fileID: 6162612218955197706, guid: 5f98a3d2e574bce4f8b7c2f09c10e9fc,
       type: 3}
@@ -67,8 +67,8 @@ MonoBehaviour:
         amountToSpawn: {x: 6, y: 6}
       delayType: 1
       DelayCount: 10
-      groupSizes: {x: 3, y: 5}
-      spawnRate: 5
+      groupSizes: {x: 2, y: 4}
+      spawnRate: 8
       spawnPoints: []
     WaveCompleteBounty: 200
     preWaveDelay: 60

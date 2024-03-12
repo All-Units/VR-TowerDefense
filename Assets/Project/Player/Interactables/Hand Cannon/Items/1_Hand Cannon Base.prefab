@@ -353,8 +353,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.14
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Radius: 0.09377091
+  m_Center: {x: 1.3840783e-18, y: -3.360162e-11, z: -0.046229094}
 --- !u!114 &7778364217898095705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -734,6 +734,7 @@ MonoBehaviour:
   rb: {fileID: 5345556446942606926}
   resetTime: 2
   offset: {x: 0, y: 3, z: 0.5}
+  playerItem: {fileID: 0}
 --- !u!114 &6177030936540311249
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -758,7 +759,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a96290dbc76349cd9f7f2df529df5036, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ProjectilePrefab: {fileID: 3071368436360838454, guid: 0218e705bfe6b5a4aaf44aa4aaee223e,
+  m_ProjectilePrefab: {fileID: 7266871477423056714, guid: 0218e705bfe6b5a4aaf44aa4aaee223e,
     type: 3}
   m_StartPoint: {fileID: 8047319213455469517}
   m_LaunchSpeed: 500
@@ -825,6 +826,7 @@ MonoBehaviour:
   OnHeatChange:
     m_PersistentCalls:
       m_Calls: []
+  CurrentHeat: 0
 --- !u!1001 &1780534016647336556
 PrefabInstance:
   m_ObjectHideFlags: 0

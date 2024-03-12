@@ -61,7 +61,9 @@ public class AOEProjectile : Projectile
         if(hitParticles)
         {
             var particles = Instantiate(hitParticles, pos, Quaternion.identity);
-            Destroy(particles, 2f);
+            particles.SetActive(true);
+            particles.DestroyAfter(2f);
+            //Destroy(particles, 2f);
         }
 
         validDestroy = true;

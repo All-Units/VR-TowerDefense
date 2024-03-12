@@ -89,13 +89,50 @@ public class RoundGUI : MonoBehaviour
         _RefreshTexts();
         GameObject spawned = Instantiate(go, transform);
         spawned.SetActive(true);
-        spawned.transform.position = pos;
-        spawned.transform.LookAt(pos + dir);
+        _RepositionPanel(spawned);
+        
+        //spawned.transform.position = pos;
+        //spawned.transform.LookAt(pos + dir);
         //spawned.transform.LookAt(pos - dir);
-        Destroy(spawned, displayTime);
-        //go.SetActive(true);
-        //yield return new WaitForSeconds(displayTime);
-        //go.SetActive(false);
+        spawned.DestroyAfter(displayTime);
+        //Destroy(spawned, displayTime);
+        
         yield break;
+    }
+
+    void _RepositionPanel(GameObject panel)
+    {
+        if (InventoryManager.instance == null) return;
+        Transform cam = InventoryManager.instance.playerCameraTransform;
+
+        
+        Vector3 dir = cam.transform.forward; dir.y = 0f;
+        dir = dir.normalized * distanceFromPlayer;
+        Vector3 center = cam.transform.position + dir;
+        panel.transform.position = center;
+
+        Transform bottom = panel.transform.Find("bottom");
+        if (bottom == null) { Debug.LogError("no bottom!"); return;}
+        Vector3 pos = center + dir;
+        RaycastHit hit;
+        LayerMask mask = LayerMask.GetMask("Ground");
+        if (Physics.Raycast(pos + Vector3.up * 100f, Vector3.down, out hit, float.PositiveInfinity, mask))
+        {
+            //print($"HIT Y: {hit.point.y}, bottom y was {bottom.position.y}");
+            if (hit.point.y > bottom.position.y)
+            {
+                //float offset = Mathf.Max(height, 0.3f);
+                float offset = 0.3f;
+                offset += Mathf.Abs(hit.point.y - bottom.position.y);
+                panel.transform.Translate(new Vector3(0f, offset, 0f));
+                print($"Panel was too low, moving up to {panel.transform.position.y}");
+            }
+            //if (hit.point.y > canvasPos.y)
+        }
+        Vector3 target = pos + dir;
+        target.y = panel.transform.position.y;
+        panel.transform.LookAt(target);
+
+        
     }
 }
