@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "SO/Tower", fileName = "New Tower")]
 public class Tower_SO : ScriptableObject
 {
+    public bool IsUnlocked = true;
     [Header("Prefabs")]
     public GameObject ghostObject;
     public Tower towerPrefab;

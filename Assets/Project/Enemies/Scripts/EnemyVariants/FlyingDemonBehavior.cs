@@ -16,7 +16,6 @@ public class FlyingDemonBehavior : Enemy
     [SerializeField] private GameObject _fireballPrefab;
     [SerializeField] private Transform _firePoint;
 
-    [SerializeField] private float _fireRate = 1f;
 
 
     

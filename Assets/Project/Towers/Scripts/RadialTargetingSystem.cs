@@ -61,7 +61,9 @@ public class RadialTargetingSystem : MonoBehaviour
         }
         _lastCheckTime = Time.time;
         _CullTargets();
-        _lastClosestEnemy = _targetsInRange.OrderBy(t => Utilities.FlatDistance(t.transform.position, pos)).FirstOrDefault();
+        //Reorder targets by distance
+        _targetsInRange = _targetsInRange.OrderBy(t => Utilities.FlatDistance(t.transform.position, pos)).ToList();
+        _lastClosestEnemy = _targetsInRange.FirstOrDefault();
         return _lastClosestEnemy;
     }    
     

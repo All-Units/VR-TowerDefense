@@ -4,8 +4,11 @@
 public class StatusModifier : ScriptableObject
 {
     public StatusEffectType effectType;
+    public int BurnScalar = 1;
+    public Color BurnColor = Color.blue;
     public void ApplyStatus(StatusEffectController controller)
     {
-        controller.ApplyStatus(effectType);
+        controller.BurnColor = BurnColor;
+        controller.ApplyStatus(effectType, BurnScalar);
     }
 }

@@ -22,10 +22,12 @@ public class Projectile : MonoBehaviour, IPausable
     public UnityEvent OnFire;
     public UnityEvent OnHit;
     private Vector3 startPos;
+    protected float timeCreated = 0f;
 
-    private void Awake()
+    void Awake()
     {
         OnInitPausable();
+        timeCreated = Time.time;
     }
     
     public void OnInitPausable()
@@ -60,7 +62,14 @@ public class Projectile : MonoBehaviour, IPausable
         if (isDestroying) return;
 
         if (other.collider.isTrigger) return;
-        
+        Tower tower = other.gameObject.GetComponentInParent<Tower>();
+        //If we were created too recently
+        if (tower != null && Time.time - timeCreated < 0.2f)
+        {
+            Debug.Log("Hit TOWER, returning");
+            return;
+        }
+
         OnCollision(other.collider);
     }
 

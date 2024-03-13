@@ -153,6 +153,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
     {
         _MoveSpeed = enemyStats.MoveSpeed + Random.Range(-enemyStats.MoveSpeedVariance, enemyStats.MoveSpeedVariance);
 
+        
+
 
         EnemyManager.EnemySpawned(this);
 
@@ -168,6 +170,8 @@ public abstract class Enemy : MonoBehaviour, IPausable
         StartCoroutine(_DelayRunAnim());
         StartCoroutine(_Vocalize());
         OnInitPausable();
+
+        
     }
     protected virtual void OnEnemyDie()
     {
@@ -180,9 +184,11 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
         _EnableRagdoll(true);
         gameObject.DestroyAfter(enemyStats.RagdollTime);
-        //StartCoroutine(gameObject._DestroyAfter(enemyStats.RagdollTime));
-        //Destroy(gameObject, enemyStats.RagdollTime);
 
+        StatusEffectController status = GetComponentInChildren<StatusEffectController>();
+        status.PointUpwards();
+        status.transform.parent = ragdollRB.transform;
+        status.transform.localPosition = new Vector3(0f, -1f, 0f);
 
         EnemyManager.EnemyKilled(this);
 

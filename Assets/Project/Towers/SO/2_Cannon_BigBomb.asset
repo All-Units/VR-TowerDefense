@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 2_Cannon_BigBomb
   m_EditorClassIdentifier: 
+  IsUnlocked: 0
   ghostObject: {fileID: 6139709382012762173, guid: e6d66c7f4b78e0c49be22cb13bba0a7e,
     type: 3}
   towerPrefab: {fileID: 7502261813038807644, guid: c6504cb70fea0b246801aec6038ce1a4,
@@ -33,4 +34,5 @@ MonoBehaviour:
   shotCooldown: 2
   projectile: {fileID: 3071368436360838454, guid: 564aa02aa7da8514199cecfa3b2f21ed,
     type: 3}
+  PlayerProjectile: {fileID: 0}
   playerItem_SO: {fileID: 11400000, guid: 0bff36d924c40054183a96ca1886d82f, type: 2}

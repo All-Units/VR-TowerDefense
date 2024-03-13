@@ -82,7 +82,14 @@ public class BubbleMenuController : MonoBehaviour
             takeoverOption.Initialize(TakeoverTower, "Takeover");
             
     }
+    void _Lock(BubbleMenuOption option, bool unlocked)
+    {
+        Transform lockTransform = option.transform.Find("lock");
+        if (lockTransform == null) return;
+        bool active = unlocked == false;
 
+        lockTransform.gameObject.SetActive(active);
+    }
     private void ListUpgrades()
     {
         if(_currentTower == null) return;
@@ -90,6 +97,8 @@ public class BubbleMenuController : MonoBehaviour
         var towerUpgrades = _currentTower.dto.GetUpgrades();
         if(towerUpgrades.InRange(0))
         {
+            bool unlocked = towerUpgrades[0].upgrade.IsUnlocked;
+            _Lock(upgradeOption1, unlocked);
             upgradeOption1.Initialize(() => Upgrade(towerUpgrades[0]), towerUpgrades[0].upgrade.name, towerUpgrades[0].upgrade.cost);
         }       
         else
@@ -99,6 +108,8 @@ public class BubbleMenuController : MonoBehaviour
         
         if(towerUpgrades.InRange(1))
         {
+            bool unlocked = towerUpgrades[1].upgrade.IsUnlocked;
+            _Lock(upgradeOption2, unlocked);
             upgradeOption2.Initialize(() => Upgrade(towerUpgrades[1]), towerUpgrades[1].upgrade.name, towerUpgrades[1].upgrade.cost);
         }   
         else
@@ -150,10 +161,12 @@ public class BubbleMenuController : MonoBehaviour
 
     public void Upgrade(TowerUpgrade towerUpgrade)
     {
+        if (towerUpgrade.upgrade.IsUnlocked == false) return;
         if (CurrencyManager.CanAfford(towerUpgrade.upgrade.cost) == false)
         {
             return;
         }
+        
         
         CurrencyManager.TakeFromPlayer(towerUpgrade.upgrade.cost);
         

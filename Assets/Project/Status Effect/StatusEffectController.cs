@@ -24,6 +24,24 @@ public class StatusEffectController : MonoBehaviour
     {
         _healthController = GetComponentInParent<HealthController>();
     }
+    public void PointUpwards()
+    {
+        if (_currentPointer != null) return;
+
+        _currentPointer = _PointUpwards();
+
+        StartCoroutine(_currentPointer);
+    }
+    IEnumerator _currentPointer = null;
+    IEnumerator _PointUpwards()
+    {
+        while (true)
+        {
+            //yield return null;
+            transform.LookAt(Vector3.forward);
+            yield return new WaitForFixedUpdate();
+        }
+    }
 
     #region Burn Effect
 
@@ -49,6 +67,16 @@ public class StatusEffectController : MonoBehaviour
     {
         _burnCountdown = 5f;
         _burnLevel = 1;
+
+        foreach (ParticleSystem particles in burnedVFX.GetComponentsInChildren<ParticleSystem>())
+        {
+            var main = particles.main;
+            main.startColor = BurnColor;
+        }
+        Light light = burnedVFX.GetComponentInChildren<Light>();
+        if (light != null)
+            light.color = BurnColor;
+
         burnedVFX.SetActive(true);
 
         while (_burnCountdown > 0)
@@ -113,8 +141,8 @@ public class StatusEffectController : MonoBehaviour
     }
 
     #endregion
-    
-    public void ApplyStatus(StatusEffectType effectType)
+    public Color BurnColor = Color.blue;
+    public void ApplyStatus(StatusEffectType effectType, int burnScalar = 1)
     {
         switch (effectType)
         {
@@ -123,10 +151,10 @@ public class StatusEffectController : MonoBehaviour
                 break;
 
             case StatusEffectType.Burn2:
-                ApplyBurn(2);
+                ApplyBurn(burnScalar);
                 break;
             case StatusEffectType.Burn3:
-                ApplyBurn(3);
+                ApplyBurn(burnScalar);
                 break;
             case StatusEffectType.Freeze:
                 break;

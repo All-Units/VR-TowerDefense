@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -106,7 +107,15 @@ public class ProjectileTower : PlayerControllableTower
         projectile.Fire();
         if (projectile.TryGetComponent(out GuidedMissileController missileController))
         {
-            missileController.SetTarget(targetingSystem._targetsInRange.GetRandom());
+            Enemy target = targetingSystem._targetsInRange.FirstOrDefault();
+            if (_currentMissileSelector == null)
+            {
+                _currentMissileSelector = _SelectMissileTarget();
+                StartCoroutine(_currentMissileSelector);
+            }
+            else
+                target = targetingSystem._targetsInRange.GetRandom();
+            missileController.SetTarget(target);
             missileController.HitTarget();
         }
 
@@ -137,6 +146,12 @@ public class ProjectileTower : PlayerControllableTower
             ReloadRoutine ??= StartCoroutine(Reload());
         
         _currentCooldown = projectileTowerSo.shotCooldown;
+    }
+    IEnumerator _currentMissileSelector = null;
+    IEnumerator _SelectMissileTarget()
+    {
+        yield return new WaitForSeconds(0.1f);
+        _currentMissileSelector = null;
     }
 
     private Coroutine ReloadRoutine;

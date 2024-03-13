@@ -122,13 +122,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104638594584595578}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.222, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5019431755062354500}
-  m_Father: {fileID: 236885190192564690}
+  m_Father: {fileID: 5054744097235143938}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1651136666334707494
@@ -162,6 +162,54 @@ Transform:
   m_Father: {fileID: 236885190192564690}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4693901818744512840
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5054744097235143938}
+  - component: {fileID: 3414679484174681367}
+  m_Layer: 6
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5054744097235143938
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4693901818744512840}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5189835444252146732}
+  m_Father: {fileID: 236885190192564690}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3414679484174681367
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4693901818744512840}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828303638d7282f46bffe8c89b05debe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunParent: {fileID: 5189835444252146732}
+  CalculateArc: 1
+  CurrentTarget: {x: 0, y: 0, z: 0}
 --- !u!1 &6139709382012762173
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +243,7 @@ Transform:
   m_Children:
   - {fileID: 3643351647694275510}
   - {fileID: 1935618362086948033}
-  - {fileID: 5189835444252146732}
+  - {fileID: 5054744097235143938}
   - {fileID: 6552465084251445191}
   - {fileID: 6208005074393136047}
   - {fileID: 2335260489334345643}
