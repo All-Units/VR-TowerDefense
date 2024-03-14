@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class Projectile : MonoBehaviour, IPausable
 {
@@ -63,10 +64,11 @@ public class Projectile : MonoBehaviour, IPausable
 
         if (other.collider.isTrigger) return;
         Tower tower = other.gameObject.GetComponentInParent<Tower>();
+        XRGrabInteractable grab = other.gameObject.GetComponentInParent<XRGrabInteractable>();
         //If we were created too recently
-        if (tower != null && Time.time - timeCreated < 0.2f)
+        if ((tower != null || grab != null) && Time.time - timeCreated < 0.2f)
         {
-            Debug.Log("Hit TOWER, returning");
+            Debug.Log("Hit TOWER or GRAB, returning");
             return;
         }
 
