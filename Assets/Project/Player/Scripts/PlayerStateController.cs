@@ -43,6 +43,9 @@ public class PlayerStateController : MonoBehaviour
     private bool _joiningTower;
     [SerializeField] private bool StartInPenthouse = false;
 
+    public Action<PlayerControllableTower> OnPlayerTakeoverTower;
+    public Action OnPlayerReleaseTower;
+
     private void Awake()
     {
         instance = this;
@@ -77,7 +80,7 @@ public class PlayerStateController : MonoBehaviour
     { 
         if(_currentControlledTower != null)
             _currentControlledTower.PlayerReleaseControl();
-        
+        OnPlayerTakeoverTower.Invoke(tower);
         _currentControlledTower = tower;
         tower.PlayerTakeControl();
         _joiningTower = true;
@@ -110,7 +113,7 @@ public class PlayerStateController : MonoBehaviour
         instance._fadeScreen.FadeIn();
         
     }
-    private static void ReleaseControlOfTower()
+    public static void ReleaseControlOfTower()
     {
         if(IsInstanced() == false) return;
         
@@ -132,8 +135,24 @@ public class PlayerStateController : MonoBehaviour
         
         InventoryManager.instance.ReleaseAllItems();
         InventoryManager.HideAllItems();
+
+        OnPlayerReleaseTower?.Invoke();
     }
     
+    public static void TeleportPlayerToPoint(Vector3 pos, Quaternion rot)
+    {
+        if (IsInstanced() == false) return;
+        TeleportRequest request = new TeleportRequest()
+        {
+            requestTime = Time.time,
+            matchOrientation = MatchOrientation.TargetUpAndForward,
+
+            destinationPosition = pos,
+            destinationRotation = rot
+        };
+
+        instance.teleportationProvider.QueueTeleportRequest(request);
+    }
     private void TeleportPlayerToPoint(Transform playerControlPoint)
     {
         TeleportRequest request = new TeleportRequest()

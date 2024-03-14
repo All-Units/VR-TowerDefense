@@ -261,6 +261,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunParent: {fileID: 4868303927819845361}
+  CalculateArc: 1
+  CurrentTarget: {x: 0, y: 0, z: 0}
 --- !u!33 &1453144134670938649
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -871,7 +873,7 @@ PrefabInstance:
     - target: {fileID: 562976872983492393, guid: 078e64b743a501649a607509884f5830,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.819
+      value: 2.37
       objectReference: {fileID: 0}
     - target: {fileID: 562976872983492393, guid: 078e64b743a501649a607509884f5830,
         type: 3}

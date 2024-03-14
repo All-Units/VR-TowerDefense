@@ -42,7 +42,6 @@ public class AOEProjectile : Projectile
 
     protected override void OnCollision(Collider other)
     {
-        Debug.Log($"AoE projectile hit {other.gameObject.name}. Full path: {other.transform.FullPath()}", other.gameObject);
         
         Vector3 pos = transform.position;
         var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask("Enemy"));

@@ -55,8 +55,7 @@ public class VolumeManager : MonoBehaviour
         string[] sliderTypes = new[] { "master", "soundtrack", "sfx" };
         foreach (string type in sliderTypes)
         {
-            if (PlayerPrefs.HasKey(type))
-                _SetVolume(type, PlayerPrefs.GetFloat(type));
+            _SetVolume(type, PlayerPrefs.GetFloat(type, 1f));
         }
         
     }

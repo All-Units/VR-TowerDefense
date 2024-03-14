@@ -96,7 +96,7 @@ public class InventoryManager : MonoBehaviour
             if (drop != null)
             {
                 drop.playerItem = playerItemType;
-                print($"Set {newWeapon.gameObject.name} player item to {playerItemType.name}");
+                //print($"Set {newWeapon.gameObject.name} player item to {playerItemType.name}");
             }
         }
 

@@ -69,7 +69,7 @@ public class AudioClipController : MonoBehaviour
         _audioSource.Play();
         if (this.name != "")
         {
-            print($"{this.name} played clip {clip.name}");
+            //print($"{this.name} played clip {clip.name}");
         }
     }
 

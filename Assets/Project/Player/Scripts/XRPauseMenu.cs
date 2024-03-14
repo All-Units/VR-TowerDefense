@@ -161,9 +161,9 @@ public class XRPauseMenu : MonoBehaviour
             {
 
                 //The slider needs to load the value from cache
-                if (slider.gameObject.name.Contains(type) && PlayerPrefs.HasKey(type))
+                if (slider.gameObject.name.Contains(type))
                 {
-                    slider.value = PlayerPrefs.GetFloat(type);
+                    slider.value = PlayerPrefs.GetFloat(type, 1f);
                     slider.onValueChanged.Invoke(slider.value);
                 }
             }

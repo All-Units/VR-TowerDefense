@@ -15,6 +15,7 @@ public class HealthbarController : MonoBehaviour
     private bool _isShowing = false;
     public bool AlwaysShowing;
     PlayerControllableTower controllableTower;
+    bool IsPlayerControlled => controllableTower != null && controllableTower.isPlayerControlled;
 
     private void Start()
     {
@@ -39,13 +40,13 @@ public class HealthbarController : MonoBehaviour
         var tower = GetComponentInParent<Tower>();
         if (tower)
         {
-            tower.OnSelected += () => slider.gameObject.SetActive(false);
-            tower.OnDeselected += () => slider.gameObject.SetActive(true);
+            tower.OnSelected += _Disable;
+            tower.OnDeselected += _Enable;
             
             if (tower is ProjectileTower projectileTower)
             {
-                projectileTower.onTakeover.AddListener(() => slider.gameObject.SetActive(false));
-                projectileTower.onRelease.AddListener(() => slider.gameObject.SetActive(true));
+                projectileTower.onTakeover.AddListener(_Disable);
+                projectileTower.onRelease.AddListener(_Enable);
             }
             
         }
@@ -63,18 +64,32 @@ public class HealthbarController : MonoBehaviour
 
         
     }
+    void _Disable()
+    {
+        slider.gameObject.SetActive(false);
+    }
+    void _Enable()
+    {
+
+        if (IsPlayerControlled) { return; }
+        slider.gameObject.SetActive(true);
+        if (healthController.CurrentHealth < healthController.MaxHealth)
+        {
+            _ShowInstantly();
+        }
+    }
     private void OnDestroy()
     {
         var tower = GetComponentInParent<Tower>();
         if (tower)
         {
-            tower.OnSelected -= () => slider.gameObject.SetActive(false);
-            tower.OnDeselected -= () => slider.gameObject.SetActive(true);
+            tower.OnSelected -= _Disable;
+            tower.OnDeselected -= _Enable;
 
             if (tower is ProjectileTower projectileTower)
             {
-                projectileTower.onTakeover.RemoveListener(() => slider.gameObject.SetActive(false));
-                projectileTower.onRelease.RemoveListener(() => slider.gameObject.SetActive(true));
+                projectileTower.onTakeover.RemoveListener(_Disable);
+                projectileTower.onRelease.RemoveListener(_Enable);
             }
 
         }
@@ -107,21 +122,10 @@ public class HealthbarController : MonoBehaviour
         if(_isShowing) return;
         if (gameObject.activeInHierarchy == false) return;
         StartCoroutine(Fade(.5f, true));
-        /*if (_currentFader != null)
-            StopCoroutine(_currentFader);
-        _currentFader = _FadeAfterDelay();
-        StartCoroutine(_currentFader);*/
+        
         _isShowing = true;
     }
-    /*IEnumerator _currentFader = null;
-    IEnumerator _FadeAfterDelay()
-    {
-
-        yield return new WaitForSeconds(HideAfter);
-        _currentFader = null;
-        Hide();
-
-    }*/
+    
 
     private void Hide()
     {
@@ -133,9 +137,14 @@ public class HealthbarController : MonoBehaviour
     }
     void HideInstantly()
     {
-        if (!_isShowing) return;
+        //if (!_isShowing) return;
         StartCoroutine(Fade(0f, false));
         _isShowing = false;
+    }
+    void _ShowInstantly()
+    {
+        StartCoroutine(Fade(0f, true));
+        _isShowing = true;
     }
     void _Destroy() { Destroy(gameObject); }
 
@@ -153,7 +162,8 @@ public class HealthbarController : MonoBehaviour
                 imageColor.a = fadeIn ? Mathf.Lerp(0, 1, t / time) : Mathf.Lerp(1, 0, t / time);
                 image.color = imageColor;
             }
-            
+            if (time == 0f)
+                break;
             yield return null;
             t -= Time.deltaTime;
         }
