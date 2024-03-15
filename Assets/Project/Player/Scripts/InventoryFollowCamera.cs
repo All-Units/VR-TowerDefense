@@ -1,27 +1,32 @@
+using System.Collections;
 using UnityEngine;
 
 public class InventoryFollowCamera : MonoBehaviour
 {
-    [SerializeField] private Transform camera;
-    [SerializeField] private float yOffset = -0.3f;
-    [SerializeField] private float yTowerOffset = -0.3f;
-    [SerializeField] private float rotateOffset = 90f;
-    [SerializeField] private float rotateDamping = 0.3f;
-    // Start is called before the first frame update
-    void Start()
+    
+    
+    [SerializeField] float timeToRotate = 0.5f;
+    [SerializeField] float rotateThreshold = 30f;
+    Transform cam => InventoryManager.instance.playerCameraTransform;
+    private void Start()
     {
-        _currentDampTime = rotateDamping;
+        PlayerStateController.instance.OnPlayerTakeoverTower += _OnPlayerTakeoverTower;
     }
-
-    private Vector3 _velocity = Vector3.zero;
-
-    private float _currentDampTime = 0f;
-
-    private Quaternion _target = Quaternion.identity;
-    private Quaternion _startRot = Quaternion.identity;
+    void _OnPlayerTakeoverTower(PlayerControllableTower tower)
+    {
+        transform.position = tower.transform.position;
+    }
     // Update is called once per frame
     void Update()
     {
+        float y = cam.eulerAngles.y;
+        float current = transform.eulerAngles.y;
+        if (Mathf.Abs(current - y) >= rotateThreshold)
+        {
+            _SnapToTarget(y);
+        }
+        return;
+        /*
         //Set our Y to camera Y
         Vector3 pos = camera.position;
         if (PlayerStateController.instance.state == PlayerState.IDLE)
@@ -45,11 +50,36 @@ public class InventoryFollowCamera : MonoBehaviour
             _currentDampTime = 0f;
         }
         
-        /*if (Quaternion.Angle(_startRot, _target) < 45)
-            return;*/
+        if (Quaternion.Angle(_startRot, _target) < 45)
+            return;
 
         transform.rotation = Quaternion.Lerp(_startRot, _target, (_currentDampTime / rotateDamping));
 
-        _currentDampTime += Time.deltaTime;
+        _currentDampTime += Time.deltaTime;*/
+    }
+    void _SnapToTarget(float targetY)
+    {
+        if (_currentRotator != null)
+            StopCoroutine(_currentRotator);
+        _currentRotator = _RotateToCamera(targetY);
+        StartCoroutine(_currentRotator);
+    }
+    IEnumerator _currentRotator = null;
+    IEnumerator _RotateToCamera(float targetY)
+    {
+        float startY = transform.eulerAngles.y;
+        //If we're currently less than target, we need to add
+        //If we're more, subtract
+        int sign = (startY < targetY) ? 1 : -1;
+
+        float t = 0f;
+        while (t < timeToRotate)
+        {
+            t += Time.deltaTime;
+            float y = Mathf.Lerp(startY, targetY, (t / timeToRotate));
+            transform.eulerAngles = new Vector3(0f, y, 0f);
+            yield return null;
+        }
+
     }
 }

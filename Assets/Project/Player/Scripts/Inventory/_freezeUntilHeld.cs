@@ -26,6 +26,7 @@ public class _freezeUntilHeld : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (mirrorPoint == null) return;
         if (enteredTip)
         {
             transform.position = new Vector3(0f, -1000f, 0f);

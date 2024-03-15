@@ -37,7 +37,6 @@ public class InTowerHealthbar : MonoBehaviour
             {
                 _SnapToTarget(y);
             }
-            //transform.eulerAngles = new Vector3(0f, y, 0f);
         }
     }
     void _SnapToTarget(float targetY)
@@ -63,9 +62,7 @@ public class InTowerHealthbar : MonoBehaviour
             transform.eulerAngles = new Vector3(0f, y, 0f);
             yield return null;
         }
-        //current += sign * Time.deltaTime * rotateSpeed;
-        //transform.eulerAngles = new Vector3(0f, current, 0f);
-        //yield return new WaitForSeconds(rotateThreshold);
+        
     }
     public void EjectFromTower()
     {
