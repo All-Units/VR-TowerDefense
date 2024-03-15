@@ -12,8 +12,6 @@ GameObject:
   - component: {fileID: 3808252444010694710}
   - component: {fileID: 4088459267946672605}
   - component: {fileID: 5628972293646612881}
-  - component: {fileID: 1806234328444671963}
-  - component: {fileID: 3390742561270071}
   - component: {fileID: -7051063008692687875}
   - component: {fileID: 2872828575579571665}
   - component: {fileID: 1394862805575704577}
@@ -57,9 +55,9 @@ MonoBehaviour:
   DamageVariability: 1
   speed: 20
   damageType: {fileID: 0}
-  statusModifier: {fileID: 11400000, guid: 99073a77292d19548b9f06b83dcf201a, type: 2}
-  _hitEnemy: {fileID: 1806234328444671963}
-  _hitGround: {fileID: 1806234328444671963}
+  statusModifier: {fileID: 11400000, guid: 82ab46198926a6a419520e7797f0f904, type: 2}
+  _hitEnemy: {fileID: 0}
+  _hitGround: {fileID: 0}
   flyingVFX: {fileID: 0}
   OnFire:
     m_PersistentCalls:
@@ -104,7 +102,7 @@ MonoBehaviour:
           m_BoolArgument: 1
         m_CallState: 2
   splashRadius: 15
-  hitParticles: {fileID: 2504214343621411470, guid: e8c58ca6dfd2c344da758d5fd792bfce,
+  hitParticles: {fileID: 8194992990867289339, guid: 60a3cdd0e8a46c1459fbff4c79b3cb6f,
     type: 3}
   damageDropOff:
     serializedVersion: 2
@@ -139,7 +137,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _audioClipController: {fileID: 1806234328444671963}
+  _audioClipController: {fileID: 0}
 --- !u!54 &4088459267946672605
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -188,46 +186,6 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.12
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &1806234328444671963
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8805872072579189874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3598f888e85115a45857a40b027a3e9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
-  _clips:
-  - {fileID: 8300000, guid: 34677211278f948499c7ca51ee2fe945, type: 3}
-  _maxInclusivePitchVariance: 0
-  _maxVolumeVariance: 0
-  playOnAwake: 0
-  playOnEnable: 0
-  loop: 0
---- !u!114 &3390742561270071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8805872072579189874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3598f888e85115a45857a40b027a3e9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  name: 
-  _clips:
-  - {fileID: 8300000, guid: 0c2cf896453970147ae4d7d8c9591f4b, type: 3}
-  _maxInclusivePitchVariance: 0
-  _maxVolumeVariance: 0
-  playOnAwake: 1
-  playOnEnable: 0
-  loop: 0
 --- !u!114 &-7051063008692687875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -516,12 +474,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a2130ae7d517da4ab412e7e69e4adae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  vertMin: 3
-  vertMax: 5
+  vertMin: 0.7
+  vertMax: 3
   spawnMin: 5
   spawnMax: 7
-  speedMin: -0.05
-  speedMax: -0.5
+  speedMin: -8
+  speedMax: -2
   spawnable: {fileID: 3808252444010694710, guid: 61d49a72f72dd574c8b041434e6f9b4d,
     type: 3}
 --- !u!1001 &7689600262530628409

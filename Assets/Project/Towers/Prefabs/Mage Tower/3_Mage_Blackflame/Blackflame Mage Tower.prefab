@@ -122,13 +122,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104638594584595578}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.13, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.94}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5019431755062354500}
-  m_Father: {fileID: 236885190192564690}
+  m_Father: {fileID: 5802474910626411306}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1651136666334707494
@@ -162,6 +162,54 @@ Transform:
   m_Father: {fileID: 236885190192564690}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &4342947843574706839
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5802474910626411306}
+  - component: {fileID: 2904108110742695311}
+  m_Layer: 6
+  m_Name: Rotate
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5802474910626411306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4342947843574706839}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.87, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5189835444252146732}
+  m_Father: {fileID: 236885190192564690}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2904108110742695311
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4342947843574706839}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 828303638d7282f46bffe8c89b05debe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunParent: {fileID: 5189835444252146732}
+  CalculateArc: 1
+  CurrentTarget: {x: 0, y: 0, z: 0}
 --- !u!1 &6139709382012762173
 GameObject:
   m_ObjectHideFlags: 0
@@ -195,7 +243,7 @@ Transform:
   m_Children:
   - {fileID: 3643351647694275510}
   - {fileID: 1935618362086948033}
-  - {fileID: 5189835444252146732}
+  - {fileID: 5802474910626411306}
   - {fileID: 6552465084251445191}
   - {fileID: 6208005074393136047}
   - {fileID: 2335260489334345643}
@@ -254,19 +302,22 @@ MonoBehaviour:
         m_CallState: 2
   removeFromDict: 1
   playerControlPosition: {fileID: 6208005074393136047}
-  targetingSystem: {fileID: 6674742477994217249}
-  firePoint: {fileID: 5189835444252146732}
-  pivotPoint: {fileID: 5189835444252146732}
-  enemyHeightOffset: 2
-  attackVFX: {fileID: 5018020794659350070}
-  turretModel: {fileID: 260109540466612344}
-  playerPlatform: {fileID: 789477411806127998}
   onTakeover:
     m_PersistentCalls:
       m_Calls: []
   onRelease:
     m_PersistentCalls:
       m_Calls: []
+  targetingSystem: {fileID: 6674742477994217249}
+  firePoint: {fileID: 5189835444252146732}
+  auxFirePoints: []
+  pivotPoint: {fileID: 5189835444252146732}
+  enemyHeightOffset: 2
+  attackVFX: {fileID: 5018020794659350070}
+  turretModel: {fileID: 260109540466612344}
+  playerPlatform: {fileID: 789477411806127998}
+  ammo: -1
+  reloadTime: 2
 --- !u!114 &5764481117411547575
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -9,11 +9,11 @@ public class ClusterController : MonoBehaviour
     [SerializeField] private float speedMin = 1, speedMax = 5;
     [SerializeField] private Projectile spawnable;
 
-
+    Vector3 pos;
     public void SpawnExtras()
     {
         var amountToSpawn = Random.Range(spawnMin, spawnMax);
-
+        pos = transform.position;
         for (int i = 0; i < amountToSpawn; i++)
         {
             SpawnAtRandomDirection();
@@ -25,9 +25,13 @@ public class ClusterController : MonoBehaviour
         var randomPointOnUnit = Utilities.RandomPointOnUnitCircle();
         var fireDirection = new Vector3(randomPointOnUnit.x, Random.Range(vertMin, vertMax), randomPointOnUnit.y).normalized;
 
-        var proj = Instantiate(spawnable, transform.position + fireDirection,
-            Quaternion.FromToRotation(transform.position, fireDirection));
-        proj.speed *= Random.Range(speedMin, speedMax);
+        /*var proj = Instantiate(spawnable, transform.position + fireDirection,
+            Quaternion.FromToRotation(transform.position, fireDirection));*/
+        var proj = Instantiate(spawnable, pos, Quaternion.identity);
+        proj.transform.LookAt(pos + fireDirection);
+        float speed = Random.Range(speedMin, speedMax);
+        print($"Launching blackflame cluster, start speed {proj.speed}, adding {speed} for a total of {proj.speed + speed}");
+        proj.speed += speed;
         proj.Fire();
     }
 }

@@ -67,11 +67,16 @@ public class StatusEffectController : MonoBehaviour
     {
         _burnCountdown = 5f;
         _burnLevel = 1;
-
+        bool first = true;
         foreach (ParticleSystem particles in burnedVFX.GetComponentsInChildren<ParticleSystem>())
         {
             var main = particles.main;
-            main.startColor = BurnColor;
+            Color c = BurnColor;
+            if (first == false && AltBurnColor != Color.white)
+                c = AltBurnColor;
+
+            main.startColor = c;
+            first = false;
         }
         Light light = burnedVFX.GetComponentInChildren<Light>();
         if (light != null)
@@ -142,6 +147,7 @@ public class StatusEffectController : MonoBehaviour
 
     #endregion
     public Color BurnColor = Color.blue;
+    public Color AltBurnColor = Color.white;
     public void ApplyStatus(StatusEffectType effectType, int burnScalar = 1)
     {
         switch (effectType)
