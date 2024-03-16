@@ -73,7 +73,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 100
-  speed: 5
+  DamageVariability: 1
+  speed: 45
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
   _hitEnemy: {fileID: 0}
@@ -98,7 +99,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   splashRadius: 1
-  hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
+  hitParticles: {fileID: 9017217224775942394, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
     serializedVersion: 2
