@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 1_Archer_Base
   m_EditorClassIdentifier: 
+  IsUnlocked: 1
   ghostObject: {fileID: 6139709382012762173, guid: 786403fc3ff8d9844b50481bbaba47ec,
     type: 3}
   towerPrefab: {fileID: 2475240149756036132, guid: 098da0d917b90c74190f028bf1ccba1e,
@@ -22,7 +23,7 @@ MonoBehaviour:
     type: 3}
   name: Archer
   description: Shoots arrows at foes
-  cost: 15
+  cost: 25
   maxHeath: 150
   upgrades:
   - upgrade: {fileID: 11400000, guid: cd9719d80a0f3914481939631efcc2ec, type: 2}

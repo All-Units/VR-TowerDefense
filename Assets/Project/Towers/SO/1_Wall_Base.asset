@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c0bfb5cd663ff84ba8f4b460e7e8cfc, type: 3}
   m_Name: 1_Wall_Base
   m_EditorClassIdentifier: 
+  IsUnlocked: 1
   ghostObject: {fileID: 1389164637993757956, guid: d04d1998d8327e94a8cbf1263855fe7c,
     type: 3}
   towerPrefab: {fileID: 5843902716089996411, guid: da95d1e0babcac14690429b60531a42d,
@@ -23,5 +24,5 @@ MonoBehaviour:
   name: Wall
   description: Protects
   cost: 10
-  maxHeath: 300
+  maxHeath: 200
   upgrades: []

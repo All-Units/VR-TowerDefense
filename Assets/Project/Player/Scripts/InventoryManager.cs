@@ -52,6 +52,7 @@ public class InventoryManager : MonoBehaviour
         _manager = FindObjectOfType<XRInteractionManager>();
         invByHand.Add(whichHand.left, leftHand);
         invByHand.Add(whichHand.right, rightHand);
+        cannonAmmoPouch.gameObject.SetActive(false);
     }
 
     #endregion

@@ -12,6 +12,7 @@ using UnityEditor.SceneManagement;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 using UnityEngine.XR.Interaction.Toolkit;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
@@ -328,6 +329,13 @@ public static class Utilities
         }
 
         return ret;
+    }
+    public static float NormalizeAngle(this float degrees)
+    {
+        var normalized = degrees % 360;
+        if (normalized < 0)
+            normalized += 360;
+        return normalized;
     }
     
     public static Vector3 RandomPointInside(this Bounds bounds) {

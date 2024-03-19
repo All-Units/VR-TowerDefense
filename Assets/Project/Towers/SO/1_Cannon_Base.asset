@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 1_Cannon_Base
   m_EditorClassIdentifier: 
+  IsUnlocked: 1
   ghostObject: {fileID: 6139709382012762173, guid: 947513e8c2f44e34ebdde3ba795bb369,
     type: 3}
   towerPrefab: {fileID: 1157668838652965219, guid: 8deceadac54d9d04995b0763440f9c93,
@@ -22,7 +23,7 @@ MonoBehaviour:
     type: 3}
   name: Cannon
   description: Blasts entire groups of enemies!
-  cost: 25
+  cost: 35
   maxHeath: 150
   upgrades:
   - upgrade: {fileID: 11400000, guid: 93e91a3ceb66f4f4cab4bc6b0d67d7b6, type: 2}

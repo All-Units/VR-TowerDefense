@@ -30,7 +30,6 @@ public class ClusterController : MonoBehaviour
         var proj = Instantiate(spawnable, pos, Quaternion.identity);
         proj.transform.LookAt(pos + fireDirection);
         float speed = Random.Range(speedMin, speedMax);
-        print($"Launching blackflame cluster, start speed {proj.speed}, adding {speed} for a total of {proj.speed + speed}");
         proj.speed += speed;
         proj.Fire();
     }

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 1_Mage_Base
   m_EditorClassIdentifier: 
+  IsUnlocked: 1
   ghostObject: {fileID: 6139709382012762173, guid: 6a2fb45205d1efb41b077425cc5bfed7,
     type: 3}
   towerPrefab: {fileID: 5911623264021740989, guid: d339032daa9dbbd43b1b9fb9a8c337e6,
@@ -22,7 +23,7 @@ MonoBehaviour:
     type: 3}
   name: Mage
   description: Uses arcane arts to incinerate foes
-  cost: 35
+  cost: 50
   maxHeath: 150
   upgrades:
   - upgrade: {fileID: 11400000, guid: 71f95904e8108f343960dfeaa435a2b8, type: 2}

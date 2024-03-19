@@ -7,6 +7,7 @@ public class InventoryFollowCamera : MonoBehaviour
     
     [SerializeField] float timeToRotate = 0.5f;
     [SerializeField] float rotateThreshold = 30f;
+    [SerializeField] float rotateOffset = -45f;
     Transform cam => InventoryManager.instance.playerCameraTransform;
     private void Start()
     {
@@ -20,9 +21,21 @@ public class InventoryFollowCamera : MonoBehaviour
     void Update()
     {
         float y = cam.eulerAngles.y;
+        y = y.NormalizeAngle();
         float current = transform.eulerAngles.y;
-        if (Mathf.Abs(current - y) >= rotateThreshold)
+        current = current.NormalizeAngle();
+
+        //If camera has greater angle than us, always offset
+        bool offset = true;
+        //If camera if to left of us (lower angle val), only snap if it's past the offset
+        if (y < current)
         {
+            offset = Mathf.Abs(current - y) >= (rotateThreshold + rotateOffset);
+
+        }
+        if (Mathf.Abs(current - y) >= rotateThreshold && offset)
+        {
+            
             _SnapToTarget(y);
         }
         return;
@@ -68,10 +81,7 @@ public class InventoryFollowCamera : MonoBehaviour
     IEnumerator _RotateToCamera(float targetY)
     {
         float startY = transform.eulerAngles.y;
-        //If we're currently less than target, we need to add
-        //If we're more, subtract
-        int sign = (startY < targetY) ? 1 : -1;
-
+        
         float t = 0f;
         while (t < timeToRotate)
         {
