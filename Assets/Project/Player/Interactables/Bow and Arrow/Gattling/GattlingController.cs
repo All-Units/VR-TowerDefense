@@ -17,11 +17,17 @@ public class GattlingController : MonoBehaviour
 
     public UnityEvent OnFire;
     [SerializeField] private OverheatModule overheatModule;
+    [SerializeField] private AudioSource _revSpinAudioSource;
+    [SerializeField] private float pitchMax, pitchMin;
+    private float currentPitch;
+
+    [SerializeField] private AudioSource shotClipControllerPrefab;
+    private AudioSourcePool _shotSourcePool;
 
     private void Start()
     {
         overheatModule.OnOverHeat.AddListener(OnDeactivate);
-
+        _shotSourcePool = new AudioSourcePool(shotClipControllerPrefab);
     }
     private void OnEnable()
     {
@@ -61,6 +67,8 @@ public class GattlingController : MonoBehaviour
     private IEnumerator Spin()
     {
         var t = 0f;
+
+        _revSpinAudioSource.Play();
         do
         {
             t = _isActive ? t + Time.deltaTime : t - Time.deltaTime;
@@ -68,6 +76,8 @@ public class GattlingController : MonoBehaviour
             
             var spinSpeed = Mathf.Lerp(0, maxSpinSpeed, t / spinUpTime);
             barrels.Rotate(Vector3.forward, spinSpeed);
+            _revSpinAudioSource.pitch = Mathf.Lerp(pitchMin, pitchMax, spinSpeed / maxSpinSpeed);
+            
             if (spinSpeed > maxSpinSpeed / 4 && _isActive)
             {
                 fireRate += spinSpeed;
@@ -82,6 +92,7 @@ public class GattlingController : MonoBehaviour
                         p.Fire();
 
                         OnFire?.Invoke();
+                        _shotSourcePool.Play(transform.position);
                     }
                 }
             }
@@ -90,5 +101,6 @@ public class GattlingController : MonoBehaviour
         } while (t > 0);
 
         _spinRoutine = null;
+        _revSpinAudioSource.Stop();
     }
 }

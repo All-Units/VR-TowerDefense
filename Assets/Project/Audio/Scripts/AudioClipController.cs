@@ -1,6 +1,6 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class AudioClipController : MonoBehaviour
@@ -8,6 +8,7 @@ public class AudioClipController : MonoBehaviour
     public new string name;
     [SerializeField] private List<AudioClip> _clips;
     private AudioSource _audioSource;
+    private AudioPool _audioPool;
     [Range(0f, 1f)]
     [SerializeField]private float _maxInclusivePitchVariance;
     [Range(0f, 1f)]
@@ -20,8 +21,11 @@ public class AudioClipController : MonoBehaviour
     public bool playOnEnable = false;
     public bool loop = false;
 
+    public UnityEvent OnFinish;
+
     private void Awake()
     {
+        
         if (_audioSource == null)
             _audioSource = GetComponent<AudioSource>();
         if (_audioSource == null)
@@ -58,6 +62,12 @@ public class AudioClipController : MonoBehaviour
         AudioClip clip = GetClip();
         AudioPool.PlaySoundAt(clip, pos);
     }
+
+    public void PlayClipHere()
+    {
+        PlayClipAt(transform.position);
+    }
+    
     public void PlayClip()
     {
         if (_clips.Count == 0) return;
@@ -67,10 +77,9 @@ public class AudioClipController : MonoBehaviour
         _audioSource.pitch = initialPitch + Random.Range(-_maxInclusivePitchVariance, _maxInclusivePitchVariance);
         _audioSource.volume = initialVolume + Random.Range(-_maxVolumeVariance, _maxVolumeVariance);
         _audioSource.Play();
-        if (this.name != "")
-        {
-            //print($"{this.name} played clip {clip.name}");
-        }
+        
+        if(loop == false)
+            Invoke(nameof(Finish),_audioSource.clip.length);
     }
 
     public void Stop()
@@ -81,5 +90,10 @@ public class AudioClipController : MonoBehaviour
     private void OnValidate()
     {
         _audioSource = GetComponent<AudioSource>();
+    }
+
+    private void Finish()
+    {
+        OnFinish?.Invoke();
     }
 }
