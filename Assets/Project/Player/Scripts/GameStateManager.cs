@@ -1,12 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
-using UnityEngine.XR.Interaction.Toolkit;
 
 public class GameStateManager : MonoBehaviour
 {
@@ -35,9 +32,8 @@ public class GameStateManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        Debug.Log("Setting gameState Manager");
         //OnGameLose += DetonateCastle;
-        
-        
     }
     bool winning = false;
     private void Update()
@@ -56,7 +52,9 @@ public class GameStateManager : MonoBehaviour
     public static void LoseGame()
     {
         //instance._StartEndgame(instance.YouLosePanel);
-        instance.OnGameLose.Invoke();
+        Debug.Assert(instance == null, "Error: No game state Manager!!");
+        if(instance != null)
+            instance.OnGameLose.Invoke();
     }
 
     public void _StartEndgame(GameObject panel)

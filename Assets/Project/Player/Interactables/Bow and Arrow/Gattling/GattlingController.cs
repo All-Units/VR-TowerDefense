@@ -20,14 +20,10 @@ public class GattlingController : MonoBehaviour
     [SerializeField] private AudioSource _revSpinAudioSource;
     [SerializeField] private float pitchMax, pitchMin;
     private float currentPitch;
-
-    [SerializeField] private AudioSource shotClipControllerPrefab;
-    private AudioSourcePool _shotSourcePool;
-
+    
     private void Start()
     {
         overheatModule.OnOverHeat.AddListener(OnDeactivate);
-        _shotSourcePool = new AudioSourcePool(shotClipControllerPrefab);
     }
     private void OnEnable()
     {
@@ -92,7 +88,6 @@ public class GattlingController : MonoBehaviour
                         p.Fire();
 
                         OnFire?.Invoke();
-                        _shotSourcePool.Play(transform.position);
                     }
                 }
             }

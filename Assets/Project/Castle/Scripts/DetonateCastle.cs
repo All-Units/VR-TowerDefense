@@ -14,7 +14,7 @@ public class DetonateCastle : MonoBehaviour
     {
         instance = this;
         if (GameStateManager.instance == null) return;
-        GameStateManager.instance.OnGameLose += Detonate;
+        // GameStateManager.instance.OnGameLose += Detonate;
     }
     static DetonateCastle instance;
 
@@ -51,10 +51,9 @@ public class DetonateCastle : MonoBehaviour
             yield return new WaitForSeconds(timeBetween);
             for (int i = 0; i < 3; i++)
             {
+                if(renderer == null) continue;
                 _SpawnExplosionAt(renderer.transform.position + Random.insideUnitSphere * 2f);
             }
-            
-
         }
         
     }

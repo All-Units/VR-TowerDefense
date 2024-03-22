@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class ProjectileTower : PlayerControllableTower
@@ -12,6 +13,8 @@ public class ProjectileTower : PlayerControllableTower
     [SerializeField] private Transform[] auxFirePoints;
     [SerializeField] private Transform pivotPoint;
     [FormerlySerializedAs("EnemyHeightOffset")] [SerializeField] private float enemyHeightOffset = 2f;
+
+    public UnityEvent OnFire;
 
     [Header("VFX")] 
     [SerializeField] private GameObject attackVFX;
@@ -105,6 +108,8 @@ public class ProjectileTower : PlayerControllableTower
     {
         var projectile = Instantiate(projectileTowerSo.projectile, firePoint.position, firePoint.rotation);
         projectile.Fire();
+        OnFire?.Invoke();
+        
         if (projectile.TryGetComponent(out GuidedMissileController missileController))
         {
             Enemy target = targetingSystem._targetsInRange.FirstOrDefault();
@@ -135,6 +140,7 @@ public class ProjectileTower : PlayerControllableTower
             
             var auxProjectile = Instantiate(projectileTowerSo.projectile, auxFirePoint.position, auxFirePoint.rotation);
             auxProjectile.Fire();
+            OnFire?.Invoke();
             
             if (ammo > 0)
             {

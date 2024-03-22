@@ -16508,6 +16508,7 @@ GameObject:
   - component: {fileID: 7502261813038807644}
   - component: {fileID: 5764481117411547575}
   - component: {fileID: 66825144505051336}
+  - component: {fileID: 408414360494589189}
   m_Layer: 6
   m_Name: Gatling Archer Tower
   m_TagString: Tower
@@ -16597,6 +16598,21 @@ MonoBehaviour:
   auxFirePoints: []
   pivotPoint: {fileID: 7909712038951667230}
   enemyHeightOffset: 2
+  OnFire:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 408414360494589189}
+        m_TargetAssemblyTypeName: AudioSourcePoolHandler, Project
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   attackVFX: {fileID: 0}
   turretModel: {fileID: 7390162474951515300}
   playerPlatform: {fileID: 3959487174918953517}
@@ -16644,6 +16660,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.4, y: 2.4, z: 2.4}
   m_Center: {x: 0, y: 1.2, z: 0}
+--- !u!114 &408414360494589189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6139709382012762173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c8d83aa990f4e05b228d3222867e454, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shotClipControllerPrefab: {fileID: 7334232038104108952, guid: 1ce3ee50960f23d4796311f6bbe9d9b1,
+    type: 3}
 --- !u!1 &6484480325875319476
 GameObject:
   m_ObjectHideFlags: 0
@@ -24582,6 +24612,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gunParent: {fileID: 7432124945340088849}
+  CalculateArc: 1
   CurrentTarget: {x: 0, y: 0, z: 0}
 --- !u!4 &7909712038951667230 stripped
 Transform:

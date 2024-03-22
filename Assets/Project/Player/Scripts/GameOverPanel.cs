@@ -72,6 +72,7 @@ public class GameOverPanel : MonoBehaviour
     }
     void OnGameEnd(string endString, Color endColor, Sprite sprite)
     {
+        Debug.Log("Displaying end panel!");
         UpdateStats();
         canvasTransform.gameObject.SetActive(true);
         _RepositionPanel();
