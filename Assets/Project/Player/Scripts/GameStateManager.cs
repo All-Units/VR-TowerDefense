@@ -32,7 +32,7 @@ public class GameStateManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        Debug.Log("Setting gameState Manager");
+        
         //OnGameLose += DetonateCastle;
     }
     bool winning = false;

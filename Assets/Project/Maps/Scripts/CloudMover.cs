@@ -47,7 +47,7 @@ public class CloudMover : MonoBehaviour
     IEnumerator _MoveCloud(GameObject cloud)
     {
         Vector3 pos = cloud.transform.position;
-        float speed = Random.Range(cloudSpeedMinMax.x, cloudBunchMinMax.y);
+        float speed = Random.Range(cloudSpeedMinMax.x, cloudSpeedMinMax.y);
         while (pos.FlatDistance(center) < MaxDistanceFromCenter * 2)
         {
             if (XRPauseMenu.IsPaused)

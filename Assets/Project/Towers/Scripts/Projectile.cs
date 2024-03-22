@@ -68,7 +68,6 @@ public class Projectile : MonoBehaviour, IPausable
         //If we were created too recently
         if ((tower != null || grab != null) && Time.time - timeCreated < 0.2f)
         {
-            Debug.Log("Hit TOWER or GRAB, returning");
             return;
         }
 
