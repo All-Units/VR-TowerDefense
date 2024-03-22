@@ -67,7 +67,6 @@ public class RoundGUI : MonoBehaviour
         start = start.Replace("[TIME]", EnemyManager.TimeUntilNextWave.ToString());
         start = start.Replace("[$]", EnemyManager.LastWaveBonus.ToString());
 
-
         return start;
     }
     Transform player => InventoryManager.instance.playerTransform;
