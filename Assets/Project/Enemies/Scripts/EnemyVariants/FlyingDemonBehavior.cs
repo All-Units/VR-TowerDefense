@@ -41,6 +41,7 @@ public class FlyingDemonBehavior : Enemy
 
     protected override void _Move()
     {
+        if (healthController.isDead) return;
         _SetIsAttacking(false);
         
 

@@ -154,6 +154,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+      - m_Target: {fileID: 7414160968426255016}
+        m_TargetAssemblyTypeName: AudioClipController, Project
+        m_MethodName: PlayClip
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnHit:
     m_PersistentCalls:
       m_Calls: []
@@ -176,12 +188,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 
   _clips:
-  - {fileID: 8300000, guid: aa55343508ab53547939dfe12b735e9f, type: 3}
-  _maxInclusivePitchVariance: 0
-  _maxVolumeVariance: 0
-  playOnAwake: 1
+  - {fileID: 8300000, guid: a3ec827c60ca1a34e8963c71231dfe47, type: 3}
+  _maxInclusivePitchVariance: 0.07
+  _maxVolumeVariance: 0.15
+  playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &6709334573630659050
 AudioSource:
   m_ObjectHideFlags: 0
@@ -195,8 +210,8 @@ AudioSource:
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.8
+  m_Pitch: 0.92
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -636,6 +651,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8993534191037578349
 GameObject:
   m_ObjectHideFlags: 0
@@ -804,6 +822,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9036501222085095601
 GameObject:
   m_ObjectHideFlags: 0

@@ -32,19 +32,6 @@ public class GameStateManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-        //OnGameLose += DetonateCastle;
-    }
-    bool winning = false;
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (winning == false)
-            {
-                DetonateCastle.DetonateStatic();
-            }
-        }
-            
     }
 
     public static void LoseGame()
