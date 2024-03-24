@@ -45,7 +45,7 @@ public class TowerSelectorItem : BaseItem
     private int current_icon_i = -1;
     public static TowerSelectorItem instance;
 
-    private void Awake()
+    protected override void Awake()
     {
         base.Awake();
         instance = this;

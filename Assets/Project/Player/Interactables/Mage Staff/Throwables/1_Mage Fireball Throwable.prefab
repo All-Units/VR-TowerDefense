@@ -194,6 +194,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4837046558107967105
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -503,6 +506,26 @@ PrefabInstance:
       propertyPath: m_Materials.Array.size
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6392491402937755026, guid: 5103a788178b0dd47a7270632b9fe10f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392491402937755026, guid: 5103a788178b0dd47a7270632b9fe10f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392491402937755026, guid: 5103a788178b0dd47a7270632b9fe10f,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6392491402937755026, guid: 5103a788178b0dd47a7270632b9fe10f,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8194992990867289332, guid: 5103a788178b0dd47a7270632b9fe10f,
         type: 3}
       propertyPath: m_Materials.Array.size
@@ -521,17 +544,17 @@ PrefabInstance:
     - target: {fileID: 8194992990867289334, guid: 5103a788178b0dd47a7270632b9fe10f,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8194992990867289334, guid: 5103a788178b0dd47a7270632b9fe10f,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8194992990867289334, guid: 5103a788178b0dd47a7270632b9fe10f,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 7
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 8194992990867289334, guid: 5103a788178b0dd47a7270632b9fe10f,
         type: 3}

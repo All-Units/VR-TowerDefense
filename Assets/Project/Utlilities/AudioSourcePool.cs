@@ -6,7 +6,7 @@ public class AudioSourcePool : PollingPool<AudioSource>
 
     protected override bool IsActive(AudioSource component)
     {
-        return component.time <= component.clip.length;
+        return component.isPlaying;
     }
 
     public void Play(Vector3 pos)

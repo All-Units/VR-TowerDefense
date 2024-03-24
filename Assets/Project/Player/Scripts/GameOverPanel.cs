@@ -1,10 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
 
 public class GameOverPanel : MonoBehaviour
@@ -27,6 +23,7 @@ public class GameOverPanel : MonoBehaviour
     [SerializeField] Transform canvasTransform;
     [SerializeField] TextMeshProUGUI WinLoseLabel;
     [SerializeField] Image WinLoseIcon;
+    [SerializeField] Image WinLoseBanner;
     [SerializeField] Transform _contentParent;
     [SerializeField] GameObject statTextPrefab;
 
@@ -37,10 +34,16 @@ public class GameOverPanel : MonoBehaviour
     {
         if (canvasTransform == null) canvasTransform = transform.GetChild(0);
         canvasTransform.gameObject.SetActive(false);
-        GameStateManager.instance.OnGameWin += OnGameWin;
-        GameStateManager.instance.OnGameLose += OnGameLose;
+        GameStateManager.OnGameWin += OnGameWin;
+        GameStateManager.OnGameLose += OnGameLose;
         foreach (var stat in stats)
             startValues[stat] = stat.getSerializeValue;
+    }
+
+    private void OnDestroy()
+    {
+        GameStateManager.OnGameWin -= OnGameWin;
+        GameStateManager.OnGameLose -= OnGameLose;
     }
 
     void UpdateStats()
@@ -49,13 +52,13 @@ public class GameOverPanel : MonoBehaviour
 
         foreach (var stat in stats)
         {
+            if(stat.total == 0) continue;
             GameObject prefab = Instantiate(statTextPrefab, _contentParent);
             prefab.SetActive(true);
             TextMeshProUGUI text = prefab.GetComponentInChildren<TextMeshProUGUI>();
             int count = stat.total - startValues[stat];
             text.text = $"{stat.displayName} {stat.statName} : {count}";
         }
-
     }
 
     void OnGameWin()
@@ -76,7 +79,7 @@ public class GameOverPanel : MonoBehaviour
         UpdateStats();
         canvasTransform.gameObject.SetActive(true);
         _RepositionPanel();
-        WinLoseLabel.color = endColor;
+        WinLoseBanner.color = endColor;
         WinLoseLabel.text = endString;
 
         WinLoseIcon.sprite = sprite;

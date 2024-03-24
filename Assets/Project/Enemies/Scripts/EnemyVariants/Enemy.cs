@@ -192,7 +192,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
         EnemyManager.EnemyKilled(this);
 
-        _PlayDeathParticles();
+        //_PlayDeathParticles();
         //Add kill value to currency
         CurrencyManager.GiveToPlayer(enemyStats.KillValue);
     }
@@ -760,10 +760,6 @@ public abstract class Enemy : MonoBehaviour, IPausable
         OnDeath?.Invoke(this);
     }
 
-    
-
-    
-
     public void OnPause()
     {
         this.BaseOnPause();
@@ -778,5 +774,10 @@ public abstract class Enemy : MonoBehaviour, IPausable
         EnemyManager.EnemyKilled(this);
 
         Destroy(gameObject);
+    }
+
+    public void Hide()
+    {
+        gameObject.SetActive(false);
     }
 }

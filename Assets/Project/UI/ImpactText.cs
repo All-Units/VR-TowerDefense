@@ -30,14 +30,8 @@ public class ImpactText : MonoBehaviour
     {
         startPos = transform.position;
         StartCoroutine(_SizeRoutine());
-        
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
     IEnumerator _SizeRoutine()
     {
         float time = 0f;
