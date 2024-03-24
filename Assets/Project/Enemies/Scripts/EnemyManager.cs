@@ -111,7 +111,11 @@ public class EnemyManager : MonoBehaviour
     public bool IsCurrentRoundComplete;
     public int WaveroutineCount;
     public int EnemiesRemaining;
-    public int _public_wave_i => _wave_i;
+    public static int _public_wave_i => instance._wave_i;
+    public static void SetWave_i(int i)
+    {
+        instance._wave_i = i;
+    }
     public static bool IsWaveValid(int i)
     {
         if (instance == null) return false;
@@ -123,6 +127,8 @@ public class EnemyManager : MonoBehaviour
     {
         //Give our starting gold
         CurrencyManager.GiveToPlayer(levelData.StartingGold);
+        //Waiting a few frames in case _wave_i is overriden by a save file
+        yield return new WaitForSeconds(0.1f);
 
         //Game started
         OnGameStart.Invoke();

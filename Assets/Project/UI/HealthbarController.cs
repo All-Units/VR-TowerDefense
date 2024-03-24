@@ -97,7 +97,7 @@ public class HealthbarController : MonoBehaviour
     }
 
 
-    private void UpdateValue(int curr)
+    public void UpdateValue(int curr)
     {
         slider.maxValue = 1f;
         slider.minValue = 0f;

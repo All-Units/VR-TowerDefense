@@ -33,6 +33,11 @@ public class CurrencyManager : MonoBehaviour
         return (instance.currentMoney >= amt);
     }
 
+    public static void SetPlayerMoney(int amt)
+    {
+        if (instance)
+            instance.currentMoney = amt;
+    }
     public static void GiveToPlayer(int amt)
     {
         if (instance)

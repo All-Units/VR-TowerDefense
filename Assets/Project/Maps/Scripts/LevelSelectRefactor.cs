@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
@@ -22,6 +23,10 @@ public class LevelSelectRefactor : MonoBehaviour
     Vector3 _textSelectedSize = Vector3.one;
 
     public float ChangeSizeTime = 0.5f;
+
+    [SerializeField] XRSimpleInteractable LoadLevelBubble;
+    [SerializeField] XRSimpleInteractable NewLevelBubble;
+
     private void OnDrawGizmos()
     {
         if (levelSelectData == null) return;
@@ -57,11 +62,26 @@ public class LevelSelectRefactor : MonoBehaviour
 
 
         //On trigger pull
-        interactable.activated.AddListener(OnSelectLevel);
+        interactable.activated.AddListener(OnActivateLevel);
         _SetColor();
+
+        LoadLevelBubble.gameObject.SetActive(false);
+        NewLevelBubble.gameObject.SetActive(false);
+        LoadLevelBubble.activated.AddListener(OnActivateLoad);
+
+        NewLevelBubble.activated.AddListener(_StartLoadLevel);
 
     }
     MeshRenderer mr;
+
+    void OnActivateLoad(ActivateEventArgs args)
+    {
+        print($"Clicked load!. Save exists? {_SaveFileExists}");
+        if (_SaveFileExists == false) return;
+
+        SerializationManager.LoadLevelNext(levelSelectData);
+        _StartLoadLevel(args);
+    }
     public void _SetColor()
     {
         if (levelSelectData.OverrideTowerColor == null) return;
@@ -135,7 +155,46 @@ public class LevelSelectRefactor : MonoBehaviour
         isSelected = false;
         _Deselect();
     }
-    public void OnSelectLevel(ActivateEventArgs arg0)
+
+    bool _SaveFileExists => File.Exists(_SaveFilePath());
+    
+
+    string _SaveFilePath()
+    {
+        if (levelSelectData == null) return "";
+
+        string path = $"{Application.persistentDataPath}/{levelSelectData.sceneName}.dat";
+        return path;
+    }
+    bool _AreBubblesActive => LoadLevelBubble.gameObject.activeInHierarchy || NewLevelBubble.gameObject.activeInHierarchy;
+    void _ActivateBubbles(bool active)
+    {
+        LoadLevelBubble.gameObject.SetActive(active);
+        NewLevelBubble.gameObject.SetActive(active);    
+    }
+
+
+    static LevelSelectRefactor _currentRefactor = null;
+    public void OnActivateLevel(ActivateEventArgs arg0)
+    {
+        //If there is no save, load and return
+        if (_SaveFileExists == false)
+        {
+            _StartLoadLevel();
+            return;
+        }
+
+        if (_currentRefactor != null && _currentRefactor != this)
+        {
+            _currentRefactor._ActivateBubbles(false);
+        }
+        _currentRefactor = this;
+        //Invert bubbles active
+        _ActivateBubbles(_AreBubblesActive == false);
+        print("Level clicked");
+        return;
+    }
+    void _StartLoadLevel(ActivateEventArgs args = null)
     {
         if (levelSelectData == null)
         {
@@ -144,15 +203,6 @@ public class LevelSelectRefactor : MonoBehaviour
         }
         FadeScreen.Fade_Out(1f);
         StartCoroutine(_SelectAfter(1f));
-        //SceneManager.LoadSceneAsync(levelSelectData.sceneName);
-        return;
-        if (levelSelectData.sceneName != "")
-        {
-            SceneTransitionManager.singleton.LoadScene(levelSelectData.sceneName);
-            return;
-        }
-        
-        //SceneTransitionManager.singleton.GoToScene(levelSelectData.sceneToLoad);
     }
     IEnumerator _SelectAfter(float t)
     {

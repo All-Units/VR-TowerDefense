@@ -46,7 +46,7 @@ public class RoundGUI : MonoBehaviour
 
     void _OnRoundEnd()
     {
-        if (EnemyManager.IsWaveValid(EnemyManager.instance._public_wave_i + 1) == false)
+        if (EnemyManager.IsWaveValid(EnemyManager._public_wave_i + 1) == false)
             return;
         StartCoroutine(fadeGOAfter(roundEndPanel));
     }

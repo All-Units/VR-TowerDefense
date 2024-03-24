@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.Collections;
 using UnityEngine;
 using UnityEngine.Events;
@@ -24,6 +25,14 @@ namespace Project.Towers.Scripts
         private void Awake()
         {
             Instance = this;
+        }
+
+        public static List<Tower> GetAllTowers()
+        {
+            List<Tower> towers = 
+                Instance.towersRoot.GetComponentsInChildren<Tower>().ToList();
+
+            return towers;
         }
 
         public static void RefreshGhost()
@@ -128,13 +137,14 @@ namespace Project.Towers.Scripts
             HideGhost();
         }        
         
-        public Tower PlaceTowerSpecific(Tower_SO targetTower, Vector3 targetPos)
+        public Tower PlaceTowerSpecific(Tower_SO targetTower, Vector3 targetPos, int startHealth = -1)
         {
             var tower = Instantiate(targetTower.towerPrefab, targetPos, Quaternion.identity);
             tower.transform.SetParent(towersRoot);
             
             // Todo refactor needed
-            Tower t = tower.GetComponentInChildren<Tower>(); 
+            Tower t = tower.GetComponentInChildren<Tower>();
+            t._overrideStarterHealth = startHealth;
             Vector3 pos = t.transform.position;
             _towersByPos.Add(pos, t);
             

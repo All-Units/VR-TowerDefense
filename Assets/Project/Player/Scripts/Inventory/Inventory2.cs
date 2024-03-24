@@ -39,7 +39,7 @@ public class Inventory2 : MonoBehaviour
     {
         if (BasicPauseMenu.instance == null)
         {
-            Debug.LogError("BasicPauseMenu singleton is null");
+            //Debug.LogError("BasicPauseMenu singleton is null");
             return;
         }
         
@@ -50,7 +50,7 @@ public class Inventory2 : MonoBehaviour
     {
         if (BasicPauseMenu.instance == null)
         {
-            Debug.LogError("BasicPauseMenu singleton is null");
+            //Debug.LogError("BasicPauseMenu singleton is null");
             return;
         }
 

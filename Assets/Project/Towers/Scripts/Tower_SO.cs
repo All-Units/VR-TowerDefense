@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Tower", fileName = "New Tower")]
+[System.Serializable]
 public class Tower_SO : ScriptableObject
 {
     public bool IsUnlocked = true;

@@ -2,6 +2,7 @@
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Projectile Tower", fileName = "New Projectile Tower")]
+[System.Serializable]
 public class ProjectileTower_SO : Tower_SO
 {
     [Header("Projectile Data")]

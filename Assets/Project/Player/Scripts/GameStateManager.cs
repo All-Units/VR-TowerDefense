@@ -27,6 +27,7 @@ public class GameStateManager : MonoBehaviour
 
     public Action OnGameWin;
     public Action OnGameLose;
+    public Action OnGameEnd;
 
 
     private void Awake()
@@ -40,10 +41,7 @@ public class GameStateManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (winning == false)
-            {
-                DetonateCastle.DetonateStatic();
-            }
+            
         }
             
     }
@@ -53,8 +51,11 @@ public class GameStateManager : MonoBehaviour
     {
         //instance._StartEndgame(instance.YouLosePanel);
         Debug.Assert(instance == null, "Error: No game state Manager!!");
-        if(instance != null)
+        if (instance != null)
+        { 
             instance.OnGameLose.Invoke();
+            instance.OnGameEnd.Invoke();
+        }
     }
 
     public void _StartEndgame(GameObject panel)
@@ -69,7 +70,9 @@ public class GameStateManager : MonoBehaviour
         //instance._StartEndgame(instance.YouWinPanel);
         instance.StartCoroutine(_LaunchFireworks());
         SoundtrackManager.PlayMenu();
+        instance.OnGameEnd.Invoke();
         instance.OnGameWin.Invoke();
+        
     } 
     IEnumerator _endgameLogic(GameObject panel)
     {
