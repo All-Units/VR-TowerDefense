@@ -27,6 +27,7 @@ public class GameStateManager : MonoBehaviour
 
     public static Action OnGameWin;
     public static Action OnGameLose;
+    public Action OnGameEnd;
 
 
     private void Awake()
@@ -38,13 +39,14 @@ public class GameStateManager : MonoBehaviour
     {
         instance._DestroyCastle();
         EnemyManager.HideEnemies();
+        instance.OnGameEnd.Invoke();
         OnGameLose?.Invoke();
     }
 
     public static void WinGame()
     {
         if (instance == null) return;
-        
+        instance.OnGameEnd.Invoke();
         instance.StartCoroutine(_LaunchFireworks());
         SoundtrackManager.PlayMenu();
         OnGameWin?.Invoke();
