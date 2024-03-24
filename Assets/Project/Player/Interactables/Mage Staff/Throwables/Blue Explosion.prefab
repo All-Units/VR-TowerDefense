@@ -42,7 +42,7 @@ ParticleSystem:
   m_GameObject: {fileID: 294364003325551378}
   serializedVersion: 8
   lengthInSec: 0.5
-  simulationSpeed: 1
+  simulationSpeed: 1.5
   stopAction: 0
   cullingMode: 1
   ringBufferMode: 0
@@ -4854,7 +4854,7 @@ ParticleSystem:
   m_GameObject: {fileID: 4046332599650371379}
   serializedVersion: 8
   lengthInSec: 0.5
-  simulationSpeed: 1
+  simulationSpeed: 1.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -14592,7 +14592,7 @@ ParticleSystem:
   m_GameObject: {fileID: 8128788651337950566}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1
+  simulationSpeed: 1.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -19477,7 +19477,7 @@ Transform:
   m_GameObject: {fileID: 8194992990867289339}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 10, y: 10, z: 10}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6392491402937755026}
@@ -19486,7 +19486,7 @@ Transform:
   - {fileID: 294364003325551377}
   - {fileID: 2392204695625709560}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &8194992990867289333
 ParticleSystem:
@@ -19497,7 +19497,7 @@ ParticleSystem:
   m_GameObject: {fileID: 8194992990867289339}
   serializedVersion: 8
   lengthInSec: 1
-  simulationSpeed: 1
+  simulationSpeed: 1.5
   stopAction: 0
   cullingMode: 0
   ringBufferMode: 0
@@ -24373,6 +24373,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 1
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &8669795329445052184
 AudioSource:
   m_ObjectHideFlags: 0

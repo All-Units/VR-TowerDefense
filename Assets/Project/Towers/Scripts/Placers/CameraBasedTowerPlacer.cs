@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraBasedTowerPlacer : MonoBehaviour
 {
-    [SerializeField] private Camera camera;
+    [SerializeField] private Camera _camera;
     [SerializeField] private Tower_SO towerToPlace;
     [SerializeField] private LayerMask layerMask;
     private MapTile selectedTile = null;
@@ -18,7 +18,7 @@ public class CameraBasedTowerPlacer : MonoBehaviour
 
     private void SelectATile()
     {
-        var ray = camera.ScreenPointToRay(Input.mousePosition);
+        var ray = _camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
         {
             var tile = hit.transform.GetComponent<MapTile>();

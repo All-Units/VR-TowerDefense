@@ -315,8 +315,7 @@ public class EnemyManager : MonoBehaviour
 
         //Need to remove ourselves from list of active waves
         _currentWaves.Remove(self);
-        print($"Finished (sub)wave, removing self");
-
+        // print($"Finished (sub)wave, removing self");
     }
     #endregion
 
@@ -378,9 +377,6 @@ public class EnemyManager : MonoBehaviour
         if (e)
             e._SetTarget(point.SpawnPoint.nextPoint);
         e.gameObject.name = $"{e.gameObject.name.Replace("(Clone)", "")} {e.transform.GetSiblingIndex()}";
-        //print("Pausing");
-        //EditorApplication.isPaused = true;
-        
     }
     void _win()
     {
@@ -557,4 +553,19 @@ public class EnemyManager : MonoBehaviour
     }
 
     #endregion
+
+    public static void HideEnemies()
+    {
+        if (instance == null) return;
+
+        instance._HideEnemies();
+    }
+
+    private void _HideEnemies()
+    {
+        foreach (var enemy in Enemies)
+        {
+            enemy.Hide();
+        }
+    }
 }

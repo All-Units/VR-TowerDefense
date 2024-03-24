@@ -25,14 +25,13 @@ public class GameStateManager : MonoBehaviour
     [SerializeField] private GameObject YouLosePanel;
     [SerializeField] GameObject _castleRoot;
 
-    public Action OnGameWin;
-    public Action OnGameLose;
+    public static Action OnGameWin;
+    public static Action OnGameLose;
 
 
     private void Awake()
     {
         instance = this;
-        Debug.Log("Setting gameState Manager");
         //OnGameLose += DetonateCastle;
     }
     bool winning = false;
@@ -48,35 +47,22 @@ public class GameStateManager : MonoBehaviour
             
     }
 
-
     public static void LoseGame()
     {
-        //instance._StartEndgame(instance.YouLosePanel);
-        Debug.Assert(instance == null, "Error: No game state Manager!!");
-        if(instance != null)
-            instance.OnGameLose.Invoke();
-    }
-
-    public void _StartEndgame(GameObject panel)
-    {
-        var logic = _endgameLogic(panel);
-        StartCoroutine(logic);
-        SoundtrackManager.PlayMenu();
+        instance._DestroyCastle();
+        EnemyManager.HideEnemies();
+        OnGameLose?.Invoke();
     }
 
     public static void WinGame()
     {
-        //instance._StartEndgame(instance.YouWinPanel);
+        if (instance == null) return;
+        
         instance.StartCoroutine(_LaunchFireworks());
         SoundtrackManager.PlayMenu();
-        instance.OnGameWin.Invoke();
-    } 
-    IEnumerator _endgameLogic(GameObject panel)
-    {
-        panel.SetActive(true);
-        yield return new WaitForSeconds(waitBeforeEndingTime);
-        ReturnToMenu();
-    }
+        OnGameWin?.Invoke();
+    }  
+
     static IEnumerator _LaunchFireworks()
     {
         float t = 0f;
@@ -97,6 +83,13 @@ public class GameStateManager : MonoBehaviour
             }
         }
     }
+
+    private void _DestroyCastle()
+    {
+        var anim = _castleRoot.GetComponent<Animator>();
+        anim.Play("Destroy");
+    }
+    
     public void ReturnToMenu(float t = 0.5f)
     {
         FadeScreen.Fade_Out(t);
@@ -107,7 +100,18 @@ public class GameStateManager : MonoBehaviour
         yield return new WaitForSeconds(t);
         SceneManager.LoadSceneAsync("MainMenu");
     }
-    public void _DetonateCastle()
+    /*public void _StartEndgame(GameObject panel)
+    {
+        StartCoroutine(_endgameLogic(panel));
+        SoundtrackManager.PlayMenu();
+    }
+    IEnumerator _endgameLogic(GameObject panel)
+    {
+        panel.SetActive(true);
+        yield return new WaitForSeconds(waitBeforeEndingTime);
+        ReturnToMenu();
+    }*/
+    /*public void _DetonateCastle()
     {
         return;
         StartCoroutine(_CastleDetonationRoutine());
@@ -155,7 +159,7 @@ public class GameStateManager : MonoBehaviour
         GameObject explosion = Instantiate(Resources.Load<GameObject>("Prefabs/explosion"));
         explosion.DestroyAfter(5f);
         explosion.transform.position = pos;
-    }
+    }*/
 
     public void Quit()
     {

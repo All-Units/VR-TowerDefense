@@ -2,34 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.Playables;
 
 public class RoundGUI : MonoBehaviour
 {
-    [SerializeField] private GameObject roundStartPanel;
-    [SerializeField] private GameObject roundEndPanel;
+    [SerializeField] private PlayableDirector roundStartPanel;
+    [SerializeField] private PlayableDirector roundEndPanel;
     [SerializeField] private TextMeshProUGUI roundStartText;
-    [SerializeField] private TextMeshProUGUI roundEndText;
     [SerializeField] private float displayTime = 3f;
     [SerializeField] private float distanceFromPlayer = 3f;
-    [SerializeField] private float height = 2f;
     private string _roundStartString;
     private string _roundEndString;
 
-    Dictionary<TextMeshProUGUI, string> startStringsEndPanel = new Dictionary<TextMeshProUGUI, string>();
+    private readonly Dictionary<TextMeshProUGUI, string> _startStringsEndPanel = new();
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        roundStartPanel.SetActive(false);
-        roundEndPanel.SetActive(false);
+        roundStartPanel.GetComponent<RectTransform>().localScale = Vector3.zero;
+        roundEndPanel.GetComponent<RectTransform>().localScale = Vector3.zero;
+        
         _roundStartString = roundStartText.text;
-        foreach (TextMeshProUGUI text in roundEndPanel.GetComponentsInChildren<TextMeshProUGUI>())
+        foreach (var text in roundEndPanel.GetComponentsInChildren<TextMeshProUGUI>())
         {
-            startStringsEndPanel.Add(text, text.text);
+            _startStringsEndPanel.Add(text, text.text);
         }
-        _roundEndString = roundEndText.text;
-        roundEndText.text = roundEndText.text.Replace("[TIME]", EnemyManager.WaveDelay.ToString());
+        
         EnemyManager.OnRoundStarted.AddListener(_OnRoundStart);
         EnemyManager.OnRoundEnded.AddListener(_OnRoundEnd);
     }
@@ -39,28 +37,35 @@ public class RoundGUI : MonoBehaviour
         EnemyManager.OnRoundEnded.RemoveListener(_OnRoundEnd);
     }
 
-    void _OnRoundStart()
+    private void _OnRoundStart()
     {
-        StartCoroutine(fadeGOAfter(roundStartPanel));
+        _DisplayPanel(roundStartPanel);
     }
 
-    void _OnRoundEnd()
+    private void _OnRoundEnd()
     {
         if (EnemyManager.IsWaveValid(EnemyManager.instance._public_wave_i + 1) == false)
             return;
-        StartCoroutine(fadeGOAfter(roundEndPanel));
+        _DisplayPanel(roundEndPanel);
     }
-    void _RefreshTexts()
+
+    private void _DisplayPanel(PlayableDirector panel)
+    {
+        _RepositionPanel(panel.gameObject);
+        _RefreshTexts();
+        panel.Play();
+    }
+
+    private void _RefreshTexts()
     {
         roundStartText.text = _FormatString(_roundStartString);
-        foreach (var t in startStringsEndPanel)
+        foreach (var (text, s) in _startStringsEndPanel)
         {
-            TextMeshProUGUI text = t.Key;
-            text.text = _FormatString(t.Value);
+            text.text = _FormatString(s);
         }
-        //roundEndText.text = _FormatString(_roundEndString);
     }
-    string _FormatString(string start)
+
+    private string _FormatString(string start)
     {
         start = start.Replace("[N]", EnemyManager.CurrentWave.ToString());
         start = start.Replace("[N - 1]", (EnemyManager.CurrentWave - 1).ToString());
@@ -69,24 +74,53 @@ public class RoundGUI : MonoBehaviour
 
         return start;
     }
-    Transform player => InventoryManager.instance.playerTransform;
-    Transform playerCam => InventoryManager.instance.playerCameraTransform;
+
+    private void _RepositionPanel(GameObject panel)
+    {
+        if (InventoryManager.instance == null) return;
+        var cam = InventoryManager.instance.playerCameraTransform;
+
+
+        var camTransform = cam.transform;
+        var dir = camTransform.forward; dir.y = 0f;
+        dir = dir.normalized * distanceFromPlayer;
+        var center = camTransform.position + dir;
+        panel.transform.position = center;
+
+        var bottom = panel.transform.Find("bottom");
+        if (bottom == null) { Debug.LogError("no bottom!"); return;}
+        var pos = center + dir;
+        LayerMask mask = LayerMask.GetMask("Ground");
+        if (Physics.Raycast(pos + Vector3.up * 100f, Vector3.down, out var hit, float.PositiveInfinity, mask))
+        {
+            //print($"HIT Y: {hit.point.y}, bottom y was {bottom.position.y}");
+            if (hit.point.y > bottom.position.y)
+            {
+                //float offset = Mathf.Max(height, 0.3f);
+                var offset = 0.3f;
+                offset += Mathf.Abs(hit.point.y - bottom.position.y);
+                panel.transform.Translate(new Vector3(0f, offset, 0f));
+                // print($"Panel was too low, moving up to {panel.transform.position.y}");
+            }
+            //if (hit.point.y > canvasPos.y)
+        }
+        var target = pos + dir;
+        target.y = panel.transform.position.y;
+        panel.transform.LookAt(target);
+    }
+    
     /// <summary>
     /// Spawns a copy of the given GO, and destroys it after a few seconds
+    ///
+    /// Why?!? 
     /// </summary>
     /// <param name="go"></param>
     /// <returns></returns>
-    IEnumerator fadeGOAfter(GameObject go)
+    private IEnumerator FadeGOAfter(GameObject go)
     {
-        
-        yield return new WaitForSeconds(.1f);
-        Vector3 dir = playerCam.transform.forward;
-        dir.y = 0; dir = dir.normalized * distanceFromPlayer;
-        var pos = player.transform.position + dir;
-        pos += Vector3.up * height;
 
         _RefreshTexts();
-        GameObject spawned = Instantiate(go, transform);
+        var spawned = Instantiate(go, transform);
         spawned.SetActive(true);
         _RepositionPanel(spawned);
         
@@ -97,41 +131,5 @@ public class RoundGUI : MonoBehaviour
         //Destroy(spawned, displayTime);
         
         yield break;
-    }
-
-    void _RepositionPanel(GameObject panel)
-    {
-        if (InventoryManager.instance == null) return;
-        Transform cam = InventoryManager.instance.playerCameraTransform;
-
-        
-        Vector3 dir = cam.transform.forward; dir.y = 0f;
-        dir = dir.normalized * distanceFromPlayer;
-        Vector3 center = cam.transform.position + dir;
-        panel.transform.position = center;
-
-        Transform bottom = panel.transform.Find("bottom");
-        if (bottom == null) { Debug.LogError("no bottom!"); return;}
-        Vector3 pos = center + dir;
-        RaycastHit hit;
-        LayerMask mask = LayerMask.GetMask("Ground");
-        if (Physics.Raycast(pos + Vector3.up * 100f, Vector3.down, out hit, float.PositiveInfinity, mask))
-        {
-            //print($"HIT Y: {hit.point.y}, bottom y was {bottom.position.y}");
-            if (hit.point.y > bottom.position.y)
-            {
-                //float offset = Mathf.Max(height, 0.3f);
-                float offset = 0.3f;
-                offset += Mathf.Abs(hit.point.y - bottom.position.y);
-                panel.transform.Translate(new Vector3(0f, offset, 0f));
-                print($"Panel was too low, moving up to {panel.transform.position.y}");
-            }
-            //if (hit.point.y > canvasPos.y)
-        }
-        Vector3 target = pos + dir;
-        target.y = panel.transform.position.y;
-        panel.transform.LookAt(target);
-
-        
     }
 }

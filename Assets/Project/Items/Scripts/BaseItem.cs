@@ -18,7 +18,7 @@ public class BaseItem : MonoBehaviour
     public InputActionReference trigger => _inventory.trigger;
     // Start is called before the first frame update
 
-    protected void Awake()
+    protected virtual void Awake()
     {
         XRBaseInteractable table = GetComponent<XRBaseInteractable>();
         if (CannotDrop)
