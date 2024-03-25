@@ -233,6 +233,8 @@ public class WaveEditorWindow : EditorWindow
             quant.amountToSpawn = Vector2Int.one;
             enemies.Add(quant);
         }
+        int minCash = 0;
+        int maxCash = 0;
         foreach (var enemy in enemies)
         {
             EditorGUILayout.BeginHorizontal();
@@ -247,7 +249,11 @@ public class WaveEditorWindow : EditorWindow
                 removed = true;
             }
             int killValue = _KillValueByType(type);
-            string cash = $"${killValue * amount.x} - ${killValue * amount.y}";
+            int min = killValue * amount.x;
+            minCash += min;
+            int max = killValue * amount.y;
+            maxCash += max;
+            string cash = $"${min} - ${max}";
             GUILayout.Label(cash, GUILayout.Width(150));
             EditorGUILayout.EndHorizontal();
             
@@ -287,12 +293,15 @@ public class WaveEditorWindow : EditorWindow
 
             i++;
         }
+        string cashDisplay = $"Total enemy cash: ${minCash} - ${maxCash}\n";
+        GUILayout.Label(cashDisplay);
         GUILayout.Label("\n");
         if (GUILayout.Button("Add Enemy", _centerButton))
         {
             enemies.Add(new EnemyQuant());
             _dirty();
         }
+
         return enemies;
     }
 
