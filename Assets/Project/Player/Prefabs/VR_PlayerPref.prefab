@@ -23367,6 +23367,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roundStartPanel: {fileID: 466804994472281372}
   roundEndPanel: {fileID: 524082156959601278}
+  victoryPanel: {fileID: 0}
+  defeatPanel: {fileID: 0}
   roundStartText: {fileID: 2343207805256296305}
   displayTime: 6
   distanceFromPlayer: 5
@@ -75936,10 +75938,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fireworkTime: 10
   fireworkCount: 30
-  youWinPanel: {fileID: 5200857987102715528}
-  youLosePanel: {fileID: 285737225240992653}
   castleRoot: {fileID: 0}
-  endGamePlayerPointTransform: {fileID: 0}
 --- !u!114 &6059974158823746464
 MonoBehaviour:
   m_ObjectHideFlags: 0
