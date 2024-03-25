@@ -34,16 +34,16 @@ public class GameOverPanel : MonoBehaviour
     {
         if (canvasTransform == null) canvasTransform = transform.GetChild(0);
         canvasTransform.gameObject.SetActive(false);
-        GameStateManager.OnGameWin += OnGameWin;
-        GameStateManager.OnGameLose += OnGameLose;
+        GameStateManager.onGameWin += OnGameWin;
+        GameStateManager.onGameLose += OnGameLose;
         foreach (var stat in stats)
             startValues[stat] = stat.getSerializeValue;
     }
 
     private void OnDestroy()
     {
-        GameStateManager.OnGameWin -= OnGameWin;
-        GameStateManager.OnGameLose -= OnGameLose;
+        GameStateManager.onGameWin -= OnGameWin;
+        GameStateManager.onGameLose -= OnGameLose;
     }
 
     void UpdateStats()

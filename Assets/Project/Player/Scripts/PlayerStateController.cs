@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
@@ -88,7 +86,7 @@ public class PlayerStateController : MonoBehaviour
         var playerControlPoint = tower.GetPlayerControlPoint();
         Vector3 dir = new Vector3(0f, InventoryManager.instance.playerCameraTransform.eulerAngles.y, 0f);
         playerControlPoint.transform.eulerAngles = dir;
-        TeleportPlayerToPoint(playerControlPoint);
+        _TeleportPlayerToPoint(playerControlPoint);
         
         SetPlayerState(PlayerState.TOWER_CONTROL);
 
@@ -138,6 +136,13 @@ public class PlayerStateController : MonoBehaviour
 
         OnPlayerReleaseTower?.Invoke();
     }
+
+    public static void TeleportPlayerToPoint(Transform transform)
+    {
+        if(transform == null) return;
+        
+        TeleportPlayerToPoint(transform.position, transform.rotation);
+    }
     
     public static void TeleportPlayerToPoint(Vector3 pos, Quaternion rot)
     {
@@ -153,7 +158,7 @@ public class PlayerStateController : MonoBehaviour
 
         instance.teleportationProvider.QueueTeleportRequest(request);
     }
-    private void TeleportPlayerToPoint(Transform playerControlPoint)
+    private void _TeleportPlayerToPoint(Transform playerControlPoint)
     {
         TeleportRequest request = new TeleportRequest()
         {
@@ -171,19 +176,18 @@ public class PlayerStateController : MonoBehaviour
     {
         ActivatePenthouseExterior(false);
         Transform t = TeleportPoints.Penthouse;
-        TeleportPlayerToPoint(t);
+        _TeleportPlayerToPoint(t);
     }
 
     public void TeleportPlayerToWar()
     {
         ActivatePenthouseExterior();
         Transform t = Gate.FrontGate;
-        TeleportPlayerToPoint(t);
+        _TeleportPlayerToPoint(t);
     }
     
     private void OnNextTeleport(LocomotionSystem obj)
     {
-        //print("Tele called");
         TeleportFloorPlacer.ManualRefresh();
         if (_joiningTower)
         {

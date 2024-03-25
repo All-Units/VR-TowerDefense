@@ -34,26 +34,25 @@ public class FadeScreen : MonoBehaviour
     /// <summary>
     /// Starts black, ends see through
     /// </summary>
-    public void FadeIn()
+    public void FadeIn(float t = -1)
     {
-        Fade(1, 0);
+        Fade(1, 0, t);
     }
     public static void Fade_Out(float t = -1)
     {
         instance.StartCoroutine(instance.FadeRoutine(0, 1, t));
-        //instance.FadeOut();
     }
     /// <summary>
     /// Starts see through, ends black
     /// </summary>
-    public void FadeOut()
+    public void FadeOut(float t = -1)
     {
-        Fade(0, 1);
+        Fade(0, 1, t);
     }
 
-    public void Fade(float alphaIn, float alphaOut)
+    public void Fade(float alphaIn, float alphaOut, float t = -1)
     {
-        StartCoroutine(FadeRoutine(alphaIn,alphaOut));
+        StartCoroutine(FadeRoutine(alphaIn,alphaOut, t));
     }
 
     public IEnumerator FadeRoutine(float alphaIn,float alphaOut, float t = -1)

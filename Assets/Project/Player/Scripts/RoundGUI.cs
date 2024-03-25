@@ -8,6 +8,9 @@ public class RoundGUI : MonoBehaviour
 {
     [SerializeField] private PlayableDirector roundStartPanel;
     [SerializeField] private PlayableDirector roundEndPanel;
+    [SerializeField] private PlayableDirector victoryPanel;
+    [SerializeField] private PlayableDirector defeatPanel;
+    
     [SerializeField] private TextMeshProUGUI roundStartText;
     [SerializeField] private float displayTime = 3f;
     [SerializeField] private float distanceFromPlayer = 3f;
@@ -19,9 +22,6 @@ public class RoundGUI : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        roundStartPanel.GetComponent<RectTransform>().localScale = Vector3.zero;
-        roundEndPanel.GetComponent<RectTransform>().localScale = Vector3.zero;
-        
         _roundStartString = roundStartText.text;
         foreach (var text in roundEndPanel.GetComponentsInChildren<TextMeshProUGUI>())
         {
@@ -30,7 +30,21 @@ public class RoundGUI : MonoBehaviour
         
         EnemyManager.OnRoundStarted.AddListener(_OnRoundStart);
         EnemyManager.OnRoundEnded.AddListener(_OnRoundEnd);
+        
+        GameStateManager.onStartGameWin += OnStartGameWin;
+        GameStateManager.onStartGameLose += OnStartGameLose;
     }
+
+    private void OnStartGameWin()
+    {
+        _DisplayPanel(victoryPanel);
+    }
+    
+    private void OnStartGameLose()
+    {
+        _DisplayPanel(defeatPanel);
+    }
+
     private void OnDestroy()
     {
         EnemyManager.OnRoundStarted.RemoveListener(_OnRoundStart);
@@ -39,6 +53,7 @@ public class RoundGUI : MonoBehaviour
 
     private void _OnRoundStart()
     {
+        _RefreshTexts();
         _DisplayPanel(roundStartPanel);
     }
 
@@ -46,13 +61,13 @@ public class RoundGUI : MonoBehaviour
     {
         if (EnemyManager.IsWaveValid(EnemyManager.instance._public_wave_i + 1) == false)
             return;
+        _RefreshTexts();
         _DisplayPanel(roundEndPanel);
     }
 
     private void _DisplayPanel(PlayableDirector panel)
     {
         _RepositionPanel(panel.gameObject);
-        _RefreshTexts();
         panel.Play();
     }
 
@@ -67,8 +82,9 @@ public class RoundGUI : MonoBehaviour
 
     private string _FormatString(string start)
     {
+        // This should be directly assigned
         start = start.Replace("[N]", EnemyManager.CurrentWave.ToString());
-        start = start.Replace("[N - 1]", (EnemyManager.CurrentWave - 1).ToString());
+        start = start.Replace("[N - 1]", (EnemyManager.CurrentWave).ToString());
         start = start.Replace("[TIME]", EnemyManager.TimeUntilNextWave.ToString());
         start = start.Replace("[$]", EnemyManager.LastWaveBonus.ToString());
 
@@ -82,13 +98,19 @@ public class RoundGUI : MonoBehaviour
 
 
         var camTransform = cam.transform;
-        var dir = camTransform.forward; dir.y = 0f;
+        var dir = camTransform.forward;
+        dir.y = 0f;
         dir = dir.normalized * distanceFromPlayer;
         var center = camTransform.position + dir;
         panel.transform.position = center;
 
         var bottom = panel.transform.Find("bottom");
-        if (bottom == null) { Debug.LogError("no bottom!"); return;}
+        if (bottom == null)
+        {
+            Debug.LogError("no bottom!");
+            return;
+        }
+
         var pos = center + dir;
         LayerMask mask = LayerMask.GetMask("Ground");
         if (Physics.Raycast(pos + Vector3.up * 100f, Vector3.down, out var hit, float.PositiveInfinity, mask))
@@ -104,32 +126,9 @@ public class RoundGUI : MonoBehaviour
             }
             //if (hit.point.y > canvasPos.y)
         }
+
         var target = pos + dir;
         target.y = panel.transform.position.y;
         panel.transform.LookAt(target);
-    }
-    
-    /// <summary>
-    /// Spawns a copy of the given GO, and destroys it after a few seconds
-    ///
-    /// Why?!? 
-    /// </summary>
-    /// <param name="go"></param>
-    /// <returns></returns>
-    private IEnumerator FadeGOAfter(GameObject go)
-    {
-
-        _RefreshTexts();
-        var spawned = Instantiate(go, transform);
-        spawned.SetActive(true);
-        _RepositionPanel(spawned);
-        
-        //spawned.transform.position = pos;
-        //spawned.transform.LookAt(pos + dir);
-        //spawned.transform.LookAt(pos - dir);
-        spawned.DestroyAfter(displayTime);
-        //Destroy(spawned, displayTime);
-        
-        yield break;
     }
 }

@@ -1,33 +1,25 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 public class GameStateManager : MonoBehaviour
 {
     public static GameStateManager instance;
 
-    [Header("Public variables")] [SerializeField]
-    private float waitBeforeEndingTime = 6f;
-
-
-    [SerializeField] float fireworkTime = 5f;
-    [SerializeField] int fireworkCount = 50;
-    [SerializeField] float _timeToDestroyCastle = 7f;
-    [SerializeField] Vector3 localRotateTarget = new Vector3(20f, 0f, 0f);
-    [SerializeField] Vector3 localPosTarget = new Vector3(0f, -7f, 0f);
-
-
-    [Header("References")]
-    [SerializeField] private GameObject YouWinPanel;
-    [SerializeField] private GameObject YouLosePanel;
-    [SerializeField] GameObject _castleRoot;
-
-    public static Action OnGameWin;
-    public static Action OnGameLose;
-
+    [SerializeField] private float fireworkTime = 5f;
+    [SerializeField] private int fireworkCount = 50;
+    
+    [FormerlySerializedAs("_castleRoot")] [SerializeField]
+    private GameObject castleRoot;
+    
+    public static Action onStartGameWin;
+    public static Action onStartGameLose;
+    
+    public static Action onGameWin;
+    public static Action onGameLose;    
 
     private void Awake()
     {
@@ -36,25 +28,82 @@ public class GameStateManager : MonoBehaviour
 
     public static void LoseGame()
     {
-        instance._DestroyCastle();
+        if (instance)
+            instance.PlayLoseSequence();
+    }
+
+    private Coroutine _loseSequence = null;
+    private void PlayLoseSequence()
+    {
+        _loseSequence ??= StartCoroutine(LoseSequence());
+    }
+    
+    private IEnumerator LoseSequence()
+    {
+        onStartGameLose?.Invoke();
+        
+        yield return new WaitForSeconds(_preEndgameHoldSeconds);
+        FadeScreen.instance.FadeOut();
+        yield return new WaitForSeconds(FadeScreen.instance.fadeDuration + _EndGameCleanUpSeconds);
+
+        TeleportPlayerToEndGame();
         EnemyManager.HideEnemies();
-        OnGameLose?.Invoke();
+
+        FadeScreen.instance.FadeIn();
+        yield return new WaitForSeconds(FadeScreen.instance.fadeDuration);
+        
+        _DestroyCastle();
+        onGameLose?.Invoke();
+
+        _loseSequence = null;
+    }
+
+    private void TeleportPlayerToEndGame()
+    {
+        PlayerStateController.TeleportPlayerToPoint(CastleController.GetEndgamePoint());
     }
 
     public static void WinGame()
     {
-        if (instance == null) return;
+        if (instance)
+            instance.PlayWinSequence();
+    }
+
+    private Coroutine _winSequence = null;
+    private float _preEndgameHoldSeconds = 4f;
+    private float _EndGameCleanUpSeconds = 1f;
+
+    private void PlayWinSequence()
+    {
+        _winSequence ??= StartCoroutine(WinSequence());
+    }
+
+    private IEnumerator WinSequence()
+    {
+        onStartGameWin?.Invoke();
+        
+        yield return new WaitForSeconds(_preEndgameHoldSeconds);
+        FadeScreen.instance.FadeOut();
+        yield return new WaitForSeconds(FadeScreen.instance.fadeDuration + _EndGameCleanUpSeconds);
+
+        TeleportPlayerToEndGame();
+        EnemyManager.HideEnemies();
+
+        FadeScreen.instance.FadeIn();
+        yield return new WaitForSeconds(FadeScreen.instance.fadeDuration);
         
         instance.StartCoroutine(_LaunchFireworks());
         SoundtrackManager.PlayMenu();
-        OnGameWin?.Invoke();
-    }  
+        onGameWin?.Invoke();
 
-    static IEnumerator _LaunchFireworks()
+        _winSequence = null;
+    }
+
+    private static IEnumerator _LaunchFireworks()
     {
-        float t = 0f;
-        float rate = instance.fireworkTime / instance.fireworkCount;
-        float i = 0f;
+        var t = 0f;
+        var rate = instance.fireworkTime / instance.fireworkCount;
+        var i = 0f;
         while (t <= instance.fireworkTime)
         {
             yield return null;
@@ -73,7 +122,7 @@ public class GameStateManager : MonoBehaviour
 
     private void _DestroyCastle()
     {
-        var anim = _castleRoot.GetComponent<Animator>();
+        var anim = castleRoot.GetComponent<Animator>();
         anim.Play("Destroy");
     }
     
@@ -82,7 +131,8 @@ public class GameStateManager : MonoBehaviour
         FadeScreen.Fade_Out(t);
         StartCoroutine(_DelayReturnToMenu(t));
     }
-    IEnumerator _DelayReturnToMenu(float t)
+
+    private IEnumerator _DelayReturnToMenu(float t)
     {
         yield return new WaitForSeconds(t);
         SceneManager.LoadSceneAsync("MainMenu");
