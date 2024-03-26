@@ -80,7 +80,7 @@ public class MapCreatorEditor : Editor
         
         Vector3 pos = t.transform.position;
         //Set our name to our position
-        t.gameObject.name = ((Vector3)Vector3Int.RoundToInt(pos)).preciseVector3String();
+        t.gameObject.name = ((Vector3)Vector3Int.RoundToInt(pos)).PreciseVector3String();
         
         float y = 0f;
         Quaternion q;
@@ -88,7 +88,7 @@ public class MapCreatorEditor : Editor
         foreach (Vector3 dir in dirs)
         {
             Vector3 mod = pos + (dir * 2);
-            bool valid = !(t.transform.parent.Find(mod.preciseVector3IntString()) != null);
+            bool valid = !(t.transform.parent.Find(mod.PreciseVector3IntString()) != null);
             Handles.color = valid ? Color.green : Color.red;
             q = Quaternion.Euler(0f, y, 0f);
             if (dir.y == 1)
@@ -111,7 +111,7 @@ public class MapCreatorEditor : Editor
                         if (mt != null)
                         {
                             Vector3 mod2 = mt.transform.position + (dir * 2);
-                            bool v = !(t.transform.parent.Find(mod2.preciseVector3IntString()) != null);
+                            bool v = !(t.transform.parent.Find(mod2.PreciseVector3IntString()) != null);
                             if (v)
                                 newtiles.Add(SpawnTileAt(mt.gameObject, mod2));
                         }
@@ -197,7 +197,7 @@ public class MapCreatorEditor : Editor
         //Register created obj to undo
         Undo.RegisterCreatedObjectUndo(newTile, "Created tile");
         newTile.transform.position = pos;
-        newTile.name = $"{pos.preciseVector3IntString()}";
+        newTile.name = $"{pos.PreciseVector3IntString()}";
         Selection.objects = new[] { newTile };
         return newTile;
     }

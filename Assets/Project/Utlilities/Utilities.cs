@@ -6,44 +6,16 @@ using System.Linq;
 
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.SceneManagement;
-
 #endif
+
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using UnityEngine.XR.Interaction.Toolkit;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
-public static class Utilities
+public static partial class Utilities
 {
-    /// <summary>
-    /// Starts a coroutine that destroys GO after a delay. Pauses delay if game is paused
-    /// </summary>
-    /// <param name="go"></param>
-    /// <param name="t"></param>
-    public static void DestroyAfter(this GameObject go, float t)
-    {
-        MonoBehaviour monoBehaviour = go.GetComponent<MonoBehaviour>();
-        if (monoBehaviour == null) return;
-        monoBehaviour.StartCoroutine(go._DestroyAfter(t));
-    }
-    public static IEnumerator _DestroyAfter(this GameObject go, float t)
-    {
-        float current = 0f;
-        while (current < t)
-        {
-            if (XRPauseMenu.IsPaused == false)
-                current += Time.deltaTime;
-            else
-                current += 0f;
-            yield return null;
-        }
-        yield return null;
-        Object.Destroy(go);
-    }
+
     public static Vector2 RandomPointOnUnitCircle()
     {
         var seed = Random.Range(0, 1f);
@@ -111,9 +83,9 @@ public static class Utilities
     /// <param name="vector">The vector to print</param>
     /// <param name="round">How many digits to round to. If left at default -1, doesn't round</param>
     /// <returns></returns>
-    public static string preciseString(this Vector2 vector, int round = -1)
+    public static string PreciseString(this Vector2 vector, int round = -1)
     {
-        string precise = "";
+        string precise;
         if (round == -1)
         {
             precise = $"({vector.x}, {vector.y})";
@@ -131,19 +103,20 @@ public static class Utilities
         return precise;
     }
 
-    public static string preciseVector3IntString(this Vector3 vector, int round = -1)
+    public static string PreciseVector3IntString(this Vector3 vector, int round = -1)
     {
-        return ((Vector3)Vector3Int.RoundToInt(vector)).preciseVector3String(round);
+        return ((Vector3)Vector3Int.RoundToInt(vector)).PreciseVector3String(round);
     }
+    
     /// <summary>
     /// Prints a formatted Vector 3 string, to an arbitrary precision
     /// </summary>
     /// <param name="vector">The vector to print</param>
     /// <param name="round">How many digits to round to. If left at default -1, doesn't round</param>
     /// <returns></returns>
-    public static string preciseVector3String(this Vector3 vector, int round = -1)
+    public static string PreciseVector3String(this Vector3 vector, int round = -1)
     {
-        string precise = "";
+        string precise;
         if (round == -1)
         {
             precise = $"({vector.x}, {vector.y}, {vector.z})";
@@ -160,6 +133,7 @@ public static class Utilities
 
         return precise;
     }
+    
     /// <summary>
     /// Gets the full path for any transform, through all of its parents
     /// </summary>
@@ -176,6 +150,7 @@ public static class Utilities
         }
         return s;
     }
+    
     /// <summary>
     /// An overload of <see cref="FullPath(UnityEngine.Transform)"/> for GameObjects
     /// </summary>
@@ -207,6 +182,7 @@ public static class Utilities
         
         Object.DestroyImmediate(component);
     }
+    
     /// <summary>
     /// [NYE] Gets all of the items in the folder contained in root. Starts at Application.path,
     /// which includes /Assets/
@@ -221,15 +197,9 @@ public static class Utilities
         bool recursive = true,
         bool includeFolders = true)
     {
-        
         string folder = Application.dataPath + root;
         string[] files = Directory.GetFiles(folder);
-        List<string> contents = new List<string>();
-        foreach (string s in files)
-        {
-            
-        }
-        return contents;
+        return files.ToList();
     }
 #endif
 
@@ -238,6 +208,7 @@ public static class Utilities
         //Random.range is exclusive on the upper bound
         return list[Random.Range(0, list.Count)];
     }
+    
     public static int GetRandomIndex<T>(this List<T> list)
     {
         //Random.range is exclusive on the upper bound
@@ -265,7 +236,7 @@ public static class Utilities
         return str;
     }
 
-        public static void SetLayerRecursive(this GameObject go, int layer)
+    public static void SetLayerRecursive(this GameObject go, int layer)
     {
         go.layer = layer;
         foreach (Transform t in go.transform)
@@ -340,43 +311,9 @@ public static class Utilities
     
     public static Vector3 RandomPointInside(this Bounds bounds) {
         return new Vector3(
-            UnityEngine.Random.Range(bounds.min.x, bounds.max.x),
-            UnityEngine.Random.Range(bounds.min.y, bounds.max.y),
-            UnityEngine.Random.Range(bounds.min.z, bounds.max.z)
+            Random.Range(bounds.min.x, bounds.max.x),
+            Random.Range(bounds.min.y, bounds.max.y),
+            Random.Range(bounds.min.z, bounds.max.z)
         );
     }
-    
-    public static InputAction GetInputAction(InputActionReference actionReference)
-    {
-#pragma warning disable IDE0031 // Use null propagation -- Do not use for UnityEngine.Object types
-        return actionReference != null ? actionReference.action : null;
-#pragma warning restore IDE0031
-    }
-    #if UNITY_EDITOR
-    [MenuItem("Castle Tools/Scenes/Go To DaneMainScene %#d")]
-    public static void GoToDaneScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-        {
-            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map03.unity");
-        }
-    }
-    [MenuItem("Castle Tools/Scenes/Go To DaneSecondScene %#e")]
-    public static void GoToDaneSecondScene()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-        {
-            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/map_trailer.unity");
-        }
-    }
-    [MenuItem("Castle Tools/Scenes/Go To Main Menu %#m")]
-    public static void GoToMainMenu()
-    {
-        if (EditorSceneManager.SaveCurrentModifiedScenesIfUserWantsTo())
-        {
-            EditorSceneManager.OpenScene("Assets/Project/Maps/Scenes/MainMenu.unity");
-        }
-    }
-    
-    #endif
 }
