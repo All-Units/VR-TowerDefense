@@ -123,7 +123,6 @@ public class SerializationManager : MonoBehaviour
             print($"Saved tower {tuple.tower_dto}, at pos ({tuple.x}, {tuple.y}, {tuple.z})");
             data._saved_towers.Add(tuple);
         }
-
     }
 
     private bool _SaveFileExists()
@@ -136,7 +135,6 @@ public class SerializationManager : MonoBehaviour
     {
         if (levelSelectData == null) return null;
         FileStream file = File.Open(_path, FileMode.OpenOrCreate);
-        
         return file;
     }
     
