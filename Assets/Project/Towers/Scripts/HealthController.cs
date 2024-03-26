@@ -1,6 +1,7 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class HealthController : MonoBehaviour
 {
@@ -59,6 +60,14 @@ public class HealthController : MonoBehaviour
     {
         _currentHealth = health;
         maxHealth = health;
+    }
+    public void SetCurrentHealth(int health)
+    {
+        _currentHealth = health;
+        foreach (var slider in GetComponentsInChildren<Slider>())
+        {
+            slider.value = (float)_currentHealth / (float)maxHealth;
+        }
     }
     
     public bool isDead = false;

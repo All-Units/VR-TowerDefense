@@ -27,6 +27,35 @@ public class ResetOnDrop : MonoBehaviour
             rb = GetComponent<Rigidbody>();
         if (table == null)
             table = GetComponent<XRBaseInteractable>();
+
+        PlayerStateController.OnStateChange += _OnStateChange;
+    }
+
+    private void _OnStateChange(PlayerState oldState, PlayerState newState)
+    {
+        var tower = PlayerStateController.CurrentTower;
+        //If we're switching to idle, always hide everything
+        print($"{playerItem} switching from {oldState} to {newState}");
+        if (newState == PlayerState.IDLE)
+        {
+            print("Idle, hiding");
+            _HideItem();
+        }
+        else if (tower.dto is ProjectileTower_SO dto)
+        {
+            print($"Tower, was ProjectileTower, was self? {dto.playerItem_SO != playerItem}");
+            //If the new tower is NOT our item type
+            if (dto.playerItem_SO != playerItem)
+            {
+                _HideItem();
+            }
+        }
+    }
+    void _HideItem()
+    {
+        rb.constraints = RigidbodyConstraints.None;
+        t.position = new Vector3(0f, -1000f, 0f);
+        rb.constraints = RigidbodyConstraints.FreezeAll;
     }
 
     private void OnEnable()
@@ -114,9 +143,7 @@ public class ResetOnDrop : MonoBehaviour
         }
         if (playerControllableTower.dto is ProjectileTower_SO ptso && ptso.playerItem_SO != playerItem)
         {
-            Debug.Log($"Was in the wrong tower, not resetting! {gameObject.name}", gameObject);
-            t.position = new Vector3(0f, -1000f, 0f);
-            rb.useGravity = false;
+            _HideItem();
             yield break;
         }
         //Transform currentTowerTransform = playerControllableTower.GetPlayerControlPoint();
@@ -139,10 +166,6 @@ public class ResetOnDrop : MonoBehaviour
         t.rotation = startRot;
         _currentResetter = null;
         rb.useGravity = false;
-        yield return null;
-        //t.position = pos;
-        yield return null;
-        //t.position = pos;
-        //print($"After 2 frames, position is {t.position}, which is {Vector3.Distance(pos, t.position)} away from desired");
+        
     }
 }

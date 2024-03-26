@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(HealthController))]
 public class Gate : MonoBehaviour, IEnemyTargetable
@@ -10,6 +11,10 @@ public class Gate : MonoBehaviour, IEnemyTargetable
     [SerializeField] private HealthController _controller;
     [SerializeField] private GameObject deathParticles;
     public static Transform FrontGate;
+    public static Gate instance;
+
+    public static int FrontGateHealth => instance.GetHealthController().CurrentHealth;
+    
 
     private void Awake()
     {
@@ -26,6 +31,7 @@ public class Gate : MonoBehaviour, IEnemyTargetable
         if (isFinalGate)
         {
             if (FrontGate != null) Destroy(FrontGate.gameObject);
+            instance = this;
             FrontGate = new GameObject().transform;
             FrontGate.gameObject.name = "Front Gate Teleport point";
             FrontGate.parent = transform;
@@ -64,5 +70,12 @@ public class Gate : MonoBehaviour, IEnemyTargetable
     public Vector3 GetPosition()
     {
         return transform.position;
+    }
+    public static void SetFrontGateHealth(int health)
+    {
+        if (instance == null) return;
+        instance.GetHealthController().SetCurrentHealth(health);
+        HealthbarController hbc = instance.GetComponentInChildren<HealthbarController>();
+        hbc.UpdateValue(health);
     }
 }

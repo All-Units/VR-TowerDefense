@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Xml;
 using UnityEditor;
 using UnityEditor.Build;
 using UnityEditor.Callbacks;
@@ -197,6 +198,30 @@ public class WaveEditorWindow : EditorWindow
         }
         GUILayout.Label("\n\n");
     }
+    EnemyDTO _EnemyDTOByType(EnemyType type)
+    {
+        string path = $"{Application.dataPath}/Project/Enemies/DTOs";
+        var dtos = Directory.GetFiles(path, "*.asset");
+        foreach (var dto_path in dtos)
+        {
+            if (dto_path.EndsWith(".meta")) continue;
+            string p = dto_path.Replace(Application.dataPath, "Assets/");
+            var content = AssetDatabase.LoadAssetAtPath<EnemyDTO>(p);
+            if (content != null && content.type == type)
+            {
+                return content;
+            }
+            
+        }
+        return null;
+    }
+    int _KillValueByType(EnemyType type)
+    {
+        var dto = _EnemyDTOByType(type);
+        if (dto == null) return -1;
+
+        return dto.KillValue;
+    }
     List<EnemyQuant> DisplayEnemies(List<EnemyQuant> enemies)
     {
         int i = 0;
@@ -208,6 +233,8 @@ public class WaveEditorWindow : EditorWindow
             quant.amountToSpawn = Vector2Int.one;
             enemies.Add(quant);
         }
+        int minCash = 0;
+        int maxCash = 0;
         foreach (var enemy in enemies)
         {
             EditorGUILayout.BeginHorizontal();
@@ -221,6 +248,13 @@ public class WaveEditorWindow : EditorWindow
             {
                 removed = true;
             }
+            int killValue = _KillValueByType(type);
+            int min = killValue * amount.x;
+            minCash += min;
+            int max = killValue * amount.y;
+            maxCash += max;
+            string cash = $"${min} - ${max}";
+            GUILayout.Label(cash, GUILayout.Width(150));
             EditorGUILayout.EndHorizontal();
             
             if (type != enemy.enemyType)
@@ -259,12 +293,15 @@ public class WaveEditorWindow : EditorWindow
 
             i++;
         }
+        string cashDisplay = $"Total enemy cash: ${minCash} - ${maxCash}\n";
+        GUILayout.Label(cashDisplay);
         GUILayout.Label("\n");
         if (GUILayout.Button("Add Enemy", _centerButton))
         {
             enemies.Add(new EnemyQuant());
             _dirty();
         }
+
         return enemies;
     }
 

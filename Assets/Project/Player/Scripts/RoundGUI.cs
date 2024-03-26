@@ -59,7 +59,7 @@ public class RoundGUI : MonoBehaviour
 
     private void _OnRoundEnd()
     {
-        if (EnemyManager.IsWaveValid(EnemyManager.instance._public_wave_i + 1) == false)
+        if (EnemyManager.IsWaveValid(EnemyManager._public_wave_i + 1) == false)
             return;
         _RefreshTexts();
         _DisplayPanel(roundEndPanel);

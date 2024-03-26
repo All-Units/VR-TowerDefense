@@ -6,6 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(HealthController))]
+[System.Serializable]
 public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
 {
     public HealthController healthController;
@@ -85,7 +86,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
         
         OnTowerSpawn?.Invoke(this);
     }
-
+    [HideInInspector] public int _overrideStarterHealth = -1;
     private IEnumerator PlayBuildingAnimation()
     {
         transform.localScale = Vector3.one;
@@ -97,6 +98,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
         _lastHealth = dto.maxHeath;
         isInitialized = true;
         healthController.SetMaxHealth(dto.maxHeath);
+        if (_overrideStarterHealth > 0)
+        {
+            healthController.SetCurrentHealth(_overrideStarterHealth);
+        } 
+            
     }
 
     #endregion
