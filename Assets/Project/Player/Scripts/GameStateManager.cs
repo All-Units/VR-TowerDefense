@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 
@@ -50,7 +51,7 @@ public class GameStateManager : MonoBehaviour
         EnemyManager.HideEnemies();
 
         FadeScreen.instance.FadeIn();
-        yield return new WaitForSeconds(FadeScreen.instance.fadeDuration);
+        yield return new WaitForSeconds(FadeScreen.instance.fadeDuration/2);
         
         _DestroyCastle();
         onGameLose?.Invoke();
@@ -122,8 +123,8 @@ public class GameStateManager : MonoBehaviour
 
     private void _DestroyCastle()
     {
-        var anim = castleRoot.GetComponent<Animator>();
-        anim.Play("Destroy");
+        var anim = castleRoot.GetComponent<PlayableDirector>();
+        anim.Play();
     }
     
     public void ReturnToMenu(float t = 0.5f)

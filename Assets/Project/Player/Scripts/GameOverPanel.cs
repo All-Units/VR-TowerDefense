@@ -1,34 +1,37 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Image = UnityEngine.UI.Image;
 
 public class GameOverPanel : MonoBehaviour
 {
-    public List<StatTracker> stats = new List<StatTracker>();
+    public List<StatTracker> stats = new();
+    [FormerlySerializedAs("_distanceFromPlayer")]
     [Header("Gameplay variables")]
     [Range(0f, 7f)]
-    [SerializeField] float _distanceFromPlayer = 3f;
+    [SerializeField] float distanceFromPlayer = 3f;
+    [FormerlySerializedAs("_height")]
     [Range(-1f, 4f)]
-    [SerializeField] float _height = 0.5f;
+    [SerializeField] float height = 0.5f;
 
-    [SerializeField] string _winString = "VICTORY";
-    [SerializeField] string _loseString = "DEFEAT";
-    [SerializeField] Color _winColor = Color.green;
-    [SerializeField] Color _loseColor = Color.red;
-    [SerializeField] Sprite _winSprite = null;
-    [SerializeField] Sprite _loseSprite = null;
+    [FormerlySerializedAs("_winString")] [SerializeField] string winString = "VICTORY";
+    [FormerlySerializedAs("_loseString")] [SerializeField] string loseString = "DEFEAT";
+    [FormerlySerializedAs("_winColor")] [SerializeField] Color winColor = Color.green;
+    [FormerlySerializedAs("_loseColor")] [SerializeField] Color loseColor = Color.red;
+    [FormerlySerializedAs("_winSprite")] [SerializeField] Sprite winSprite = null;
+    [FormerlySerializedAs("_loseSprite")] [SerializeField] Sprite loseSprite = null;
      
     [Header("Obj references")]
     [SerializeField] Transform canvasTransform;
-    [SerializeField] TextMeshProUGUI WinLoseLabel;
-    [SerializeField] Image WinLoseIcon;
-    [SerializeField] Image WinLoseBanner;
-    [SerializeField] Transform _contentParent;
+    [FormerlySerializedAs("WinLoseLabel")] [SerializeField] TextMeshProUGUI winLoseLabel;
+    [FormerlySerializedAs("WinLoseIcon")] [SerializeField] Image winLoseIcon;
+    [FormerlySerializedAs("WinLoseBanner")] [SerializeField] Image winLoseBanner;
+    [FormerlySerializedAs("_contentParent")] [SerializeField] Transform contentParent;
     [SerializeField] GameObject statTextPrefab;
-
-
-    Dictionary<StatTracker, int> startValues = new Dictionary<StatTracker, int>();
+    
+    Dictionary<StatTracker, int> _startValues = new();
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -37,7 +40,7 @@ public class GameOverPanel : MonoBehaviour
         GameStateManager.onGameWin += OnGameWin;
         GameStateManager.onGameLose += OnGameLose;
         foreach (var stat in stats)
-            startValues[stat] = stat.getSerializeValue;
+            _startValues[stat] = stat.getSerializeValue;
     }
 
     private void OnDestroy()
@@ -48,26 +51,27 @@ public class GameOverPanel : MonoBehaviour
 
     void UpdateStats()
     {
-        _contentParent.DestroyChildren();
+        contentParent.DestroyChildren();
 
         foreach (var stat in stats)
         {
-            if(stat.total == 0) continue;
-            GameObject prefab = Instantiate(statTextPrefab, _contentParent);
+            int count = stat.total - _startValues[stat];
+
+            if(count == 0) continue;
+            GameObject prefab = Instantiate(statTextPrefab, contentParent);
             prefab.SetActive(true);
             TextMeshProUGUI text = prefab.GetComponentInChildren<TextMeshProUGUI>();
-            int count = stat.total - startValues[stat];
             text.text = $"{stat.displayName} {stat.statName} : {count}";
         }
     }
 
     void OnGameWin()
     {
-        OnGameEnd(_winString, _winColor, _winSprite);
+        OnGameEnd(winString, winColor, winSprite);
     }
     void OnGameLose()
     {
-        OnGameEnd(_loseString, _loseColor, _loseSprite);
+        OnGameEnd(loseString, loseColor, loseSprite);
     }
     public void TestWin()
     {
@@ -79,10 +83,10 @@ public class GameOverPanel : MonoBehaviour
         UpdateStats();
         canvasTransform.gameObject.SetActive(true);
         _RepositionPanel();
-        WinLoseBanner.color = endColor;
-        WinLoseLabel.text = endString;
+        winLoseBanner.color = endColor;
+        winLoseLabel.text = endString;
 
-        WinLoseIcon.sprite = sprite;
+        winLoseIcon.sprite = sprite;
     }
     void _RepositionPanel()
     {
@@ -93,7 +97,7 @@ public class GameOverPanel : MonoBehaviour
 
         Vector3 angle = new Vector3(0f, cam.eulerAngles.y - 90f, 0f);
         transform.eulerAngles = angle;
-        canvasTransform.localPosition = new Vector3(_distanceFromPlayer, _height, 0f);
+        canvasTransform.localPosition = new Vector3(distanceFromPlayer, height, 0f);
 
         Vector3 canvasPos = canvasTransform.position;
         Vector3 center = canvasPos + Vector3.up * 100f;
@@ -104,7 +108,7 @@ public class GameOverPanel : MonoBehaviour
             print($"Hit y level {hit.point.y}, canvas currently at {canvasPos.y}");
             if (hit.point.y > canvasPos.y)
             {
-                float offset = Mathf.Max(_height, 0.3f);
+                float offset = Mathf.Max(height, 0.3f);
                 canvasPos.y = hit.point.y + offset;
                 canvasTransform.position = canvasPos;
                 print($"Canvas was too low, moving up to {canvasTransform.position.y}");
