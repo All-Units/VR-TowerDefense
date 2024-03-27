@@ -12,6 +12,8 @@ public class StatDisplayController : MonoBehaviour
 
     private void OnEnable()
     {
+        if(statTracker.getSerializeValue == 0)
+            Destroy(transform.parent.gameObject);
         titleText.text = statTracker.displayName;
         valueText.text = $"{statTracker.statName}: {statTracker.getSerializeValue}";
         if (animator != null)
