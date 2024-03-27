@@ -61497,15 +61497,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c7a085b758a51845bdded6635fdd7a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  waitBeforeEndingTime: 9
   fireworkTime: 5
   fireworkCount: 50
-  _timeToDestroyCastle: 50
-  localRotateTarget: {x: 20, y: 0, z: 0}
-  localPosTarget: {x: 0, y: -7, z: 0}
-  YouWinPanel: {fileID: 5200857987102715528}
-  YouLosePanel: {fileID: 285737225240992653}
-  _castleRoot: {fileID: 0}
+  castleRoot: {fileID: 0}
 --- !u!1 &5923384273098748771
 GameObject:
   m_ObjectHideFlags: 0
