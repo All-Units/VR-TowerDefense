@@ -1,13 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 public class EnemyManager : MonoBehaviour
 {
     #region InspectorFields
     [SerializeField] private LevelSpawn_SO levelData;
+    [SerializeField] InputActionReference skipRoundButton;
+    [SerializeField] float _timeToSkipRound = 0.7f;
+    InputAction skipRoundAction => Utilities.GetInputAction(skipRoundButton);
 
     #endregion
 
@@ -93,7 +100,14 @@ public class EnemyManager : MonoBehaviour
         StartCoroutine(_LevelCoroutine());
 
         OnRoundEnded.AddListener(() => CurrencyManager.GiveToPlayer(levelData.waveStructs[_wave_i].WaveCompleteBounty));
+
+        skipRoundAction.started += SkipRoundAction_started;
+        skipRoundAction.canceled += SkipRoundAction_canceled;
+
     }
+
+    
+
     private void Update()
     {
         IsCurrentRoundComplete = _currentWaveComplete;
@@ -126,6 +140,7 @@ public class EnemyManager : MonoBehaviour
     {
         //Give our starting gold
         CurrencyManager.GiveToPlayer(levelData.StartingGold);
+        _currentWaveComplete = true;
         //Waiting a few frames in case _wave_i is overriden by a save file
         yield return new WaitForSeconds(0.1f);
 
@@ -387,6 +402,60 @@ public class EnemyManager : MonoBehaviour
     {
         GameStateManager.WinGame();
     }
+
+    #endregion
+    #region SkipRoundLogic
+
+    bool isSkipPressed = false;
+    Transform cam => InventoryManager.instance.playerCameraTransform;
+
+
+    GameObject _currentSkipPanel = null;
+    private void SkipRoundAction_started(InputAction.CallbackContext obj)
+    {
+        if (_currentWaveComplete == false) return;
+        isSkipPressed = true;
+        _currentSkipRoutine = _SkipRound();
+        StartCoroutine(_currentSkipRoutine);
+        
+    }
+    private void SkipRoundAction_canceled(InputAction.CallbackContext obj)
+    {
+        isSkipPressed = false;
+        
+    }
+    IEnumerator _currentSkipRoutine = null;
+    IEnumerator _SkipRound()
+    {
+        GameObject panel = Instantiate(skipPanelPrefab);
+        _currentSkipPanel = panel;
+        panel.transform.position = cam.position;
+
+        Vector3 euler = new Vector3(0f, cam.eulerAngles.y, 0f);
+        panel.transform.eulerAngles = euler;
+        
+        float t = 0f;
+        Image fill = panel.GetComponentInChildren<Image>();
+        fill.fillAmount = 0f;
+        while (t <= _timeToSkipRound)
+        {
+            if (isSkipPressed == false)
+                break;
+            yield return null;
+            t += Time.deltaTime;
+            fill.fillAmount = math.lerp(0f, 1f, (t / _timeToSkipRound));
+        }
+        panel.DestroyAfter(0.1f);
+        if (t >= _timeToSkipRound)
+        {
+            yield return new WaitForSeconds(0.15f);
+            SkipToNextRound = true; 
+        }
+        
+        _currentSkipRoutine = null;
+    }
+    GameObject skipPanelPrefab => Resources.Load<GameObject>("Prefabs/SkipRoundCanvas");
+
 
     #endregion
 
