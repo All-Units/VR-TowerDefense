@@ -13,9 +13,11 @@ GameObject:
   - component: {fileID: 5031312486223926390}
   - component: {fileID: 2988623100437398490}
   - component: {fileID: 417758750176801239}
-  - component: {fileID: 2132364637303422798}
   - component: {fileID: 6383636920730843202}
   - component: {fileID: 852155121161816106}
+  - component: {fileID: 2081451233820562264}
+  - component: {fileID: 421122290414037931}
+  - component: {fileID: 3589302514681714464}
   m_Layer: 14
   m_Name: Tower Bubble
   m_TagString: Untagged
@@ -34076,28 +34078,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 56617418563762753}
   m_Mesh: {fileID: 0}
---- !u!64 &2132364637303422798
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 56617418563762753}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!114 &6383636920730843202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -34262,6 +34242,67 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: {fileID: 5422243351478854223}
   cantAffordTextColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!95 &2081451233820562264
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56617418563762753}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f3b7ecaf8a24e9e48b97b7fb8f332470, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!320 &421122290414037931
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56617418563762753}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 70f8c878a40031343b80bc9ecac56de1, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 1733115325052587041, guid: 70f8c878a40031343b80bc9ecac56de1, type: 2}
+    value: {fileID: 2081451233820562264}
+  m_ExposedReferences:
+    m_References: []
+--- !u!135 &3589302514681714464
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56617418563762753}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &6411755704471791970
 GameObject:
   m_ObjectHideFlags: 0
