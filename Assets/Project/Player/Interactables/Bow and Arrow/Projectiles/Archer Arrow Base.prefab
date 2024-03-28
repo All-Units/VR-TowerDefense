@@ -154,18 +154,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 7414160968426255016}
-        m_TargetAssemblyTypeName: AudioClipController, Project
-        m_MethodName: PlayClip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
   OnHit:
     m_PersistentCalls:
       m_Calls: []
@@ -189,9 +177,9 @@ MonoBehaviour:
   name: 
   _clips:
   - {fileID: 8300000, guid: a3ec827c60ca1a34e8963c71231dfe47, type: 3}
-  _maxInclusivePitchVariance: 0.07
+  _maxInclusivePitchVariance: 0.048
   _maxVolumeVariance: 0.15
-  playOnAwake: 0
+  playOnAwake: 1
   playOnEnable: 0
   loop: 0
   OnFinish:
