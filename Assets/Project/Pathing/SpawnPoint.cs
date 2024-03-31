@@ -207,6 +207,7 @@ public class SpawnPoint : PathPoint
 
     private void Start()
     {
+        if (data == null) return;
         data.pos = transform.position;
         data.enemyParent = enemyParent;
         data.SpawnPoint = this;
