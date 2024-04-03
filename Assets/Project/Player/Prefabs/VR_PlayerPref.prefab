@@ -4535,8 +4535,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294637301
-  m_fontColor: {r: 0.9607844, g: 0.96470594, b: 0.9803922, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -7169,6 +7169,12 @@ MonoBehaviour:
   settingsPanelPrefab: {fileID: 0}
   settingsDistance: 5
   settingsHeight: 2
+  settingsIcon: {fileID: 0}
+  settingsColor: {r: 0, g: 0, b: 0, a: 0}
+  mainMenuIcon: {fileID: 0}
+  mainMenuColor: {r: 0, g: 0, b: 0, a: 0}
+  quitIcon: {fileID: 0}
+  quitColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &5527541324245493155
 GameObject:
   m_ObjectHideFlags: 0
@@ -7406,7 +7412,7 @@ MonoBehaviour:
   distanceFromPlayer: 1.3
   heightOffset: -0.5
   arcOffset: 20
-  bubblePrefab: {fileID: 56617418563762753, guid: a13a9584e4a546d44a1116431b67f48b,
+  bubblePrefab: {fileID: 56617418563762753, guid: 489e957c278702a49a6e90400c3e5455,
     type: 3}
   bubbleParent: {fileID: 7801281519313277201}
   togglePauseButton: {fileID: -4865417013158564184, guid: c348712bda248c246b8c49b3db54643f,
@@ -7415,6 +7421,12 @@ MonoBehaviour:
     type: 3}
   settingsDistance: 1.8
   settingsHeight: 0
+  settingsIcon: {fileID: 21300000, guid: 9a907db57cd564233bccfb07a9ad9060, type: 3}
+  settingsColor: {r: 0.5019608, g: 0.56078434, b: 0.64705884, a: 1}
+  mainMenuIcon: {fileID: 21300000, guid: b20473ecf58974c5abcf4763251e3acf, type: 3}
+  mainMenuColor: {r: 0.29803923, g: 0.7372549, b: 0.25882354, a: 1}
+  quitIcon: {fileID: 21300000, guid: 78711ed6bf9804974a5265512b8cbf62, type: 3}
+  quitColor: {r: 0.7490196, g: 0.21960786, b: 0.10588236, a: 1}
 --- !u!114 &3657432934296203667
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8179,6 +8191,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7801281519313277201}
+  - component: {fileID: 6314727382837325548}
+  - component: {fileID: 8251777054218403094}
   m_Layer: 10
   m_Name: BubbleParent
   m_TagString: Untagged
@@ -8196,11 +8210,55 @@ Transform:
   m_LocalRotation: {x: -0, y: 0.70710677, z: -0, w: 0.70710677}
   m_LocalPosition: {x: 0, y: 1.3614407, z: 0.19159973}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1590325144611909964}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &6314727382837325548
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274696739848014946}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 23efbd29f111eea43a471195cba2aa9a, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -428958849792550420, guid: e5f983a76d729c8479ae82264cb5157c, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 1733115325052587041, guid: 70f8c878a40031343b80bc9ecac56de1, type: 2}
+    value: {fileID: 8251777054218403094}
+  - key: {fileID: 1733115325052587041, guid: 23efbd29f111eea43a471195cba2aa9a, type: 2}
+    value: {fileID: 8251777054218403094}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &8251777054218403094
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6274696739848014946}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 6ba68ac5e3a5cc14fa5356b6976c203a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6354312962934098016
 GameObject:
   m_ObjectHideFlags: 0
@@ -10351,6 +10409,12 @@ MonoBehaviour:
   settingsPanelPrefab: {fileID: 0}
   settingsDistance: 0
   settingsHeight: 0
+  settingsIcon: {fileID: 0}
+  settingsColor: {r: 0, g: 0, b: 0, a: 0}
+  mainMenuIcon: {fileID: 0}
+  mainMenuColor: {r: 0, g: 0, b: 0, a: 0}
+  quitIcon: {fileID: 0}
+  quitColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!1 &7554891186106744151
 GameObject:
   m_ObjectHideFlags: 0

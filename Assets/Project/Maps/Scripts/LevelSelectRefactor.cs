@@ -191,7 +191,6 @@ public class LevelSelectRefactor : MonoBehaviour
         _currentRefactor = this;
         //Invert bubbles active
         _ActivateBubbles(_AreBubblesActive == false);
-        print("Level clicked");
         return;
     }
     void _StartLoadLevel(ActivateEventArgs args = null)

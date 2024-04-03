@@ -29,6 +29,12 @@ public class XRPauseMenu : MonoBehaviour
     [SerializeField] float settingsDistance = 5f;
     [SerializeField] float settingsHeight = 2f;
 
+    [SerializeField] Sprite settingsIcon;
+    [SerializeField] Color settingsColor;
+    [SerializeField] Sprite mainMenuIcon;
+    [SerializeField] Color mainMenuColor;
+    [SerializeField] Sprite quitIcon;
+    [SerializeField] Color quitColor;
 
     Transform cam { 
         get { 
@@ -218,19 +224,31 @@ public class XRPauseMenu : MonoBehaviour
                 print("No text!!!");
 
             XRSimpleInteractable xr = bubble.GetComponentInChildren<XRSimpleInteractable>();
+            SpriteRenderer renderer = xr.GetComponentInChildren<SpriteRenderer>();
             if (xr == null) continue;
             if (name == "Main Menu")
             {
                 xr.activated.AddListener(MainMenu);
+                _SetSprite(renderer, mainMenuIcon, mainMenuColor);
             }
-            else if (name == "Quit")
+            else if (name == "Quit") {
                 xr.activated.AddListener(Quit);
-            else if (name == "Next Round")
-                xr.activated.AddListener(NextRound);
-            else if (name == "Settings")
+                _SetSprite(renderer, quitIcon, quitColor);
+            }
+            
+            else if (name == "Settings") { 
                 xr.activated.AddListener(SettingsPressed);
+                _SetSprite(renderer, settingsIcon, settingsColor);
+            }
+                
         }
         bubbleParent.gameObject.SetActive(false);
+    }
+    void _SetSprite(SpriteRenderer renderer, Sprite sprite, Color c)
+    {
+        if (renderer == null) return;
+        renderer.sprite = sprite;
+        renderer.color = c;
     }
     void _PauseFlag()
     {
