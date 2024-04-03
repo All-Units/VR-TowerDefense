@@ -265,10 +265,9 @@ public class EnemyManager : MonoBehaviour
             //print("Started waiting for enemies remaining");
             while (Enemies.Count <= subWave.DelayCount)
             {
-                //print($"SHIT, gonna wait another cycle. Currently {Enemies.Count}, waiting to be less than or equal to {subWave.DelayCount}");
                 yield return null; 
             }
-
+            yield return new WaitForSeconds(5f);
             //print("There are enough enemies alive, waiting until body count drops");
             //Wait in place until the enemy count drops to the desired
             while (Enemies.Count > subWave.DelayCount)
