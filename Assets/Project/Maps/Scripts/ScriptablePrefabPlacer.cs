@@ -1,9 +1,10 @@
-﻿#if UNITY_EDITOR
+﻿using UnityEditor;
+using UnityEngine;
+
+#if UNITY_EDITOR
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor;
-using UnityEngine;
-using UnityEngine.WSA;
+
 using Application = UnityEngine.Application;
 
 [CustomEditor(typeof(ScriptablePrefabPlacer))]
@@ -54,7 +55,9 @@ class ScriptablePrefabPlacerEditor : Editor
         Handles.RectangleHandleCap(0, pos, p.transform.rotation * Quaternion.LookRotation(p.transform.up), p.SpawnRadius, EventType.Repaint);
     }
 }
+
 [CanEditMultipleObjects]
+#endif
 public class ScriptablePrefabPlacer : MonoBehaviour
 {
     public PrefabList_SO prefabs;
@@ -62,7 +65,7 @@ public class ScriptablePrefabPlacer : MonoBehaviour
     public int NumberToSpawn = 75;
     public bool ClearOnSpawn = true;
     public bool IsMountains;
-
+#if UNITY_EDITOR
     public void ToggleColliders()
     {
         var cols = GetComponentsInChildren<Collider>();
@@ -119,6 +122,7 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         LayerMask mask = LayerMask.GetMask("Ground");
         if (Physics.Raycast(pos, Vector3.down, out hit, float.PositiveInfinity, mask))
         {
+            if (_Blacklist(hit)) print($"Skipping bc blacklist");
             if (_Blacklist(hit) && IsMountains == false)
                 return;
 
@@ -168,5 +172,5 @@ public class ScriptablePrefabPlacer : MonoBehaviour
         EditorUtility.SetDirty(this.prefabs);
 
     }
-}
 #endif
+}

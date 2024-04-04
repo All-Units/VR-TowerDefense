@@ -95,7 +95,7 @@ GameObject water = Instantiate(waterPrefab);
     }
     void _SmoothAllCorners(MeshFilter mf)
     {
-        if (mf.gameObject.name == "water") return;
+        if (mf.gameObject.name.StartsWith("water")) return;
         List<Vector3> vertices = new List<Vector3>();
         foreach (var vert in mf.sharedMesh.vertices)
         {

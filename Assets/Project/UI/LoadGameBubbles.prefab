@@ -68717,6 +68717,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3998176902305377634}
+  - component: {fileID: 5813795829178233932}
+  - component: {fileID: 2216591970085970493}
   m_Layer: 0
   m_Name: LoadGameBubbles
   m_TagString: Untagged
@@ -68734,13 +68736,55 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6957484635253331675}
   - {fileID: 2805696610394904913}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &5813795829178233932
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4814958915950288367}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 01f459405d6ad884088c42fc9a59dfd1, type: 2}
+  m_InitialState: 0
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: 1733115325052587041, guid: 3cde2baed7f03074e898c3adedd958c0, type: 2}
+    value: {fileID: 0}
+  - key: {fileID: 1733115325052587041, guid: 01f459405d6ad884088c42fc9a59dfd1, type: 2}
+    value: {fileID: 2216591970085970493}
+  m_ExposedReferences:
+    m_References: []
+--- !u!95 &2216591970085970493
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4814958915950288367}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: f7556f4ccbaaeaa4ca5e8746bfd0310a, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &6022938042422640527
 GameObject:
   m_ObjectHideFlags: 0
@@ -68944,7 +68988,7 @@ Transform:
   m_LocalScale: {x: 0.4999997, y: 0.5000003, z: 0.49999994}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 7391993908917584225}
+  - {fileID: 7393367543031404772}
   - {fileID: 7368785568424038970}
   - {fileID: 3036100228989247471}
   - {fileID: 954810190241731085}
@@ -69332,7 +69376,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9f70a41a72d944c4b8b13981cb235e50, type: 3}
---- !u!4 &7391993908917584225 stripped
+--- !u!4 &7393367543031404772 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4265900612540804, guid: 9f70a41a72d944c4b8b13981cb235e50,
     type: 3}

@@ -5,6 +5,7 @@ using System.IO;
 using TMPro;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Playables;
 using UnityEngine.SceneManagement;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -169,10 +170,14 @@ public class LevelSelectRefactor : MonoBehaviour
     bool _AreBubblesActive => LoadLevelBubble.gameObject.activeInHierarchy || NewLevelBubble.gameObject.activeInHierarchy;
     void _ActivateBubbles(bool active)
     {
+        if (_bubblesDirector == null)
+            _bubblesDirector = LoadLevelBubble.GetComponentInParent<PlayableDirector>();
+        if (_bubblesDirector != null)
+            _bubblesDirector.Play();
         LoadLevelBubble.gameObject.SetActive(active);
         NewLevelBubble.gameObject.SetActive(active);    
     }
-
+    PlayableDirector _bubblesDirector;
 
     static LevelSelectRefactor _currentRefactor = null;
     public void OnActivateLevel(ActivateEventArgs arg0)
