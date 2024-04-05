@@ -7363,6 +7363,7 @@ GameObject:
   - component: {fileID: 32765627271416333}
   - component: {fileID: 3985776237738140980}
   - component: {fileID: 6059974158823746464}
+  - component: {fileID: 5535480809400767329}
   m_Layer: 10
   m_Name: VR_PlayerPref
   m_TagString: Untagged
@@ -7505,6 +7506,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sounds: []
+--- !u!114 &5535480809400767329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5785837711952878784}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51da6fbffe1414945a66056b0a8a5887, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  CenteredCamAngle: 196.52998
+  _cam: {fileID: 5660883371386087520}
+  _teleporter: {fileID: 7380656336983661624}
 --- !u!1 &5923384273098748771
 GameObject:
   m_ObjectHideFlags: 0

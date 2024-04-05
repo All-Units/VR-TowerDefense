@@ -82,7 +82,7 @@ public class CenterCameraOnStart : MonoBehaviour
     {
         Vector3 euler = Vector3.zero;
         euler.y = CenteredCamAngle;
-        Vector3 pos = camTransform.position;
+        Vector3 pos = teleporter.transform.position;
         TeleportRequest request = new TeleportRequest()
         {
             requestTime = Time.time,
