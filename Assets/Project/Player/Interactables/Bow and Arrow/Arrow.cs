@@ -6,7 +6,6 @@ using UnityEngine.Events;
 public class Arrow : MonoBehaviour, IPausable
 {
     public int damage;
-    public int DamageVariability = 1;
     public float speed = 10f;
     public DamageType damageType;
 
@@ -111,7 +110,7 @@ public class Arrow : MonoBehaviour, IPausable
         Enemy e = colliderGameObject.GetComponentInParent<Enemy>();
         if (healthController && e)
         {
-            int dmg = damage + Random.Range(DamageVariability * -1, DamageVariability);
+            int dmg = damage;
             ApplyDamage(healthController, dmg, startPos);
             ApplyEffects(healthController);
 

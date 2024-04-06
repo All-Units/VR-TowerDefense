@@ -110,7 +110,7 @@ public class FireballGlovesController : MonoBehaviour
         lastFireball = null;
         var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
         go.damage = Mathf.FloorToInt(go.damage * chargeTime);
-        int dmg = go.damage + Random.Range(go.DamageVariability * -1, go.DamageVariability);
+        int dmg = go.damage;
         go.damage = dmg;
         go.Fire();
     }

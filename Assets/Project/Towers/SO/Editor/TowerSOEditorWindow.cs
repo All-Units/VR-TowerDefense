@@ -84,12 +84,7 @@ public class TowerSOEditorWindow : EditorWindow
                     projectileTowerSo.projectile.damage = damage;
                     EditorUtility.SetDirty(projectileTowerSo.projectile);
                 }
-                var damageVar = EditorGUILayout.IntField("Damage var", projectileTowerSo.projectile.DamageVariability);
-                if (damageVar != projectileTowerSo.projectile.DamageVariability)
-                {
-                    projectileTowerSo.projectile.DamageVariability = damageVar;
-                    EditorUtility.SetDirty(projectileTowerSo.projectile);
-                }   
+                
                 
                 var speed = EditorGUILayout.FloatField("Speed", projectileTowerSo.projectile.speed);
                 if (Math.Abs(speed - projectileTowerSo.projectile.speed) > 0.01f)

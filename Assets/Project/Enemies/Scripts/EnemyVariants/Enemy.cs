@@ -27,7 +27,6 @@ public abstract class Enemy : MonoBehaviour, IPausable
     public float _RotateDamping => enemyStats.rotateDamping;
     public float _attackThreshold => enemyStats.attackThreshold;
     public int _damage => enemyStats.Damage;
-    public int _damageVar => enemyStats.DamageVariability;
     public int _health => enemyStats.Health;
     [HideInInspector]
     public bool _IsAttacking = false;
@@ -734,7 +733,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
         if (_IsPowerAttacking)
             dmg *= enemyStats.PowerAttackScalar;
-        int damage = (int)dmg + Random.Range(_damageVar * -1, _damageVar);
+        int damage = (int)dmg;
         currentTarget.GetHealthController().TakeDamage(damage);
 
     }

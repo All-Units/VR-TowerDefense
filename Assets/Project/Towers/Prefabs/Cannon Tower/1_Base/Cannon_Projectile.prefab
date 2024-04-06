@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 35
+  damage: 15
   DamageVariability: 2
   speed: 50
   damageType: {fileID: 0}
@@ -348,6 +348,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &2381084726089860685
 AudioSource:
   m_ObjectHideFlags: 0
@@ -483,3 +486,6 @@ MonoBehaviour:
   playOnAwake: 1
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
