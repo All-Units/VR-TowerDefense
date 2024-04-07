@@ -6,7 +6,6 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class Projectile : MonoBehaviour, IPausable
 {
     public int damage;
-    public int DamageVariability = 1;
     public float speed = 20f;
     public DamageType damageType;
 
@@ -91,7 +90,7 @@ public class Projectile : MonoBehaviour, IPausable
         var healthController = other.GetComponentInParent<HealthController>();  
         if (healthController != null)
         {
-            int dmg = damage + Random.Range(DamageVariability * -1, DamageVariability);
+            int dmg = damage;
             ApplyDamage(healthController, dmg, startPos);
             ApplyEffects(healthController);
             

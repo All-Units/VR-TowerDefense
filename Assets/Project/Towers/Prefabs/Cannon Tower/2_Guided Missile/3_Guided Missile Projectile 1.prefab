@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
+  damage: 20
   DamageVariability: 1
   speed: 5
   damageType: {fileID: 0}
@@ -323,6 +323,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4920861282781409616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -343,6 +346,9 @@ MonoBehaviour:
   playOnAwake: 1
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7828091204392586497
 GameObject:
   m_ObjectHideFlags: 0

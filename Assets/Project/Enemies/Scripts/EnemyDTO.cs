@@ -28,7 +28,6 @@ public class EnemyDTO : ScriptableObject
     public int MaxRange = 2;
 
     public int Damage = 1;
-    public int DamageVariability = 1;
     public float attackThreshold = 1.2f;
 
     [Header("Power attack variables")]
@@ -44,6 +43,7 @@ public class EnemyDTO : ScriptableObject
 
     [Header("Movement values")]
     public float MoveSpeed = 5f;
+    [Tooltip("Additive")]
     public float MoveSpeedVariance = 0.4f;
     public float rotateDamping = 1;
     public float targetTolerance = 1;

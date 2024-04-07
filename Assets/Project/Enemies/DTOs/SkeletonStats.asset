@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: SkeletonStats
   m_EditorClassIdentifier: 
   type: 1
-  KillValue: 6
+  KillValue: 5
   Health: 100
   RagdollTime: 9
   RagdollForce: 20
@@ -21,7 +21,7 @@ MonoBehaviour:
   MinRagdollYForce: 4.5
   MinRange: 3
   MaxRange: 4
-  Damage: 6
+  Damage: 10
   DamageVariability: 2
   attackThreshold: 3
   MinPowerAttackTime: 2
@@ -29,7 +29,7 @@ MonoBehaviour:
   PowerAttackChance: 0.3
   PowerAttackScalar: 1.5
   MoveSpeed: 100
-  MoveSpeedVariance: 0.4
+  MoveSpeedVariance: 2
   rotateDamping: 1
   targetTolerance: 1
   CheckForNeighborsRate: 2
