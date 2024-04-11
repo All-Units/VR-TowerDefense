@@ -1,4 +1,3 @@
-using System;
 using Project.Towers.Scripts;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -8,6 +7,8 @@ public class BubbleMenuController : MonoBehaviour
     private static BubbleMenuController _instance;
     private Tower _currentTower;
     public GameObject towerCamera;
+
+    [SerializeField] private float distanceFromPlayer = 1;
 
     [SerializeField] private BubbleMenuOption upgradeOption1;
     [SerializeField] private BubbleMenuOption upgradeOption2;
@@ -68,7 +69,7 @@ public class BubbleMenuController : MonoBehaviour
         var main = Camera.main;
         if (main != null)
         {
-            transform.position = main.transform.position + main.transform.forward;
+            transform.position = main.transform.position + (main.transform.forward * distanceFromPlayer);
             transform.LookAt(main.transform.position);
         }
 
@@ -82,6 +83,7 @@ public class BubbleMenuController : MonoBehaviour
             takeoverOption.Initialize(TakeoverTower, "Takeover");
             
     }
+    
     void _Lock(BubbleMenuOption option, bool unlocked)
     {
         Transform lockTransform = option.transform.Find("lock");
@@ -90,6 +92,7 @@ public class BubbleMenuController : MonoBehaviour
 
         lockTransform.gameObject.SetActive(active);
     }
+    
     private void ListUpgrades()
     {
         if(_currentTower == null) return;

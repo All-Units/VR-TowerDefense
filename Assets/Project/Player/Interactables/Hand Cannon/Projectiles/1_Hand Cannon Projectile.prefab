@@ -125,7 +125,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 35
-  DamageVariability: 1
   speed: 20
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
@@ -337,7 +336,7 @@ AudioSource:
   Priority: 128
   DopplerLevel: 1
   MinDistance: 1
-  MaxDistance: 250
+  MaxDistance: 15
   Pan2D: 0
   rolloffMode: 2
   BypassEffects: 0
@@ -455,6 +454,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3045643252802464652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -475,6 +477,9 @@ MonoBehaviour:
   playOnAwake: 1
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &8992907497607224729
 PrefabInstance:
   m_ObjectHideFlags: 0

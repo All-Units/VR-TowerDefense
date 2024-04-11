@@ -25,7 +25,7 @@ public class TowerAimer : MonoBehaviour
         if (tower == null || tower.GetCurrentTarget == null) return;
         if (gunParent == null) return;
 
-        Vector3 target = tower.GetCurrentTarget.position;
+        Vector3 target = tower.GetCurrentTarget.position + Vector3.up;
 
         //If they get too close, aim up a bit
         if (target.FlatDistance(pos) < 7f)

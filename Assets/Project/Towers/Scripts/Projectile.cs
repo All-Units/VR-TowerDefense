@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -64,6 +65,7 @@ public class Projectile : MonoBehaviour, IPausable
         if (other.collider.isTrigger) return;
         Tower tower = other.gameObject.GetComponentInParent<Tower>();
         XRGrabInteractable grab = other.gameObject.GetComponentInParent<XRGrabInteractable>();
+        
         //If we were created too recently
         if ((tower != null || grab != null) && Time.time - timeCreated < 0.2f)
         {
@@ -90,16 +92,13 @@ public class Projectile : MonoBehaviour, IPausable
         var healthController = other.GetComponentInParent<HealthController>();  
         if (healthController != null)
         {
-            int dmg = damage;
-            ApplyDamage(healthController, dmg, startPos);
-            ApplyEffects(healthController);
-            
-            // Todo Refactor out to event based
-            if (_hitEnemy)
-                _hitEnemy.PlayClipAt(transform.position);
+            HitEnemy(healthController);
         }
         else
         {
+            if (other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
+                Debug.LogError($"Unable to find health controller on a collider with \"Enemy\" layer");
+            
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
         }
@@ -109,6 +108,16 @@ public class Projectile : MonoBehaviour, IPausable
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);
+    }
+
+    private void HitEnemy(HealthController healthController)
+    {
+        ApplyDamage(healthController, damage, startPos);
+        ApplyEffects(healthController);
+
+        // Todo Refactor out to event based
+        if (_hitEnemy)
+            _hitEnemy.PlayClipAt(transform.position);
     }
 
     protected void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
