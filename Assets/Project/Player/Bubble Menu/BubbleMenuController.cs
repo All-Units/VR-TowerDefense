@@ -14,11 +14,13 @@ public class BubbleMenuController : MonoBehaviour
     [SerializeField] private BubbleMenuOption upgradeOption2;
     [SerializeField] private BubbleMenuOption sellOption;
     [SerializeField] private BubbleMenuOption takeoverOption;
+    [SerializeField] private BubbleMenuOption repairOption;
+    [SerializeField] private SliderController healthbarController;
+    [SerializeField] private int repairCost;
     
-    [SerializeField]
-    [Tooltip("The reference to the action to confirm tower takeover selection.")]
-    private InputActionReference closeMenuActionReference; 
-    InputAction closeBubbleMenuAction => Utilities.GetInputAction(closeMenuActionReference);
+    [SerializeField] [Tooltip("The reference to the action to confirm tower takeover selection.")]
+    private InputActionReference closeMenuActionReference;
+    private InputAction closeBubbleMenuAction => Utilities.GetInputAction(closeMenuActionReference);
 
     private void Awake()
     {
@@ -57,7 +59,10 @@ public class BubbleMenuController : MonoBehaviour
     private void Initialize(Tower t)
     {
         if(_currentTower)
+        {
             _currentTower.EndFocus();
+            _currentTower.healthController.onTakeDamage.RemoveListener(healthbarController.UpdateValue);
+        }
         
         _currentTower = t;
         _currentTower.StartFocus();
@@ -69,26 +74,45 @@ public class BubbleMenuController : MonoBehaviour
         var main = Camera.main;
         if (main != null)
         {
-            transform.position = main.transform.position + (main.transform.forward * distanceFromPlayer);
-            transform.LookAt(main.transform.position);
+            var camTransform = main.transform;
+            var camPosition = camTransform.position;
+            
+            transform.position = camPosition + (camTransform.forward * distanceFromPlayer);
+            transform.LookAt(camPosition);
         }
 
         ListUpgrades();
         sellOption.Initialize(SellTower, $"Sell: ${_currentTower.dto.cost/2}");
 
-        bool isTakeover = _currentTower is PlayerControllableTower;
+        var isTakeover = _currentTower is PlayerControllableTower;
         takeoverOption.gameObject.SetActive(isTakeover);
         
         if(isTakeover)
             takeoverOption.Initialize(TakeoverTower, "Takeover");
             
+        repairOption.Initialize(RepairTower, $"Repair: ${repairCost}", repairCost);
+        healthbarController.SetBounds(_currentTower.healthController.MaxHealth);
+        healthbarController.UpdateValue(_currentTower.healthController.CurrentHealth);
+        _currentTower.healthController.onTakeDamage.AddListener(healthbarController.UpdateValue);
     }
-    
-    void _Lock(BubbleMenuOption option, bool unlocked)
+
+    private void RepairTower()
     {
-        Transform lockTransform = option.transform.Find("lock");
+        if(_currentTower.canRepair == false) return;
+        if (CurrencyManager.CanAfford(repairCost) == false)
+        {
+            return;
+        }
+        
+        CurrencyManager.TakeFromPlayer(repairCost);
+        _currentTower.Repair();
+    }
+
+    private static void _Lock(BubbleMenuOption option, bool unlocked)
+    {
+        var lockTransform = option.transform.Find("lock");
         if (lockTransform == null) return;
-        bool active = unlocked == false;
+        var active = unlocked == false;
 
         lockTransform.gameObject.SetActive(active);
     }
@@ -100,7 +124,7 @@ public class BubbleMenuController : MonoBehaviour
         var towerUpgrades = _currentTower.dto.GetUpgrades();
         if(towerUpgrades.InRange(0))
         {
-            bool unlocked = towerUpgrades[0].upgrade.IsUnlocked;
+            var unlocked = towerUpgrades[0].upgrade.IsUnlocked;
             _Lock(upgradeOption1, unlocked);
             upgradeOption1.Initialize(() => Upgrade(towerUpgrades[0]), towerUpgrades[0].upgrade.name, towerUpgrades[0].upgrade.cost);
         }       
@@ -111,7 +135,7 @@ public class BubbleMenuController : MonoBehaviour
         
         if(towerUpgrades.InRange(1))
         {
-            bool unlocked = towerUpgrades[1].upgrade.IsUnlocked;
+            var unlocked = towerUpgrades[1].upgrade.IsUnlocked;
             _Lock(upgradeOption2, unlocked);
             upgradeOption2.Initialize(() => Upgrade(towerUpgrades[1]), towerUpgrades[1].upgrade.name, towerUpgrades[1].upgrade.cost);
         }   
@@ -170,11 +194,9 @@ public class BubbleMenuController : MonoBehaviour
             return;
         }
         
-        
         CurrencyManager.TakeFromPlayer(towerUpgrade.upgrade.cost);
         
-        //Debug.Log($"Upgrading: {_currentTower} to {towerUpgrade.upgrade.name}");
-        var newTower = TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
+        TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
         Hide();
     }
     

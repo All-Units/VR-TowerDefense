@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.XR.Content.Interaction;
 using Image = UnityEngine.UI.Image;
 using Slider = UnityEngine.UI.Slider;
 
@@ -25,6 +24,7 @@ public class HealthbarController : MonoBehaviour
             if (controllableTower == null)
                 controllableTower = GetComponentInChildren<PlayerControllableTower>();
         }
+        
         if (healthController == null)
         {
             healthController = GetComponentInParent<HealthController>();
@@ -33,9 +33,9 @@ public class HealthbarController : MonoBehaviour
                 Debug.LogError($"Unable to find health component on {transform.parent.gameObject.name}!", gameObject);
                 return;
             }
-            
         }
-        healthController.onDeath.AddListener(_Destroy);
+        
+        InitializeHealthController();
 
         var tower = GetComponentInParent<Tower>();
         if (tower)
@@ -48,12 +48,9 @@ public class HealthbarController : MonoBehaviour
                 projectileTower.onTakeover.AddListener(_Disable);
                 projectileTower.onRelease.AddListener(_Enable);
             }
-            
         }
 
-        healthController.OnTakeDamage += UpdateValue;
-        slider.maxValue = healthController.MaxHealth;
-        slider.value = healthController.CurrentHealth;
+
         _isShowing = true;
         //UpdateValue(healthController.CurrentHealth);
         HideInstantly();
@@ -61,9 +58,8 @@ public class HealthbarController : MonoBehaviour
         {
             Show();
         }
-
-        
     }
+
     void _Disable()
     {
         slider.gameObject.SetActive(false);
@@ -96,6 +92,25 @@ public class HealthbarController : MonoBehaviour
         healthController.OnTakeDamage -= UpdateValue;
     }
 
+    public void SetHealthController(HealthController controller)
+    {
+        if (healthController != null)
+        {
+            healthController.OnTakeDamage -= UpdateValue;
+            healthController.onDeath.RemoveListener(_Destroy);
+        }
+
+        healthController = controller;
+        InitializeHealthController();
+    }
+    
+    private void InitializeHealthController()
+    {
+        healthController.onDeath.AddListener(_Destroy);
+        healthController.OnTakeDamage += UpdateValue;
+        slider.maxValue = healthController.MaxHealth;
+        slider.value = healthController.CurrentHealth;
+    }
 
     public void UpdateValue(int curr)
     {

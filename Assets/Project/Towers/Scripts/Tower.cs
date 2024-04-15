@@ -185,4 +185,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     }
 
     #endregion
+
+    public void Repair()
+    {
+        healthController.HealPercent(.25f);
+    }
+
+    public bool canRepair => !healthController.isFull;
 }

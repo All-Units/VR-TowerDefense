@@ -10,6 +10,8 @@ public class HealthController : MonoBehaviour
 
     public int CurrentHealth => _currentHealth;
     public int MaxHealth => maxHealth;
+    public bool isFull => _currentHealth >= maxHealth;
+
     public event Action<int> OnTakeDamage;
     public event Action<int, Vector3> OnTakeDamageFrom;
     public event Action OnDeath;
@@ -54,6 +56,18 @@ public class HealthController : MonoBehaviour
             onDeath?.Invoke();
             isDead = true;
         }
+    }
+
+    public void Heal(int heal)
+    {
+        _currentHealth = Mathf.Min(_currentHealth + heal, maxHealth);
+        OnTakeDamage?.Invoke(_currentHealth);
+        onTakeDamage?.Invoke(_currentHealth);
+    }
+
+    public void HealPercent(float per)
+    {
+        Heal((int)(maxHealth * per));
     }
     
     public void SetMaxHealth(int health)
