@@ -209,6 +209,7 @@ namespace Project.Towers.Scripts
             if(Instance == null) return;
             
             Instance.RemoveTower(tower);
+            tower.healthController.ManualDeath();
             CurrencyManager.GiveToPlayer(tower.dto.cost/2);
         }
 

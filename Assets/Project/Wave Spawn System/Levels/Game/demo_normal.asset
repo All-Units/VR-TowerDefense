@@ -39,7 +39,7 @@ MonoBehaviour:
     - enemyType: 1
       amountToSpawn: {x: 7, y: 9}
     subWaves: []
-    WaveCompleteBounty: 150
+    WaveCompleteBounty: 100
     preWaveDelay: 10
     groupSizes: {x: 1, y: 4}
     spawnRate: 20
@@ -58,19 +58,19 @@ MonoBehaviour:
     spawnPoints: []
   - enemies:
     - enemyType: 1
-      amountToSpawn: {x: 35, y: 35}
+      amountToSpawn: {x: 18, y: 20}
     - enemyType: 6
-      amountToSpawn: {x: 25, y: 25}
+      amountToSpawn: {x: 10, y: 15}
     subWaves:
     - enemies:
       - enemyType: 3
-        amountToSpawn: {x: 6, y: 6}
+        amountToSpawn: {x: 1, y: 2}
       delayType: 1
-      DelayCount: 10
-      groupSizes: {x: 2, y: 4}
+      DelayCount: 5
+      groupSizes: {x: 1, y: 2}
       spawnRate: 8
       spawnPoints: []
-    WaveCompleteBounty: 200
+    WaveCompleteBounty: 300
     preWaveDelay: 45
     groupSizes: {x: 8, y: 12}
     spawnRate: 12
@@ -86,7 +86,7 @@ MonoBehaviour:
         amountToSpawn: {x: 5, y: 10}
       delayType: 1
       DelayCount: 5
-      groupSizes: {x: 1, y: 3}
+      groupSizes: {x: 2, y: 5}
       spawnRate: 10
       spawnPoints: []
     - enemies:
@@ -97,7 +97,7 @@ MonoBehaviour:
       groupSizes: {x: 1, y: 3}
       spawnRate: 5
       spawnPoints: []
-    WaveCompleteBounty: 350
+    WaveCompleteBounty: 500
     preWaveDelay: 45
     groupSizes: {x: 10, y: 15}
     spawnRate: 12
@@ -110,13 +110,13 @@ MonoBehaviour:
     subWaves:
     - enemies:
       - enemyType: 0
-        amountToSpawn: {x: 9, y: 15}
-      delayType: 0
-      DelayCount: 30
+        amountToSpawn: {x: 4, y: 8}
+      delayType: 1
+      DelayCount: 5
       groupSizes: {x: 2, y: 5}
-      spawnRate: 7
+      spawnRate: 15
       spawnPoints: []
-    WaveCompleteBounty: 500
+    WaveCompleteBounty: 1000
     preWaveDelay: 45
     groupSizes: {x: 10, y: 15}
     spawnRate: 12
@@ -125,9 +125,9 @@ MonoBehaviour:
     - enemyType: 1
       amountToSpawn: {x: 75, y: 100}
     - enemyType: 0
-      amountToSpawn: {x: 20, y: 30}
+      amountToSpawn: {x: 15, y: 20}
     - enemyType: 3
-      amountToSpawn: {x: 31, y: 37}
+      amountToSpawn: {x: 20, y: 27}
     - enemyType: 6
       amountToSpawn: {x: 40, y: 40}
     subWaves:
