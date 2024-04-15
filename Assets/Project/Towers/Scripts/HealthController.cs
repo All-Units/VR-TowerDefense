@@ -84,5 +84,13 @@ public class HealthController : MonoBehaviour
         }
     }
     
+    public void ManualDeath()
+    {
+        isDead = true;
+        OnDeath?.Invoke();
+        onDeath?.Invoke();
+        isDead = true;
+    }
+    
     public bool isDead = false;
 }
