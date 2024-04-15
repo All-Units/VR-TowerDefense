@@ -18,15 +18,26 @@ public class FlyingDemonBehavior : Enemy
 
 
 
-    
+
 
     #endregion
 
 
     #region EnemyOverrides
+    public GameObject DebugTarget;
+    public bool CurrentTargetIsNull;
     protected override void Update()
     {
+        if (currentTarget != null)
+        {
+            try { currentTarget.GetPosition(); currentTarget.GetHealthController(); }
+            catch (MissingReferenceException e) { currentTarget = null; SelectNewTarget(); }
+        }
+        
         base.Update();
+        if (currentTarget != null)
+            DebugTarget = currentTarget.GetHealthController().gameObject;
+        CurrentTargetIsNull = (currentTarget == null);
 
     }
     protected override void OnEnemySpawn()
@@ -36,8 +47,51 @@ public class FlyingDemonBehavior : Enemy
         FlightHeight += (int)Random.Range(HeightVariance * -1, HeightVariance);
 
     }
+    /// <summary>
+    /// If there is a line of sight from the fire point to the target
+    /// </summary>
+    /// <returns></returns>
+    bool _HasShot()
+    {
+        int mask = LayerMask.GetMask("Ground");
+        Vector3 dir = pos.DirectionTo(_target);
+        float distance = Vector3.Distance(pos, _target) - 1f;
+        if (Physics.Raycast(pos, dir, distance, mask))
+        {
+            Debug.Log($"There is ground b/w us and target, returning false {gameObject.name}", gameObject);
+            return false;
+        }
+        return true;
+    }
 
-
+    protected override void _AttackState()
+    {
+        
+        //If we don't have a target, choose a new one
+        if (currentTarget == null && _targets.Count > 0)
+        {
+            if (_targetSelector != null) return;
+            SelectNewTarget();
+            if (currentTarget == null) return;
+        }
+        //If we don't have a shot, move closer
+        if (_HasShot() == false)
+        {
+            _Move();
+            return;
+        }
+        //We have a target, how far are they?
+        float d = Utilities.FlatDistance(pos, _target);
+        d -= _HitboxRadius;
+        //We're too far away, move closer and do not attack
+        if (d > _attackThreshold)
+        {
+            _Move();
+            return;
+        }
+        else
+            _Attack();
+    }
 
     protected override void _Move()
     {
@@ -69,7 +123,7 @@ public class FlyingDemonBehavior : Enemy
         if (Time.frameCount - _lastAttackFrame <= 20) return;
         _lastAttackFrame = Time.frameCount;
         try { currentTarget.GetPosition(); }
-        catch (MissingReferenceException e) { currentTarget = null; return; }
+        catch (MissingReferenceException e) { currentTarget = null; SelectNewTarget(); return; }
         if (pos.FlatDistance(targetPosition) >= enemyStats.attackThreshold + 3f) {return;  }
         attackSFXController.PlayClip();
         _firePoint.LookAt(targetPosition);
@@ -83,7 +137,9 @@ public class FlyingDemonBehavior : Enemy
     {
         GameObject fireball = Instantiate(_fireballPrefab);
         var projectile = fireball.GetComponent<Projectile>();
-        
+        var aoe = projectile.GetComponent<AOEProjectile>();
+        if (aoe)
+            aoe.TargetLayer = "Tower";
         fireball.transform.position = _firePoint.position;
         fireball.transform.rotation = _firePoint.rotation;
         fireball.transform.LookAt(targetPosition);
@@ -103,10 +159,14 @@ public class FlyingDemonBehavior : Enemy
             transform.position = p;
         }
     }
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
+        if (_HasShot() == false)
+            Gizmos.color = Color.red;
         Gizmos.DrawLine(pos, _target);
     }
-    #endregion
+#endif
+#endregion
 }

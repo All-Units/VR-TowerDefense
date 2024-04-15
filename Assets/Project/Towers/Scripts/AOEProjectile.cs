@@ -9,7 +9,6 @@ public class AOEProjectile : Projectile
     public GameObject hitParticles;
 
     [SerializeField] private AnimationCurve damageDropOff;
-    [SerializeField] private AudioClipController _audioClipController;
 
     bool validDestroy = false;
     
@@ -39,12 +38,12 @@ public class AOEProjectile : Projectile
         copy_rb.velocity = rb.velocity;
         copy_rb.constraints = rb.constraints;
     }
-
+    public string TargetLayer = "Enemy";
     protected override void OnCollision(Collider other)
     {
         
         Vector3 pos = transform.position;
-        var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask("Enemy"));
+        var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask(TargetLayer));
         foreach (var hit in hits)
         {
             var colliderGameObject = hit.gameObject;

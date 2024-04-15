@@ -40,6 +40,20 @@ public static partial class Utilities
         b.y = 0f;
         return Vector3.Distance(a, b);
     }
+    /// <summary>
+    /// Returns the directional vector from origin to target
+    /// </summary>
+    /// <param name="origin">The source</param>
+    /// <param name="target"></param>
+    /// <param name="normalized">Whether to return the vector normalized or not</param>
+    /// <returns></returns>
+    public static Vector3 DirectionTo(this Vector3 origin,  Vector3 target, bool normalized = true)
+    {
+        Vector3 dir = target - origin;
+        if (normalized)
+            dir = dir.normalized;
+        return dir;
+    }
 
     public static bool RandomNavSphere(Vector3 origin, float dist, out Vector3 result, int layerMask = NavMesh.AllAreas) 
     {

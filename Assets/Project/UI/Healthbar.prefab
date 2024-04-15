@@ -66,7 +66,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 3db4b401b5f76431a97d29388b31779b, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -180,6 +180,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   invert: 0
+  FreezeYAxis: 0
 --- !u!1 &2386416700782160520
 GameObject:
   m_ObjectHideFlags: 0
@@ -246,7 +247,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: f084fbb0556c843c9b93788e7d59b49f, type: 3}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -374,7 +375,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slider: {fileID: 9102140759691434637}
   healthController: {fileID: 0}
-  HideAfter: 4
+  AlwaysShowing: 0
 --- !u!1 &7626878253680776496
 GameObject:
   m_ObjectHideFlags: 0

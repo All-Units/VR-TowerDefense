@@ -2,6 +2,7 @@
 using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GuidedMissileTargeter : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class GuidedMissileTargeter : MonoBehaviour
     private bool isTargeting;
 
     public List<Enemy> targets = new();
+    XRGrabInteractable grab;
 
     public Enemy GetEnemy(int idx)
     {
@@ -38,8 +40,19 @@ public class GuidedMissileTargeter : MonoBehaviour
 
         Enemy.OnDeath += OnEnemyDeath;
         _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
+        grab = GetComponent<XRGrabInteractable>();
+        grab.selectExited.AddListener(OnDrop);
     }
-
+    void OnDrop(SelectExitEventArgs e)
+    {
+        foreach (var target in targets)
+        {
+            var vfx = target.GetComponentInChildren<TargetVFXController>();
+            if (vfx)
+                Destroy(vfx.gameObject);
+        }
+        targets.Clear();
+    }
     public void OnEnemyDeath(Enemy obj)
     {
         targets.Remove(obj);
@@ -79,6 +92,8 @@ public class GuidedMissileTargeter : MonoBehaviour
         DrawLine();
     }
 
+    
+
     public bool IsTargeting()
     {
         return targets.Any();
@@ -102,16 +117,20 @@ public class GuidedMissileTargeter : MonoBehaviour
                 }   
                 
                 targets.Add(e);
+                Transform parent = e.transform.Find("targetingRune");
+                if (parent == null)
+                    parent = e.transform;
                 if (oldVFX)
                 {
-                    oldVFX.transform.SetParent(e.transform);
+                    oldVFX.transform.SetParent(parent);
                 }
                 else
                 {
-                    oldVFX = Instantiate(targetVFXPrefab, e.transform);
+                    oldVFX = Instantiate(targetVFXPrefab, parent);
                 }
                 
                 oldVFX.transform.localPosition = Vector3.zero;
+                oldVFX.transform.localScale = Vector3.one;
             }
         }
         

@@ -29,7 +29,7 @@ public class TowerAimer : MonoBehaviour
 
         //If they get too close, aim up a bit
         if (target.FlatDistance(pos) < 7f)
-            target.y += 2f;
+            target.y += 0f;
         if (BASIC)
         {
             transform.LookAt(target);

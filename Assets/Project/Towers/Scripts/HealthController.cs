@@ -55,6 +55,13 @@ public class HealthController : MonoBehaviour
             isDead = true;
         }
     }
+    public void ManualDeath()
+    {
+        isDead = true;
+        OnDeath?.Invoke();
+        onDeath?.Invoke();
+        isDead = true;
+    }
     
     public void SetMaxHealth(int health)
     {

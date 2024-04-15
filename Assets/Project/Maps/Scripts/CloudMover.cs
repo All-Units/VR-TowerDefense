@@ -13,12 +13,14 @@ public class CloudMover : MonoBehaviour
     public float CloudHeightOffset = 20f;
     public float TimeToGrowCloud = 1f;
     public float InitialCloudPoolSize = 30;
+    public float SecondaryCloudRate = 0.5f;
 
     public float RestartScalar = 2f;
 
-    public Vector2 cloudBunchMinMax = new Vector2(2, 5);
     public Vector2 cloudSpeedMinMax = new Vector2(2, 5);
+    public Vector2 cloudSizeMinMax = new Vector2(2, 3);
     public float cloudScalar = 4f;
+
 
     Vector3 center;
     // Start is called before the first frame update
@@ -26,10 +28,21 @@ public class CloudMover : MonoBehaviour
     {
         center = transform.position;
         _SpawnInitialClouds();
+        firstCloudHasReset = false;
+        //StartCoroutine(_SpawnSecondaryClouds());
     }
     // Update is called once per frame
     void Update()
     {
+    }
+    IEnumerator _SpawnSecondaryClouds()
+    {
+        while (firstCloudHasReset == false)
+        {
+            yield return new WaitForSeconds(SecondaryCloudRate);
+            GameObject cloud = _SpawnCloud(false);
+            _MoveCloudToStart(cloud);
+        }
     }
     
     void _SpawnInitialClouds()
@@ -39,27 +52,32 @@ public class CloudMover : MonoBehaviour
             _SpawnCloud();
         }
     }
-    void _SpawnCloud(bool first = true)
+    GameObject _SpawnCloud(bool first = true)
     {
         GameObject cloud = Instantiate(cloudPrefabs.GetRandom(), transform);
         float x = Random.Range(-MaxDistanceFromCenter, MaxDistanceFromCenter);
         float z = Random.Range(-MaxDistanceFromCenter, MaxDistanceFromCenter);
         cloud.transform.position = new Vector3(x, CloudHeight, z);
-        cloud.transform.localScale *= cloudScalar;
+        
         if (first == false)
         {
             Vector3 dir = windDirection * -1 * MaxDistanceFromCenter * 1f;
 
             cloud.transform.Translate(dir);
         }
-        StartCoroutine(_MoveCloud(cloud, first));  
+
+        StartCoroutine(_MoveCloud(cloud, first));
+        return cloud;
     }
+    bool firstCloudHasReset = false;
     IEnumerator _MoveCloud(GameObject cloud, bool first = true)
     {
+        cloud.transform.localScale = Vector3.one * Random.Range(cloudSizeMinMax.x, cloudSizeMinMax.y);
         float speed = Random.Range(cloudSpeedMinMax.x, cloudSpeedMinMax.y);
+        float t = 0f;
         if (first == false)
         {
-            float t = 0f;
+            
             Vector3 targetScale = cloud.transform.localScale;
             cloud.transform.localScale = Vector3.zero;
             while (t <= TimeToGrowCloud)
@@ -93,9 +111,32 @@ public class CloudMover : MonoBehaviour
             pos = cloud.transform.position;
             //cloud.gameObject.name = $"Cloud {cloud.transform.GetSiblingIndex()} - {pos.FlatDistance(center)}m";
         }
+        
+        //Fade out 
+        t = 0f;
+        Vector3 currentScale = cloud.transform.localScale;
+        while (t <= TimeToGrowCloud)
+        {
+            yield return null;
+            if (XRPauseMenu.IsPaused)
+            {
+                yield return null;
+                continue;
+            }
+            t += Time.deltaTime;
+            
+            Vector3 scale = Vector3.Slerp(currentScale, Vector3.zero, (t / TimeToGrowCloud));
+            cloud.transform.localScale = scale;
+            Vector3 dir = windDirection * speed * Time.deltaTime;
+            cloud.transform.Translate(dir);
+            
+        }
+        firstCloudHasReset = true;
+        cloud.transform.localScale = currentScale;
         _MoveCloudToStart(cloud, false);
         StartCoroutine(_MoveCloud(cloud, false));
         
+
 
     }
     void _MoveCloudToStart(GameObject cloud, bool first = true)
