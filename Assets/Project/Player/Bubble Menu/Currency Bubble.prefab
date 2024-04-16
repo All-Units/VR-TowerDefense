@@ -34479,6 +34479,7 @@ GameObject:
   m_Component:
   - component: {fileID: 394754771563053060}
   - component: {fileID: 6122759105235362713}
+  - component: {fileID: 4701599257782310625}
   m_Layer: 14
   m_Name: ItemFrame01_Demo_Yellow
   m_TagString: Untagged
@@ -34493,14 +34494,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7964274884266613427}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0.008}
   m_LocalScale: {x: 0.35713905, y: 0.1635, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 6028180661236290553}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!212 &6122759105235362713
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -34553,3 +34554,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &4701599257782310625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7964274884266613427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72db718d318044b4187697dc05dc17f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  invert: 0
+  FreezeYAxis: 0
