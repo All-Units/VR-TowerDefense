@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,6 +23,8 @@ public class FireballGlovesController : MonoBehaviour
     [SerializeField] private AudioClipController chargingSFX;
     [SerializeField] private XRGrabInteractable throwable;
     [SerializeField] private XRBaseInteractor hand;
+
+    public static event Action OnFireballShoot;
 
     private void Start()
     {
@@ -116,6 +119,7 @@ public class FireballGlovesController : MonoBehaviour
     }
 
     GameObject lastFireball = null;
+    XRGrabInteractable _lastFireball;
     private void SpawnAndGrabObject()
     {
         var go = Instantiate(throwable, firePoint.position, firePoint.rotation);
@@ -123,8 +127,19 @@ public class FireballGlovesController : MonoBehaviour
         lastFireball = go.gameObject;
         StopCoroutine(chargingCoroutine);
         chargingCoroutine = null;
-
+        _lastFireball = go;
         HapticFeedback();
+        go.selectExited.AddListener(_OnThrow);
+        
+    }
+    void _OnThrow(SelectExitEventArgs a)
+    {
+        OnFireballShoot?.Invoke();
+        if (_lastFireball != null)
+        {
+            _lastFireball.selectExited.RemoveAllListeners();
+            _lastFireball = null;
+        }
     }
         
     private void HapticFeedback()

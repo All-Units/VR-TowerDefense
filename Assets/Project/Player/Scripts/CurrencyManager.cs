@@ -17,7 +17,9 @@ public class CurrencyManager : MonoBehaviour
             OnChangeMoneyAmount?.Invoke(_cash);
         }
     }
-
+    /// <summary>
+    /// On the player's cash value changing. Invoked with the new total cash value
+    /// </summary>
     public static event Action<int> OnChangeMoneyAmount;
 
     private int _cash;

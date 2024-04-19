@@ -346,6 +346,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
     public float ApplyResistanceWeakness(List<DamageType> damageType)
     {
+        if (enemyStats == null) return 1f;
         return enemyStats.resistancesWeakness.GetModifier(damageType);
     }
 

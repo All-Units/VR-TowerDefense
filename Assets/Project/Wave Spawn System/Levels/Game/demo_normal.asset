@@ -40,7 +40,7 @@ MonoBehaviour:
       amountToSpawn: {x: 7, y: 9}
     subWaves: []
     WaveCompleteBounty: 100
-    preWaveDelay: 10
+    preWaveDelay: 30
     groupSizes: {x: 1, y: 4}
     spawnRate: 20
     spawnPoints:
@@ -52,7 +52,7 @@ MonoBehaviour:
       amountToSpawn: {x: 5, y: 7}
     subWaves: []
     WaveCompleteBounty: 175
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 3, y: 7}
     spawnRate: 16
     spawnPoints: []
@@ -71,7 +71,7 @@ MonoBehaviour:
       spawnRate: 8
       spawnPoints: []
     WaveCompleteBounty: 300
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 8, y: 12}
     spawnRate: 12
     spawnPoints: []
@@ -83,9 +83,9 @@ MonoBehaviour:
     subWaves:
     - enemies:
       - enemyType: 3
-        amountToSpawn: {x: 5, y: 10}
-      delayType: 1
-      DelayCount: 5
+        amountToSpawn: {x: 7, y: 10}
+      delayType: 0
+      DelayCount: 40
       groupSizes: {x: 2, y: 5}
       spawnRate: 10
       spawnPoints: []
@@ -98,7 +98,7 @@ MonoBehaviour:
       spawnRate: 5
       spawnPoints: []
     WaveCompleteBounty: 500
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 10, y: 15}
     spawnRate: 12
     spawnPoints: []
@@ -117,7 +117,7 @@ MonoBehaviour:
       spawnRate: 15
       spawnPoints: []
     WaveCompleteBounty: 1000
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 10, y: 15}
     spawnRate: 12
     spawnPoints: []
@@ -140,7 +140,7 @@ MonoBehaviour:
       spawnRate: 0
       spawnPoints: []
     WaveCompleteBounty: 0
-    preWaveDelay: 90
+    preWaveDelay: 60
     groupSizes: {x: 9, y: 15}
     spawnRate: 11
     spawnPoints: []

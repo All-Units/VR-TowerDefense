@@ -76,6 +76,7 @@ public class RadialTargetingSystem : MonoBehaviour
     void _CullTargets()
     {
         _targetsInRange.RemoveAll(e => !e);
+        _targetsInRange.RemoveAll(e => e.gameObject.activeInHierarchy == false);
 
         //If there is any living target, cull all the dead
         //Otherwise, have at 'em

@@ -50,10 +50,13 @@ public class XRPauseMenu : MonoBehaviour
     public static Action OnPause;
     public static Action OnResume;
 
+    static XRPauseMenu instance = null;
+
     #region UnityEvents
     private void Awake()
     {
         VolumeManager.InitValuesFromCache();
+        instance = this;
     }
 
     // Start is called before the first frame update
@@ -121,9 +124,14 @@ public class XRPauseMenu : MonoBehaviour
         EnemyManager.SkipToNextRound = true;
         TogglePauseAction_started(new InputAction.CallbackContext());
     }
+    public static void MainMenu()
+    {
+        if (instance == null) return;
+
+        instance.MainMenu(new ActivateEventArgs());
+    }
     void MainMenu(ActivateEventArgs args)
     {
-        
         StartCoroutine(_QuitRoutine());
     }
     IEnumerator _QuitRoutine()
