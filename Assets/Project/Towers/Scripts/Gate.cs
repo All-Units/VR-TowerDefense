@@ -14,6 +14,7 @@ public class Gate : MonoBehaviour, IEnemyTargetable
     public static Gate instance;
 
     public static int FrontGateHealth => instance.GetHealthController().CurrentHealth;
+    public static bool IsFullHealth => instance.GetHealthController().isFull;
     
 
     private void Awake()

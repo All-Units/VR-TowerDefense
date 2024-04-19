@@ -8,7 +8,6 @@ public class KillsTracker : StatTracker
     protected override void InitTracker()
     {
         Enemy.OnDeath += OnDeath;
-        //Debug.Log($"Initted tracker for {_enemyToTrack}");
     }
 
     public override void Print()
@@ -21,9 +20,6 @@ public class KillsTracker : StatTracker
         if (obj.Stats == _enemyToTrack)
         {
             total++;
-            //Debug.Log($"{_enemyToTrack} killed, bringing total to {total}");
         }
-        
-
     }
 }

@@ -25,6 +25,16 @@ public abstract class StatTracker : ScriptableObject
     }
 
     public int getSerializeValue => PlayerPrefs.GetInt(key, 0);
+    
+    public void Serialize()
+    {
+        PlayerPrefs.SetInt(key, total);
+    }
+    
+    public void Deserialize()
+    {
+        total = PlayerPrefs.GetInt(key);
+    }
 
     public abstract void Print();
 }

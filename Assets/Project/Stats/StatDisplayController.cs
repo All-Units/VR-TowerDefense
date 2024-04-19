@@ -1,9 +1,11 @@
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class StatDisplayController : MonoBehaviour
 {
-    [SerializeField] private StatTracker statTracker;
+    [FormerlySerializedAs("statTracker")] [SerializeField] private StatDisplayModel statDisplayModel;
 
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text valueText;
@@ -12,10 +14,15 @@ public class StatDisplayController : MonoBehaviour
 
     private void OnEnable()
     {
-        if(statTracker.getSerializeValue == 0)
+        if(statDisplayModel.statTrackers.All(stat => stat.getSerializeValue == 0))
             Destroy(transform.parent.gameObject);
-        titleText.text = statTracker.displayName;
-        valueText.text = $"{statTracker.statName}: {statTracker.getSerializeValue}";
+        titleText.text = statDisplayModel.displayName;
+
+        foreach (var tracker in statDisplayModel.statTrackers)
+        {
+            var text = Instantiate(valueText, valueText.transform.parent);
+            text.text = $"{tracker.statName}: {tracker.getSerializeValue}";
+        }
         if (animator != null)
             OnDropItem();
     }
