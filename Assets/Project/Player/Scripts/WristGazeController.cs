@@ -38,6 +38,7 @@ public class WristGazeController : MonoBehaviour
         EnemyManager.OnRoundEnded.AddListener(_OnWaveEnd);
 
         EnemyManager.instance.OnEnemySpawned.AddListener(_OnEnemyChange);
+        EnemyManager.instance.OnEnemyKilled.AddListener(_OnEnemyChange);
         _OnEnemyChange();
 
         CurrencyManager.OnChangeMoneyAmount += _OnCurrencyChange;

@@ -44,7 +44,10 @@ public class TutorialManager : MonoBehaviour
     }
     private void OnDestroy()
     {
+        input.started -= Input_started;
+        input.canceled -= Input_canceled;
         CurrencyManager.OnChangeMoneyAmount -= _EnsureMinimumCash;
+        instance = null;
         
     }
 
@@ -128,7 +131,7 @@ public class TutorialManager : MonoBehaviour
                     break;
             }
             _skip = false;
-
+            if (_skip_to_main_menu) yield break;
             director.playableAsset = shrinkTimeline;
             director.Play();
             yield return new WaitForSeconds(shrinkTimeline.duration());
@@ -168,9 +171,11 @@ public class TutorialManager : MonoBehaviour
         _skip_movement = true;
         DynamicMoveProvider.RemoveMovementLock();
     }
+    bool _skip_to_main_menu = false;
     public void SkipTutorial()
     {
         _skip = true;
+        _skip_to_main_menu = true;
         XRPauseMenu.MainMenu();
     }
     void _RecenterOnTP(LocomotionSystem system)
@@ -188,7 +193,7 @@ public class TutorialManager : MonoBehaviour
 
 
     public static TeleportationProvider tp {  get {
-        if (instance == null) return null;
+        if (instance == null || InventoryManager.instance == null) return null;
         if (instance._tp == null)
             instance._tp = InventoryManager.instance.GetComponentInChildren<TeleportationProvider>();
         return instance._tp; } }
