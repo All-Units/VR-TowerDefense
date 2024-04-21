@@ -37,7 +37,7 @@ public class StatsManager : MonoBehaviour
     {
         foreach (var stat in stats)
         {
-            PlayerPrefs.SetInt(stat.key, stat.total);
+            stat.Serialize();
         }
     }
 
@@ -45,7 +45,7 @@ public class StatsManager : MonoBehaviour
     {
         foreach (var stat in stats)
         { 
-            stat.total = PlayerPrefs.GetInt(stat.key);
+            stat.Deserialize();
         }
     }
 }

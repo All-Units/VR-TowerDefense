@@ -2,6 +2,5 @@
 
 public abstract class TowerTracker : StatTracker
 {
-    [SerializeField] protected Tower_SO _towerToTrack;
-    
+    [SerializeField] public Tower_SO _towerToTrack;
 }

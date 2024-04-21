@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Tower", fileName = "New Tower")]
-[System.Serializable]
+[Serializable]
 public class Tower_SO : ScriptableObject
 {
     public bool IsUnlocked = true;
@@ -22,6 +23,66 @@ public class Tower_SO : ScriptableObject
     [SerializeField] private List<TowerUpgrade> upgrades = new();
 
     public List<TowerUpgrade> GetUpgrades() => upgrades;
+    
+#if UNITY_EDITOR
+    [ContextMenu("Create Destroyed and Placed Trackers")]
+    private void CreateTrackers()
+    {
+        // Create new instances of TowerDestroyedTracker and TowerPlacedTracker
+        var destroyedTracker = CreateInstance<TowerDestroyedTracker>();
+        var placedTracker = CreateInstance<TowerPlacedTracker>();
+
+        // Set the names for the new instances
+        var towerName = name;
+
+        // Set the name for the destroyed tracker
+        destroyedTracker.name = towerName + " Lost";
+        placedTracker.name = towerName + " Placed";
+        
+        // Assign the Tower_SO to the _towerToTrack field of each new scriptable object
+        destroyedTracker._towerToTrack = this;
+        placedTracker._towerToTrack = this; 
+        
+        // Assign the Tower_SO to the _towerToTrack field of each new scriptable object
+        destroyedTracker.statName = "Lost";
+        placedTracker.statName = "Placed";
+        
+        destroyedTracker.key = towerName + "Lost";
+        placedTracker.key = towerName + "Placed";
+
+        // Save the new instances as assets
+        var destroyedTrackerPath = k_TrackerPath + destroyedTracker.name + ".asset";
+        AssetDatabase.CreateAsset(destroyedTracker, destroyedTrackerPath);
+        var placedTrackerPath = k_TrackerPath + placedTracker.name + ".asset";
+        AssetDatabase.CreateAsset(placedTracker, placedTrackerPath);
+        
+        // Refresh the asset database to reflect the changes
+        AssetDatabase.Refresh();
+    }
+    
+    [ContextMenu("Create Stat Display")]
+    private void CreateStatDisplay()
+    {
+        var towerName = name;
+        
+        var destroyedTrackerPath = k_TrackerPath + towerName + " Lost" + ".asset";
+        var placedTrackerPath = k_TrackerPath + towerName + " Placed" + ".asset";
+        
+        var towerDisplay = CreateInstance<StatDisplayModel>();
+        towerDisplay.name = towerName + " Display";
+        towerDisplay.displayName = towerName;
+        towerDisplay.statTrackers.Add(AssetDatabase.LoadAssetAtPath<TowerDestroyedTracker>(destroyedTrackerPath));
+        towerDisplay.statTrackers.Add(AssetDatabase.LoadAssetAtPath<TowerPlacedTracker>(placedTrackerPath));
+
+        var displayPath = "Assets/Project/Stats/SO/Displays/Towers/" + towerDisplay.name + ".asset";
+        AssetDatabase.CreateAsset(towerDisplay, displayPath);
+
+        // Refresh the asset database to reflect the changes
+        AssetDatabase.Refresh();
+    }
+#endif
+
+    private const string k_TrackerPath = "Assets/Project/Stats/SO/Trackers/Towers/";
 }
 
 [Serializable]
