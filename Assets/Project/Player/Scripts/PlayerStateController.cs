@@ -42,6 +42,7 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private bool StartInPenthouse = false;
 
     public Action<PlayerControllableTower> OnPlayerTakeoverTower;
+    public Action<PlayerControllableTower> OnPlayerQuickTakeoverTower;
     public Action OnPlayerReleaseTower;
 
     private void Awake()
@@ -65,6 +66,12 @@ public class PlayerStateController : MonoBehaviour
         
         //Debug.Log($"Setting Player State! {prevState.ToString()} => {state.ToString()}");
         OnStateChange?.Invoke(prevState, state);
+    }
+    public static void QuickTakeover(PlayerControllableTower tower)
+    {
+        TakeControlOfTower(tower);
+        if (instance == null) return;
+        instance.OnPlayerQuickTakeoverTower?.Invoke(tower);
     }
 
     public static void TakeControlOfTower(PlayerControllableTower tower)

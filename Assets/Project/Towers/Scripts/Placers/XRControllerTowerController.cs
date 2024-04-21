@@ -311,7 +311,7 @@ public class XRControllerTowerController : MonoBehaviour
         if (_selectedTower != null && _selectedTower is PlayerControllableTower playerControllableTower)
         {
             _selectedTower.Deselected();
-            
+            print($"Is this quick takeover?");
             PlayerStateController.TakeControlOfTower(playerControllableTower);
             _selectedTower = null;
         }
@@ -324,7 +324,7 @@ public class XRControllerTowerController : MonoBehaviour
         if(_selectedTower != null && _selectedTower is PlayerControllableTower playerControllableTower)
         {
             _selectedTower.Deselected();
-            PlayerStateController.TakeControlOfTower(playerControllableTower);
+            PlayerStateController.QuickTakeover(playerControllableTower);
             _selectedTower = null;
             _selecting = false;
         }

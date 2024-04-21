@@ -38,6 +38,14 @@ public class TutorialManager : MonoBehaviour
         tp.endLocomotion += _RecenterOnTP;
         input.started += Input_started;
         input.canceled += Input_canceled;
+
+
+        EnemyManager.OnRoundEnded.AddListener(_OnFirstRoundEnd);
+    }
+    private void OnDestroy()
+    {
+        CurrencyManager.OnChangeMoneyAmount -= _EnsureMinimumCash;
+        
     }
 
     private void Input_canceled(InputAction.CallbackContext obj)
@@ -70,14 +78,11 @@ public class TutorialManager : MonoBehaviour
             _lastPos = pos;
         }
     }
-
-    private void OnDestroy()
-    {
-        CurrencyManager.OnChangeMoneyAmount -= _EnsureMinimumCash;
-    }
+    public int MinimumCash = 100;
+    
     void _EnsureMinimumCash(int cash)
     {
-        if (cash < 60)
+        if (cash < MinimumCash)
             CurrencyManager.GiveToPlayer(150);
     }
 
@@ -94,6 +99,11 @@ public class TutorialManager : MonoBehaviour
         gui.position = cam.position;
         Vector3 euler = new Vector3(0f, cam.eulerAngles.y, 0f);
         gui.eulerAngles = euler;
+    }
+    void _OnFirstRoundEnd()
+    {
+        StartCoroutine(_DisplayList(secondWaveTutorials));
+        EnemyManager.OnRoundEnded.RemoveListener(_OnFirstRoundEnd);
     }
 
     IEnumerator _DisplayList(List<_PanelDisplayTime> panels)

@@ -59,6 +59,29 @@ public class TutorialPanel : MonoBehaviour
         }
         if (WaitUntilAction == _WaitUntilAction.Takeover)
             PlayerStateController.instance.OnPlayerTakeoverTower += _OnTowerTakeover;
+        if (WaitUntilAction == _WaitUntilAction.QuickTakeover)
+        {
+            PlayerStateController.instance.OnPlayerQuickTakeoverTower += _OnTowerQuickTakeover;
+        }
+        if (WaitUntilAction == _WaitUntilAction.Upgrade)
+        {
+            TowerSpawnManager.OnTowerUpgraded += _OnTowerUpgraded;
+        }
+        if (WaitUntilAction == _WaitUntilAction.LeaveTower)
+        {
+            PlayerStateController.OnStateChange += _OnPlayerChangeState;
+        }
+        if (WaitUntilAction == _WaitUntilAction.SkipRound)
+        {
+            input.started += SkipPressed;
+            EnemyManager.instance.SKIP_TUTORIAL_IS_COMPLETE = true;
+        }
+        
+    }
+
+    private void SkipPressed(InputAction.CallbackContext obj)
+    {
+        _Skip();
     }
 
     private void OnDisable()
@@ -207,6 +230,24 @@ public class TutorialPanel : MonoBehaviour
         _Skip();
         PlayerStateController.instance.OnPlayerTakeoverTower -= _OnTowerTakeover;
     }
+    void _OnTowerQuickTakeover(PlayerControllableTower tower)
+    {
+        _Skip();
+        PlayerStateController.instance.OnPlayerQuickTakeoverTower -= _OnTowerQuickTakeover;
+    }
+    void _OnTowerUpgraded(Tower_SO dto)
+    {
+        _Skip();
+        TowerSpawnManager.OnTowerUpgraded -= _OnTowerUpgraded;
+    }
+    void _OnPlayerChangeState(PlayerState oldState, PlayerState newState)
+    {
+        if (newState == PlayerState.IDLE)
+        {
+            _Skip();
+            PlayerStateController.OnStateChange -= _OnPlayerChangeState;
+        }
+    }
     
 
     void _Skip() { TutorialManager.SetSkip(); }
@@ -222,5 +263,9 @@ public enum _WaitUntilAction
     TowerPlacer,
     TowerSelect,
     Takeover,
+    QuickTakeover,
+    Upgrade,
+    LeaveTower,
+    SkipRound,
 
 }
