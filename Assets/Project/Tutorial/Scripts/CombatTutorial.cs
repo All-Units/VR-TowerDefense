@@ -33,7 +33,7 @@ public class CombatTutorial : MonoBehaviour
     {
         if (PlayerStateController.instance == null) return;
         var currentTower = PlayerStateController.CurrentTower;
-        if (currentTower == null) return;
+        //if (currentTower == null) return;
         
 
         dummyParent.SetActive(true);
@@ -52,12 +52,15 @@ public class CombatTutorial : MonoBehaviour
     }
     void _OnPlayerTakeover(PlayerControllableTower tower)
     {
+        
         _StopActivation();
         if (lastPanel != null)
             lastPanel.SetActive(false);
         StartCoroutine(_RecenterAfter());
+        if (tower == null) return;
         if (projectileSpawner != null)
             projectileSpawner.OnFire -= Spawner_OnFire;
+        print($"Took over a {tower.dto.name}");
         if (tower.dto == archerDTO)
         {
             if (completed.Contains(archerDTO))

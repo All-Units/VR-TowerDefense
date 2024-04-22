@@ -379,7 +379,7 @@ PrefabInstance:
     - target: {fileID: 96465223918091920, guid: f49dc5cd64a1e004c988509fc919b348,
         type: 3}
       propertyPath: m_MovementType
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 96465223918091920, guid: f49dc5cd64a1e004c988509fc919b348,
         type: 3}
@@ -892,6 +892,7 @@ MonoBehaviour:
   resetTime: 2
   offset: {x: 0, y: 3, z: 0.5}
   playerItem: {fileID: 0}
+  CurrentPosition: {x: 0, y: 0, z: 0}
 --- !u!114 &6177030936540311249
 MonoBehaviour:
   m_ObjectHideFlags: 0
