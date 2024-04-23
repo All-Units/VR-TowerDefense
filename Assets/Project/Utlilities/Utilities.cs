@@ -148,7 +148,7 @@ public static partial class Utilities
     [MenuItem("CONTEXT/Component/Move To New Child GameObject")]
     public static void MoveToNewChildGameObject(MenuCommand command)
     {
-        if(!(command.context is Component component)) return;
+        if(command.context is not Component component) return;
 
         var child = new GameObject("New child");
         child.transform.SetParent(component.transform);
@@ -164,6 +164,29 @@ public static partial class Utilities
         }
         
         Object.DestroyImmediate(component);
+    }
+    
+    //[MenuItem("CONTEXT/Component/Remove All Child Colliders")]
+    public static void RemoveAllChildColliders(MenuCommand command)
+    {
+        if(command.context is not Component component) return;
+        
+        RemoveAllChildCollidersRecursive(component.transform);
+    }
+
+    private static void RemoveAllChildCollidersRecursive(Transform obj)
+    {
+        foreach (Transform child in obj)
+        {
+            RemoveAllChildCollidersRecursive(child);
+            
+            Undo.RecordObject(child.gameObject, "Removed Collider");
+            Collider[] colliders = child.GetComponents<Collider>();
+            foreach (var collider in colliders)
+            {
+                Object.DestroyImmediate(collider);
+            }
+        }
     }
     
     /// <summary>

@@ -62,7 +62,7 @@ public class ArrowSpawner : MonoBehaviour
         }
     }
 
-    private void NotchEmpty(float f)
+    private void NotchEmpty(float f, TowerPlayerWeapon towerPlayerWeapon)
     {
         _arrowNotched = false;
     }

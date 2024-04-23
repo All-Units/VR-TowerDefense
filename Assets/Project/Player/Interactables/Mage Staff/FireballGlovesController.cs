@@ -113,6 +113,7 @@ public class FireballGlovesController : MonoBehaviour
         int dmg = go.damage;
         go.damage = dmg;
         go.Fire();
+        
     }
 
     GameObject lastFireball = null;

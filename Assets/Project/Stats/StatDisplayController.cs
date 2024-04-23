@@ -20,7 +20,7 @@ public class StatDisplayController : MonoBehaviour
 
         foreach (var tracker in statDisplayModel.statTrackers)
         {
-            var text = Instantiate(valueText, valueText.transform.parent);
+            var text = Instantiate(valueText, titleText.transform.parent);
             text.text = $"{tracker.statName}: {tracker.getSerializeValue}";
         }
         if (animator != null)

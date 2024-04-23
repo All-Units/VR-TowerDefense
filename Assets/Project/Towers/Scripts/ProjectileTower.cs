@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -15,6 +16,7 @@ public class ProjectileTower : PlayerControllableTower
     [FormerlySerializedAs("EnemyHeightOffset")] [SerializeField] private float enemyHeightOffset = 2f;
 
     public UnityEvent OnFire;
+    public static event Action<ProjectileTower, Enemy> onKill;
 
     [Header("VFX")] 
     [SerializeField] private GameObject attackVFX;
@@ -107,6 +109,7 @@ public class ProjectileTower : PlayerControllableTower
     private void Fire()
     {
         var projectile = Instantiate(projectileTowerSo.projectile, firePoint.position, firePoint.rotation);
+        projectile.tower = this;
         projectile.Fire();
         OnFire?.Invoke();
         
@@ -153,6 +156,12 @@ public class ProjectileTower : PlayerControllableTower
         
         _currentCooldown = projectileTowerSo.shotCooldown;
     }
+
+    public void OnKill(Enemy enemy)
+    { 
+        onKill?.Invoke(this, enemy);
+    }
+
     IEnumerator _currentMissileSelector = null;
     IEnumerator _SelectMissileTarget()
     {

@@ -19,6 +19,12 @@ public class ProjectileSpawner : MonoBehaviour
 
     [SerializeField] protected OverheatModule overheatModule;
     [SerializeField] private GuidedMissileTargeter _targeter;
+    private TowerPlayerWeapon _playerWeapon;
+
+    private void Start()
+    {
+        _playerWeapon = GetComponent<TowerPlayerWeapon>();
+    }
 
     public virtual void Fire()
     {
@@ -27,6 +33,7 @@ public class ProjectileSpawner : MonoBehaviour
         var newObject = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
         
         newObject.Fire();
+        newObject.playerWeapon = _playerWeapon;
         if (_targeter && newObject.TryGetComponent(out GuidedMissileController guidedMissileController))
         {
             guidedMissileController.targeter = _targeter;
@@ -43,6 +50,7 @@ public class ProjectileSpawner : MonoBehaviour
                 var projectile = Instantiate(m_ProjectilePrefab, m_StartPoint.position, m_StartPoint.rotation, null);
         
                 projectile.Fire();
+                projectile.playerWeapon = _playerWeapon;
                 if (_targeter && projectile.TryGetComponent(out GuidedMissileController guidedMissile))
                 {
                     guidedMissile.targeter = _targeter;

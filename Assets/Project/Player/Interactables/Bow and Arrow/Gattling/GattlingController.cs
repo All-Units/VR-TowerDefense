@@ -20,10 +20,12 @@ public class GattlingController : MonoBehaviour
     [SerializeField] private AudioSource _revSpinAudioSource;
     [SerializeField] private float pitchMax, pitchMin;
     private float currentPitch;
+    private TowerPlayerWeapon playerWeapon;
     
     private void Start()
     {
         overheatModule.OnOverHeat.AddListener(OnDeactivate);
+        playerWeapon = GetComponent<TowerPlayerWeapon>();
     }
     private void OnEnable()
     {
@@ -86,6 +88,7 @@ public class GattlingController : MonoBehaviour
                     {
                         var p = Instantiate(projectile, launchPoint.position, launchPoint.rotation);
                         p.Fire();
+                        p.playerWeapon = playerWeapon;
 
                         OnFire?.Invoke();
                     }

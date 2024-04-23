@@ -1,27 +1,27 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Serialization;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class Projectile : MonoBehaviour, IPausable
+public class Projectile : DamageDealer, IPausable
 {
-    public int damage;
     public float speed = 20f;
-    public DamageType damageType;
-
     protected bool isDestroying = false;
-
-    public StatusModifier statusModifier;
     
-    [SerializeField] protected AudioClipController _hitEnemy;
-    [SerializeField] protected AudioClipController _hitGround;
+    [SerializeField, FormerlySerializedAs("enemyHit")] protected AudioClipController _hitEnemy;
+    [SerializeField, FormerlySerializedAs("woodHit")] protected AudioClipController _hitGround;
 
     [SerializeField] private GameObject flyingVFX;
+    [SerializeField] protected ParticleSystem particles;
+
     private Rigidbody rb;
 
     public UnityEvent OnFire;
     public UnityEvent OnHit;
-    private Vector3 startPos;
+
+    protected Vector3 startPos;
     protected float timeCreated = 0f;
 
     void Awake()
@@ -86,6 +86,9 @@ public class Projectile : MonoBehaviour, IPausable
         }
     }
 
+    public ProjectileTower tower { get; set; }
+    public TowerPlayerWeapon playerWeapon { get; set; }
+
     protected virtual void OnCollision(Collider other)
     {
         var healthController = other.GetComponentInParent<HealthController>();  
@@ -100,6 +103,12 @@ public class Projectile : MonoBehaviour, IPausable
             
             if (_hitGround)
                 _hitGround.PlayClipAt(transform.position);
+        }
+
+        if (particles != null)
+        {
+            particles.transform.SetParent(null);
+            particles.Stop();
         }
         
         //We hit a trigger that didn't have a HC
@@ -119,21 +128,14 @@ public class Projectile : MonoBehaviour, IPausable
             _hitEnemy.PlayClipAt(transform.position);
     }
 
-    protected void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
+    public override void OnKill(Enemy enemy = null)
     {
-        if (healthController.TryGetComponent(out Enemy enemy))
-            damageToApply = Mathf.FloorToInt(damageToApply * enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
-        healthController.TakeDamageFrom(damageToApply, pos);
-    }
-
-    protected void ApplyEffects(HealthController healthController)
-    {
-        if (statusModifier)
-        {
-            var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
-            if (statusEffectController)
-                statusModifier.ApplyStatus(statusEffectController);
-        }
+        base.OnKill(enemy);
+        if(tower != null)
+            tower.OnKill(enemy);
+        
+        if(playerWeapon != null)
+            playerWeapon.OnKill(enemy);
     }
 
     void IPausable.OnPause()
@@ -146,5 +148,33 @@ public class Projectile : MonoBehaviour, IPausable
     {
         this.BaseOnResume();
         lastFrameResumed = Time.frameCount;
+    }
+}
+
+public class DamageDealer : MonoBehaviour
+{
+    public int damage;
+    public DamageType damageType;
+    public StatusModifier statusModifier;
+
+    protected void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
+    {
+        if (healthController.TryGetComponent(out Enemy enemy))
+            damageToApply = Mathf.FloorToInt(damageToApply * enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
+        healthController.TakeDamageFrom(damageToApply, pos);
+    }
+    protected void ApplyEffects(HealthController healthController)
+    {
+        if (statusModifier)
+        {
+            var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
+            if (statusEffectController)
+                statusModifier.ApplyStatus(statusEffectController);
+        }
+    }
+
+    public virtual void OnKill(Enemy enemy = null)
+    {
+        Debug.Log($"Killed {enemy}");
     }
 }

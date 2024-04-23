@@ -1,28 +1,15 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Arrow : MonoBehaviour, IPausable
+public class Arrow : Projectile, IPausable
 {
-    public int damage;
-    public float speed = 10f;
-    public DamageType damageType;
-
     public UnityEvent OnDrawnBack;
     public UnityEvent OnRelease;
-    public UnityEvent OnHit;
 
     private Rigidbody _rigidbody;
     private bool _inAir = false;
-    private bool _isDestroying = false;
-    [SerializeField] private ParticleSystem particles;
-    public StatusModifier statusModifier;
-    [SerializeField] private AudioClipController woodHit;
-    [SerializeField] private AudioClipController enemyHit;
-    public int RagdollForce = 20;
-    Vector3 startPos;
-
+    
     private IPausableComponents _ipComponents = null;
     public IPausableComponents IPComponents { 
         get {
@@ -45,8 +32,6 @@ public class Arrow : MonoBehaviour, IPausable
     }
     public void OnDestroyPausable() { this.DestroyPausable(); }
 
-
-
     private void OnDestroy()
     {
         OnDestroyPausable();
@@ -59,12 +44,13 @@ public class Arrow : MonoBehaviour, IPausable
     {
         OnDrawnBack?.Invoke();
     }
-    private void PullInteractionOnPullActionReleased(float obj)
+    private void PullInteractionOnPullActionReleased(float obj, TowerPlayerWeapon towerPlayerWeapon)
     {
         PullInteraction.PullActionStarted -= PullInteractionOnPullActionStarted;
         PullInteraction.PullActionReleased -= PullInteractionOnPullActionReleased;
         OnRelease?.Invoke();
         Fire(obj);
+        playerWeapon = towerPlayerWeapon;
     }
 
     public void Fire()
@@ -96,53 +82,6 @@ public class Arrow : MonoBehaviour, IPausable
                 transform.rotation = newRot;
             }
             yield return null;
-        }
-    }
-
-    private void OnCollisionEnter(Collision other)
-    {
-        //Debug.Log($"Hit {other.gameObject}", other.gameObject);
-        if (_isDestroying) return;
-        
-        var colliderGameObject = other.collider.gameObject;
-        Vector3 pos = transform.position;
-        HealthController healthController = colliderGameObject.GetComponentInParent<HealthController>();
-        Enemy e = colliderGameObject.GetComponentInParent<Enemy>();
-        if (healthController && e)
-        {
-            int dmg = damage;
-            ApplyDamage(healthController, dmg, startPos);
-            ApplyEffects(healthController);
-
-            enemyHit.PlayClipAt(pos);
-            
-        }
-        else
-        {
-            woodHit.PlayClipAt(pos);
-        }
-
-        _isDestroying = true;
-        particles.transform.SetParent(null);
-        particles.Stop();
-
-        OnHit?.Invoke();
-        Destroy(gameObject);
-    }
-    
-    private void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
-    {
-        if (healthController.TryGetComponent(out Enemy enemy))
-            damageToApply = Mathf.FloorToInt(damageToApply * enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
-        healthController.TakeDamageFrom(damageToApply, pos);
-    }
-    private void ApplyEffects(HealthController healthController)
-    {
-        if (statusModifier)
-        {
-            var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
-            if (statusEffectController)
-                statusModifier.ApplyStatus(statusEffectController);
         }
     }
 

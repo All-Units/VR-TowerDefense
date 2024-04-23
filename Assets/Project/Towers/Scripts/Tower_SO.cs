@@ -58,6 +58,46 @@ public class Tower_SO : ScriptableObject
         
         // Refresh the asset database to reflect the changes
         AssetDatabase.Refresh();
+    }    
+    
+    [ContextMenu("Create Kill Tracker")]
+    private void CreateKillTracker()
+    {
+        // Create new instances of TowerDestroyedTracker and TowerPlacedTracker
+        var towerKillsTracker = CreateInstance<TowerKillsTracker>();
+
+        // Set the names for the new instances
+        var towerName = name;
+
+        // Set the name for the destroyed tracker
+        towerKillsTracker.name = towerName + " Kills";
+        
+        // Assign the Tower_SO to the _towerToTrack field of each new scriptable object
+        towerKillsTracker._towerToTrack = this;
+        
+        // Assign the Tower_SO to the _towerToTrack field of each new scriptable object
+        towerKillsTracker.statName = "Kills";
+        
+        towerKillsTracker.key = towerName + "Kills";
+
+        // Save the new instances as assets
+        var destroyedTrackerPath = k_TrackerPath + towerKillsTracker.name + ".asset";
+        AssetDatabase.CreateAsset(towerKillsTracker, destroyedTrackerPath);
+        
+        var displayPath = k_AssetsProjectStatsSoDisplaysTowers + towerName + " Display" + ".asset";
+        var display = AssetDatabase.LoadAssetAtPath<StatDisplayModel>(displayPath);
+        if(display == null)
+        {
+            CreateStatDisplay();
+            display = AssetDatabase.LoadAssetAtPath<StatDisplayModel>(displayPath);
+        }      
+        
+        Undo.RecordObject(display, "Set Tracker");
+        display.statTrackers.Add(towerKillsTracker);
+        EditorUtility.SetDirty(display);
+        
+        // Refresh the asset database to reflect the changes
+        AssetDatabase.Refresh();
     }
     
     [ContextMenu("Create Stat Display")]
@@ -73,8 +113,8 @@ public class Tower_SO : ScriptableObject
         towerDisplay.displayName = towerName;
         towerDisplay.statTrackers.Add(AssetDatabase.LoadAssetAtPath<TowerDestroyedTracker>(destroyedTrackerPath));
         towerDisplay.statTrackers.Add(AssetDatabase.LoadAssetAtPath<TowerPlacedTracker>(placedTrackerPath));
-
-        var displayPath = "Assets/Project/Stats/SO/Displays/Towers/" + towerDisplay.name + ".asset";
+        
+        var displayPath = k_AssetsProjectStatsSoDisplaysTowers + towerDisplay.name + ".asset";
         AssetDatabase.CreateAsset(towerDisplay, displayPath);
 
         // Refresh the asset database to reflect the changes
@@ -82,6 +122,7 @@ public class Tower_SO : ScriptableObject
     }
 #endif
 
+    private const string k_AssetsProjectStatsSoDisplaysTowers = "Assets/Project/Stats/SO/Displays/Towers/";
     private const string k_TrackerPath = "Assets/Project/Stats/SO/Trackers/Towers/";
 }
 

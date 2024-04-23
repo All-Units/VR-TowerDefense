@@ -28,20 +28,23 @@ public class HealthController : MonoBehaviour
     /// </summary>
     /// <param name="dmg"></param>
     /// <param name="from"></param>
-    public void TakeDamageFrom(int dmg, Vector3 from)
+    public void TakeDamageFrom(int dmg, Vector3 from, DamageDealer damageDealer = null)
     {
-        TakeDamage(dmg);
+        if(TakeDamage(dmg) && damageDealer != null)
+            damageDealer.OnKill(GetComponent<Enemy>());
+            
         OnTakeDamageFrom?.Invoke(_currentHealth, from);
     }
 
 
     /// <summary>
     /// Generic take damage. Will Invoke OnTakeDamage(currentHealth) event and if health is >= 0 will invoke OnDeath.
+    /// returns true if the entity is killed
     /// </summary>
     /// <param name="dmg"></param>
-    public void TakeDamage(int dmg)
+    public bool TakeDamage(int dmg)
     {
-        if(isDead)return;
+        if(isDead)return false;
         
         _currentHealth -= dmg;
         
@@ -55,7 +58,10 @@ public class HealthController : MonoBehaviour
             OnDeath?.Invoke();
             onDeath?.Invoke();
             isDead = true;
+            return true;
         }
+
+        return false;
     }
 
     public void Heal(int heal)

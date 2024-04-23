@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -26,5 +27,5 @@ public class PlayerItem_SO : TowerTakeoverObject
 
 public abstract class TowerTakeoverObject : ScriptableObject
 {
-    
+    public static Action<TowerTakeoverObject> OnKillWithItem;
 }

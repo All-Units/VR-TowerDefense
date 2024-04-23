@@ -5,7 +5,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class PullInteraction : XRBaseInteractable
 {
     public static event Action PullActionStarted;
-    public static event Action<float> PullActionReleased;
+    public static event Action<float, TowerPlayerWeapon> PullActionReleased;
     
     public Transform start, end;
     public GameObject notch;
@@ -17,6 +17,7 @@ public class PullInteraction : XRBaseInteractable
 
     public AnimationCurve curve;
     [SerializeField] private AudioClipController drawAudio;
+    private TowerPlayerWeapon _playerWeapon;
 
     protected override void Awake()
     {
@@ -24,12 +25,16 @@ public class PullInteraction : XRBaseInteractable
         _lineRenderer = GetComponent<LineRenderer>();
         XRPauseMenu.OnPause += _DestroyArrow;
     }
+
+    private void Start()
+    {
+        _playerWeapon = GetComponentInParent<TowerPlayerWeapon>();
+    }
+
     void _DestroyArrow()
     {
         if (notch.transform.childCount != 0)
             Destroy(notch.transform.GetChild(0).gameObject);
-        return;
-        
     }
 
     public void SetPullInteractor(SelectEnterEventArgs args)
@@ -40,7 +45,7 @@ public class PullInteraction : XRBaseInteractable
 
     public void Release()
     {
-        PullActionReleased?.Invoke(pullAmount);
+        PullActionReleased?.Invoke(pullAmount, _playerWeapon);
         pullingInteractor = null;
         pullAmount = 0f;
         pullIncrement = 0.1f;
