@@ -39,14 +39,18 @@ public class TutorialManager : MonoBehaviour
         input.started += Input_started;
         input.canceled += Input_canceled;
 
+        GameStateManager.onGameWin += _OnWin;
 
         EnemyManager.OnRoundEnded.AddListener(_OnFirstRoundEnd);
+
+        PlayerPrefs.SetInt("_has_completed_tutorial", 0);
     }
     private void OnDestroy()
     {
         input.started -= Input_started;
         input.canceled -= Input_canceled;
         CurrencyManager.OnChangeMoneyAmount -= _EnsureMinimumCash;
+        GameStateManager.onGameWin -= _OnWin;
         instance = null;
         
     }
@@ -176,6 +180,7 @@ public class TutorialManager : MonoBehaviour
     {
         _skip = true;
         _skip_to_main_menu = true;
+        _OnWin();
         XRPauseMenu.MainMenu();
     }
     void _RecenterOnTP(LocomotionSystem system)
@@ -189,7 +194,10 @@ public class TutorialManager : MonoBehaviour
     }
 
     
-
+    void _OnWin()
+    {
+        PlayerPrefs.SetInt("_has_completed_tutorial", 1);
+    }
 
 
     public static TeleportationProvider tp {  get {

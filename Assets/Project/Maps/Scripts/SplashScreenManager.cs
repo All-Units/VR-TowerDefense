@@ -10,6 +10,7 @@ public class SplashScreenManager : MonoBehaviour
 {
     public TeleportationProvider teleporter;
     public GameLevel_SO MainMenu;
+    public GameLevel_SO Tutorial;
     public float DisplayTime = 4f;
     
 
@@ -28,12 +29,21 @@ public class SplashScreenManager : MonoBehaviour
             DisplayTime = (float)pd.duration;
         }
         yield return new WaitForSeconds(DisplayTime);
-        var loader = SceneManager.LoadSceneAsync(MainMenu.levelTitle);
+        var loader = SceneManager.LoadSceneAsync(_GetScene());
         float t = Time.time;
         while (loader.isDone == false)
         {
             yield return null;
         }
+    }
+
+    string _GetScene()
+    {
+        if (PlayerPrefs.GetInt("_has_completed_tutorial", 0) == 0)
+        {
+            return Tutorial.levelTitle;
+        }
+        return MainMenu.levelTitle;
     }
 
 }

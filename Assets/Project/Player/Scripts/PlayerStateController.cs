@@ -215,7 +215,18 @@ public class PlayerStateController : MonoBehaviour
 
         return instance != null;
     }
-    
+    public static TeleportationProvider teleporter
+    {
+        get
+        {
+            if (instance == null) return null;
+            if (instance._tp == null)
+                instance._tp = instance.GetComponentInChildren<TeleportationProvider>();
+            return instance._tp;
+        }
+    }
+    TeleportationProvider _tp = null;
+
     /// <summary>
     /// Turns on or off the exterior of the Mages Tower
     /// </summary>

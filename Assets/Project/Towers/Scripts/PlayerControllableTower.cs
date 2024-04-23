@@ -31,7 +31,7 @@ public class PlayerControllableTower : Tower
     public virtual void PlayerTakeControl()
     {
         isPlayerControlled = true;
-        StartCoroutine(_KeepPlayerContained());
+        //StartCoroutine(_KeepPlayerContained());
         onTakeover?.Invoke();
     }
 
@@ -39,27 +39,32 @@ public class PlayerControllableTower : Tower
     {
         isPlayerControlled = false;
         onRelease?.Invoke();
+        print($"Player released control");
     }
+    /*
     IEnumerator _KeepPlayerContained()
     {
         float origin_y = playerControlPosition.position.y;
-        yield break;
+        //yield break;
         while (isPlayerControlled)
         {
             yield return null;
             float cam_y = InventoryManager.instance.playerCameraTransform.position.y;
-            float delta = math.abs(origin_y - cam_y);
+            float delta = cam_y - origin_y;
             if (delta >= _MaxHeight)
             {
-                yield return null;
-                if (isPlayerControlled == false || PlayerStateController.CurrentTower != this) continue;
-                PlayerStateController.TakeControlOfTower(this);
+                yield return new WaitForSeconds(0.1f);
+                
+                print($"Height was too high! {delta} above. Is player controlled? {isPlayerControlled}. Current tower is this? {PlayerStateController.CurrentTower == this}");
+                if (isPlayerControlled == false || PlayerStateController.CurrentTower != this) yield break;
+
+                //PlayerStateController.TakeControlOfTower(this);
                 yield break;
             }
             _heightFromOrigin = delta;
 
         }
-    }
+    }*/
 
     public Transform GetPlayerControlPoint()
     {
