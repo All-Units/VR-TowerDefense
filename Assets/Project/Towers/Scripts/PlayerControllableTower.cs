@@ -43,6 +43,7 @@ public class PlayerControllableTower : Tower
     IEnumerator _KeepPlayerContained()
     {
         float origin_y = playerControlPosition.position.y;
+        yield break;
         while (isPlayerControlled)
         {
             yield return null;
@@ -50,6 +51,8 @@ public class PlayerControllableTower : Tower
             float delta = math.abs(origin_y - cam_y);
             if (delta >= _MaxHeight)
             {
+                yield return null;
+                if (isPlayerControlled == false || PlayerStateController.CurrentTower != this) continue;
                 PlayerStateController.TakeControlOfTower(this);
                 yield break;
             }

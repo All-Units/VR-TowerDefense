@@ -40,9 +40,18 @@ public class CombatTutorial : MonoBehaviour
         _OnPlayerTakeover(currentTower);
 
         PlayerStateController.instance.OnPlayerTakeoverTower += _OnPlayerTakeover;
-
+        PlayerStateController.OnStateChange += PlayerStateController_OnStateChange;
         FireballGlovesController.OnFireballShoot += _OnFireballThrow;
     }
+
+    private void PlayerStateController_OnStateChange(PlayerState arg1, PlayerState arg2)
+    {
+        if (arg2 == PlayerState.IDLE)
+        {
+            StartCoroutine(_ActivateProgressAfter(0.1f));
+        }
+    }
+
     private void OnDisable()
     {
         PlayerStateController.instance.OnPlayerTakeoverTower -= _OnPlayerTakeover;
@@ -57,7 +66,9 @@ public class CombatTutorial : MonoBehaviour
         if (lastPanel != null)
             lastPanel.SetActive(false);
         StartCoroutine(_RecenterAfter());
-        if (tower == null) return;
+        if (tower == null) {
+            StartCoroutine(_ActivateProgressAfter(0.1f));
+            return; }
         if (projectileSpawner != null)
             projectileSpawner.OnFire -= Spawner_OnFire;
         print($"Took over a {tower.dto.name}");
@@ -193,6 +204,7 @@ public class CombatTutorial : MonoBehaviour
         {
             print($"Done with towers, skipping");
             yield return new WaitForSeconds(3f);
+            PlayerStateController.OnStateChange -= PlayerStateController_OnStateChange;
             TutorialManager.SetSkip();
         }
     }
