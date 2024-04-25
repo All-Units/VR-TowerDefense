@@ -148,6 +148,7 @@ public static partial class Utilities
         return go.transform.FullPath();
     }
 
+
 #if UNITY_EDITOR
     [MenuItem("CONTEXT/Component/Move To New Child GameObject")]
     public static void MoveToNewChildGameObject(MenuCommand command)

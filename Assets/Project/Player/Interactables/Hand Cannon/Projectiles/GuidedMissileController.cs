@@ -21,7 +21,7 @@ public class GuidedMissileController : MonoBehaviour
             target = targeter.GetEnemy(index);
         Enemy.OnDeath += OnDeath;
 
-        StartCoroutine(ExplodeAfterSeconds(7));
+        StartCoroutine(ExplodeAfterSeconds(15f));
     }
 
     private void OnDeath(Enemy obj)
