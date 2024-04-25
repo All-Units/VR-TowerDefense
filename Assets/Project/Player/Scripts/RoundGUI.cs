@@ -67,8 +67,13 @@ public class RoundGUI : MonoBehaviour
 
     private void _DisplayPanel(PlayableDirector panel)
     {
-        _RepositionPanel(panel.gameObject);
-        panel.Play();
+        if (panel == null) return;
+        try
+        {
+            _RepositionPanel(panel.gameObject);
+            panel.Play();
+        }
+        catch (MissingReferenceException e) { }        
     }
 
     private void _RefreshTexts()

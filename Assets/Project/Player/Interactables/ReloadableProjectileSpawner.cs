@@ -30,7 +30,6 @@ public class ReloadableProjectileSpawner : ProjectileSpawner
                 guidedMissile.index = -1;
             }
             projectile.gameObject.DestroyAfter(15f);
-            Debug.Log($"firing AFTER", projectile.gameObject);
             fired++;
         }
         _currentAmmo = 0;

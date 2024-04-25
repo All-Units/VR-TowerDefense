@@ -57,10 +57,11 @@ public class FlyingDemonBehavior : Enemy
         Vector3 dir = pos.DirectionTo(_target);
         float distance = Vector3.Distance(pos, _target) - 1f;
         RaycastHit hit;
+        //There is something on the ground layer between us and the target
         if (Physics.Raycast(pos, dir, out hit, distance, mask))
         {
+            //Whitelist the castle
             if (hit.collider.GetComponentInParent<CastleController>() != null) return true;
-            Debug.Log($"There is ground b/w us and target, returning false {gameObject.name}", gameObject);
             return false;
         }
         return true;

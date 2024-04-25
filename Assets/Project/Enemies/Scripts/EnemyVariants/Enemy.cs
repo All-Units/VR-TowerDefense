@@ -519,6 +519,10 @@ public abstract class Enemy : MonoBehaviour, IPausable
     }
     protected virtual IEnemyTargetable _GetNextTarget()
     {
+        return _GetClosestTarget();
+    }
+    protected virtual IEnemyTargetable _GetClosestTarget()
+    {
         var closest = _targets.OrderBy(t => Utilities.FlatDistance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
         return closest;
     }
