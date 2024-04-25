@@ -140,12 +140,13 @@ public class FireballGlovesController : MonoBehaviour
             _lastFireball.selectExited.RemoveAllListeners();
             _lastFireball = null;
         }
+        HapticFeedback(0.85f);
     }
         
-    private void HapticFeedback()
+    private void HapticFeedback(float time = 0.5f)
     {
             var currentController = hand.transform.gameObject.GetComponentInParent<ActionBasedController>();
-            currentController.SendHapticImpulse(1, 0.5f);
+            currentController.SendHapticImpulse(1, time);
     }
 
     public void SetThrowable(XRGrabInteractable grabInteractable)

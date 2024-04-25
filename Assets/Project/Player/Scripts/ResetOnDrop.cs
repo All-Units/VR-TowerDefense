@@ -146,8 +146,10 @@ public class ResetOnDrop : MonoBehaviour
     
     void OnItemDropped(SelectExitEventArgs args)
     {
+        //Do nothing if we're still holding the object in our other hand!
+        if (table.interactorsSelecting.Count > 0) return;
+        
         rb.useGravity = true;
-        //print($"{gameObject} dropped");
         if (_currentResetter == null && gameObject.activeInHierarchy)
         {
             _currentResetter = _ResetRoutine();

@@ -11,7 +11,8 @@ public class ReloadableProjectileSpawner : ProjectileSpawner
         if(CheckCantFireModules()) return;
         if (XRPauseMenu.IsPaused) return;
         if (_currentAmmo <= 0) return;
-        targeter.CapNumberOfTargets(_currentAmmo);
+        if (targeter != null)
+            targeter.CapNumberOfTargets(_currentAmmo);
         
         base.Fire();
         int toFire = _currentAmmo - fired;
@@ -47,7 +48,7 @@ public class ReloadableProjectileSpawner : ProjectileSpawner
             _currentAmmo = maxAmmo;
             return;
         }
-        if (_LoadedAmmoModels.Count > _currentAmmo)
+        if (_LoadedAmmoModels.Count > 0 && _LoadedAmmoModels.Count > _currentAmmo)
         {
             _LoadedAmmoModels[_currentAmmo].SetActive(true);
         }

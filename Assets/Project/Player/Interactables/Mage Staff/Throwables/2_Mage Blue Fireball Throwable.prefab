@@ -53,7 +53,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 16
-  DamageVariability: 1
   speed: 20
   damageType: {fileID: 0}
   statusModifier: {fileID: 11400000, guid: 391eea901cf141348be927ae6a76e65b, type: 2}
@@ -126,7 +125,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _audioClipController: {fileID: 1806234328444671963}
+  TargetLayer: Enemy
 --- !u!54 &4088459267946672605
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -195,6 +194,9 @@ MonoBehaviour:
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3390742561270071
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,6 +217,9 @@ MonoBehaviour:
   playOnAwake: 1
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7184036440039440407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -222,7 +227,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8805872072579189874}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e82d64418889da8438d612f029496e4c, type: 3}
   m_Name: 
