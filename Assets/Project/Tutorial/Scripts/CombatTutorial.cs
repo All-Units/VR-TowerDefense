@@ -24,6 +24,7 @@ public class CombatTutorial : MonoBehaviour
     public int mageShotsRequired = 5;
 
     public GameObject dummyParent;
+    public static GameObject DummyParent;
 
     public Tower_SO archerDTO, cannonDTO, mageDTO;
 
@@ -34,8 +35,8 @@ public class CombatTutorial : MonoBehaviour
         if (PlayerStateController.instance == null) return;
         var currentTower = PlayerStateController.CurrentTower;
         //if (currentTower == null) return;
-        
 
+        DummyParent = dummyParent;
         dummyParent.SetActive(true);
         _OnPlayerTakeover(currentTower);
 

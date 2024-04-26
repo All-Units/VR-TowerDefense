@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class GuidedMissileController : MonoBehaviour
@@ -13,14 +14,14 @@ public class GuidedMissileController : MonoBehaviour
     public GuidedMissileTargeter targeter;
     public Enemy target;
     public int index = 0;
-
+    public static Action<Enemy> OnMissileFiredAt;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         if(targeter)
             target = targeter.GetEnemy(index);
         Enemy.OnDeath += OnDeath;
-
+        OnMissileFiredAt?.Invoke(target);
         StartCoroutine(ExplodeAfterSeconds(15f));
     }
 

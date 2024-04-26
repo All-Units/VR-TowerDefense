@@ -20,6 +20,7 @@ public class TutorialPanel : MonoBehaviour
 
 
     public List<Tower_SO> targetToSpawn = new List<Tower_SO>();
+    public Tower_SO tower_upgrade;
     public TextMeshProUGUI displayText;
     public Color activeColor;
     public Color inactiveColor;
@@ -75,6 +76,11 @@ public class TutorialPanel : MonoBehaviour
             input.started += SkipPressed;
             EnemyManager.instance.SKIP_TUTORIAL_IS_COMPLETE = true;
         }
+        if (WaitUntilAction == _WaitUntilAction.GuidedMissile)
+        {
+            CombatTutorial.DummyParent.SetActive(true);
+            GuidedMissileController.OnMissileFiredAt += _OnMissileFiredAt;
+        }
         
     }
 
@@ -106,6 +112,11 @@ public class TutorialPanel : MonoBehaviour
         if (WaitUntilAction == _WaitUntilAction.TowerSelect)
         {
             Tower.OnStartFocus -= _OnTowerSelect;
+        }
+        if (WaitUntilAction == _WaitUntilAction.GuidedMissile)
+        {
+            CombatTutorial.DummyParent.SetActive(false);
+            GuidedMissileController.OnMissileFiredAt -= _OnMissileFiredAt;
         }
 
     }
@@ -236,8 +247,21 @@ public class TutorialPanel : MonoBehaviour
     }
     void _OnTowerUpgraded(Tower_SO dto)
     {
+        if (dto != tower_upgrade) return;
         _Skip();
         TowerSpawnManager.OnTowerUpgraded -= _OnTowerUpgraded;
+    }
+    int _guided_missile_shots = 0;
+    void _OnMissileFiredAt(Enemy e)
+    {
+        if (e == null) return;
+        _guided_missile_shots++;
+        displayText.text = $"{_guided_missile_shots} / 3";
+        if (_guided_missile_shots >= 3)
+        {
+            displayText.color = activeColor;
+            StartCoroutine(_SkipAfter(3f));
+        }
     }
     void _OnPlayerChangeState(PlayerState oldState, PlayerState newState)
     {
@@ -266,5 +290,6 @@ public enum _WaitUntilAction
     Upgrade,
     LeaveTower,
     SkipRound,
+    GuidedMissile,
 
 }
