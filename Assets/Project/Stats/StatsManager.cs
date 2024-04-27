@@ -4,33 +4,22 @@ using UnityEngine;
 public class StatsManager : MonoBehaviour
 {
     [SerializeField] private List<StatTracker> stats = new();
-
     
 
     private void Start()
     {
+        stats.AddRange(StatTrackerHolder.BaseStats.trackers);
         foreach (var stat in stats)
         {
             stat.ResetTotal();
             stat.Initialize(true);
         }
         Deserialize();
-        
-        EnemyManager.OnRoundEnded.AddListener(OnRoundEnded);
     }
 
     private void OnDestroy()
     {
         Serialize();
-        EnemyManager.OnRoundEnded.RemoveListener(OnRoundEnded);
-    }
-
-    private void OnRoundEnded()
-    {
-        /*foreach (var stat in stats)
-        {
-            stat.Print();
-        }*/
     }
 
     private void Serialize()

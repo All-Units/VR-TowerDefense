@@ -72,7 +72,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     private void OnDestroy()
     {
         OnDestroyPausable();
-        
+        OnTowerDestroy?.Invoke(this);
     }
 
     #endregion

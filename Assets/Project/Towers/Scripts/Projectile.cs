@@ -161,7 +161,7 @@ public class DamageDealer : MonoBehaviour
     {
         if (healthController.TryGetComponent(out Enemy enemy))
             damageToApply = Mathf.FloorToInt(damageToApply * enemy.ApplyResistanceWeakness(new List<DamageType>() { damageType }));
-        healthController.TakeDamageFrom(damageToApply, pos);
+        healthController.TakeDamageFrom(damageToApply, pos, this);
     }
     protected void ApplyEffects(HealthController healthController)
     {

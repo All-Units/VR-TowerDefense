@@ -38,23 +38,3 @@ public abstract class StatTracker : ScriptableObject
 
     public abstract void Print();
 }
-
-public class TowerPlayerWeaponKillsTracker : StatTracker
-{
-    [SerializeField] TowerTakeoverObject trackedTowerTakeoverObject;
-    protected override void InitTracker()
-    {
-        TowerTakeoverObject.OnKillWithItem += OnKill;
-    }
-
-    public override void Print()
-    {
-        Debug.Log($"{statName}: {total}");
-    }
-
-    private void OnKill(TowerTakeoverObject towerTakeoverObject)
-    {
-        if(trackedTowerTakeoverObject == towerTakeoverObject)
-            total++;
-    }
-}
