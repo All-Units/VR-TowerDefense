@@ -25,8 +25,10 @@ public class GameStateManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-    }
 
+        
+    }
+    
     public static void LoseGame()
     {
         if (instance)

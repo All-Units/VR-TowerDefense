@@ -346,6 +346,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
 
     public float ApplyResistanceWeakness(List<DamageType> damageType)
     {
+        if (enemyStats == null) return 1f;
         return enemyStats.resistancesWeakness.GetModifier(damageType);
     }
 
@@ -517,6 +518,10 @@ public abstract class Enemy : MonoBehaviour, IPausable
         StartCoroutine(_targetSelector);
     }
     protected virtual IEnemyTargetable _GetNextTarget()
+    {
+        return _GetClosestTarget();
+    }
+    protected virtual IEnemyTargetable _GetClosestTarget()
     {
         var closest = _targets.OrderBy(t => Utilities.FlatDistance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
         return closest;

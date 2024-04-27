@@ -38,10 +38,12 @@ public class OverheatModule : MonoBehaviour
     }
 
     Vector3 lastPos = Vector3.zero;
+    const float MINIMUM_COOLDOWN = 1f;
     private void Update()
     {
         if(currentHeat <= 0.01) return;
-        var rate = 1 / cooldownRate * Time.deltaTime * _rb.velocity.magnitude;
+        float magnitude = Mathf.Max(_rb.velocity.magnitude, MINIMUM_COOLDOWN);
+        var rate = 1 / cooldownRate * Time.deltaTime * magnitude;
         //var rate = 1 / cooldownRate * Time.deltaTime * deltaP;
         currentHeat = Mathf.Max(0, currentHeat - rate);
         

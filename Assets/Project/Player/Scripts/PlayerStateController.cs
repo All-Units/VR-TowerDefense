@@ -42,6 +42,7 @@ public class PlayerStateController : MonoBehaviour
     [SerializeField] private bool StartInPenthouse = false;
 
     public Action<PlayerControllableTower> OnPlayerTakeoverTower;
+    public Action<PlayerControllableTower> OnPlayerQuickTakeoverTower;
     public Action OnPlayerReleaseTower;
 
     private void Awake()
@@ -65,6 +66,12 @@ public class PlayerStateController : MonoBehaviour
         
         //Debug.Log($"Setting Player State! {prevState.ToString()} => {state.ToString()}");
         OnStateChange?.Invoke(prevState, state);
+    }
+    public static void QuickTakeover(PlayerControllableTower tower)
+    {
+        TakeControlOfTower(tower);
+        if (instance == null) return;
+        instance.OnPlayerQuickTakeoverTower?.Invoke(tower);
     }
 
     public static void TakeControlOfTower(PlayerControllableTower tower)
@@ -208,7 +215,18 @@ public class PlayerStateController : MonoBehaviour
 
         return instance != null;
     }
-    
+    public static TeleportationProvider teleporter
+    {
+        get
+        {
+            if (instance == null) return null;
+            if (instance._tp == null)
+                instance._tp = instance.GetComponentInChildren<TeleportationProvider>();
+            return instance._tp;
+        }
+    }
+    TeleportationProvider _tp = null;
+
     /// <summary>
     /// Turns on or off the exterior of the Mages Tower
     /// </summary>

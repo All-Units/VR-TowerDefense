@@ -17,7 +17,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
             instance.CanMove = false;
             instance.locksOnMovement++;
         }
-
+        public static bool canMove => instance.CanMove;
         public static void RemoveMovementLock()
         {
             if (instance.locksOnMovement > 0)

@@ -23,9 +23,35 @@ public class GuidedMissileTargeter : MonoBehaviour
     public List<Enemy> targets = new();
     XRGrabInteractable grab;
 
+    public void CapNumberOfTargets(int cap)
+    {
+        targets.RemoveAll(e => e == null);
+        if (cap >= targets.Count) return;
+        
+        int toCull = targets.Count - cap;
+        int culled = 0;
+        for (int i = targets.Count - 1; culled < toCull; i--)
+        {
+            var target = targets[i];
+            var vfx = target.GetComponentInChildren<TargetVFXController>();
+            if (vfx != null)
+            {
+                Destroy(vfx.gameObject);
+            }
+            targets.RemoveAt(i);
+            culled++;
+        }
+    }
     public Enemy GetEnemy(int idx)
     {
         targets.RemoveAll(e=> e == null);
+
+        if (idx == -1)
+        {
+            if (targets.Count == 0) return null;
+            return targets.GetRandom();
+        }
+            
         return targets.Count >= 1 ? targets[idx % targets.Count] : null;
     }
     
@@ -107,7 +133,7 @@ public class GuidedMissileTargeter : MonoBehaviour
         {
             if (hit.transform.TryGetComponent(out Enemy e) && !targets.Contains(e))
             {
-                Debug.Log($"Enemy {e.gameObject} targeted");
+                //Debug.Log($"Enemy {e.gameObject} targeted");
                 TargetVFXController oldVFX = null;
                 if(targets.Count == totalTargets)
                 {

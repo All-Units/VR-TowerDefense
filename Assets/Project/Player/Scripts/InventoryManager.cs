@@ -211,6 +211,18 @@ public class InventoryManager : MonoBehaviour
 
     public bool RightHandFull() => playerRightHand.interactablesSelected.Any();
     public bool LeftHandFull() => playerLeftHand.interactablesSelected.Any();
+    /// <summary>
+    /// Gets all objects currently held in both hands
+    /// </summary>
+    /// <returns></returns>
+    public static List<IXRSelectInteractable> CurrentlyHeldObjects()
+    {
+        List<IXRSelectInteractable> held = new List<IXRSelectInteractable>();
+        held.AddRange(instance.playerLeftHand.interactablesSelected);
+        held.AddRange(instance.playerRightHand.interactablesSelected);
+
+        return held;
+    }
 
     public void ActivateItemExtra(PlayerItem_SO data)
     {

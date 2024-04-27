@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingGold: 100
   enemyPrefabs:
-  - prefab: {fileID: 6162612218955197706, guid: 49d97e6b4732fdc4a9ebf109e0760dd5,
+  - prefab: {fileID: 7906997649670161163, guid: 49d97e6b4732fdc4a9ebf109e0760dd5,
       type: 3}
     type: 0
   - prefab: {fileID: 6692053662854930735, guid: 755ed82bc5c38b9449a4cc81e174a846,
@@ -38,9 +38,11 @@ MonoBehaviour:
   - enemies:
     - enemyType: 1
       amountToSpawn: {x: 7, y: 9}
+    - enemyType: 6
+      amountToSpawn: {x: 30, y: 30}
     subWaves: []
     WaveCompleteBounty: 100
-    preWaveDelay: 10
+    preWaveDelay: 30
     groupSizes: {x: 1, y: 4}
     spawnRate: 20
     spawnPoints:
@@ -52,7 +54,7 @@ MonoBehaviour:
       amountToSpawn: {x: 5, y: 7}
     subWaves: []
     WaveCompleteBounty: 175
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 3, y: 7}
     spawnRate: 16
     spawnPoints: []
@@ -71,7 +73,7 @@ MonoBehaviour:
       spawnRate: 8
       spawnPoints: []
     WaveCompleteBounty: 300
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 8, y: 12}
     spawnRate: 12
     spawnPoints: []
@@ -83,9 +85,9 @@ MonoBehaviour:
     subWaves:
     - enemies:
       - enemyType: 3
-        amountToSpawn: {x: 5, y: 10}
-      delayType: 1
-      DelayCount: 5
+        amountToSpawn: {x: 7, y: 10}
+      delayType: 0
+      DelayCount: 40
       groupSizes: {x: 2, y: 5}
       spawnRate: 10
       spawnPoints: []
@@ -98,7 +100,7 @@ MonoBehaviour:
       spawnRate: 5
       spawnPoints: []
     WaveCompleteBounty: 500
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 10, y: 15}
     spawnRate: 12
     spawnPoints: []
@@ -117,7 +119,7 @@ MonoBehaviour:
       spawnRate: 15
       spawnPoints: []
     WaveCompleteBounty: 1000
-    preWaveDelay: 45
+    preWaveDelay: 30
     groupSizes: {x: 10, y: 15}
     spawnRate: 12
     spawnPoints: []
@@ -140,7 +142,7 @@ MonoBehaviour:
       spawnRate: 0
       spawnPoints: []
     WaveCompleteBounty: 0
-    preWaveDelay: 90
+    preWaveDelay: 60
     groupSizes: {x: 9, y: 15}
     spawnRate: 11
     spawnPoints: []

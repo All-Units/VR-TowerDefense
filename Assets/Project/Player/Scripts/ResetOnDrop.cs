@@ -27,7 +27,13 @@ public class ResetOnDrop : MonoBehaviour
             rb = GetComponent<Rigidbody>();
         if (table == null)
             table = GetComponent<XRBaseInteractable>();
+        table.selectEntered.AddListener(OnItemGrabbed);
+        table.selectExited.AddListener(OnItemDropped);
+        if (table.interactorsSelecting.Count > 0)
+        {
+            _SetAllTriggers();
 
+        }
         PlayerStateController.OnStateChange += _OnStateChange;
     }
 
@@ -35,15 +41,15 @@ public class ResetOnDrop : MonoBehaviour
     {
         var tower = PlayerStateController.CurrentTower;
         //If we're switching to idle, always hide everything
-        print($"{playerItem} switching from {oldState} to {newState}");
+        //print($"{playerItem} switching from {oldState} to {newState}");
         if (newState == PlayerState.IDLE)
         {
-            print("Idle, hiding");
+            //print("Idle, hiding");
             _HideItem();
         }
         else if (tower.dto is ProjectileTower_SO dto)
         {
-            print($"Tower, was ProjectileTower, was self? {dto.playerItem_SO != playerItem}");
+            //print($"Tower, was ProjectileTower, was self? {dto.playerItem_SO != playerItem}");
             //If the new tower is NOT our item type
             if (dto.playerItem_SO != playerItem)
             {
@@ -61,7 +67,17 @@ public class ResetOnDrop : MonoBehaviour
     private void OnEnable()
     {
         InventoryManager.OnItemsHidden.AddListener(_OnAllItemsHidden);
+        
     }
+    void _SetTriggers()
+    {
+        if (_wasTriggerBefore.Count != 0) return;
+        foreach (var col in GetComponentsInChildren<Collider>(true))
+        {
+            _wasTriggerBefore.Add(col, col.isTrigger);
+        }
+    }
+    Dictionary<Collider, bool> _wasTriggerBefore = new Dictionary<Collider, bool>();
 
     private void OnDisable()
     {
@@ -81,8 +97,7 @@ public class ResetOnDrop : MonoBehaviour
     void Start()
     {
         t = transform;
-        table.selectEntered.AddListener(OnSelectEntered);
-        table.selectExited.AddListener(OnSelectExited);
+        
         startRot = t.localRotation;
         _startConstraints = rb.constraints;
     }
@@ -101,12 +116,12 @@ public class ResetOnDrop : MonoBehaviour
             return;
         if (rb.velocity != Vector3.zero && _currentResetter == null)
         {
-            _currentResetter = _ResetPosition();
+            _currentResetter = _ResetRoutine();
             StartCoroutine(_currentResetter);
         }
     }
 
-    void OnSelectEntered(SelectEnterEventArgs args)
+    void OnItemGrabbed(SelectEnterEventArgs args)
     {
         //print($"{gameObject.name} grabbed");
         if (_currentResetter != null)
@@ -116,21 +131,40 @@ public class ResetOnDrop : MonoBehaviour
         }
         rb.useGravity = true;
         rb.constraints = _startConstraints;
+        
+        //Make all colliders triggers while we're holding it
+        _SetAllTriggers();
     }
-
-    void OnSelectExited(SelectExitEventArgs args)
+    void _SetAllTriggers()
     {
+        _SetTriggers();
+        foreach (var cols in _wasTriggerBefore)
+        {
+            cols.Key.isTrigger = true;
+        }
+    }
+    
+    void OnItemDropped(SelectExitEventArgs args)
+    {
+        //Do nothing if we're still holding the object in our other hand!
+        if (table.interactorsSelecting.Count > 0) return;
+        
         rb.useGravity = true;
-        //print($"{gameObject} dropped");
         if (_currentResetter == null && gameObject.activeInHierarchy)
         {
-            _currentResetter = _ResetPosition();
+            _currentResetter = _ResetRoutine();
             StartCoroutine(_currentResetter);
+        }
+        _SetTriggers();
+        //Set colliders back to their base trigger status
+        foreach (var col in _wasTriggerBefore)
+        {
+            col.Key.isTrigger = col.Value;
         }
     }
 
     private IEnumerator _currentResetter = null;
-    IEnumerator _ResetPosition()
+    IEnumerator _ResetRoutine()
     {
         //print("Cannon dropped");
         yield return new WaitForSeconds(resetTime);
@@ -138,7 +172,7 @@ public class ResetOnDrop : MonoBehaviour
         var playerControllableTower = PlayerStateController.CurrentTower;
         if (playerControllableTower == null)
         {
-            print($"Was no tower, NOT resetting");
+            //print($"Was no tower, NOT resetting");
             yield break;
         }
         if (playerControllableTower.dto is ProjectileTower_SO ptso && ptso.playerItem_SO != playerItem)

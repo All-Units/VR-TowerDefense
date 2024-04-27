@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -43,13 +44,16 @@ public class AOEProjectile : Projectile
     {
         
         Vector3 pos = transform.position;
-        var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask(TargetLayer));
+        var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask(TargetLayer, "Ragdoll"));
+        HashSet<HealthController> hcs = new HashSet<HealthController>();
         foreach (var hit in hits)
         {
             var colliderGameObject = hit.gameObject;
-
-            if (colliderGameObject.TryGetComponent(out HealthController healthController))
+            HealthController healthController = colliderGameObject.GetComponentInParent<HealthController>();
+            //Only affect each HC once
+            if (healthController && hcs.Contains(healthController) == false)
             {
+                hcs.Add(healthController);
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
                 var dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));

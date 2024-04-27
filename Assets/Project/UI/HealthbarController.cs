@@ -161,7 +161,9 @@ public class HealthbarController : MonoBehaviour
         StartCoroutine(Fade(0f, true));
         _isShowing = true;
     }
-    void _Destroy() { Destroy(gameObject); }
+    [HideInInspector] public bool DontDestroyOnDeath = false;
+    void _Destroy() { if (DontDestroyOnDeath) return;
+        Destroy(gameObject); }
 
     private IEnumerator Fade(float time, bool fadeIn)
     {

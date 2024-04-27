@@ -34,11 +34,13 @@ public class Projectile : DamageDealer, IPausable
     {
         this.InitPausable();
     }
+
     protected virtual void OnDestroy()
     {
         OnDestroyPausable();
         
     }
+    
     public void OnDestroyPausable() { this.DestroyPausable(); }
     public void Fire()
     {
@@ -70,7 +72,10 @@ public class Projectile : DamageDealer, IPausable
         {
             return;
         }
-
+        Projectile proj = other.collider.GetComponentInChildren<Projectile>();
+        if (proj == null) proj = other.collider.GetComponentInParent<Projectile>();
+        //Don't do anything if we hit another projectile
+        if (proj != null) return;
         OnCollision(other.collider);
     }
 
@@ -113,6 +118,7 @@ public class Projectile : DamageDealer, IPausable
         
         //We hit a trigger that didn't have a HC
         if (other.isTrigger && healthController == null) return;
+        
         OnHit?.Invoke();
         isDestroying = true;
         Destroy(gameObject);

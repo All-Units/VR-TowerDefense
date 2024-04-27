@@ -10,12 +10,16 @@ using UnityEditor;
 
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Playables;
 using Object = UnityEngine.Object;
 using Random = UnityEngine.Random;
 
 public static partial class Utilities
 {
-
+    public static float duration(this PlayableAsset asset)
+    {
+        return (float)asset.duration;
+    }
     public static Vector2 RandomPointOnUnitCircle()
     {
         var seed = Random.Range(0, 1f);
@@ -143,6 +147,7 @@ public static partial class Utilities
     {
         return go.transform.FullPath();
     }
+
 
 #if UNITY_EDITOR
     [MenuItem("CONTEXT/Component/Move To New Child GameObject")]

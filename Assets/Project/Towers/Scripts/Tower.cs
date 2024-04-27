@@ -26,6 +26,8 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     public static event Action<Tower> OnTowerSelected; 
     public event Action OnSelected; 
     public UnityEvent onStartFocus;
+
+    public static event Action<Tower> OnStartFocus;
     public static event Action<Tower> OnTowerDeselected; 
     public event Action OnDeselected; 
     public UnityEvent onEndFocus;
@@ -125,6 +127,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     public void StartFocus()
     {
         onStartFocus?.Invoke();
+        OnStartFocus?.Invoke(this);
     }
 
     public void EndFocus()

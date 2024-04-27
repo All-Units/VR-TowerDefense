@@ -1,7 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using Image = UnityEngine.UI.Image;
 
 public class GameOverPanel : MonoBehaviour
@@ -14,7 +18,7 @@ public class GameOverPanel : MonoBehaviour
     [FormerlySerializedAs("_height")]
     [Range(-1f, 4f)]
     [SerializeField] float height = 0.5f;
-
+    [SerializeField] float _freeMoveRecenterThreshold = 5f;
     [FormerlySerializedAs("_winString")] [SerializeField] string winString = "VICTORY";
     [FormerlySerializedAs("_loseString")] [SerializeField] string loseString = "DEFEAT";
     [FormerlySerializedAs("_winColor")] [SerializeField] Color winColor = Color.green;
@@ -29,7 +33,9 @@ public class GameOverPanel : MonoBehaviour
     [FormerlySerializedAs("WinLoseBanner")] [SerializeField] Image winLoseBanner;
     [FormerlySerializedAs("_contentParent")] [SerializeField] Transform contentParent;
     [SerializeField] GameObject statTextPrefab;
-    
+    [SerializeField] InputActionReference moveInput;
+    InputAction input => Utilities.GetInputAction(moveInput);
+
     Dictionary<StatTracker, int> _startValues = new();
     
     // Start is called before the first frame update
@@ -41,12 +47,18 @@ public class GameOverPanel : MonoBehaviour
         GameStateManager.onGameLose += OnGameLose;
         foreach (var stat in stats)
             _startValues[stat] = stat.getSerializeValue;
+        
     }
 
     private void OnDestroy()
     {
         GameStateManager.onGameWin -= OnGameWin;
         GameStateManager.onGameLose -= OnGameLose;
+        if (moveInput != null)
+        {
+            input.started -= Input_started;
+            input.canceled -= Input_canceled;
+        }
     }
 
     void UpdateStats()
@@ -79,6 +91,13 @@ public class GameOverPanel : MonoBehaviour
     }
     void OnGameEnd(string endString, Color endColor, Sprite sprite)
     {
+        if (moveInput != null)
+        {
+            input.started += Input_started;
+            input.canceled += Input_canceled;
+        }
+
+        PlayerStateController.teleporter.endLocomotion += _RepositionAfterTeleport;
         Debug.Log("Displaying end panel!");
         UpdateStats();
         canvasTransform.gameObject.SetActive(true);
@@ -87,6 +106,50 @@ public class GameOverPanel : MonoBehaviour
         winLoseLabel.text = endString;
 
         winLoseIcon.sprite = sprite;
+    }
+    void _RepositionAfterTeleport(LocomotionSystem system)
+    {
+        _RepositionAfter();
+    }
+    void _RepositionAfter(float t = 0.1f)
+    {
+        StartCoroutine(_RepositionAfterRoutine(t));
+    }
+    IEnumerator _RepositionAfterRoutine(float t)
+    {
+        yield return new WaitForSeconds(t);
+        _RepositionPanel();
+    }
+    private void Input_canceled(InputAction.CallbackContext obj)
+    {
+        if (DynamicMoveProvider.canMove == false) return;
+        _moveHeld = false;
+    }
+    bool _moveHeld = false;
+    private void Input_started(InputAction.CallbackContext obj)
+    {
+        if (DynamicMoveProvider.canMove == false) return;
+        _moveHeld = true;
+        StartCoroutine(_TrackMovement());
+    }
+    IEnumerator _currentMoveTracker = null;
+    Transform cam => InventoryManager.instance.playerCameraTransform;
+    IEnumerator _TrackMovement()
+    {
+        Vector3 _lastPos = cam.position; _lastPos.y = 0f;
+        float distance = 0f;
+        while (_moveHeld)
+        {
+            yield return null;
+            Vector3 pos = cam.position; pos.y = 0f;
+            distance += Vector3.Distance(_lastPos, pos);
+            if (distance >= _freeMoveRecenterThreshold)
+            {
+                _RepositionAfter();
+                distance = 0f;
+            }
+            _lastPos = pos;
+        }
     }
     void _RepositionPanel()
     {
@@ -105,13 +168,13 @@ public class GameOverPanel : MonoBehaviour
         LayerMask mask = LayerMask.GetMask("Ground");
         if (Physics.Raycast(center, Vector3.down, out hit, float.PositiveInfinity, mask))
         {
-            print($"Hit y level {hit.point.y}, canvas currently at {canvasPos.y}");
+            //print($"Hit y level {hit.point.y}, canvas currently at {canvasPos.y}");
             if (hit.point.y > canvasPos.y)
             {
                 float offset = Mathf.Max(height, 0.3f);
                 canvasPos.y = hit.point.y + offset;
                 canvasTransform.position = canvasPos;
-                print($"Canvas was too low, moving up to {canvasTransform.position.y}");
+                //print($"Canvas was too low, moving up to {canvasTransform.position.y}");
             }
         }
     }

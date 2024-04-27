@@ -42,6 +42,9 @@ public class Gate : MonoBehaviour, IEnemyTargetable
             FrontGate.localPosition += (transform.forward * 5f);
             FrontGate.Translate(new Vector3(0f, 1f, 0f));
         }
+
+        GetHealthController().OnTakeDamage += OnTakeDamage;
+        _lastHealth = GetHealthController().MaxHealth;
     }
 
     public void Die()
@@ -78,5 +81,15 @@ public class Gate : MonoBehaviour, IEnemyTargetable
         instance.GetHealthController().SetCurrentHealth(health);
         HealthbarController hbc = instance.GetComponentInChildren<HealthbarController>();
         hbc.UpdateValue(health);
+    }
+    int _lastHealth = 0;
+    [SerializeField] Transform _hitParticlePoint;
+    protected void OnTakeDamage(int currentHealth)
+    {
+        int dmg = _lastHealth - currentHealth;
+        _lastHealth = currentHealth;
+        if (dmg == 0) return;
+        Vector3 pos = _hitParticlePoint.position;
+        ImpactText.ImpactTextAt(pos, dmg.ToString(), ImpactText._ImpactTypes.TowerDamage, 3f);
     }
 }

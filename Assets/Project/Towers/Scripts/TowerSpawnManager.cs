@@ -18,6 +18,7 @@ namespace Project.Towers.Scripts
         public static bool CouldAffordCurrentTower => CurrencyManager.CanAfford(Instance.currentTower.cost);
         public static TowerSpawnManager Instance;
         public static Action<Tower_SO> OnTowerSpawned;
+        public static Action<Tower_SO> OnTowerUpgraded;
         private Tower_SO currentTower;
         public static Tower_SO GetCurrentTower => Instance ? Instance.currentTower : null;
 
@@ -183,6 +184,8 @@ namespace Project.Towers.Scripts
 
         public static Tower UpgradeTower(Tower towerToUpgrade, Tower_SO upgrade)
         {
+            if (Instance == null) return null;
+            OnTowerUpgraded?.Invoke(upgrade);
             if (Instance)
                 return Instance._UpgradeTower(towerToUpgrade, upgrade);
             return null;

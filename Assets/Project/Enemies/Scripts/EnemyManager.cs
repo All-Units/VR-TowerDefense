@@ -20,6 +20,11 @@ public class EnemyManager : MonoBehaviour
 
     #region PublicStats
     public static EnemyManager instance;
+    /// <summary>
+    /// The current number of living enemies
+    /// Null-safe
+    /// </summary>
+    public static int CurrentEnemyCount => (instance != null) ? instance.Enemies.Count : 0;
     
     /// <summary>
     /// Player-facing wave count, offset by 1
@@ -57,7 +62,7 @@ public class EnemyManager : MonoBehaviour
     public static UnityEvent OnRoundStarted = new ();
     public static UnityEvent OnRoundEnded = new ();
 
-    public UnityEvent OnGregSpawned = new ();
+    public UnityEvent OnEnemySpawned = new ();
     public UnityEvent OnEnemyKilled = new ();
 
     public static void EnemySpawned(Enemy enemy)
@@ -71,7 +76,7 @@ public class EnemyManager : MonoBehaviour
     private void _EnemySpawned(Enemy enemy)
     {
         Enemies.Add(enemy);
-        OnGregSpawned.Invoke();
+        OnEnemySpawned.Invoke();
     }
 
     public static void EnemyKilled(Enemy enemy)
@@ -410,9 +415,15 @@ public class EnemyManager : MonoBehaviour
 
 
     GameObject _currentSkipPanel = null;
+    public bool IS_TUTORIAL = false;
+    public bool SKIP_TUTORIAL_IS_COMPLETE = false;
     private void SkipRoundAction_started(InputAction.CallbackContext obj)
     {
         if (_currentWaveComplete == false) return;
+
+        //If we are the tutorial level but we haven't unlocked skipping level, don't do it accidentally
+        if (IS_TUTORIAL && SKIP_TUTORIAL_IS_COMPLETE == false) return;
+        
         isSkipPressed = true;
         _currentSkipRoutine = _SkipRound();
         StartCoroutine(_currentSkipRoutine);
