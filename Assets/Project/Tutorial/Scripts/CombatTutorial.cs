@@ -165,7 +165,7 @@ public class CombatTutorial : MonoBehaviour
         progressText.text = s;
     }
     int pulls = 0;
-    void _OnPullReleased(float pull)
+    void _OnPullReleased(float pull, TowerPlayerWeapon weapon = null)
     {
         pulls++;
         if (pulls >= ArcherShotsRequired)
