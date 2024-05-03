@@ -60,14 +60,25 @@ public class GuidedMissileTargeter : MonoBehaviour
         var targetAction = Utilities.GetInputAction(targetActionReference);
         if (targetAction != null)
         {
-            targetAction.started += TargetActionOnStarted;
-            targetAction.canceled += TargetActionOnCanceled;
+            //targetAction.started += TargetActionOnStarted;
+            //targetAction.canceled += TargetActionOnCanceled;
         }
 
         Enemy.OnDeath += OnEnemyDeath;
         _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
         grab = GetComponent<XRGrabInteractable>();
+        //grab.act
         grab.selectExited.AddListener(OnDrop);
+        grab.activated.AddListener(_TriggerPulled);
+        grab.deactivated.AddListener(_TriggerReleased);
+    }
+    void _TriggerPulled(ActivateEventArgs a)
+    {
+        TargetActionOnStarted(new InputAction.CallbackContext());
+    }
+    void _TriggerReleased(DeactivateEventArgs a)
+    {
+        TargetActionOnCanceled(new InputAction.CallbackContext());
     }
     void OnDrop(SelectExitEventArgs e)
     {
@@ -78,6 +89,8 @@ public class GuidedMissileTargeter : MonoBehaviour
                 Destroy(vfx.gameObject);
         }
         targets.Clear();
+        isTargeting = false;
+
     }
     public void OnEnemyDeath(Enemy obj)
     {
@@ -97,8 +110,9 @@ public class GuidedMissileTargeter : MonoBehaviour
         }
         else
         {
-            lineRenderer.SetPosition(0, transform.position);
-            lineRenderer.SetPosition(1, castPoint.transform.position);
+            Vector3 low = new Vector3(0f, -1000f, 0f);
+            lineRenderer.SetPosition(0, low);
+            lineRenderer.SetPosition(1, low);
         }
 
     }

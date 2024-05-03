@@ -319,6 +319,20 @@ public static partial class Utilities
             normalized += 360;
         return normalized;
     }
+    /// <summary>
+    /// Gets the shortest angle to a target angle
+    /// <para>-eg The distance from 5* to 355* is 10*, not 350*</para>
+    /// </summary>
+    /// <param name="a">The source angle</param>
+    /// <param name="b">The angle to rotate to</param>
+    /// <returns></returns>
+    public static float ShortestDistanceToAngle(this float a, float b)
+    {
+        float delta = Mathf.Abs(a - b);
+        float alternate = Mathf.Abs(360f - delta);
+        delta = Mathf.Min(delta, alternate);
+        return delta;
+    }
     
     public static Vector3 RandomPointInside(this Bounds bounds) {
         return new Vector3(

@@ -82,7 +82,7 @@ public class CombatTutorial : MonoBehaviour
             }
             print($"We took over an archer!");
             archerPanel.SetActive(true);
-            // PullInteraction.PullActionReleased += _OnPullReleased;
+            PullInteraction.PullActionReleased += _OnPullReleased;
             lastPanel = archerPanel;
         }
 
@@ -170,7 +170,7 @@ public class CombatTutorial : MonoBehaviour
         pulls++;
         if (pulls >= ArcherShotsRequired)
         { 
-            // PullInteraction.PullActionReleased -= _OnPullReleased;
+            PullInteraction.PullActionReleased -= _OnPullReleased;
             archerCount.color = activeColor;
             completed.Add(archerDTO);
             //archerPanel.SetActive(false);

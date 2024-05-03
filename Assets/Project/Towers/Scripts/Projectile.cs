@@ -181,6 +181,6 @@ public class DamageDealer : MonoBehaviour
 
     public virtual void OnKill(Enemy enemy = null)
     {
-        Debug.Log($"Killed {enemy}");
+        //Debug.Log($"Killed {enemy}");
     }
 }

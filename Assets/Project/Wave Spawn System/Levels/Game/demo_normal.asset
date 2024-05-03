@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   StartingGold: 100
   enemyPrefabs:
-  - prefab: {fileID: 7906997649670161163, guid: 49d97e6b4732fdc4a9ebf109e0760dd5,
+  - prefab: {fileID: 8875610972194801422, guid: 49d97e6b4732fdc4a9ebf109e0760dd5,
       type: 3}
     type: 0
   - prefab: {fileID: 6692053662854930735, guid: 755ed82bc5c38b9449a4cc81e174a846,
@@ -38,8 +38,6 @@ MonoBehaviour:
   - enemies:
     - enemyType: 1
       amountToSpawn: {x: 7, y: 9}
-    - enemyType: 6
-      amountToSpawn: {x: 30, y: 30}
     subWaves: []
     WaveCompleteBounty: 100
     preWaveDelay: 30
