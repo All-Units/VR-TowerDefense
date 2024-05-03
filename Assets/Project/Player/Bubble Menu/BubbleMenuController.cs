@@ -1,6 +1,8 @@
 using Project.Towers.Scripts;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class BubbleMenuController : MonoBehaviour
 {
@@ -113,8 +115,26 @@ public class BubbleMenuController : MonoBehaviour
         var lockTransform = option.transform.Find("lock");
         if (lockTransform == null) return;
         var active = unlocked == false;
-
         lockTransform.gameObject.SetActive(active);
+        XRSimpleInteractable simple = option.GetComponent<XRSimpleInteractable>();
+        if (simple == null) return;
+        simple.hoverEntered.RemoveAllListeners();
+        simple.hoverExited.RemoveAllListeners();
+        if (unlocked) return;
+        simple.hoverEntered.AddListener(_OnLockHovered);
+        simple.hoverExited.AddListener(_OnLockEndHover);
+    }
+    static void _OnLockHovered(HoverEnterEventArgs a)
+    {
+        var t = a.interactableObject.transform.Find("lockText");
+        if (t == null) return;
+        t.gameObject.SetActive(true);
+    }
+    static void _OnLockEndHover(HoverExitEventArgs a)
+    {
+        var t = a.interactableObject.transform.Find("lockText");
+        if (t == null) return;
+        t.gameObject.SetActive(false);
     }
     
     private void ListUpgrades()
