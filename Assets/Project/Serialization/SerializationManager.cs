@@ -120,7 +120,7 @@ public class SerializationManager : MonoBehaviour
         foreach (var tower in towers)
         {
             _saved_tower tuple = new _saved_tower(tower);
-            print($"Saved tower {tuple.tower_dto}, at pos ({tuple.x}, {tuple.y}, {tuple.z})");
+            // print($"Saved tower {tuple.tower_dto}, at pos ({tuple.x}, {tuple.y}, {tuple.z})");
             data._saved_towers.Add(tuple);
         }
     }

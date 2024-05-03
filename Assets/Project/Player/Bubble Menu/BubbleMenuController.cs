@@ -29,19 +29,22 @@ public class BubbleMenuController : MonoBehaviour
         
         PlayerStateController.OnStateChange += PlayerStateControllerOnOnStateChange;
         CurrencyManager.OnChangeMoneyAmount += CurrencyManagerOnChangeMoneyAmount;
+        Tower.OnTowerDestroy += TowerOnTowerDestroy;
+        XRPauseMenu.OnPause += _Hide;
         
         if (closeBubbleMenuAction != null)
-        {
             closeBubbleMenuAction.started += CloseTowerBubbles;
-        }
-        XRPauseMenu.OnPause += _Hide;
     }
+
+
 
     private void OnDestroy()
     {
         PlayerStateController.OnStateChange -= PlayerStateControllerOnOnStateChange;
         CurrencyManager.OnChangeMoneyAmount -= CurrencyManagerOnChangeMoneyAmount;
+        Tower.OnTowerDestroy += TowerOnTowerDestroy;
         XRPauseMenu.OnPause -= _Hide;
+        
         if (closeBubbleMenuAction != null)
             closeBubbleMenuAction.started -= CloseTowerBubbles;
 
@@ -179,6 +182,12 @@ public class BubbleMenuController : MonoBehaviour
     {
         if(gameObject.activeInHierarchy)
             ListUpgrades();
+    }
+
+    private void TowerOnTowerDestroy(Tower obj)
+    {
+        if(_currentTower == obj)
+            _Hide();
     }
 
     #endregion
