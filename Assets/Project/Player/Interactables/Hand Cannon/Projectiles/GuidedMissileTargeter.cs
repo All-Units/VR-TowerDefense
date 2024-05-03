@@ -97,7 +97,7 @@ public class GuidedMissileTargeter : MonoBehaviour
         }
         else
         {
-            lineRenderer.SetPosition(0, castPoint.transform.position);
+            lineRenderer.SetPosition(0, transform.position);
             lineRenderer.SetPosition(1, castPoint.transform.position);
         }
 
@@ -105,7 +105,7 @@ public class GuidedMissileTargeter : MonoBehaviour
 
     private void ScanForTargets()
     {
-        _castRay = new Ray(castPoint.transform.position, castPoint.transform.forward);
+        _castRay = new Ray(transform.position, transform.forward);
 
         _currentRate += Time.deltaTime;
 
