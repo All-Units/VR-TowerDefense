@@ -171,7 +171,7 @@ public static partial class Utilities
         Object.DestroyImmediate(component);
     }
     
-    //[MenuItem("CONTEXT/Component/Remove All Child Colliders")]
+    [MenuItem("CONTEXT/Component/Remove All Child Colliders")]
     public static void RemoveAllChildColliders(MenuCommand command)
     {
         if(command.context is not Component component) return;
