@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class GattlingController : MonoBehaviour
 {
@@ -21,11 +22,18 @@ public class GattlingController : MonoBehaviour
     [SerializeField] private float pitchMax, pitchMin;
     private float currentPitch;
     private TowerPlayerWeapon playerWeapon;
+    XRGrabInteractable grab;
     
     private void Start()
     {
         overheatModule.OnOverHeat.AddListener(OnDeactivate);
         playerWeapon = GetComponent<TowerPlayerWeapon>();
+        grab = GetComponent<XRGrabInteractable>();
+        grab.lastSelectExited.AddListener(_OnDrop);
+    }
+    void _OnDrop(SelectExitEventArgs a)
+    {
+        OnDeactivate();
     }
     private void OnEnable()
     {

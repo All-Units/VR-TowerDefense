@@ -237,6 +237,7 @@ public class InventoryManager : MonoBehaviour
         bool dropped = false;
         foreach (var selectedInteractable in selectedInteractables)
         {
+            
             _manager.SelectExit(interactor, selectedInteractable);
         }
     }
@@ -356,6 +357,17 @@ public class InventoryManager : MonoBehaviour
         held.AddRange(instance.playerRightHand.interactablesSelected);
 
         return held;
+    }
+
+    public static bool IsObjLeftHand(GameObject go)
+    {
+        if (instance == null) return false;
+        return go == instance.playerLeftHand.gameObject;
+    }
+    public static bool IsObjRightHand(GameObject go)
+    {
+        if (instance == null) return false;
+        return go == instance.playerRightHand.gameObject;
     }
     #endregion
 
