@@ -300,6 +300,8 @@ public class InventoryManager : MonoBehaviour
     /// <param name="a"></param>
     void _OnPickupItem(SelectEnterEventArgs a)
     {
+        XRControllerTowerController.DeselectCurrent();
+
         //If the object is held by the right hand
         bool isRight = a.interactorObject.transform.gameObject == playerRightHand.gameObject;
         //If the object is held by the left hand
