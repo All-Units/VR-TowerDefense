@@ -25,17 +25,19 @@ public class InventoryFollowCamera : MonoBehaviour
         float current = transform.eulerAngles.y;
         current = current.NormalizeAngle();
 
+        float delta = current.ShortestDistanceToAngle(y);
+        
         //If camera has greater angle than us, always offset
         bool offset = true;
+        
         //If camera if to left of us (lower angle val), only snap if it's past the offset
         if (y < current)
         {
-            offset = Mathf.Abs(current - y) >= (rotateThreshold + rotateOffset);
+            offset = delta >= (rotateThreshold + rotateOffset);
 
         }
-        if (Mathf.Abs(current - y) >= rotateThreshold && offset)
+        if (delta >= rotateThreshold && offset)
         {
-            
             _SnapToTarget(y);
         }
         return;

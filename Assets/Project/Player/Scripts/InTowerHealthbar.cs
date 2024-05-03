@@ -32,7 +32,9 @@ public class InTowerHealthbar : MonoBehaviour
         {
             float y = cam.eulerAngles.y;
             float current = transform.eulerAngles.y;
-            if (Mathf.Abs(current - y) >= rotateThreshold)
+            float delta = current.ShortestDistanceToAngle(y);
+            
+            if (delta >= rotateThreshold)
             {
                 _SnapToTarget(y);
             }

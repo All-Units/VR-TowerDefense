@@ -46,6 +46,8 @@ public class InventoryManager : MonoBehaviour
 
     #region Unity Interface
 
+    bool _isLeftHanded = false;
+
     private void Awake()
     {
         instance = this;
@@ -53,6 +55,11 @@ public class InventoryManager : MonoBehaviour
         invByHand.Add(whichHand.left, leftHand);
         invByHand.Add(whichHand.right, rightHand);
         cannonAmmoPouch.gameObject.SetActive(false);
+
+        string isLeft = PlayerPrefs.GetString("_isPlayerLeftHanded", "false");
+        _isLeftHanded = false;
+        if (isLeft.Equals("true"))
+            _isLeftHanded = true;
     }
 
     #endregion
@@ -84,8 +91,10 @@ public class InventoryManager : MonoBehaviour
 
     #region Item Lifecyle
 
+    PlayerItem_SO _lastHeldItem;
     public void GivePlayerItem(PlayerItem_SO playerItemType)
     {
+        _lastHeldItem = playerItemType;
         ReleaseAllItems();
         HideAllItems();
 
@@ -97,13 +106,36 @@ public class InventoryManager : MonoBehaviour
             if (drop != null)
             {
                 drop.playerItem = playerItemType;
-                //print($"Set {newWeapon.gameObject.name} player item to {playerItemType.name}");
             }
+
+            //Add listener for on first entered on XR object
+            var xr = _playerItems[playerItemType];
+            xr.firstSelectEntered.AddListener(_OnPickupItem);
         }
 
         var item = _playerItems[playerItemType];
+
+
+        //Default to holding items in right hand
+        var primaryHand = playerRightHand;
+        var secondaryHand = playerLeftHand;
+        bool offhand = playerItemType.holdInOffHand;
+
+        //Left handed players flip their primary hand
+        if (_isLeftHanded) 
+            offhand = !offhand;
         
-        if (playerItemType.holdInOffHand)
+        if (offhand)
+        {
+            primaryHand = playerLeftHand;
+            secondaryHand = playerRightHand;
+        }
+        primaryHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
+        secondaryHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
+        _manager.SelectEnter((IXRSelectInteractor)primaryHand, item);
+
+        
+        /*if (playerItemType.holdInOffHand)
         {
             playerLeftHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
             playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
@@ -116,7 +148,7 @@ public class InventoryManager : MonoBehaviour
             playerRightHand.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
 
             _manager.SelectEnter((IXRSelectInteractor)playerRightHand, item);
-        }
+        }*/
     }
 
     public void GivePlayerPower(PlayerPower playerPower)
@@ -209,20 +241,8 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public bool RightHandFull() => playerRightHand.interactablesSelected.Any();
-    public bool LeftHandFull() => playerLeftHand.interactablesSelected.Any();
-    /// <summary>
-    /// Gets all objects currently held in both hands
-    /// </summary>
-    /// <returns></returns>
-    public static List<IXRSelectInteractable> CurrentlyHeldObjects()
-    {
-        List<IXRSelectInteractable> held = new List<IXRSelectInteractable>();
-        held.AddRange(instance.playerLeftHand.interactablesSelected);
-        held.AddRange(instance.playerRightHand.interactablesSelected);
-
-        return held;
-    }
+    
+    
 
     public void ActivateItemExtra(PlayerItem_SO data)
     {
@@ -271,6 +291,70 @@ public class InventoryManager : MonoBehaviour
         rightFlameLanceGlovesController.gameObject.SetActive(false);
     }
 
+    #endregion
+
+    #region HelperFunctions
+    /// <summary>
+    /// Checks that the correct hand is holding the player item
+    /// </summary>
+    /// <param name="a"></param>
+    void _OnPickupItem(SelectEnterEventArgs a)
+    {
+        //If the object is held by the right hand
+        bool isRight = a.interactorObject.transform.gameObject == playerRightHand.gameObject;
+        //If the object is held by the left hand
+        bool isLeft = a.interactorObject.transform.gameObject == playerLeftHand.gameObject;
+
+        //Whether the player is supposed to be holding this item in their off hand
+        bool offhand = _lastHeldItem.holdInOffHand;
+
+        //If we're left handed, off hand means right
+        if (_isLeftHanded) offhand = !offhand;
+
+        //If right handed, and weapon is not an off-hand weapon, we should be right
+            //If left handed, our right is our off-hand
+        bool shouldBeRight = (offhand == false);
+
+        //Checks if the right hand is empty, and supposed to be empty, and that those match
+        bool isCorrect = isRight == shouldBeRight;
+
+        
+        //Do nothing if in correct hand
+        if (isCorrect) return;
+
+        var primary = playerRightHand;
+        var secondary = playerLeftHand;
+        if (isLeft)
+        {
+            primary = playerLeftHand;
+            secondary = playerRightHand;
+        }
+        //Make sure the correct hand is sticky
+        primary.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.Sticky;
+        secondary.selectActionTrigger = XRBaseControllerInteractor.InputTriggerType.State;
+        _isLeftHanded = !_isLeftHanded;
+        
+        string leftString = _isLeftHanded ? "true" : "false";
+        //Serialize
+        PlayerPrefs.SetString("_isPlayerLeftHanded", leftString);
+
+    }
+    
+
+    public bool RightHandFull() => playerRightHand.interactablesSelected.Any();
+    public bool LeftHandFull() => playerLeftHand.interactablesSelected.Any();
+    /// <summary>
+    /// Gets all objects currently held in both hands
+    /// </summary>
+    /// <returns></returns>
+    public static List<IXRSelectInteractable> CurrentlyHeldObjects()
+    {
+        List<IXRSelectInteractable> held = new List<IXRSelectInteractable>();
+        held.AddRange(instance.playerLeftHand.interactablesSelected);
+        held.AddRange(instance.playerRightHand.interactablesSelected);
+
+        return held;
+    }
     #endregion
 
     public static Inventory2 invByTor(IXRSelectInteractor tor)
