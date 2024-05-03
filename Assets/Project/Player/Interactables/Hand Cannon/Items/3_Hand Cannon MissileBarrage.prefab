@@ -3594,15 +3594,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8885404259867766266}
-  m_LocalRotation: {x: -0.049803037, y: -0.000000029802315, z: -0.00000041723243,
-    w: 0.99875903}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.0042, y: 0.0964, z: 0.3823}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 941280925213281268}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -5.709, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!135 &8057980952979112966
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -4229,7 +4228,6 @@ MonoBehaviour:
   overheatModule: {fileID: 8874751752851870560}
   _targeter: {fileID: 3047246755993633792}
   maxAmmo: 4
-  CurrentAmmo: 0
   _LoadedAmmoModels:
   - {fileID: 7846464589342547928}
   - {fileID: 5101211956828920713}
@@ -4330,7 +4328,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5616797384654989206}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1

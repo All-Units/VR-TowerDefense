@@ -14,40 +14,48 @@ public class GameOverPanel : MonoBehaviour
     [FormerlySerializedAs("_distanceFromPlayer")]
     [Header("Gameplay variables")]
     [Range(0f, 7f)]
-    [SerializeField] float distanceFromPlayer = 3f;
+    [SerializeField]
+    private float distanceFromPlayer = 3f;
     [FormerlySerializedAs("_height")]
     [Range(-1f, 4f)]
-    [SerializeField] float height = 0.5f;
-    [SerializeField] float _freeMoveRecenterThreshold = 5f;
-    [FormerlySerializedAs("_winString")] [SerializeField] string winString = "VICTORY";
-    [FormerlySerializedAs("_loseString")] [SerializeField] string loseString = "DEFEAT";
-    [FormerlySerializedAs("_winColor")] [SerializeField] Color winColor = Color.green;
-    [FormerlySerializedAs("_loseColor")] [SerializeField] Color loseColor = Color.red;
-    [FormerlySerializedAs("_winSprite")] [SerializeField] Sprite winSprite = null;
-    [FormerlySerializedAs("_loseSprite")] [SerializeField] Sprite loseSprite = null;
+    [SerializeField]
+    private float height = 0.5f;
+    [SerializeField] private float _freeMoveRecenterThreshold = 5f;
+    [FormerlySerializedAs("_winString")] [SerializeField]
+    private string winString = "VICTORY";
+    [FormerlySerializedAs("_loseString")] [SerializeField]
+    private string loseString = "DEFEAT";
+    [FormerlySerializedAs("_winColor")] [SerializeField]
+    private Color winColor = Color.green;
+    [FormerlySerializedAs("_loseColor")] [SerializeField]
+    private Color loseColor = Color.red;
+    [FormerlySerializedAs("_winSprite")] [SerializeField]
+    private Sprite winSprite = null;
+    [FormerlySerializedAs("_loseSprite")] [SerializeField]
+    private Sprite loseSprite = null;
      
     [Header("Obj references")]
-    [SerializeField] Transform canvasTransform;
-    [FormerlySerializedAs("WinLoseLabel")] [SerializeField] TextMeshProUGUI winLoseLabel;
-    [FormerlySerializedAs("WinLoseIcon")] [SerializeField] Image winLoseIcon;
-    [FormerlySerializedAs("WinLoseBanner")] [SerializeField] Image winLoseBanner;
-    [FormerlySerializedAs("_contentParent")] [SerializeField] Transform contentParent;
-    [SerializeField] GameObject statTextPrefab;
-    [SerializeField] InputActionReference moveInput;
-    InputAction input => Utilities.GetInputAction(moveInput);
-
-    Dictionary<StatTracker, int> _startValues = new();
+    [SerializeField]
+    private Transform canvasTransform;
+    [FormerlySerializedAs("WinLoseLabel")] [SerializeField]
+    private TextMeshProUGUI winLoseLabel;
+    [FormerlySerializedAs("WinLoseIcon")] [SerializeField]
+    private Image winLoseIcon;
+    [FormerlySerializedAs("WinLoseBanner")] [SerializeField]
+    private Image winLoseBanner;
+    [FormerlySerializedAs("_contentParent")] [SerializeField]
+    private Transform contentParent;
+    [SerializeField] private GameObject statTextPrefab;
+    [SerializeField] private InputActionReference moveInput;
+    private InputAction input => Utilities.GetInputAction(moveInput);
     
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         if (canvasTransform == null) canvasTransform = transform.GetChild(0);
         canvasTransform.gameObject.SetActive(false);
         GameStateManager.onGameWin += OnGameWin;
         GameStateManager.onGameLose += OnGameLose;
-        foreach (var stat in stats)
-            _startValues[stat] = stat.getSerializeValue;
-        
     }
 
     private void OnDestroy()
@@ -61,27 +69,28 @@ public class GameOverPanel : MonoBehaviour
         }
     }
 
-    void UpdateStats()
+    private void UpdateStats()
     {
         contentParent.DestroyChildren();
 
         foreach (var stat in stats)
         {
-            int count = stat.total - _startValues[stat];
-
-            if(count == 0) continue;
-            GameObject prefab = Instantiate(statTextPrefab, contentParent);
+            var count = stat.total - stat.getSerializeValue;
+            if(count <= 0) continue;
+            
+            var prefab = Instantiate(statTextPrefab, contentParent);
             prefab.SetActive(true);
-            TextMeshProUGUI text = prefab.GetComponentInChildren<TextMeshProUGUI>();
+            var text = prefab.GetComponentInChildren<TextMeshProUGUI>();
             text.text = $"{stat.displayName} {stat.statName} : {count}";
         }
     }
 
-    void OnGameWin()
+    private void OnGameWin()
     {
         OnGameEnd(winString, winColor, winSprite);
     }
-    void OnGameLose()
+
+    private void OnGameLose()
     {
         OnGameEnd(loseString, loseColor, loseSprite);
     }
@@ -89,7 +98,8 @@ public class GameOverPanel : MonoBehaviour
     {
         OnGameWin();
     }
-    void OnGameEnd(string endString, Color endColor, Sprite sprite)
+
+    private void OnGameEnd(string endString, Color endColor, Sprite sprite)
     {
         if (moveInput != null)
         {
@@ -107,15 +117,18 @@ public class GameOverPanel : MonoBehaviour
 
         winLoseIcon.sprite = sprite;
     }
-    void _RepositionAfterTeleport(LocomotionSystem system)
+
+    private void _RepositionAfterTeleport(LocomotionSystem system)
     {
         _RepositionAfter();
     }
-    void _RepositionAfter(float t = 0.1f)
+
+    private void _RepositionAfter(float t = 0.1f)
     {
         StartCoroutine(_RepositionAfterRoutine(t));
     }
-    IEnumerator _RepositionAfterRoutine(float t)
+
+    private IEnumerator _RepositionAfterRoutine(float t)
     {
         yield return new WaitForSeconds(t);
         _RepositionPanel();
@@ -125,16 +138,19 @@ public class GameOverPanel : MonoBehaviour
         if (DynamicMoveProvider.canMove == false) return;
         _moveHeld = false;
     }
-    bool _moveHeld = false;
+
+    private bool _moveHeld = false;
     private void Input_started(InputAction.CallbackContext obj)
     {
         if (DynamicMoveProvider.canMove == false) return;
         _moveHeld = true;
         StartCoroutine(_TrackMovement());
     }
-    IEnumerator _currentMoveTracker = null;
-    Transform cam => InventoryManager.instance.playerCameraTransform;
-    IEnumerator _TrackMovement()
+
+    private IEnumerator _currentMoveTracker = null;
+    private Transform cam => InventoryManager.instance.playerCameraTransform;
+
+    private IEnumerator _TrackMovement()
     {
         Vector3 _lastPos = cam.position; _lastPos.y = 0f;
         float distance = 0f;
@@ -151,7 +167,8 @@ public class GameOverPanel : MonoBehaviour
             _lastPos = pos;
         }
     }
-    void _RepositionPanel()
+
+    private void _RepositionPanel()
     {
         if (InventoryManager.instance == null) return;
         Transform cam = InventoryManager.instance.playerCameraTransform;
@@ -186,11 +203,5 @@ public class GameOverPanel : MonoBehaviour
     public void ReturnToMenu()
     {
         GameStateManager.instance.ReturnToMenu();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

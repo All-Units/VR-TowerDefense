@@ -11,7 +11,7 @@ public abstract class StatTracker : ScriptableObject
 
     public void Initialize(bool force = false)
     {
-        if(_isInitialized && force == false)
+        if(_isInitialized)
             return;
         InitTracker();
         _isInitialized = true;
@@ -33,7 +33,7 @@ public abstract class StatTracker : ScriptableObject
     
     public void Deserialize()
     {
-        total = PlayerPrefs.GetInt(key);
+        total = getSerializeValue;
     }
 
     public abstract void Print();
