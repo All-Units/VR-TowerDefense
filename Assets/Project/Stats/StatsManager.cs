@@ -12,7 +12,7 @@ public class StatsManager : MonoBehaviour
         foreach (var stat in stats)
         {
             stat.ResetTotal();
-            stat.Initialize(true);
+            stat.Initialize();
         }
         Deserialize();
     }

@@ -475,8 +475,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 35
-  speed: 25
   damageType: {fileID: 0}
+  statusModifier: {fileID: 0}
+  speed: 25
+  _hitEnemy: {fileID: 6895607487843673594}
+  _hitGround: {fileID: 3160364569106218650}
+  flyingVFX: {fileID: 0}
+  particles: {fileID: 7678487780928822161}
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
   OnDrawnBack:
     m_PersistentCalls:
       m_Calls: []
@@ -495,26 +506,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-      - m_Target: {fileID: 3787205183417723020}
-        m_TargetAssemblyTypeName: AudioClipController, Project
-        m_MethodName: PlayClip
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
-  OnHit:
-    m_PersistentCalls:
-      m_Calls: []
-  particles: {fileID: 7678487780928822161}
-  statusModifier: {fileID: 0}
-  woodHit: {fileID: 3160364569106218650}
-  enemyHit: {fileID: 6895607487843673594}
-  RagdollForce: 350
 --- !u!114 &3787205183417723020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -532,7 +523,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: a3ec827c60ca1a34e8963c71231dfe47, type: 3}
   _maxInclusivePitchVariance: 0.048
   _maxVolumeVariance: 0.15
-  playOnAwake: 0
+  playOnAwake: 1
   playOnEnable: 0
   loop: 0
   OnFinish:

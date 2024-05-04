@@ -7,12 +7,14 @@ public abstract class StatTracker : ScriptableObject
     public string statName;
 
     public int total = 0;
-    private bool _isInitialized = false;
+    [SerializeField] private bool _isInitialized = false;
 
-    public void Initialize(bool force = false)
+    public void Initialize()
     {
-        if(_isInitialized)
-            return;
+        Debug.Log($"Initializing StatTracker {name} | {key} | isInitialized: {_isInitialized} | total: {total}");
+        
+        if(_isInitialized) return;
+        
         InitTracker();
         _isInitialized = true;
     }

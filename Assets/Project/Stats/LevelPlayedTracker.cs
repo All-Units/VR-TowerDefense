@@ -6,6 +6,7 @@ public class LevelPlayedTracker : LevelTracker
 
     protected override void InitTracker()
     {
+        EnemyManager.OnGameStart.AddListener(OnLevelStarted);
         OnLevelStarted();
     }
 
@@ -15,7 +16,10 @@ public class LevelPlayedTracker : LevelTracker
     }
 
     private void OnLevelStarted()
-    {
+    { 
+        Print();
+        Deserialize();
         total++;
+        Serialize();
     }
 }
