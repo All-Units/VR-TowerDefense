@@ -187,7 +187,12 @@ public class BubbleMenuController : MonoBehaviour
 
     public void _Hide()
     {
-        gameObject.SetActive(false);
+        if (gameObject == null) return;
+        try
+        {
+            gameObject.SetActive(false);
+        }
+        catch (MissingReferenceException e) { return; }
         if(_currentTower)
             _currentTower.EndFocus();
         XRControllerTowerController.DeselectCurrent();

@@ -3,6 +3,8 @@ using UnityEngine;
 using UnityEngine.Events;
 public class OverheatModule : MonoBehaviour
 {
+    public int MaxVelocity = 20;
+    public int ShotsToOverheat => shotsToOverheat;
     [SerializeField] private int shotsToOverheat = 3;
     [SerializeField] private float cooldownRate = 1f;
     private Rigidbody _rb;
@@ -24,7 +26,9 @@ public class OverheatModule : MonoBehaviour
     public UnityEvent OnCoolDown;
     public UnityEvent<float> OnHeatChange;
 
-    public float CurrentHeat;
+    [Header("Debug Vars")]
+    public float CurrentHeatDebug;
+    public float _LastVelocity;
     #region Unity Interface
 
     private void Start()
@@ -41,18 +45,23 @@ public class OverheatModule : MonoBehaviour
     const float MINIMUM_COOLDOWN = 1f;
     private void Update()
     {
-        if(currentHeat <= 0.01) return;
+        CurrentHeatDebug = currentHeat;
+        if (currentHeat <= 0.01) return;
         float magnitude = Mathf.Max(_rb.velocity.magnitude, MINIMUM_COOLDOWN);
-        var rate = 1 / cooldownRate * Time.deltaTime * magnitude;
+        magnitude = MathF.Min(magnitude, MaxVelocity);
+        _LastVelocity = _rb.velocity.magnitude;
+        var rate = (cooldownRate * Time.deltaTime * magnitude);
+
         //var rate = 1 / cooldownRate * Time.deltaTime * deltaP;
         currentHeat = Mathf.Max(0, currentHeat - rate);
-        
+        //print($"Started at {CurrentHeatDebug}, now at {currentHeat}. Magnitude: {magnitude}. Rate: {rate}");
         if (_isOverheated && currentHeat < shotsToOverheat / 3f)
         {
+            //print($"Cooling down, current heat: {currentHeat}, was less than {shotsToOverheat / 3f}");
             _isOverheated = false;
             OnCoolDown?.Invoke();
         }
-        CurrentHeat = currentHeat;
+        CurrentHeatDebug = currentHeat;
     }
 
     #endregion
@@ -62,6 +71,11 @@ public class OverheatModule : MonoBehaviour
     public bool IsOverheated()
     {
         return _isOverheated;
+    }
+    public void FireMultiple(int count)
+    {
+        for (int i = 0; i < count; i++)
+            ProjectileSpawnerOnFire();
     }
         
     public void ProjectileSpawnerOnFire()

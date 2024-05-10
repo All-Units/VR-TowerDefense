@@ -258,34 +258,10 @@ MonoBehaviour:
   playerControlPosition: {fileID: 6208005074393136047}
   onTakeover:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3733138623716590382}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 1
-        m_CallState: 2
+      m_Calls: []
   onRelease:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 3733138623716590382}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   targetingSystem: {fileID: 6674742477994217249}
   firePoint: {fileID: 5189835444252146732}
   auxFirePoints: []
@@ -1222,6 +1198,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4867604580317151035, guid: a187c78981256314abf90881b4d5630f,
         type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4867604580317151035, guid: a187c78981256314abf90881b4d5630f,
+        type: 3}
       propertyPath: radiusMax
       value: 1.25
       objectReference: {fileID: 0}
@@ -1303,19 +1284,13 @@ PrefabInstance:
     - target: {fileID: 6742660572935266411, guid: a187c78981256314abf90881b4d5630f,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a187c78981256314abf90881b4d5630f, type: 3}
---- !u!1 &3733138623716590382 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 6742660572935266411, guid: a187c78981256314abf90881b4d5630f,
-    type: 3}
-  m_PrefabInstance: {fileID: 7952367234255266629}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4526956931346529900 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5804718281253936425, guid: a187c78981256314abf90881b4d5630f,

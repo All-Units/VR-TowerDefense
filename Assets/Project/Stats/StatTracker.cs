@@ -11,8 +11,6 @@ public abstract class StatTracker : ScriptableObject
 
     public void Initialize()
     {
-        Debug.Log($"Initializing StatTracker {name} | {key} | isInitialized: {_isInitialized} | total: {total}");
-        
         if(_isInitialized) return;
         
         InitTracker();

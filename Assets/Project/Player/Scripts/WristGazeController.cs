@@ -42,6 +42,13 @@ public class WristGazeController : MonoBehaviour
         _OnEnemyChange();
 
         CurrencyManager.OnChangeMoneyAmount += _OnCurrencyChange;
+        StartCoroutine(_SetCashDelay());
+    }
+    IEnumerator _SetCashDelay()
+    {
+        yield return null;
+        yield return null;
+        _OnCurrencyChange(CurrencyManager.CurrentCash);
     }
     int _wave = 1;
     void _OnWaveEnd()

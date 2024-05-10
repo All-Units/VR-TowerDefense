@@ -4,6 +4,10 @@ public class ParticleCollisionHandler : MonoBehaviour
 {
     public int damage = 1;
     public StatusModifier statusModifier;
+    private void OnParticleTrigger()
+    {
+        print("Particle entered trigger!");
+    }
 
     private void OnParticleCollision(GameObject other)
     {
