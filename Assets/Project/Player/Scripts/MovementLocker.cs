@@ -4,7 +4,7 @@ using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
 public class MovementLocker : MonoBehaviour
 {
-    private whichHand hand => inventory.hand;
+    private WhichHand hand => inventory.hand;
     public Inventory inventory;
     
     /// <summary>
@@ -18,7 +18,7 @@ public class MovementLocker : MonoBehaviour
     /// </summary>
     public virtual void PlaceMovementLock(GameObject caller)
     {
-        if (hand == whichHand.left)
+        if (hand == WhichHand.left)
             PlaceMovementLockLeft();
         else 
             PlaceMovementLockRight(caller);
@@ -28,7 +28,7 @@ public class MovementLocker : MonoBehaviour
     /// </summary>
     public virtual void RemoveMovementLock(GameObject caller)
     {
-        if (hand == whichHand.left)
+        if (hand == WhichHand.left)
             RemoveMovementLockLeft();
         else RemoveMovementLockRight(caller);
     }

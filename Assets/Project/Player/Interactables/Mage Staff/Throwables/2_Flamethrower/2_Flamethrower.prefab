@@ -4935,14 +4935,14 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.1
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -9833,14 +9833,14 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.1
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -19317,6 +19317,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 1
+  _minTimeBetweenDamage: 0.1
   statusModifier: {fileID: 11400000, guid: 99073a77292d19548b9f06b83dcf201a, type: 2}
 --- !u!199 &7737536528630602597
 ParticleSystemRenderer:
@@ -19439,14 +19440,14 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   emitterVelocityMode: 0
   looping: 1
-  prewarm: 0
+  prewarm: 1
   playOnAwake: 1
   useUnscaledTime: 0
   autoRandomSeed: 1
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0.1
+    scalar: 0
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -24346,6 +24347,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc1d32604a2ee5c4297fd5d9cffc0c57, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Damage: 1
+  MinimumCharge: 0.3
+  MinTimeBetweenDamage: 0.2
+  modifier: {fileID: 11400000, guid: 99073a77292d19548b9f06b83dcf201a, type: 2}
   flameParticles: {fileID: 966788176718072969}
   smokeParticles: {fileID: 700120342701540830}
   runeParticles:

@@ -9,7 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class Inventory2 : MonoBehaviour
 {
-    public whichHand whichHand = whichHand.left;
+    public WhichHand whichHand = WhichHand.left;
     public HashSet<IXRSelectInteractor> tors = new HashSet<IXRSelectInteractor>();
     public InputActionReference primaryButton;
     public InputActionReference SecondaryButton;
@@ -18,7 +18,7 @@ public class Inventory2 : MonoBehaviour
     private void Awake()
     {
         tors = GetComponentsInChildren<IXRSelectInteractor>().ToHashSet();
-        if (whichHand == whichHand.left)
+        if (whichHand == WhichHand.left)
         {
             SecondaryButton.action.started += SecondaryPressed;
             SecondaryButton.action.canceled += SecondaryReleased;
@@ -27,7 +27,7 @@ public class Inventory2 : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (whichHand == whichHand.left)
+        if (whichHand == WhichHand.left)
         {
             SecondaryButton.action.started -= SecondaryPressed;
             SecondaryButton.action.canceled -= SecondaryReleased;

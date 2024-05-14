@@ -17,7 +17,7 @@ public class LevelPlayedTracker : LevelTracker
 
     private void OnLevelStarted()
     { 
-        Print();
+        //Print();
         Deserialize();
         total++;
         Serialize();

@@ -8,15 +8,11 @@ using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
-public enum whichHand
-{
-    left,
-    right
-}
+
 public class Inventory : MonoBehaviour
 {
     #region PublicVariables
-    public whichHand hand = whichHand.left;
+    public WhichHand hand = WhichHand.left;
     [Header("Input References")]
     [SerializeField] public InputActionReference openInventory;
     [SerializeField] public InputActionReference stick;

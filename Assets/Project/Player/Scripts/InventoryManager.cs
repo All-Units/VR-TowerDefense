@@ -9,7 +9,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class InventoryManager : MonoBehaviour
 {
     public static InventoryManager instance;
-    private Dictionary<whichHand, Inventory2> invByHand = new Dictionary<whichHand, Inventory2>();
+    private Dictionary<WhichHand, Inventory2> invByHand = new Dictionary<WhichHand, Inventory2>();
 
     public Transform playerTransform;
     public Transform playerCameraTransform;
@@ -52,8 +52,8 @@ public class InventoryManager : MonoBehaviour
     {
         instance = this;
         _manager = FindObjectOfType<XRInteractionManager>();
-        invByHand.Add(whichHand.left, leftHand);
-        invByHand.Add(whichHand.right, rightHand);
+        invByHand.Add(WhichHand.left, leftHand);
+        invByHand.Add(WhichHand.right, rightHand);
         cannonAmmoPouch.gameObject.SetActive(false);
 
         string isLeft = PlayerPrefs.GetString("_isPlayerLeftHanded", "false");
@@ -381,4 +381,9 @@ public class InventoryManager : MonoBehaviour
 
         return null;
     }
+}
+public enum WhichHand
+{
+    left,
+    right
 }
