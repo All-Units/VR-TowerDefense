@@ -185,6 +185,7 @@ GameObject:
   - component: {fileID: 619308174058264511}
   - component: {fileID: 3071368436360838454}
   - component: {fileID: 1382009744870101265}
+  - component: {fileID: 3657726203371639614}
   m_Layer: 8
   m_Name: Archer Arrow
   m_TagString: Untagged
@@ -278,9 +279,9 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
-  m_Radius: 0.91
+  m_Radius: 0.43
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &3071368436360838454
 MonoBehaviour:
@@ -295,12 +296,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 15
-  speed: 50
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
+  speed: 50
   _hitEnemy: {fileID: 4359639538064573319}
   _hitGround: {fileID: 5308158447713014252}
   flyingVFX: {fileID: 0}
+  particles: {fileID: 0}
   OnFire:
     m_PersistentCalls:
       m_Calls: []
@@ -334,6 +336,29 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 3
+--- !u!136 &3657726203371639614
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 337958517151354589}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 1.4781272
+  m_Direction: 2
+  m_Center: {x: 0, y: 0, z: -0.26372686}
 --- !u!1 &2156987748129365447
 GameObject:
   m_ObjectHideFlags: 0

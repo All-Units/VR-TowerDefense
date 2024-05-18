@@ -474,10 +474,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dfd46d13264294813c6a6ef438760b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 35
+  damage: 65
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
-  speed: 25
+  speed: 30
   _hitEnemy: {fileID: 6895607487843673594}
   _hitGround: {fileID: 3160364569106218650}
   flyingVFX: {fileID: 0}
@@ -506,6 +506,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  IsNotched: 0
 --- !u!114 &3787205183417723020
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -811,10 +812,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.12
-  m_Height: 2.16
+  m_Radius: 0.6
+  m_Height: 2.8104043
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0.21}
+  m_Center: {x: 0, y: 0, z: 0.535202}
 --- !u!1 &7449630826479418961
 GameObject:
   m_ObjectHideFlags: 0

@@ -457,7 +457,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 865188935785529621}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.137}
+  m_LocalPosition: {x: 0, y: 0, z: -0.124}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -828,6 +828,8 @@ MonoBehaviour:
   rb: {fileID: 3993401456027248386}
   resetTime: 2
   offset: {x: 0, y: 3, z: 0.5}
+  playerItem: {fileID: 0}
+  CurrentPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &5059958566716327240
 GameObject:
   m_ObjectHideFlags: 0
@@ -991,9 +993,13 @@ MonoBehaviour:
   _clips:
   - {fileID: 8300000, guid: 8cdd080377f4be34a856d743ed5eed9f, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &2460113948692886942
 AudioSource:
   m_ObjectHideFlags: 0

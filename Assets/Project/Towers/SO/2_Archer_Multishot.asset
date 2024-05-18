@@ -22,7 +22,7 @@ MonoBehaviour:
   minimapPrefab: {fileID: 1918884645610000673, guid: c5248cb323ad2ca49ae960fe6519bbe1,
     type: 3}
   name: Multishot
-  description: Shoots arrows at foes
+  description: Launches a deadly spread of arrows
   cost: 60
   maxHeath: 250
   upgrades:
@@ -31,7 +31,7 @@ MonoBehaviour:
   - upgrade: {fileID: 11400000, guid: 577e7aeefc8fd734ba76f2e0faf6c4e5, type: 2}
     cost: 0
   radius: 40
-  shotCooldown: 1
+  shotCooldown: 2
   projectile: {fileID: 3071368436360838454, guid: db07f43d022417149ab7b534ec2395da,
     type: 3}
   PlayerProjectile: {fileID: 337958517151354589, guid: 1b7a8c60c936fe345a2098c21cb767ee,

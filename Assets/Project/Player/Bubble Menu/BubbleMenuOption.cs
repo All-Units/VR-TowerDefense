@@ -1,10 +1,12 @@
 ﻿using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class BubbleMenuOption : MonoBehaviour
 {
     [SerializeField] private TMP_Text title;
+    [SerializeField] private TMP_Text descriptionText;
     
     private BubbleMenuController _controller;
     private TowerUpgrade _upgrade;
@@ -14,6 +16,13 @@ public class BubbleMenuOption : MonoBehaviour
     
     [SerializeField] private Color cantAffordTextColor = Color.red;
     private Color currentTextColor;
+    XRSimpleInteractable interactable;
+    private void Awake()
+    {
+        interactable = GetComponent<XRSimpleInteractable>();
+        interactable.firstHoverEntered.AddListener(_FirstHoverEntered);
+        interactable.lastHoverExited.AddListener(_LastHoverExited);
+    }
 
     private void OnDestroy()
     {
@@ -28,11 +37,16 @@ public class BubbleMenuOption : MonoBehaviour
         _upgrade = upgrade;
     }
 
-    public void Initialize(Action ctx, string displayText)
+    public void Initialize(Action ctx, string displayText, string description = "")
     {
         gameObject.SetActive(true);
         title.text = displayText;
-
+        if (descriptionText != null)
+        {
+            descriptionText.text = description;
+            descriptionText.gameObject.SetActive(false);
+        }
+        
         _callback = ctx;
     }
 
@@ -41,12 +55,15 @@ public class BubbleMenuOption : MonoBehaviour
         title.color = cash < cost ? cantAffordTextColor : Color.white;
     }
     
-    public void Initialize(Action ctx, string displayText, int cost)
+    public void Initialize(Action ctx, string displayText, int cost, string description = "")
     {
-        Initialize(ctx, $"${cost}\n {displayText}");
+        Initialize(ctx, $"${cost}\n {displayText}", description);
         this.cost = cost;
         CanAfford(CurrencyManager.CurrentCash);
         CurrencyManager.OnChangeMoneyAmount += CanAfford;
+        if (descriptionText == null) return;
+        descriptionText.text = description;
+        descriptionText.gameObject.SetActive(false);
     }
 
     public void PerformOption()
@@ -62,12 +79,24 @@ public class BubbleMenuOption : MonoBehaviour
         title.color -= _grey;
         _currentHoveredBubble = this;
         XRControllerTowerController.DeselectCurrent();
+        
     }
 
     public void OnHoverEnd()
     {
         _currentHoveredBubble = null;
         CanAfford(CurrencyManager.CurrentCash);
+        
+    }
+    void _FirstHoverEntered(HoverEnterEventArgs a)
+    {
+        if (descriptionText == null) return;
+        descriptionText.gameObject.SetActive(true);
+    }
+    void _LastHoverExited(HoverExitEventArgs a)
+    {
+        if (descriptionText == null) return;
+        descriptionText.gameObject.SetActive(false);
     }
     
     public void Upgrade()

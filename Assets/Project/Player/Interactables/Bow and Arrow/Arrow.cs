@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class Arrow : Projectile, IPausable
 {
@@ -25,6 +26,13 @@ public class Arrow : Projectile, IPausable
         PullInteraction.PullActionReleased += PullInteractionOnPullActionReleased;
         Stop();
         OnInitPausable();
+        GetComponent<XRGrabInteractable>().selectExited.AddListener(_OnDrop);
+    }
+    public bool IsNotched = false;
+    void _OnDrop(SelectExitEventArgs a)
+    {
+        if (IsNotched == false)
+            Destroy(gameObject);
     }
     public void OnInitPausable()
     {

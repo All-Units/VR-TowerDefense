@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9e195972b0e746a9b2eaa3cc8d6b8481, type: 3}
   m_Name: 2_Archer_Ranged
   m_EditorClassIdentifier: 
-  IsUnlocked: 0
+  IsUnlocked: 1
   ghostObject: {fileID: 6139709382012762173, guid: a27f088cf90dd444584cbb709eb4dcec,
     type: 3}
   towerPrefab: {fileID: 7502261813038807644, guid: c02b1c55a65320e498282a16c70187e9,
@@ -22,17 +22,18 @@ MonoBehaviour:
   minimapPrefab: {fileID: 1918884645610000673, guid: c5248cb323ad2ca49ae960fe6519bbe1,
     type: 3}
   name: Ranged
-  description: Shoots arrows at foes
-  cost: 45
+  description: Arrows go farther and do more damage
+  cost: 60
   maxHeath: 200
   upgrades:
   - upgrade: {fileID: 11400000, guid: eb8fb503c91b15341a720d79d03f2d98, type: 2}
     cost: 0
   - upgrade: {fileID: 11400000, guid: 6cfb228028e988e43bbd3407ea8fbcf6, type: 2}
     cost: 0
-  radius: 50
-  shotCooldown: 1
-  projectile: {fileID: 3071368436360838454, guid: d56a8c24380e6ad4ab7a02eb3e10d6e7,
+  radius: 60
+  shotCooldown: 4
+  projectile: {fileID: 3071368436360838454, guid: 4f547695a5caf0c40a898d88574d78c3,
     type: 3}
-  PlayerProjectile: {fileID: 0}
+  PlayerProjectile: {fileID: 337958517151354589, guid: 9c83a44cb839f20438f7cfd341b7a123,
+    type: 3}
   playerItem_SO: {fileID: 11400000, guid: c18089523b7ea6b4d9a6f23cdb61f5fb, type: 2}

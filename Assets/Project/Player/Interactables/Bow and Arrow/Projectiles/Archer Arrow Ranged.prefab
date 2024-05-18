@@ -132,9 +132,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03dfd46d13264294813c6a6ef438760b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 100
-  speed: 40
+  damage: 200
   damageType: {fileID: 0}
+  statusModifier: {fileID: 0}
+  speed: 45
+  _hitEnemy: {fileID: 3202021467002785933}
+  _hitGround: {fileID: 4003565438109291779}
+  flyingVFX: {fileID: 0}
+  particles: {fileID: 815600242975216776}
+  OnFire:
+    m_PersistentCalls:
+      m_Calls: []
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
   OnDrawnBack:
     m_PersistentCalls:
       m_Calls: []
@@ -153,14 +164,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
-  OnHit:
-    m_PersistentCalls:
-      m_Calls: []
-  particles: {fileID: 815600242975216776}
-  statusModifier: {fileID: 0}
-  woodHit: {fileID: 4003565438109291779}
-  enemyHit: {fileID: 3202021467002785933}
-  RagdollForce: 350
+  IsNotched: 0
 --- !u!114 &7414160968426255016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -177,9 +181,13 @@ MonoBehaviour:
   _clips:
   - {fileID: 8300000, guid: aa55343508ab53547939dfe12b735e9f, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 1
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &6709334573630659050
 AudioSource:
   m_ObjectHideFlags: 0
@@ -462,10 +470,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.12
-  m_Height: 2.16
+  m_Radius: 0.6
+  m_Height: 3.2047994
   m_Direction: 2
-  m_Center: {x: 0, y: 0, z: 0.21}
+  m_Center: {x: 0, y: 0, z: 0.7323996}
 --- !u!1 &1269536743542982401
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,9 +638,13 @@ MonoBehaviour:
   _clips:
   - {fileID: 8300000, guid: eb6fcd6cecd5b7a43b296403a511e785, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8993534191037578349
 GameObject:
   m_ObjectHideFlags: 0
@@ -797,9 +809,13 @@ MonoBehaviour:
   _clips:
   - {fileID: 8300000, guid: faa6222a2d1c2db40a60bf1fa1f33a81, type: 3}
   _maxInclusivePitchVariance: 0
+  _maxVolumeVariance: 0
   playOnAwake: 0
   playOnEnable: 0
   loop: 0
+  OnFinish:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9036501222085095601
 GameObject:
   m_ObjectHideFlags: 0
@@ -846,8 +862,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
+        type: 3}
       propertyPath: m_LocalScale.z
-      value: 9.36
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
         type: 3}
@@ -897,6 +923,11 @@ PrefabInstance:
     - target: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2251519211946046509, guid: 95371a2ec25710a479b61530d5d54cbd,
+        type: 3}
+      propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4558327976475730106, guid: 95371a2ec25710a479b61530d5d54cbd,

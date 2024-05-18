@@ -41,14 +41,15 @@ public class ArrowSpawner : MonoBehaviour
     {
         if(bow.isSelected == false || _arrowNotched) return;
         //Debug.Log($"Notching {other.gameObject.name}");
-
-        if (other.GetComponent<Arrow>())
+        var arrow = other.GetComponent<Arrow>();
+        if (arrow)
         {
             if(other.TryGetComponent<XRGrabInteractable>(out var objectInteractable) == false || objectInteractable.isSelected == false) return;
             
             //Debug.Log("is arrow!");
             _currentArrow = other.gameObject;
             _arrowNotched = true;
+            arrow.IsNotched = true;
             var interactor = objectInteractable.GetOldestInteractorSelecting();
             objectInteractable.interactionManager.SelectExit(interactor, objectInteractable);
             pullInteraction.interactionManager.SelectEnter(interactor, pullInteraction);

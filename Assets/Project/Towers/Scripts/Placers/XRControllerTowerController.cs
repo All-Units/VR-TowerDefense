@@ -39,6 +39,7 @@ public class XRControllerTowerController : MonoBehaviour
     [SerializeField] private BubbleMenuOption currencyBubblePrefab;
     [SerializeField] private Transform towersBubbleRoot;
     [SerializeField] private float bubbleMenuRadius;
+    [SerializeField] private float bubbleMenuCashHeight = -1f;
     [SerializeField] private float bubbleMenuMaxAngle;
     [SerializeField] private XRControllerTowerPlacer towerPlacer;
 
@@ -229,12 +230,12 @@ public class XRControllerTowerController : MonoBehaviour
             icon.transform.position += Vector3.down * .07f;
             icon.transform.rotation = Quaternion.identity;
             icon.transform.localScale *= 2;
-            newBubble.Initialize(()=>SetTowerToPlace(towerSo), towerSo.name, towerSo.cost);
+            newBubble.Initialize(()=>SetTowerToPlace(towerSo), towerSo.name, towerSo.cost, towerSo.description);
         }
         
         var currencyBubble = Instantiate(currencyBubblePrefab, towersBubbleRoot);
         currencyBubble.Initialize(null, $"${CurrencyManager.CurrentCash}");
-        currencyBubble.transform.localPosition = new Vector3(0, -bubbleMenuRadius / 3f, bubbleMenuRadius / 2f);
+        currencyBubble.transform.localPosition = new Vector3(0, bubbleMenuCashHeight, bubbleMenuRadius / 2f);
         currencyBubble.transform.LookAt(mainTransform, Vector3.up);
         
         towersBubbleRoot.SetParent(null);

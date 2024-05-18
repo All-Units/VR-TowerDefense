@@ -1,12 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
+
 
 
 public class Inventory : MonoBehaviour
@@ -18,7 +15,7 @@ public class Inventory : MonoBehaviour
     [SerializeField] public InputActionReference stick;
     [SerializeField] public InputActionReference grip;
     [SerializeField] public InputActionReference trigger;
-    
+
     [Header("GameObject references")]
     [SerializeField] private GameObject inventoryPanel;
     [SerializeField] private Transform arrowParent;
@@ -55,10 +52,10 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
-    
+
 
     #endregion
 
@@ -72,18 +69,18 @@ public class Inventory : MonoBehaviour
         {
             _onOpen();
         }
-        
+
     }
-    
+
     void _onOpen()
     {
         _selectCurrentAngle();
-        inventoryPanel.SetActive(true); 
+        inventoryPanel.SetActive(true);
         PlaceLock(gameObject);
         stick.action.performed += PointArrow;
     }
 
-    
+
 
     void _onClose()
     {
@@ -139,10 +136,10 @@ public class Inventory : MonoBehaviour
         print($"Trying to turn off {old}");
         var off = spawnedItems[old];
         off.SetActive(false);
-        
+
         SelectGO(active);
-        
-        
+
+
     }
 
     private float arc => (360f / (float)Items.Count);
@@ -155,17 +152,17 @@ public class Inventory : MonoBehaviour
         {
             Item_SO item = Items[i];
             GameObject icon = Instantiate(item.itemIconPrefab, iconsParent);
-            
+
             GameObject spawnedItem = Instantiate(item.itemPrefab.gameObject);
             BaseItem baseItem = spawnedItem.GetComponent<BaseItem>();
             baseItem._inventory = this;
             baseItem.enabled = true;
-            
+
             spawnedItems.Add(spawnedItem);
             spawnedItem.SetActive(false);
 
-            
-                
+
+
             float degrees = arc * i + (arc / 2f);
             anglesByItem.Add(item, degrees);
             icon.transform.localEulerAngles = new Vector3(0f, 0f, -1f * degrees);
@@ -192,7 +189,7 @@ public class Inventory : MonoBehaviour
         BaseItem item = go.GetComponentInChildren<BaseItem>();
         if (item.CannotDrop)
             interactionManager.SelectEnter(tor, table);
-        
+
     }
 
     public void DeselectGO(GameObject go)
@@ -205,7 +202,7 @@ public class Inventory : MonoBehaviour
         }
         //StartCoroutine(_cycleDrop(go));
         return;
-        
+
     }
 
     IEnumerator _cycleDrop(GameObject go)
@@ -218,22 +215,22 @@ public class Inventory : MonoBehaviour
         interactionManager.SelectExit(tor, table);
         print($"Manually dropped {go.name}");
     }
-    
-    #endregion
-    
-    
 
-    
+    #endregion
+
+
+
+
     #region Legacy
     /// <summary>
     /// Need to massively refactor
     /// </summary>
-    
 
-    
-    
-    
-    
-    
+
+
+
+
+
+
     #endregion
 }

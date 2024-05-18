@@ -10,10 +10,10 @@ public class TowerKillsTracker : TowerTracker
 
     private void ProjectileTowerOnKill(ProjectileTower arg1, Enemy arg2)
     {
-        Debug.Log("ProjectileTowerOnKill");
+        //Debug.Log("ProjectileTowerOnKill");
         if(_towerToTrack == arg1.dto)
         {
-            Debug.Log($"ProjectileTowerOnKill: {arg1.dto}");
+            //Debug.Log($"ProjectileTowerOnKill: {arg1.dto}");
             total++;
         }
     }

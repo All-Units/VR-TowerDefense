@@ -5,6 +5,10 @@ public class TowerAimer : MonoBehaviour
     [SerializeField] Transform gunParent;
     public bool CalculateArc = true;
     ProjectileTower tower;
+
+    [Tooltip("How far away an enemy needs to be before you lead shots")]
+    public float LeadThresholdDistance = 50f;
+    public float LeadScalar = 1f;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +23,7 @@ public class TowerAimer : MonoBehaviour
         _AimTower();
     }
     Vector3 _lastTarget;
+    public float DebugDistance;
     bool BASIC = false;
     void _AimTower()
     {
@@ -32,7 +37,14 @@ public class TowerAimer : MonoBehaviour
             transform.LookAt(target);
             return;
         }
-
+        //If the target is far enough that we need to lead it, lead our shots
+        var enemy = tower.GetClosestEnemy;
+        DebugDistance = pos.FlatDistance(target);
+        if (pos.FlatDistance(target) >= LeadThresholdDistance && enemy != null)
+        {
+            Vector3 lead = enemy.RB.velocity.normalized * LeadScalar;
+            target += lead;
+        }
 
         _lastTarget = target;
         Vector3 flat = target; flat.y = pos.y;

@@ -121,17 +121,25 @@ public class BubbleMenuController : MonoBehaviour
         lockTransform.gameObject.SetActive(active);
         XRSimpleInteractable simple = option.GetComponent<XRSimpleInteractable>();
         if (simple == null) return;
-        simple.hoverEntered.RemoveAllListeners();
-        simple.hoverExited.RemoveAllListeners();
+
+        simple.firstHoverEntered.RemoveListener(_OnLockHovered);
+        simple.lastHoverExited.RemoveListener(_OnLockEndHover);
+
         if (unlocked) return;
-        simple.hoverEntered.AddListener(_OnLockHovered);
-        simple.hoverExited.AddListener(_OnLockEndHover);
+        //simple.firstHoverEntered.RemoveAllListeners();
+        //simple.lastHoverExited.RemoveAllListeners();
+
+        simple.firstHoverEntered.AddListener(_OnLockHovered);
+        simple.lastHoverExited.AddListener(_OnLockEndHover);
     }
     static void _OnLockHovered(HoverEnterEventArgs a)
     {
         var t = a.interactableObject.transform.Find("lockText");
         if (t == null) return;
         t.gameObject.SetActive(true);
+        t = a.interactableObject.transform.Find("DescriptionText");
+        if (t == null) return;
+        t.GetComponent<TMP_Text>().text = "";
     }
     static void _OnLockEndHover(HoverExitEventArgs a)
     {
@@ -145,11 +153,14 @@ public class BubbleMenuController : MonoBehaviour
         if(_currentTower == null) return;
         
         var towerUpgrades = _currentTower.dto.GetUpgrades();
+        TowerUpgrade upgrade;
         if(towerUpgrades.InRange(0))
         {
             var unlocked = towerUpgrades[0].upgrade.IsUnlocked;
+            
+            upgrade = towerUpgrades[0];
+            upgradeOption1.Initialize(() => Upgrade(upgrade), upgrade.upgrade.name, upgrade.upgrade.cost, upgrade.upgrade.description);
             _Lock(upgradeOption1, unlocked);
-            upgradeOption1.Initialize(() => Upgrade(towerUpgrades[0]), towerUpgrades[0].upgrade.name, towerUpgrades[0].upgrade.cost);
         }       
         else
         {
@@ -159,8 +170,10 @@ public class BubbleMenuController : MonoBehaviour
         if(towerUpgrades.InRange(1))
         {
             var unlocked = towerUpgrades[1].upgrade.IsUnlocked;
+            
+            upgrade = towerUpgrades[1];
+            upgradeOption2.Initialize(() => Upgrade(upgrade), upgrade.upgrade.name, upgrade.upgrade.cost, upgrade.upgrade.description);
             _Lock(upgradeOption2, unlocked);
-            upgradeOption2.Initialize(() => Upgrade(towerUpgrades[1]), towerUpgrades[1].upgrade.name, towerUpgrades[1].upgrade.cost);
         }   
         else
         {
@@ -211,7 +224,7 @@ public class BubbleMenuController : MonoBehaviour
 
     private void TowerOnTowerDestroy(Tower obj)
     {
-        if(_currentTower == obj)
+        if(_currentTower == obj && _instance)
             _Hide();
     }
 

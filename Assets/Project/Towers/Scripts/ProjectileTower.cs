@@ -93,6 +93,8 @@ public class ProjectileTower : PlayerControllableTower
         Fire();
         _isFiring = false;
     }
+    public Enemy GetClosestEnemy =>
+        (targetingSystem.HasTarget()) ? targetingSystem.GetClosestTarget(transform.position) : null;
     public Transform GetCurrentTarget => 
         (targetingSystem.HasTarget()) ? targetingSystem.GetClosestTarget(transform.position).transform : null;
     public float GetHeightOffset => enemyHeightOffset;
