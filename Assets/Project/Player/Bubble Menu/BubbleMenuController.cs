@@ -161,6 +161,7 @@ public class BubbleMenuController : MonoBehaviour
             upgrade = towerUpgrades[0];
             upgradeOption1.Initialize(() => Upgrade(upgrade), upgrade.upgrade.name, upgrade.upgrade.cost, upgrade.upgrade.description);
             _Lock(upgradeOption1, unlocked);
+            upgradeOption1._upgradeDTO = upgrade.upgrade;
         }       
         else
         {
@@ -170,10 +171,11 @@ public class BubbleMenuController : MonoBehaviour
         if(towerUpgrades.InRange(1))
         {
             var unlocked = towerUpgrades[1].upgrade.IsUnlocked;
-            
+
             upgrade = towerUpgrades[1];
             upgradeOption2.Initialize(() => Upgrade(upgrade), upgrade.upgrade.name, upgrade.upgrade.cost, upgrade.upgrade.description);
             _Lock(upgradeOption2, unlocked);
+            upgradeOption2._upgradeDTO = upgrade.upgrade;
         }   
         else
         {
@@ -232,7 +234,12 @@ public class BubbleMenuController : MonoBehaviour
 
 
     #region Actions
-
+    public static void Upgrade(Tower_SO dto)
+    {
+        if (_instance == null) return;
+        TowerUpgrade upgrade = new TowerUpgrade(dto);
+        _instance.Upgrade(upgrade);
+    }
     public void Upgrade(TowerUpgrade towerUpgrade)
     {
         if (towerUpgrade.upgrade.IsUnlocked == false) return;
@@ -240,11 +247,12 @@ public class BubbleMenuController : MonoBehaviour
         {
             return;
         }
-        
+        print($"Upgraded {_currentTower.dto.name} to {towerUpgrade.upgrade.name}");
         CurrencyManager.TakeFromPlayer(towerUpgrade.upgrade.cost);
         
         TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);
         Hide();
+        
     }
     
     private void SellTower()

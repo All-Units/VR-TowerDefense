@@ -46,7 +46,7 @@ public class BubbleMenuOption : MonoBehaviour
             descriptionText.text = description;
             descriptionText.gameObject.SetActive(false);
         }
-        
+        //print($"Initialized OPTION: {gameObject.name} to : {displayText}");
         _callback = ctx;
     }
 
@@ -54,6 +54,8 @@ public class BubbleMenuOption : MonoBehaviour
     {
         title.color = cash < cost ? cantAffordTextColor : Color.white;
     }
+
+    [HideInInspector] public Tower_SO _upgradeDTO = null;
     
     public void Initialize(Action ctx, string displayText, int cost, string description = "")
     {
@@ -68,7 +70,14 @@ public class BubbleMenuOption : MonoBehaviour
 
     public void PerformOption()
     {
+        if (_upgradeDTO != null)
+        {
+            Debug.Log($"Performing upgrade: {_upgradeDTO.name}", gameObject);
+            _callback = () => BubbleMenuController.Upgrade(_upgradeDTO);
+        }
         _callback?.Invoke();
+        _upgradeDTO = null;
+        
     }
 
     private readonly Color _grey = new Color(.4f, .4f, .4f, 0);

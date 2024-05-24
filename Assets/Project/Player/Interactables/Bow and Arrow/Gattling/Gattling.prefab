@@ -11560,8 +11560,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8f76b04b8b44428d8ae723e9760da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxVelocity: 20
   shotsToOverheat: 100
-  cooldownRate: 0.25
+  cooldownRate: 2
   OnOverHeat:
     m_PersistentCalls:
       m_Calls:
@@ -11667,7 +11668,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  CurrentHeat: 0
+  CurrentHeatDebug: 0
+  _LastVelocity: 0
 --- !u!114 &5244264647578796161
 MonoBehaviour:
   m_ObjectHideFlags: 0

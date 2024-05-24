@@ -96,7 +96,8 @@ public class Arrow : Projectile, IPausable
     private void Stop()
     {
         _inAir = false;
-        particles.gameObject.SetActive(false);
+        if (particles)
+            particles.gameObject.SetActive(false);
         SetPhysics(false);
     }
 

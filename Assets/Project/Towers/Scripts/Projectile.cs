@@ -23,24 +23,14 @@ public class Projectile : DamageDealer, IPausable
 
     protected Vector3 startPos;
     protected float timeCreated = 0f;
+    [Tooltip("Checks if there is an enemy within this far of the impact point")]
+    [SerializeField] float _graceRadius = 0.1f;
 
     void Awake()
     {
         OnInitPausable();
         timeCreated = Time.time;
         
-        if (rb == null) rb = GetComponent<Rigidbody>();
-        if (rb == null) return;
-        var layers = rb.excludeLayers;
-        layers |= (1 << LayerMask.NameToLayer("Ragdoll"));
-        rb.excludeLayers = layers;
-        foreach (var col in GetComponents<Collider>())
-        {
-            layers = col.excludeLayers;
-            layers |= (1 << LayerMask.NameToLayer("Ragdoll"));
-            col.excludeLayers = layers;
-
-        }
     }
     
     public void OnInitPausable()
@@ -59,9 +49,7 @@ public class Projectile : DamageDealer, IPausable
     {
         transform.SetParent(null);
         rb = GetComponent<Rigidbody>();
-        var layers = rb.excludeLayers;
-        layers |= (1 << LayerMask.NameToLayer("Ragdoll"));
-        rb.excludeLayers = layers;
+        
         rb.useGravity = true;
         rb.isKinematic = false;
         rb.AddForce(transform.forward * speed, ForceMode.VelocityChange);
@@ -75,26 +63,67 @@ public class Projectile : DamageDealer, IPausable
     }
 
     int _destroyedFrame = -1;
+
+    int lastHitFrame = 0;
     private void OnCollisionEnter(Collision other)
     {
+        Debug.Log($"Projectile hit: {other.gameObject.name}. FC: {Time.frameCount}", other.gameObject);
+        if (lastHitFrame != Time.frameCount)
+        {
+            GameObject debug = new GameObject($"Hit FC {Time.frameCount}");
+            debug.transform.position = transform.position;
+            debug.transform.rotation = transform.rotation;
+            Destroy(debug, 1f);
+            lastHitFrame = Time.frameCount;
+        }
+        
+        
 
         //Early out if we're destroying, but not if destroying this frame
-        if (isDestroying && Time.frameCount - _destroyedFrame > 3) return;
+        if (isDestroying && Time.frameCount != _destroyedFrame) return;
 
         if (other.collider.isTrigger) return;
-        Tower tower = other.gameObject.GetComponentInParent<Tower>();
-        XRGrabInteractable grab = other.gameObject.GetComponentInParent<XRGrabInteractable>();
+        Enemy enemy = other.gameObject.GetComponentInParent<Enemy>();
         
-        //If we were created too recently
-        if ((tower != null || grab != null) && Time.time - timeCreated < 0.2f)
+        //If we were created too recently (exeption for enemies)
+        if (Time.time - timeCreated < 0.05f && enemy == null)
         {
+            //(tower != null || grab != null) && 
             return;
         }
         Projectile proj = other.collider.GetComponentInChildren<Projectile>();
         if (proj == null) proj = other.collider.GetComponentInParent<Projectile>();
         //Don't do anything if we hit another projectile
         if (proj != null) return;
+
+        //sphere cast out by the grace radius
+        Vector3 impactPos = other.GetContact(0).point;
+        LayerMask mask = LayerMask.GetMask("Enemy");
+        var hits = Physics.OverlapSphere(impactPos, _graceRadius, mask);
+        Collider closestEnemy = null;
+        float closestDistance = float.MaxValue;
+        foreach (var hit in hits) {
+            //Don't do this logic if we already hit an enemy
+            if (enemy != null) break;
+            Enemy e = hit.GetComponent<Enemy>();
+            float distance = Vector3.Distance(impactPos, hit.ClosestPoint(impactPos));
+            //If there is an enemy
+            if (e && distance < closestDistance)
+            {
+                closestEnemy = hit;
+                closestDistance = distance;
+            }
+        }
+        //If there was an enemy closer than the thing we hit, pretend we hit that instead
+        if (closestEnemy != null)
+        {
+            print($"ACTUALLY hit something closer bc grace period");
+            OnCollision(closestEnemy);
+            return;
+        }
+
         OnCollision(other.collider);
+        
     }
 
     private bool _isFireball => gameObject.name.ToLower().Contains("fireball");
@@ -145,7 +174,7 @@ public class Projectile : DamageDealer, IPausable
         OnHit?.Invoke();
         isDestroying = true;
         _destroyedFrame = Time.frameCount;
-        Destroy(gameObject, 0.01f);
+        Destroy(gameObject);
     }
 
     private void HitEnemy(HealthController healthController)

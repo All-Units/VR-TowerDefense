@@ -423,7 +423,7 @@ public class EnemyManager : MonoBehaviour
 
         //If we are the tutorial level but we haven't unlocked skipping level, don't do it accidentally
         if (IS_TUTORIAL && SKIP_TUTORIAL_IS_COMPLETE == false) return;
-        
+        XRPauseMenu.ForceResume();
         isSkipPressed = true;
         _currentSkipRoutine = _SkipRound();
         StartCoroutine(_currentSkipRoutine);
@@ -458,6 +458,7 @@ public class EnemyManager : MonoBehaviour
         panel.DestroyAfter(0.1f);
         if (t >= _timeToSkipRound)
         {
+            XRPauseMenu.ForceResume();
             yield return new WaitForSeconds(0.15f);
             SkipToNextRound = true; 
         }

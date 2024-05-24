@@ -131,4 +131,9 @@ public struct TowerUpgrade
 {
     public Tower_SO upgrade;
     public int cost;
+    public TowerUpgrade(Tower_SO dto)
+    {
+        this.upgrade = dto;
+        this.cost = dto.cost;
+    }
 }

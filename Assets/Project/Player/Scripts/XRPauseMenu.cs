@@ -19,6 +19,7 @@ public class XRPauseMenu : MonoBehaviour
     
     [SerializeField] Transform bubbleParent;
     [SerializeField] InputActionReference togglePauseButton;
+    [SerializeField] InputActionReference forceResume;
     InputAction togglePauseAction => Utilities.GetInputAction(togglePauseButton);
 
     public static bool IsPaused;
@@ -68,6 +69,8 @@ public class XRPauseMenu : MonoBehaviour
         }
 
         togglePauseAction.started += TogglePauseAction_started;
+        if (forceResume != null)
+            forceResume.action.started += _ForceResume;
         InitBubbles();
         _ResumeFlag();
         OnPause += _PauseFlag;
@@ -83,6 +86,19 @@ public class XRPauseMenu : MonoBehaviour
         OnResume -= _TurnOffSettings;
 
         togglePauseAction.started -= TogglePauseAction_started;
+    }
+    public static void ForceResume()
+    {
+        instance._ForceResume(new InputAction.CallbackContext());
+    }
+    void _ForceResume(InputAction.CallbackContext obj)
+    {
+        //Do nothing if we aren't paused
+        if (isPaused == false) return;
+
+        //Otherwise pretend we pressed the pause / resume button
+        TogglePauseAction_started(obj);
+
     }
 
 
@@ -132,16 +148,17 @@ public class XRPauseMenu : MonoBehaviour
     }
     void MainMenu(ActivateEventArgs args)
     {
-        StartCoroutine(_QuitRoutine());
+        StartCoroutine(_MainMenuRoutine());
     }
-    IEnumerator _QuitRoutine()
+    IEnumerator _MainMenuRoutine()
     {
         FadeScreen.instance.FadeOut();
 
         yield return new WaitForSeconds(FadeScreen.instance.fadeDuration);
         IsPaused = false;
         isPaused = false;
-        SceneManager.LoadSceneAsync("MainMenu");
+        SceneLoaderAsync.LoadScene("MainMenu");
+        //SceneManager.LoadSceneAsync("MainMenu");
     }
     public void Quit(ActivateEventArgs args)
     {

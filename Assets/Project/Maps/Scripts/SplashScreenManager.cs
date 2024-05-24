@@ -29,11 +29,13 @@ public class SplashScreenManager : MonoBehaviour
             DisplayTime = (float)pd.duration;
         }
         yield return new WaitForSeconds(DisplayTime);
-        var loader = SceneManager.LoadSceneAsync(_GetScene());
-        float t = Time.time;
-        while (loader.isDone == false)
+
+        SceneLoaderAsync.LoadScene(_GetScene());
+        //var loader = SceneManager.LoadSceneAsync(_GetScene());
+        //float t = Time.time;
+        //while (loader.isDone == false)
         {
-            yield return null;
+            //yield return null;
         }
     }
 

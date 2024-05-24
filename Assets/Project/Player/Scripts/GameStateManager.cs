@@ -138,7 +138,7 @@ public class GameStateManager : MonoBehaviour
     private IEnumerator _DelayReturnToMenu(float t)
     {
         yield return new WaitForSeconds(t);
-        SceneManager.LoadSceneAsync("MainMenu");
+        SceneLoaderAsync.LoadScene("MainMenu");
     }
     /*public void _StartEndgame(GameObject panel)
     {
