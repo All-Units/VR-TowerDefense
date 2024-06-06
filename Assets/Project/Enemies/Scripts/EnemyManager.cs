@@ -239,7 +239,6 @@ public class EnemyManager : MonoBehaviour
             yield return null;
         }
 
-        print($"Finished wave {CurrentWave} in {Time.time - startTime}s. Enemies left: {Enemies.Count}");
         _currentWaveComplete = true;
         OnRoundEnded.Invoke();
         yield return null;

@@ -523,6 +523,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
     }
     protected virtual IEnemyTargetable _GetClosestTarget()
     {
+        _CullTargets();
         var closest = _targets.OrderBy(t => Utilities.FlatDistance(t.GetHealthController().transform.position, pos)).FirstOrDefault();
         return closest;
     }
@@ -570,8 +571,9 @@ public abstract class Enemy : MonoBehaviour, IPausable
         {
             var t = copy[i];
             try { var h = t.GetHealthController(); var x = h.transform.position; }
-            catch (NullReferenceException e) { continue; }
             catch (MissingReferenceException e) { continue; }
+            catch (NullReferenceException e) { continue; }
+            
             
             valid.Add(t);
         }

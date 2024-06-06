@@ -1,13 +1,16 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class ArrowStormArrowController : MonoBehaviour
 {
     [SerializeField] private ArrowstormPlacableController prefab;
     [SerializeField] private ParticleSystem chargedParticles;
-    [SerializeField] private float spawnTime = .33f;
+    [SerializeField] private float _timeToCharge = 3f;
     private Coroutine _spawnCoroutine;
     private bool isCharged;
+
+    [SerializeField] List<_StormChargePhase> _StormChargePhases = new List<_StormChargePhase>();
     
     
     public void OnDrawnBack()
@@ -25,15 +28,21 @@ public class ArrowStormArrowController : MonoBehaviour
     
     private IEnumerator SpawnArrow()
     {
-        var t = spawnTime;
-        while (t > 0)
+        
+        
+        var main = chargedParticles.main;
+        var emission = chargedParticles.emission;
+        foreach (var phase in _StormChargePhases)
         {
-            yield return null;
-            t -= Time.deltaTime;
+            chargedParticles.Clear();
+            main.startSize = phase.Size;
+            emission.rateOverTime = phase.SpawnRate;
+            chargedParticles.Play();
+            yield return new WaitForSeconds(main.duration);
         }
 
         isCharged = true;
-        chargedParticles.Play();
+        
             
         _spawnCoroutine = null;
     }
@@ -46,4 +55,12 @@ public class ArrowStormArrowController : MonoBehaviour
         
         storm.transform.SetParent(null);
     }
+
+    
+}
+[System.Serializable]
+public struct _StormChargePhase
+{
+    public float Size;
+    public float SpawnRate;
 }

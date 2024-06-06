@@ -136,7 +136,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  _graceRadius: 0.1
+  _graceRadius: 3
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -183,8 +183,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2.02
+  m_Radius: 1
+  m_Height: 4
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: -0.19}
 --- !u!1 &4275468087354583269

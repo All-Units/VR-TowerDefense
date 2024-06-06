@@ -99,6 +99,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
+  _graceRadius: 0.1
   splashRadius: 10
   hitParticles: {fileID: 9017217224775942394, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
@@ -299,6 +300,7 @@ MonoBehaviour:
   targeter: {fileID: 0}
   target: {fileID: 0}
   index: 0
+  WasFiredByPlayer: 1
 --- !u!114 &2864799162137029931
 MonoBehaviour:
   m_ObjectHideFlags: 0

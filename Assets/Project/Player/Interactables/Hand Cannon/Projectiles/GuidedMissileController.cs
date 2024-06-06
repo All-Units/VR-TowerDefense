@@ -15,13 +15,15 @@ public class GuidedMissileController : MonoBehaviour
     public Enemy target;
     public int index = 0;
     public static Action<Enemy> OnMissileFiredAt;
+    public bool WasFiredByPlayer = false;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         if(targeter)
             target = targeter.GetEnemy(index);
         Enemy.OnDeath += OnDeath;
-        OnMissileFiredAt?.Invoke(target);
+        if (WasFiredByPlayer)
+            OnMissileFiredAt?.Invoke(target);
         StartCoroutine(ExplodeAfterSeconds(15f));
     }
 

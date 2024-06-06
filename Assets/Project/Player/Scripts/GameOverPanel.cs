@@ -75,8 +75,11 @@ public class GameOverPanel : MonoBehaviour
 
         foreach (var stat in stats)
         {
+            
             var count = stat.total - stat.getSerializeValue;
-            if(count <= 0) continue;
+
+            print($"Trying to display: {stat.displayName} {stat.statName} : {count}");
+            if (count <= 0) continue;
             
             var prefab = Instantiate(statTextPrefab, contentParent);
             prefab.SetActive(true);

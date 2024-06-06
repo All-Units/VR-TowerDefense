@@ -33,6 +33,7 @@ public class PullInteraction : XRBaseInteractable
 
     void _DestroyArrow()
     {
+        if (notch == null || gameObject == null) return;
         if (notch.transform.childCount != 0)
             Destroy(notch.transform.GetChild(0).gameObject);
     }

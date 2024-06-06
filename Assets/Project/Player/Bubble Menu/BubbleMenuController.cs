@@ -247,7 +247,6 @@ public class BubbleMenuController : MonoBehaviour
         {
             return;
         }
-        print($"Upgraded {_currentTower.dto.name} to {towerUpgrade.upgrade.name}");
         CurrencyManager.TakeFromPlayer(towerUpgrade.upgrade.cost);
         
         TowerSpawnManager.UpgradeTower(_currentTower, towerUpgrade.upgrade);

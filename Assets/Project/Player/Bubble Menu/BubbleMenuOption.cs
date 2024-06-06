@@ -72,7 +72,6 @@ public class BubbleMenuOption : MonoBehaviour
     {
         if (_upgradeDTO != null)
         {
-            Debug.Log($"Performing upgrade: {_upgradeDTO.name}", gameObject);
             _callback = () => BubbleMenuController.Upgrade(_upgradeDTO);
         }
         _callback?.Invoke();

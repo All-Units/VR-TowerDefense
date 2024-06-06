@@ -29,10 +29,18 @@ public class Arrow : Projectile, IPausable
         GetComponent<XRGrabInteractable>().selectExited.AddListener(_OnDrop);
     }
     public bool IsNotched = false;
+    public static bool IsAnyNotched = false;
     void _OnDrop(SelectExitEventArgs a)
     {
         if (IsNotched == false)
+        {
+            IsAnyNotched = false;
             Destroy(gameObject);
+            return;
+        }
+            
+        IsAnyNotched = true;
+        print($"ANY ARROW NOTCHED");
     }
     public void OnInitPausable()
     {
@@ -59,8 +67,13 @@ public class Arrow : Projectile, IPausable
         OnRelease?.Invoke();
         Fire(obj);
         playerWeapon = towerPlayerWeapon;
+        StartCoroutine(_RemoveAnyNotchedAfterDelay());
     }
-
+    IEnumerator _RemoveAnyNotchedAfterDelay()
+    {
+        yield return new WaitForSeconds(0.1f);
+        IsAnyNotched = false;
+    }
     public void Fire()
     {
         Fire(1);

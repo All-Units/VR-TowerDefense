@@ -167,6 +167,8 @@ public class CombatTutorial : MonoBehaviour
     int pulls = 0;
     void _OnPullReleased(float pull, TowerPlayerWeapon weapon = null)
     {
+        //If we're only half pulling or no arrow is notched, don't count it
+        if (pull < 0.5f || Arrow.IsAnyNotched == false) return;
         pulls++;
         if (pulls >= ArcherShotsRequired)
         { 

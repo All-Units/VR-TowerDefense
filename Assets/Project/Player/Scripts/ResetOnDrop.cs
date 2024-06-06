@@ -10,7 +10,7 @@ public class ResetOnDrop : MonoBehaviour
 {
     [SerializeField] private XRBaseInteractable table;
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private float resetTime = 2f;
+    const float resetTime = 1f;
     [SerializeField] private Vector3 offset = new Vector3(0f, 4f, 0.5f);
 
     public TowerTakeoverObject playerItem;

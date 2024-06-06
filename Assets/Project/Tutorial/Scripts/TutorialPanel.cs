@@ -35,6 +35,8 @@ public class TutorialPanel : MonoBehaviour
         if (WaitUntilAction == _WaitUntilAction.Teleport
             && TutorialManager.tp != null)
         {
+            displayText.text = $"0 / {PressThreshold}";
+            displayText.color = inactiveColor;
             TutorialManager.tp.beginLocomotion += _OnTeleport;
         }
 
@@ -81,6 +83,13 @@ public class TutorialPanel : MonoBehaviour
             CombatTutorial.DummyParent.SetActive(true);
             GuidedMissileController.OnMissileFiredAt += _OnMissileFiredAt;
         }
+        if (WaitUntilAction == _WaitUntilAction.PressB)
+        {
+            capturedInput.action.started += _OnPressB;
+            _isListeningForB = true;
+        }
+        if (WaitUntilAction == _WaitUntilAction.Pause)
+            capturedInput.action.started += _OnPausePressed;
         
     }
 
@@ -118,7 +127,21 @@ public class TutorialPanel : MonoBehaviour
             CombatTutorial.DummyParent.SetActive(false);
             GuidedMissileController.OnMissileFiredAt -= _OnMissileFiredAt;
         }
+        if (WaitUntilAction == _WaitUntilAction.PressB && _isListeningForB)
+        {
+            capturedInput.action.started -= _OnPressB;
+        }
+        if (WaitUntilAction == _WaitUntilAction.Pause)
+            capturedInput.action.started -= _OnPausePressed;
 
+    }
+    int _pausePresses = 0;
+    void _OnPausePressed(InputAction.CallbackContext obj)
+    {
+        _pausePresses++;
+        if (_pausePresses >= PressThreshold) return;
+        displayText.color = activeColor;
+        StartCoroutine(_SkipAfter());
     }
     int presses = 0;
     private void Input_performed(InputAction.CallbackContext obj)
@@ -160,7 +183,11 @@ public class TutorialPanel : MonoBehaviour
         {
             timeSpentFreeMoving += Time.deltaTime;
             yield return null;
-
+            float percent = timeSpentFreeMoving / moveTimeThreshold;
+            int i = Mathf.FloorToInt(percent * 10f);
+            string dots = string.Concat(Enumerable.Repeat(".", 10 - i));
+            string xs = string.Concat(Enumerable.Repeat("X", i));
+            displayText.text = $"[{xs}{dots}]";
             if (timeSpentFreeMoving >= moveTimeThreshold)
             {
                 TutorialManager.SetSkip(true);
@@ -181,10 +208,20 @@ public class TutorialPanel : MonoBehaviour
     }
 
 
+    int _teleports = 0;
     void _OnTeleport(LocomotionSystem system)
     {
-        TutorialManager.SetSkip(true);
+        _teleports++;
+        displayText.color = inactiveColor;
+        displayText.text = $"{_teleports} / {PressThreshold}";
         TutorialManager.RecenterGUI();
+        if (_teleports == PressThreshold)
+        {
+            TutorialManager.SetSkip(true);
+
+            displayText.color = activeColor;
+        }
+        
     }
 
     IEnumerator _currentLockRemover = null;
@@ -236,7 +273,6 @@ public class TutorialPanel : MonoBehaviour
 
     void _OnTowerTakeover(PlayerControllableTower tower)
     {
-        print($"Player took control of {tower.dto.name}");
         _Skip();
         PlayerStateController.instance.OnPlayerTakeoverTower -= _OnTowerTakeover;
     }
@@ -263,6 +299,15 @@ public class TutorialPanel : MonoBehaviour
             StartCoroutine(_SkipAfter(3f));
         }
     }
+    bool _isListeningForB = false;
+    void _OnPressB(InputAction.CallbackContext context)
+    {
+        displayText.color = activeColor;
+        _isListeningForB = false;
+        capturedInput.action.started -= _OnPressB;
+        StartCoroutine(_SkipAfter());
+    }
+
     void _OnPlayerChangeState(PlayerState oldState, PlayerState newState)
     {
         if (newState == PlayerState.IDLE)
@@ -291,5 +336,8 @@ public enum _WaitUntilAction
     LeaveTower,
     SkipRound,
     GuidedMissile,
+    PressB,
+    Pause,
+
 
 }

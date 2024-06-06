@@ -23,10 +23,10 @@ public class BlackKnightBehavior : Enemy
         if (_IsPowerAttacking)
             dmg *= enemyStats.PowerAttackScalar;
         int damage = (int)dmg;
-        string s = $"BK did {damage} dmg to {currentTarget.GetHealthController().gameObject.name}";
+        //string s = $"BK did {damage} dmg to {currentTarget.GetHealthController().gameObject.name}";
         
         base.Impact();
-        Debug.Log(s, currentTarget.GetHealthController());
+        //Debug.Log(s, currentTarget.GetHealthController());
 
         
     }
@@ -57,14 +57,12 @@ public class BlackKnightBehavior : Enemy
         _playHit = (currentTarget == null || pos.FlatDistance(_target) >= enemyStats.attackThreshold * 2f);
         if (_playHit)
             base.OnEnemyTakeDamage(currentHealth);
-        //_hitParticles.Play();
     }
     public GameObject CurrentTarget;
     protected override IEnemyTargetable _GetNextTarget()
     {
         var closest = base._GetNextTarget();
         if (closest != null) CurrentTarget = closest.GetHealthController().gameObject;
-        print($"Black knight closest: {closest.GetHealthController().gameObject.name}");
         return closest;
     }
 }

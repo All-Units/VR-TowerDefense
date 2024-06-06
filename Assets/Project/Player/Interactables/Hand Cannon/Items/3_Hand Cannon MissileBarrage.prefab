@@ -4193,7 +4193,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   table: {fileID: 851444326751890993}
   rb: {fileID: 5345556446942606926}
-  resetTime: 2
   offset: {x: 0, y: 3, z: 0.5}
   playerItem: {fileID: 0}
   CurrentPosition: {x: 0, y: 0, z: 0}
@@ -4258,6 +4257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8f76b04b8b44428d8ae723e9760da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxVelocity: 20
   shotsToOverheat: 1
   cooldownRate: 2
   OnOverHeat:
@@ -4293,7 +4293,8 @@ MonoBehaviour:
   OnHeatChange:
     m_PersistentCalls:
       m_Calls: []
-  CurrentHeat: 0
+  CurrentHeatDebug: 0
+  _LastVelocity: 0
 --- !u!114 &3047246755993633792
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4312,7 +4313,7 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 8
-  targetVFXPrefab: {fileID: -3041128593079966331, guid: ff2833b98f7b4ff46a413017fa2b8dc0,
+  targetVFXPrefab: {fileID: 5080454012104320752, guid: ff2833b98f7b4ff46a413017fa2b8dc0,
     type: 3}
   lineRenderer: {fileID: 1715843928852474459}
   radius: 0.5

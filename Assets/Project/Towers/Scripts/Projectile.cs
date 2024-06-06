@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Unity.Loading;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
@@ -67,18 +68,6 @@ public class Projectile : DamageDealer, IPausable
     int lastHitFrame = 0;
     private void OnCollisionEnter(Collision other)
     {
-        Debug.Log($"Projectile hit: {other.gameObject.name}. FC: {Time.frameCount}", other.gameObject);
-        if (lastHitFrame != Time.frameCount)
-        {
-            GameObject debug = new GameObject($"Hit FC {Time.frameCount}");
-            debug.transform.position = transform.position;
-            debug.transform.rotation = transform.rotation;
-            Destroy(debug, 1f);
-            lastHitFrame = Time.frameCount;
-        }
-        
-        
-
         //Early out if we're destroying, but not if destroying this frame
         if (isDestroying && Time.frameCount != _destroyedFrame) return;
 
@@ -91,6 +80,8 @@ public class Projectile : DamageDealer, IPausable
             //(tower != null || grab != null) && 
             return;
         }
+        //Debug.Log($"Projectile hit: {other.gameObject.name}. FC: {Time.frameCount}", other.gameObject);
+        
         Projectile proj = other.collider.GetComponentInChildren<Projectile>();
         if (proj == null) proj = other.collider.GetComponentInParent<Projectile>();
         //Don't do anything if we hit another projectile
@@ -99,27 +90,21 @@ public class Projectile : DamageDealer, IPausable
         //sphere cast out by the grace radius
         Vector3 impactPos = other.GetContact(0).point;
         LayerMask mask = LayerMask.GetMask("Enemy");
-        var hits = Physics.OverlapSphere(impactPos, _graceRadius, mask);
-        Collider closestEnemy = null;
-        float closestDistance = float.MaxValue;
-        foreach (var hit in hits) {
-            //Don't do this logic if we already hit an enemy
-            if (enemy != null) break;
-            Enemy e = hit.GetComponent<Enemy>();
-            float distance = Vector3.Distance(impactPos, hit.ClosestPoint(impactPos));
-            //If there is an enemy
-            if (e && distance < closestDistance)
-            {
-                closestEnemy = hit;
-                closestDistance = distance;
-            }
-        }
-        //If there was an enemy closer than the thing we hit, pretend we hit that instead
-        if (closestEnemy != null)
+        
+        Vector3 pos = transform.position;
+        Vector3 dir = transform.forward;
+        RaycastHit hit;
+
+        //There was an issue with hitting phantom ground, this checks if there is an enemy close in front
+        if (Physics.Raycast(pos, dir, out hit, 5f, mask))
         {
-            print($"ACTUALLY hit something closer bc grace period");
-            OnCollision(closestEnemy);
-            return;
+            enemy = hit.collider.gameObject.GetComponentInParent<Enemy>();
+            if (enemy != null)
+            {
+                OnCollision(hit.collider);
+                return;
+            }
+
         }
 
         OnCollision(other.collider);
@@ -209,6 +194,8 @@ public class Projectile : DamageDealer, IPausable
         lastFrameResumed = Time.frameCount;
     }
 }
+
+
 
 public class DamageDealer : MonoBehaviour
 {
