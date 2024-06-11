@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Filtering;
 
 [ExecuteInEditMode]
-public class Liquid : MonoBehaviour
+public class Liquid : MonoBehaviour, IXRHoverFilter, IXRSelectFilter
 {
     public enum UpdateMode { Normal, UnscaledTime }
     public UpdateMode updateMode;
@@ -12,6 +15,7 @@ public class Liquid : MonoBehaviour
     float MaxWobble = 0.03f;
     [SerializeField]
     float WobbleSpeedMove = 1f;
+    [SerializeField] float WobbleCap = 20f;
     [SerializeField]
     float fillAmount = 0.5f;
     [SerializeField]
@@ -38,6 +42,8 @@ public class Liquid : MonoBehaviour
     float time = 0.5f;
     Vector3 comp;
 
+    
+
     // Use this for initialization
     void Start()
     {
@@ -60,6 +66,7 @@ public class Liquid : MonoBehaviour
             rend = GetComponent<Renderer>();
         }
     }
+    [ExecuteAlways]
     void Update()
     {
         float deltaTime = 0;
@@ -105,18 +112,31 @@ public class Liquid : MonoBehaviour
             wobbleAmountToAddZ += Mathf.Clamp((velocity.z + (velocity.y * 0.2f) + angularVelocity.x + angularVelocity.y) * MaxWobble, -MaxWobble, MaxWobble);
         }
 
+        //If either wobble is larger than the cap, clamp
+        if (wobbleAmountX > WobbleCap) wobbleAmountX = WobbleCap;
+        if (wobbleAmountZ > WobbleCap) wobbleAmountZ = WobbleCap;
+
+        //Clamp to negative wobble cap
+        if (wobbleAmountX < (WobbleCap * -1f)) wobbleAmountX = WobbleCap;
+        if (wobbleAmountZ < (WobbleCap * -1f)) wobbleAmountZ = WobbleCap;
+
+
         // send it to the shader
         rend.sharedMaterial.SetFloat("_WobbleX", wobbleAmountX);
         rend.sharedMaterial.SetFloat("_WobbleZ", wobbleAmountZ);
-
+        //print($"Setting wobbleX to {wobbleAmountX}. WobbleZ: {wobbleAmountZ}");
         // set fill amount
         UpdatePos(deltaTime);
 
         // keep last position
         lastPos = transform.position;
         lastRot = transform.rotation;
+
+        
     }
 
+    float _direction = -1f;
+    
     void UpdatePos(float deltaTime)
     {
 
@@ -190,5 +210,99 @@ public class Liquid : MonoBehaviour
             }
         }
         return lowestVert.y;
+    }
+    [SerializeField] ParticleSystem dropletParticles;
+
+    [SerializeField] float _emptyPotionThreshold = 0.8f;
+    [SerializeField] float _drainRate = 2f;
+    bool _isTilted = false;
+    public void OnBottleStartTilt()
+    {
+        if (gameObject.activeInHierarchy == false) return;
+        _isTilted = true;
+        //Stop / Do not pour if corked or out of potion
+        if (_isCorked || fillAmount >= _emptyPotionThreshold)
+        {
+            dropletParticles.Stop();
+            return;
+        }
+        dropletParticles.Play();
+        _currentDrainer = _DrainBottleRoutine();
+        StartCoroutine(_currentDrainer);
+    }
+    IEnumerator _currentDrainer = null;
+    IEnumerator _DrainBottleRoutine()
+    {
+        while (fillAmount <= _emptyPotionThreshold)
+        {
+            yield return null;
+            fillAmount += (Time.deltaTime * _drainRate);
+        }
+        if (fillAmount >= _emptyPotionThreshold)
+        {
+            dropletParticles.Stop();
+            fillAmount = _emptyPotionThreshold;
+            _currentDrainer = null;
+            gameObject.SetActive(false);
+            yield break;
+        }
+        _currentDrainer = null;
+            
+    }
+    public void OnBottleEndTilt()
+    {
+        if (gameObject.activeInHierarchy == false) return;
+        _isTilted = false;
+        _StopDrain();
+
+    }
+    void _StopDrain()
+    {
+        dropletParticles.Stop();
+
+        if (_currentDrainer != null)
+        {
+            StopCoroutine(_currentDrainer);
+            _currentDrainer = null;
+        }
+    }
+    bool _isCorked = true;
+
+
+    public bool canProcess => true;
+
+    public void OnCorkPutIn()
+    {
+        if (gameObject.activeInHierarchy == false) return;
+        _isCorked = true;
+        _StopDrain();   
+        dropletParticles.Clear();
+    }
+    public void OnCorkRemoved()
+    {
+        if (gameObject.activeInHierarchy == false) return;
+        _isCorked = false;
+        if (_isTilted)
+            OnBottleStartTilt();
+    }
+
+    
+
+    public bool Process(IXRSelectInteractor interactor, IXRSelectInteractable interactable)
+    {
+        var socket = interactor.transform.GetComponent<XRSocketInteractor>();
+        //If we have a socket, and that socket's starting object is the one trying to hover, return true
+        if (socket && socket.startingSelectedInteractable.transform == interactable.transform)
+            return true;
+        return false;
+    }
+
+    public bool Process(IXRHoverInteractor interactor, IXRHoverInteractable interactable)
+    {
+        var socket = interactor.transform.GetComponent<XRSocketInteractor>();
+        //If we have a socket, and that socket's starting object is the one trying to hover, return true
+        if (socket && socket.startingSelectedInteractable.transform == interactable.transform)
+            return true;
+        return false; ;
     }
 }
