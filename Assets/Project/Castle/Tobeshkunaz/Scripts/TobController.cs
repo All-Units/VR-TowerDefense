@@ -32,8 +32,16 @@ public class TobController : MonoBehaviour
     {
         
     }
+    bool _isAwake = false;
+    public void WakeUp()
+    {
+        if (_isAwake) return;
+        _isAwake = true;
+        _anim.SetTrigger("WakeUp");
+    }
     private void OnTriggerEnter(Collider collision)
     {
+        if (_isAwake == false) return;
         if (collision.gameObject.tag == "DragonFood")
         {
             StartCoroutine(_FoodMovementRoutine(collision.gameObject));

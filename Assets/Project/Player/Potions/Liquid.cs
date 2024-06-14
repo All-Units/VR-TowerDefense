@@ -269,7 +269,7 @@ public class Liquid : MonoBehaviour, IXRHoverFilter, IXRSelectFilter
     bool _isCorked = true;
 
 
-    public bool canProcess => true;
+    
 
     public void OnCorkPutIn()
     {
@@ -285,7 +285,7 @@ public class Liquid : MonoBehaviour, IXRHoverFilter, IXRSelectFilter
         if (_isTilted)
             OnBottleStartTilt();
     }
-
+    public bool canProcess => true;
     
 
     public bool Process(IXRSelectInteractor interactor, IXRSelectInteractable interactable)

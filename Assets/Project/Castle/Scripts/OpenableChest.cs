@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
 public class OpenableChest : MonoBehaviour
@@ -11,6 +12,8 @@ public class OpenableChest : MonoBehaviour
     public TextMeshProUGUI labelText;
 
     [SerializeField] GameObject contents;
+
+    public UnityEvent OnFirstOpen;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,6 +59,7 @@ public class OpenableChest : MonoBehaviour
             _firstOpened = true;
             contents.SetActive(true);
             StartCoroutine(_FirstOpenRoutine());
+            OnFirstOpen?.Invoke();
         }
     }
     IEnumerator _FirstOpenRoutine()
