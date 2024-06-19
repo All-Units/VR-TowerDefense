@@ -50,12 +50,13 @@ MonoBehaviour:
   - {fileID: 115772, guid: 98c20755924aa5d499600058295661ee, type: 3}
   - {fileID: 160454, guid: 8ec774c4def159e4dba49882bd591326, type: 3}
   - {fileID: 115846, guid: bef19769e972d0741aec3902288fcc2e, type: 3}
-  MaxDistanceFromCenter: 1200
-  CloudHeight: 500
-  CloudHeightOffset: 20
-  TimeToGrowCloud: 20
-  InitialCloudPoolSize: 100
+  MaxDistanceFromCenter: 480
+  CloudHeight: 150
+  CloudHeightOffset: 50
+  TimeToGrowCloud: 25
+  InitialCloudPoolSize: 60
+  SecondaryCloudRate: 0.5
   RestartScalar: 1.4
-  cloudBunchMinMax: {x: 2, y: 5}
-  cloudSpeedMinMax: {x: 12, y: 20}
-  cloudScalar: 4
+  cloudSpeedMinMax: {x: 3, y: 7}
+  cloudSizeMinMax: {x: 1, y: 3}
+  cloudScalar: 2
