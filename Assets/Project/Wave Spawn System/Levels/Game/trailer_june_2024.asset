@@ -1,0 +1,162 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2c7753b4123e1e4a94c9b18a65ad6b3, type: 3}
+  m_Name: trailer_june_2024
+  m_EditorClassIdentifier: 
+  StartingGold: 100
+  enemyPrefabs:
+  - prefab: {fileID: 8875610972194801422, guid: 49d97e6b4732fdc4a9ebf109e0760dd5,
+      type: 3}
+    type: 0
+  - prefab: {fileID: 6692053662854930735, guid: 755ed82bc5c38b9449a4cc81e174a846,
+      type: 3}
+    type: 1
+  - prefab: {fileID: 856478182163992432, guid: 00cffeeca8572d640a09ccc176cd0ec5, type: 3}
+    type: 2
+  - prefab: {fileID: 3141777125869599468, guid: aabe4c301a1df3143a410af95c057e31,
+      type: 3}
+    type: 3
+  - prefab: {fileID: 6010861038736235409, guid: 9dd192b58e2b18140b4e54ead8b2dbf2,
+      type: 3}
+    type: 4
+  - prefab: {fileID: 3533884823584535081, guid: 5eef40bc3305236439b1a66b7c202776,
+      type: 3}
+    type: 5
+  - prefab: {fileID: 7986213844857998999, guid: e2a1c4444ffea4b48813fb1ca2ed14fa,
+      type: 3}
+    type: 6
+  waveStructs:
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 60, y: 60}
+    - enemyType: 0
+      amountToSpawn: {x: 30, y: 44}
+    - enemyType: 6
+      amountToSpawn: {x: 15, y: 15}
+    - enemyType: 4
+      amountToSpawn: {x: 0, y: 0}
+    subWaves:
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 5, y: 5}
+      delayType: 0
+      DelayCount: 10
+      groupSizes: {x: 1, y: 2}
+      spawnRate: 5
+      spawnPoints:
+      - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
+    WaveCompleteBounty: 100
+    preWaveDelay: 2
+    groupSizes: {x: 40, y: 50}
+    spawnRate: 15
+    spawnPoints:
+    - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 10, y: 12}
+    - enemyType: 6
+      amountToSpawn: {x: 5, y: 7}
+    subWaves: []
+    WaveCompleteBounty: 175
+    preWaveDelay: 30
+    groupSizes: {x: 3, y: 7}
+    spawnRate: 16
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 18, y: 20}
+    - enemyType: 6
+      amountToSpawn: {x: 10, y: 15}
+    subWaves:
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 1, y: 2}
+      delayType: 1
+      DelayCount: 5
+      groupSizes: {x: 1, y: 2}
+      spawnRate: 8
+      spawnPoints: []
+    WaveCompleteBounty: 300
+    preWaveDelay: 30
+    groupSizes: {x: 8, y: 12}
+    spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 55, y: 55}
+    - enemyType: 6
+      amountToSpawn: {x: 40, y: 40}
+    subWaves:
+    - enemies:
+      - enemyType: 3
+        amountToSpawn: {x: 7, y: 10}
+      delayType: 0
+      DelayCount: 40
+      groupSizes: {x: 2, y: 5}
+      spawnRate: 10
+      spawnPoints: []
+    - enemies:
+      - enemyType: 0
+        amountToSpawn: {x: 4, y: 6}
+      delayType: 0
+      DelayCount: 20
+      groupSizes: {x: 1, y: 3}
+      spawnRate: 5
+      spawnPoints: []
+    WaveCompleteBounty: 500
+    preWaveDelay: 30
+    groupSizes: {x: 10, y: 15}
+    spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 45, y: 50}
+    - enemyType: 3
+      amountToSpawn: {x: 12, y: 14}
+    subWaves:
+    - enemies:
+      - enemyType: 0
+        amountToSpawn: {x: 4, y: 8}
+      delayType: 1
+      DelayCount: 5
+      groupSizes: {x: 2, y: 5}
+      spawnRate: 15
+      spawnPoints: []
+    WaveCompleteBounty: 1000
+    preWaveDelay: 30
+    groupSizes: {x: 10, y: 15}
+    spawnRate: 12
+    spawnPoints: []
+  - enemies:
+    - enemyType: 1
+      amountToSpawn: {x: 75, y: 100}
+    - enemyType: 0
+      amountToSpawn: {x: 15, y: 20}
+    - enemyType: 3
+      amountToSpawn: {x: 20, y: 27}
+    - enemyType: 6
+      amountToSpawn: {x: 40, y: 40}
+    subWaves:
+    - enemies:
+      - enemyType: 2
+        amountToSpawn: {x: 1, y: 1}
+      delayType: 1
+      DelayCount: 10
+      groupSizes: {x: 1, y: 1}
+      spawnRate: 0
+      spawnPoints: []
+    WaveCompleteBounty: 0
+    preWaveDelay: 60
+    groupSizes: {x: 9, y: 15}
+    spawnRate: 11
+    spawnPoints: []
+  notes: 

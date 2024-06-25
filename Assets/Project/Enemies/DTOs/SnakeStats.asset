@@ -27,9 +27,15 @@ MonoBehaviour:
   PowerAttackTime: 1
   PowerAttackChance: 0.3
   PowerAttackScalar: 1.5
-  MoveSpeed: 100
+  MoveSpeed: 60
   MoveSpeedVariance: 0.4
   rotateDamping: 1
   targetTolerance: 1
   CheckForNeighborsRate: 2
   StuckAngleOffset: 15
+  VocalizationCheckRate: 1
+  VocalizationChance: 0.3
+  AttackVocalizationChance: 0.3
+  resistancesWeakness:
+    resistances: []
+    weaknesses: []

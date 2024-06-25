@@ -106,5 +106,10 @@ public class AOEProjectile : Projectile
         isDestroying = true;
         Destroy(gameObject);
     }
+
+    public void ShakeCamera()
+    {
+        CameraShake.Shake();
+    }
     
 }
