@@ -72,14 +72,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
-  DamageVariability: 1
-  speed: 5
+  damage: 245
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
+  speed: 5
   _hitEnemy: {fileID: 0}
   _hitGround: {fileID: 0}
   flyingVFX: {fileID: 0}
+  particles: {fileID: 0}
   OnFire:
     m_PersistentCalls:
       m_Calls:
@@ -98,8 +98,9 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
+  _graceRadius: 0.1
   splashRadius: 1
-  hitParticles: {fileID: 2433282508537954060, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
+  hitParticles: {fileID: 9017217224775942394, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
     serializedVersion: 2
@@ -134,7 +135,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _audioClipController: {fileID: 2864799162137029931}
+  TargetLayer: Enemy
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -298,6 +299,7 @@ MonoBehaviour:
   targeter: {fileID: 0}
   target: {fileID: 0}
   index: 0
+  WasFiredByPlayer: 0
 --- !u!114 &2864799162137029931
 MonoBehaviour:
   m_ObjectHideFlags: 0

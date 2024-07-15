@@ -107,13 +107,22 @@ public class ProjectileTower : PlayerControllableTower
         if(oldestTarget)
             pivotPoint.LookAt(target);
     }
-
+    public void _AddToBlacklistTarget()
+    {
+        Enemy e = targetingSystem._targetsInRange.FirstOrDefault();
+        targetingSystem._blacklist.Add(e);
+        //print($"Moved on from {e.gameObject.name}");
+    }
+    public void FireOverride()
+    {
+        Fire();
+    }
     private void Fire()
     {
         var projectile = Instantiate(projectileTowerSo.projectile, firePoint.position, firePoint.rotation);
         projectile.tower = this;
         projectile.Fire();
-        OnFire?.Invoke();
+        
         
         if (projectile.TryGetComponent(out GuidedMissileController missileController))
         {
@@ -146,7 +155,24 @@ public class ProjectileTower : PlayerControllableTower
             var auxProjectile = Instantiate(projectileTowerSo.projectile, auxFirePoint.position, auxFirePoint.rotation);
             auxProjectile.Fire();
             OnFire?.Invoke();
-            
+            if (auxProjectile.TryGetComponent(out GuidedMissileController mc))
+            {
+                Enemy target = targetingSystem._targetsInRange.FirstOrDefault();
+                if (_currentMissileSelector == null)
+                {
+                    _currentMissileSelector = _SelectMissileTarget();
+                    StartCoroutine(_currentMissileSelector);
+                }
+                else
+                    target = targetingSystem._targetsInRange.GetRandom();
+                mc.SetTarget(target);
+                mc.HitTarget();
+            }
+
+            if (auxProjectile.TryGetComponent(out MissileController comp))
+            {
+                comp.SetTarget(targetingSystem.GetOldestTarget());
+            }
             if (ammo > 0)
             {
                 currentAmmo--;
@@ -157,6 +183,7 @@ public class ProjectileTower : PlayerControllableTower
             ReloadRoutine ??= StartCoroutine(Reload());
         
         _currentCooldown = projectileTowerSo.shotCooldown;
+        OnFire?.Invoke();
     }
 
     public void OnKill(Enemy enemy)
@@ -217,6 +244,7 @@ public class ProjectileTower : PlayerControllableTower
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;
+        if (firePoint == null) return;
         Gizmos.DrawWireSphere(targetingSystem.transform.position, projectileTowerSo.radius);
         
         Gizmos.color = targetingSystem.HasTarget() ? Color.red : Color.blue;

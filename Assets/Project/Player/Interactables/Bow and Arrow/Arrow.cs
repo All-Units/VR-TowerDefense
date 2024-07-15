@@ -40,7 +40,6 @@ public class Arrow : Projectile, IPausable
         }
             
         IsAnyNotched = true;
-        print($"ANY ARROW NOTCHED");
     }
     public void OnInitPausable()
     {

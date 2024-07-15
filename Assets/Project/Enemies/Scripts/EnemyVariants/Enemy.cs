@@ -104,11 +104,17 @@ public abstract class Enemy : MonoBehaviour, IPausable
     {
         OnEnemySpawn();
     }
+    public bool _MoveForward = false;
 
     protected virtual void Update()
     {
+
         //Cache position first
         pos = transform.position;
+        if (_MoveForward)
+        {
+            _target = pos + transform.forward * 7;
+        }
         _StateMachineUpdate();
     }
     private void OnTriggerEnter(Collider other)
@@ -170,6 +176,10 @@ public abstract class Enemy : MonoBehaviour, IPausable
         StartCoroutine(_Vocalize());
         OnInitPausable();
 
+        var hbc = GetComponentInChildren<HealthbarController>();
+        if (hbc != null )
+            Destroy(hbc.gameObject);
+
         
     }
     protected virtual void OnEnemyDie()
@@ -206,7 +216,7 @@ public abstract class Enemy : MonoBehaviour, IPausable
         int dmg = _lastHealthTotal - currentHealth;
         if (dmg == 0) return;
 
-        ImpactText.ImpactTextAt(_hitParticles.transform.position, dmg.ToString(), ImpactText._ImpactTypes.Damage);
+        //ImpactText.ImpactTextAt(_hitParticles.transform.position, dmg.ToString(), ImpactText._ImpactTypes.Damage);
         /*
         float t = (float)dmg / (float)_health;
         float size = Mathf.Lerp(0.6f, 3f, t);
@@ -734,6 +744,11 @@ public abstract class Enemy : MonoBehaviour, IPausable
     {
         if (currentTarget == null) return;
         if (Time.frameCount - _lastAttackFrame <= 12) return;
+        float d = Utilities.FlatDistance(pos, _target);
+        d -= _HitboxRadius;
+        //We're too far away, move closer and do not attack
+        if (d > _attackThreshold)
+            return;
         _lastAttackFrame = Time.frameCount;
         attackSFXController.PlayClip();
         float dmg = _damage;

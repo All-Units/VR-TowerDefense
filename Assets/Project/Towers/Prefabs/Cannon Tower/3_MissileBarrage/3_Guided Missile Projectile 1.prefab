@@ -72,33 +72,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 45
-  DamageVariability: 1
-  speed: 45
+  damage: 1000
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
+  speed: 45
   _hitEnemy: {fileID: 0}
   _hitGround: {fileID: 0}
   flyingVFX: {fileID: 0}
+  particles: {fileID: 0}
   OnFire:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4263279412211458661}
-        m_TargetAssemblyTypeName: GuidedMissileController, Project
-        m_MethodName: HitTarget
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnHit:
     m_PersistentCalls:
       m_Calls: []
-  splashRadius: 1
+  _graceRadius: 0.1
+  splashRadius: 0.5
   hitParticles: {fileID: 9017217224775942394, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
   damageDropOff:
@@ -134,7 +123,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _audioClipController: {fileID: 2864799162137029931}
+  TargetLayer: Enemy
 --- !u!54 &1382009744870101265
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -291,13 +280,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pursueWaitTime: 0.2
   rotationSpeed: 9
-  moveSpeed: 2000
+  moveSpeed: 1000
   maxSpeed: 10
   rb: {fileID: 1382009744870101265}
   flamesVFX: {fileID: 8976034639397686167}
   targeter: {fileID: 0}
   target: {fileID: 0}
   index: 0
+  WasFiredByPlayer: 0
 --- !u!114 &2864799162137029931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -378,8 +368,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7828091204392586497}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 4}
+  m_LocalPosition: {x: 0, y: 0, z: -1.56}
+  m_LocalScale: {x: 8.02, y: 8.02, z: 8.02}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8976034639397686164}
@@ -1152,7 +1142,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: a0389ab10ea95fb43a1f10a76737adc6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1219,6 +1209,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4893118513826488098, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893118513826488098, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
@@ -1226,6 +1221,21 @@ PrefabInstance:
         type: 3}
       propertyPath: moveWithTransform
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893118513826488098, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: startDelay.scalar
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893118513826488098, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: startDelay.maxCurve.m_Curve.Array.data[0].value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4893118513826488098, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: startDelay.maxCurve.m_Curve.Array.data[1].value
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4893118513826488101, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
@@ -1239,7 +1249,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6294508012652817956, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294508012652817956, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
       propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294508012652817956, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: startDelay.scalar
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6294508012652817957, guid: 043176b6a68be2b43b073aaaa4782c7d,
@@ -1280,7 +1300,7 @@ PrefabInstance:
     - target: {fileID: 6294508013172393185, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.166
+      value: -0.19
       objectReference: {fileID: 0}
     - target: {fileID: 6294508013172393185, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
@@ -1325,6 +1345,11 @@ PrefabInstance:
     - target: {fileID: 6294508013172393185, guid: 043176b6a68be2b43b073aaaa4782c7d,
         type: 3}
       propertyPath: m_ConstrainProportionsScale
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6294508013172393186, guid: 043176b6a68be2b43b073aaaa4782c7d,
+        type: 3}
+      propertyPath: prewarm
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6294508013172393186, guid: 043176b6a68be2b43b073aaaa4782c7d,

@@ -40,14 +40,36 @@ public class AOEProjectile : Projectile
         copy_rb.constraints = rb.constraints;
     }
     public string TargetLayer = "Enemy";
+    public class _DebugAoE : MonoBehaviour
+    {
+        public float _radius = 4f;
+        
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, _radius);
+        }
+    }
     protected override void OnCollision(Collider other)
     {
         
         Vector3 pos = transform.position;
         var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask(TargetLayer, "Ragdoll"));
         HashSet<HealthController> hcs = new HashSet<HealthController>();
+        var whitelist = new HashSet<string> { TargetLayer, "Ragdoll" };
+        var debug = new _DebugAoE();
+        debug._radius = splashRadius;
+        Destroy(debug, 1f);
+        string s = "";
+        foreach (var hit in hits)
+            s += $"{hit.gameObject.name}, ";
+        print($"Hit {s}");
         foreach (var hit in hits)
         {
+            if (hit.isTrigger) continue;
+            string hitLayer = LayerMask.LayerToName(hit.gameObject.layer);
+            if (whitelist.Contains(hitLayer) == false) return;
+            
             var colliderGameObject = hit.gameObject;
             HealthController healthController = colliderGameObject.GetComponentInParent<HealthController>();
             //Only affect each HC once
@@ -57,6 +79,7 @@ public class AOEProjectile : Projectile
                 var distance = Vector3.Distance(hit.ClosestPoint(pos), pos);
                 var radius = distance/splashRadius;
                 var dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
+                //Debug.Log($"{gameObject.name} damaging {healthController.gameObject.name}. Target layer: {TargetLayer}. Hit layer: {LayerMask.LayerToName(healthController.gameObject.layer)}", healthController.gameObject);
                 ApplyDamage(healthController, dmg, pos);
                 ApplyEffects(healthController);
             }

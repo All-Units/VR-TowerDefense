@@ -7,7 +7,7 @@ public class FlyingDemonBehavior : Enemy
     #region PublicVariables
     [Header("Demon Movement Variables")]
     RigidbodyConstraints _startConstraints;
-    public int FlightHeight = 5;
+    public float FlightHeight = 5f;
     public float HeightVariance = 2f;
     [SerializeField] LayerMask _groundLayer;
 
@@ -44,7 +44,10 @@ public class FlyingDemonBehavior : Enemy
     {
         base.OnEnemySpawn();
         _startConstraints = RB.constraints;
-        FlightHeight += (int)Random.Range(HeightVariance * -1, HeightVariance);
+        //God dammit Random.Range, stop lying about inclusive random
+        float variance = Random.Range(0f, HeightVariance);
+        FlightHeight += variance;
+        //print($"Set height of {gameObject.name} to {FlightHeight}. Variance of {variance}, after cap of {HeightVariance}");
 
     }
     /// <summary>

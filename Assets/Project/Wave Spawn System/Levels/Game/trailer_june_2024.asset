@@ -41,21 +41,21 @@ MonoBehaviour:
     - enemyType: 0
       amountToSpawn: {x: 30, y: 44}
     - enemyType: 6
-      amountToSpawn: {x: 15, y: 15}
-    - enemyType: 4
-      amountToSpawn: {x: 0, y: 0}
+      amountToSpawn: {x: 20, y: 20}
+    - enemyType: 3
+      amountToSpawn: {x: 10, y: 10}
     subWaves:
     - enemies:
       - enemyType: 3
-        amountToSpawn: {x: 5, y: 5}
+        amountToSpawn: {x: 8, y: 9}
       delayType: 0
-      DelayCount: 10
+      DelayCount: 9
       groupSizes: {x: 1, y: 2}
-      spawnRate: 5
+      spawnRate: 4
       spawnPoints:
       - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
     WaveCompleteBounty: 100
-    preWaveDelay: 2
+    preWaveDelay: 2000
     groupSizes: {x: 40, y: 50}
     spawnRate: 15
     spawnPoints:

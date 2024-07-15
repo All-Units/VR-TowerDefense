@@ -13,7 +13,7 @@ public class DestroyAfterParticles : MonoBehaviour
     private void OnEnable()
     {
         _InitParticles();
-        print($"Initted and cached particles!");
+        //print($"Initted and cached particles!");
     }
 #endif
     void _InitParticles() { if (particleSystems.Count == 0) particleSystems = GetComponentsInChildren<ParticleSystem>().ToList(); }

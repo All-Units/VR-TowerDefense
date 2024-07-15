@@ -11,8 +11,8 @@ public class OrcBehavior : Enemy
 
     public int _TargetsInRange;
     public float _distanceToTarget;
-    
 
+    
     
     IEnumerator _fling()
     {
@@ -39,6 +39,7 @@ public class OrcBehavior : Enemy
     // Update is called once per frame
     protected override void Update()
     {
+        
         base.Update();
         ragdoll_velocity = ragdollRB.velocity;
         rb_velocity = RB.velocity;

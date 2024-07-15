@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -18,6 +20,31 @@ public class HealthController : MonoBehaviour
     
     public UnityEvent<int> onTakeDamage;
     public UnityEvent onDeath;
+
+    public void _StartBloodImages()
+    {
+        if (_currentBleeder != null) return;
+
+        _currentBleeder = _BloodImageRoutine();
+        StartCoroutine(_currentBleeder);
+    }
+    public float initialBleedDelay = 0.5f;
+    public float imageChangeRate = 0.3f;
+    public Image bloodImage;
+    public List<Sprite> bloodSprites = new List<Sprite>();
+    IEnumerator _currentBleeder = null;
+    IEnumerator _BloodImageRoutine()
+    {
+        yield return new WaitForSeconds(initialBleedDelay);
+        bloodImage.gameObject.SetActive(true);
+        foreach (var s in bloodSprites)
+        {
+            bloodImage.sprite = s;
+            yield return new WaitForSeconds(imageChangeRate);
+        }
+        yield return null;
+    }
+
     
     private void Awake()
     {

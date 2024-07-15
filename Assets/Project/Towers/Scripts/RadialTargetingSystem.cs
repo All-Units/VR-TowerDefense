@@ -63,6 +63,7 @@ public class RadialTargetingSystem : MonoBehaviour
         _CullTargets();
         //Reorder targets by distance
         _targetsInRange = _targetsInRange.OrderBy(t => Utilities.FlatDistance(t.transform.position, pos)).ToList();
+        //_targetsInRange = _targetsInRange.OrderBy(t => t.transform.position.y).ToList();
         _lastClosestEnemy = _targetsInRange.FirstOrDefault();
         return _lastClosestEnemy;
     }    
@@ -73,9 +74,11 @@ public class RadialTargetingSystem : MonoBehaviour
         
         return _targetsInRange.OrderBy(t => t.spawnTime).FirstOrDefault();
     }
+    public HashSet<Enemy> _blacklist = new HashSet<Enemy> { };  
     void _CullTargets()
     {
         _targetsInRange.RemoveAll(e => !e);
+        _targetsInRange.RemoveAll(e => _blacklist.Contains(e));
         _targetsInRange.RemoveAll(e => e.gameObject.activeInHierarchy == false);
 
         //If there is any living target, cull all the dead

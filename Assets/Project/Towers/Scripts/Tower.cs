@@ -42,6 +42,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
             healthController = GetComponent<HealthController>();
         healthController.onDeath.AddListener(Die);
         _lastHealth = dto.maxHeath;
+        _lastHealth = healthController.MaxHealth;
         healthController.OnTakeDamage += OnTakeDamage;
         if (deathParticles)
             deathParticles.SetActive(false);

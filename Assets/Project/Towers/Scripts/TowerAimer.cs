@@ -13,7 +13,11 @@ public class TowerAimer : MonoBehaviour
     void Start()
     {
         tower = GetComponentInParent<ProjectileTower>();
+        startEuler = transform.eulerAngles;
+        salt = Random.value;
     }
+    float salt;
+    Vector3 startEuler;
     Vector3 pos;
     public Vector3 CurrentTarget;
     // Update is called once per frame
@@ -25,8 +29,25 @@ public class TowerAimer : MonoBehaviour
     Vector3 _lastTarget;
     public float DebugDistance;
     bool BASIC = false;
+
+    public float oscillateAmplitude = 2f;
+    public float oscillateFreq = 2f;
+
+    void _Oscillate()
+    {
+        Vector3 euler = startEuler;
+        float y = Mathf.Sin((Time.time * oscillateFreq) + (salt * oscillateAmplitude)) * oscillateAmplitude;
+        euler.y += y;
+
+        transform.eulerAngles = euler;
+    }
     void _AimTower()
     {
+        if (tower != null && tower.GetCurrentTarget == null)
+        {
+            _Oscillate();
+            return;
+        }
         if (tower == null || tower.GetCurrentTarget == null) return;
         if (gunParent == null) return;
 
