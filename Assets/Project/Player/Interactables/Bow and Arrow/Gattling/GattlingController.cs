@@ -7,6 +7,7 @@ using UnityEngine.XR.Interaction.Toolkit;
 public class GattlingController : MonoBehaviour
 {
     public float spinUpTime = 3.5f;
+    public float coolDownScalar = 2f;
     public float maxSpinSpeed = 15f;
     public Transform barrels;
     public Projectile projectile;
@@ -77,8 +78,8 @@ public class GattlingController : MonoBehaviour
         _revSpinAudioSource.Play();
         do
         {
-            t = _isActive ? t + Time.deltaTime : t - Time.deltaTime;
-            t = Mathf.Clamp(t, 0, spinUpTime);
+            t = _isActive ? t + Time.deltaTime : t - (Time.deltaTime * coolDownScalar);
+            t = Mathf.Clamp(t, 0, spinUpTime); 
             
             var spinSpeed = Mathf.Lerp(0, maxSpinSpeed, t / spinUpTime);
             barrels.Rotate(Vector3.forward, spinSpeed);
