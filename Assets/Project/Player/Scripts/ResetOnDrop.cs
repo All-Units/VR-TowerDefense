@@ -98,7 +98,7 @@ public class ResetOnDrop : MonoBehaviour
     {
         t = transform;
         
-        startRot = t.localRotation;
+        startRot = t.rotation;
         _startConstraints = rb.constraints;
     }
 
@@ -166,7 +166,7 @@ public class ResetOnDrop : MonoBehaviour
     private IEnumerator _currentResetter = null;
     IEnumerator _ResetRoutine()
     {
-        //print("Cannon dropped");
+        
         yield return new WaitForSeconds(resetTime);
         //Do nothing if there is no tower
         var playerControllableTower = PlayerStateController.CurrentTower;
@@ -188,18 +188,21 @@ public class ResetOnDrop : MonoBehaviour
         forward = forward.normalized;
         pos += (forward * 0.6f);
         t.position = pos;
+        t.rotation = startRot;
+        //Have to set RIGIDBODY rotation, not transform. Above line is for safety (should be redudant)
+        rb.rotation = startRot;
         rb.velocity = Vector3.zero;
         //Constrain it
         rb.constraints = RigidbodyConstraints.FreezeAll;
         yield return null;
+
         //PEMDAS
         rb.velocity = Vector3.zero;
 
         t.position = pos;
-        //Debug.Log($"Reset position to {pos}, actual position: {t.position}. at FC {Time.frameCount}", gameObject);
-        t.rotation = startRot;
+        
         _currentResetter = null;
         rb.useGravity = false;
-        
+
     }
 }

@@ -43,7 +43,24 @@ public class WristGazeController : MonoBehaviour
 
         CurrencyManager.OnChangeMoneyAmount += _OnCurrencyChange;
         StartCoroutine(_SetCashDelay());
+        haptics = GetComponentInParent<ActionBasedController>();
+        canvas.SetActive(false);
     }
+    public GameObject canvas;
+    public ActionBasedController leftHaptics;
+    ActionBasedController haptics;
+    void Buzz(float magnitude = 1f, float duration = 0.1f)
+    {
+        if (haptics == null) return;
+        haptics.SendHapticImpulse(magnitude, duration);
+    }
+    void LeftBuzz(float magnitude = 1f, float duration = 0.1f)
+    {
+        if (leftHaptics == null) return;
+        leftHaptics.SendHapticImpulse(magnitude, duration);
+    }
+   
+
     IEnumerator _SetCashDelay()
     {
         yield return null;
@@ -77,19 +94,17 @@ public class WristGazeController : MonoBehaviour
         _SetText(cashText, text);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     /// <summary>
     /// When the player begins looking at their wrist
     /// </summary>
     /// <param name="a"></param>
     void LookAt(HoverEnterEventArgs a)
     {
+        Buzz(1f, 0.1f);
         bool _wasLooking = _IsLookingAt;
         _IsLookingAt = true;
+        canvas.SetActive(true);
+        return;
         StartCoroutine(_LookAtAfter(_wasLooking));
     }
     IEnumerator _LookAtAfter(bool wasLooking)
@@ -111,6 +126,8 @@ public class WristGazeController : MonoBehaviour
     /// <param name="a"></param>
     void LookAway(HoverExitEventArgs a)
     {
+        LeftBuzz();
+        canvas.SetActive(false);
         _StopDisableIfExists();
         _IsLookingAt = false;
         StartCoroutine(_DisableAfter());
