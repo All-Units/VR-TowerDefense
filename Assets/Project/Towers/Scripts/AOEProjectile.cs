@@ -48,6 +48,9 @@ public class AOEProjectile : Projectile
         HashSet<HealthController> hcs = new HashSet<HealthController>();
         foreach (var hit in hits)
         {
+            //Don't care about triggers
+            if (hit.isTrigger) continue;
+
             var colliderGameObject = hit.gameObject;
             HealthController healthController = colliderGameObject.GetComponentInParent<HealthController>();
             //Only affect each HC once
