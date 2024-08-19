@@ -62,7 +62,7 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
         [SerializeField]
         [Tooltip("The reference to the action of moving the XR Origin with this controller.")]
         InputActionReference m_Move;
-
+        public InputActionReference GetMove => m_Move;
         [Space]
         [Header("Locomotion Settings")]
 

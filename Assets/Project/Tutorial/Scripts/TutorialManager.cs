@@ -104,8 +104,8 @@ public class TutorialManager : MonoBehaviour
     void _RecenterGUI()
     {
         gui.position = cam.position;
-        Vector3 euler = new Vector3(0f, cam.eulerAngles.y, 0f);
-        gui.eulerAngles = euler;
+        //Vector3 euler = new Vector3(0f, cam.eulerAngles.y, 0f);
+        //gui.eulerAngles = euler;
     }
     void _OnFirstRoundEnd()
     {
