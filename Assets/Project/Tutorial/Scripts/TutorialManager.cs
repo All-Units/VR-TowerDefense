@@ -44,6 +44,8 @@ public class TutorialManager : MonoBehaviour
         EnemyManager.OnRoundEnded.AddListener(_OnFirstRoundEnd);
 
         PlayerPrefs.SetInt("_has_completed_tutorial", 0);
+
+        _TurnOffShadows();
     }
     private void OnDestroy()
     {
@@ -158,6 +160,10 @@ public class TutorialManager : MonoBehaviour
             EnemyManager.SkipToNextRound = true;
         }
     }
+    /// <summary>
+    /// Public static method to go to next tutorial panel
+    /// </summary>
+    /// <param name="skip"></param>
     public static void SetSkip(bool skip = true)
     {
         instance._skip = skip;
@@ -187,7 +193,7 @@ public class TutorialManager : MonoBehaviour
     {
         StartCoroutine(_RecenterAfter());
     }
-    IEnumerator _RecenterAfter(float time = 0.2f)
+    IEnumerator _RecenterAfter(float time = 0.01f)
     {
         yield return new WaitForSeconds(time);
         _RecenterGUI();
@@ -197,6 +203,14 @@ public class TutorialManager : MonoBehaviour
     void _OnWin()
     {
         PlayerPrefs.SetInt("_has_completed_tutorial", 1);
+    }
+
+    void _TurnOffShadows()
+    {
+        foreach (MeshRenderer mr in GetComponentsInChildren<MeshRenderer>())
+        {
+            mr.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        }
     }
 
 

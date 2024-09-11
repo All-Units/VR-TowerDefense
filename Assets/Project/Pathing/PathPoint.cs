@@ -1,13 +1,9 @@
-
-
-using System;
 using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class PathPoint : MonoBehaviour
@@ -59,14 +55,28 @@ public class PathPoint : MonoBehaviour
         return d;
     }
 
-Vector3 lastPoint = Vector3.zero;
+    Vector3 lastPoint = Vector3.zero;
 
 #if UNITY_EDITOR
-    
 
+    PathPoint _SpawnPoint()
+    {
+        PathPoint spawn = this;
+        PathPoint prev = spawn.prevPoint;
+        while (spawn != null)
+        {
+            if (spawn.prevPoint == null) break;
+            spawn = spawn.prevPoint;
+        }
+        return spawn;
+    } 
     protected virtual void OnDrawGizmos()
     {
-        gameObject.name = $"Path point {transform.GetSiblingIndex() + 1}";
+        PathPoint spawn = _SpawnPoint();
+        string direction = spawn.gameObject.name.Replace("Spawn Point Path", "");
+        direction = direction.Substring(0, 1);
+
+        gameObject.name = $"Path point {transform.GetSiblingIndex() + 1}{direction}";
         this.position = transform.position;
         var pos = position;
         if (nextPoint == null)

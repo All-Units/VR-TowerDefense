@@ -90,6 +90,12 @@ public class TutorialPanel : MonoBehaviour
         }
         if (WaitUntilAction == _WaitUntilAction.Pause)
             capturedInput.action.started += _OnPausePressed;
+
+        if (WaitUntilAction == _WaitUntilAction.BasicSkip)
+        {
+            XRSimpleInteractable simple = GetComponentInChildren<XRSimpleInteractable>();
+            simple.activated.AddListener(_WelcomeToCastlePressed);
+        }
         
     }
 
@@ -320,6 +326,8 @@ public class TutorialPanel : MonoBehaviour
 
     void _Skip() { TutorialManager.SetSkip(); }
 
+    void _WelcomeToCastlePressed(ActivateEventArgs a) { TutorialManager.SetSkip(); }
+
 }
 
 public enum _WaitUntilAction
@@ -338,6 +346,7 @@ public enum _WaitUntilAction
     GuidedMissile,
     PressB,
     Pause,
-
+    BasicSkip,
+    GrabCannonball,
 
 }

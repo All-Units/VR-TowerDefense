@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Events;
@@ -23,6 +24,8 @@ public class TutorialBubble : MonoBehaviour
         simple = GetComponent<XRSimpleInteractable>();
         simple.activated.AddListener(_StartFill);
         simple.deactivated.AddListener(_EndFill);
+        //simple.lastSelectExited.AddListener(_Deselect);
+        simple.lastHoverExited.AddListener(_OnLookAway);
 
     }
 
@@ -34,8 +37,17 @@ public class TutorialBubble : MonoBehaviour
 
     void _StartFill(ActivateEventArgs a)
     {
+        _StopFill();
         _currentFillRoutine = _SkipRound();
         StartCoroutine(_currentFillRoutine);
+    }
+    void _OnLookAway(HoverExitEventArgs a)
+    {
+        _EndFill(new DeactivateEventArgs());
+    }
+    void _Deselect(SelectExitEventArgs a)
+    {
+        _EndFill(new DeactivateEventArgs());
     }
     void _EndFill(DeactivateEventArgs a)
     {

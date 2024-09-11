@@ -5,16 +5,20 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
-using static Codice.Client.Commands.WkTree.WorkspaceTreeNode;
+
 
 [RequireComponent(typeof(XRSimpleInteractable))]
 public class GrabAndReposition : MonoBehaviour
 {
+    public float DeadZone = 0.3f;
     XRSimpleInteractable simple;
     [SerializeField] float rotateSensitivity = 1f;
     [SerializeField] float distanceToCamSensitivity = 1f;
+    [SerializeField] float distanceToCamStickSensitivity = 15f;
     [SerializeField] float verticalSensitivity = 1f;
+    [SerializeField] float verticalStickSensitivity = 15f;
+    [SerializeField] Vector2 distanceToCamBounds = new Vector2(2f, 5f);
+    [SerializeField] Vector2 heightBounds = new Vector2(0.6f, 3f);
     [SerializeField] bool invertY = true;
     [SerializeField] Transform canvasParent;
     [SerializeField] Transform canvasSecondLayer;
@@ -82,10 +86,11 @@ public class GrabAndReposition : MonoBehaviour
         _lastMove = moveRef.action;
 
         _lastMove.performed += _MoveJoystick;
-        _lastMove.started += _JoystickPressed;
-        debugText01.text = $"Listening for right joystick? {_lastMove != null}";
-        Debug.Log($"Grabbed by: {hand.gameObject.name}. Move action? {moveRef}", hand);
-        StartCoroutine(_FollowHandRoutine(hand));
+        _lastMove.canceled += _JoystickReleased;
+        if (_currentFollower != null)
+            StopCoroutine(_currentFollower);
+        _currentFollower = _FollowHandRoutine(hand);
+        StartCoroutine(_currentFollower);
     }
     Dictionary<Transform, Inventory2> invByTransform = new Dictionary<Transform, Inventory2>();
     Inventory2 GetInvByTransform(Transform hand)
@@ -111,13 +116,12 @@ public class GrabAndReposition : MonoBehaviour
         if (_currentTor != null && _currentTor != a.interactorObject)
         {
             simple.interactionManager.SelectExit(_currentTor, _currentTor.firstInteractableSelected);
-            Inventory2 i2 = GetInvByTransform(_currentTor.transform);
-            debugText01.text = $"FORCE DROPPED {i2.whichHand}";
         }
     }
     void _Released(SelectExitEventArgs a) 
     { 
         _lastMove.performed -= _MoveJoystick;
+        _lastMove.canceled -= _JoystickReleased;
         _lastMove = null;
         _isGrabbed = false;
         _SetColor(releasedColor);
@@ -131,23 +135,51 @@ public class GrabAndReposition : MonoBehaviour
             transform.rotation = rot;
         }
         StartCoroutine(_Freeze());
-        debugText01.text = "";
         _currentTor = null;
 
     }
-    void _JoystickPressed(InputAction.CallbackContext callback)
+    bool _joystickHeld = false;
+    void _JoystickReleased(InputAction.CallbackContext callback)
     {
-        print($"Joystick pressed");
-        debugText01.text = $"Pressed: START";
+        _joystickHeld = false;
     }
     void _MoveJoystick(InputAction.CallbackContext callback)
     {
+        _joystickHeld = true;
         Vector2 dir = callback.ReadValue<Vector2>();
-        debugText01.text = $"Pressed: {dir}";
-        print($"Pressed joystick to {dir}");
+        if (_currentJoystickRoutine != null)
+            StopCoroutine(_currentJoystickRoutine);
+        _currentJoystickRoutine = _HandleJoysticksRoutine(dir);
+        StartCoroutine(_currentJoystickRoutine);
+    }
+    IEnumerator _currentJoystickRoutine = null;
+    IEnumerator _HandleJoysticksRoutine(Vector2 dir)
+    {
+        while (_joystickHeld)
+        {
+            _HandleJoystickHorizontal(dir.x);
+            _HandleJoystickVertical(dir.y);
+            yield return null;
+        }
+        _currentJoystickRoutine = null;
+        
+    }
+    void _HandleJoystickHorizontal(float x)
+    {
+        if (Mathf.Abs(x) <= DeadZone) return;
+        float delta = x * Time.deltaTime * distanceToCamStickSensitivity;
+        _ChangeDistanceToCam(delta);
+        
+    }
+    void _HandleJoystickVertical(float y)
+    {
+        if (Mathf.Abs(y) <= DeadZone) return;
+        float delta = y * Time.deltaTime * verticalStickSensitivity;
+        _ChangeHeight(delta);
+        //canvasParent.position += new Vector3(0f, delta, 0f);
     }
     Transform cam => InventoryManager.instance.playerCameraTransform;
-
+    IEnumerator _currentFollower = null;
     IEnumerator _FollowHandRoutine(Transform hand)
     {
         if (canvasParent == null) yield break;
@@ -167,17 +199,22 @@ public class GrabAndReposition : MonoBehaviour
             cameraRot = Quaternion.LookRotation(cameraDelta).eulerAngles;
             float yDelta = cameraRot.y - lastCameraRot.y;
             yDelta *= rotateSensitivity * Time.deltaTime;
-            canvasParent.eulerAngles += new Vector3(0f, yDelta, 0f);
+            
+            //Don't change to MASSIVE deltas
+            if (Mathf.Abs(yDelta) <= 5f)
+                canvasParent.eulerAngles += new Vector3(0f, yDelta, 0f);
 
             float verticalDelta = handPos.y - lastHandPos.y;
             verticalDelta *= (verticalSensitivity * Time.deltaTime);
-            canvasParent.position += new Vector3(0f, verticalDelta, 0f);
+            _ChangeHeight(verticalDelta);
+            //canvasParent.position += new Vector3(0f, verticalDelta, 0f);
             
             //Current distance minus last distance
             float distanceDelta = Utilities.FlatDistance(handPos, cameraPos) - 
                 Utilities.FlatDistance(lastHandPos, lastCameraPos);
             distanceDelta *= (Time.deltaTime * distanceToCamSensitivity);
-            canvasSecondLayer.localPosition += new Vector3(0f, 0f, distanceDelta);
+            _ChangeDistanceToCam(distanceDelta);
+            //canvasSecondLayer.localPosition += new Vector3(0f, 0f, distanceDelta);
 
 
             lastHandPos = handPos;
@@ -186,10 +223,33 @@ public class GrabAndReposition : MonoBehaviour
             lastCameraRot = cameraRot;
             lastCameraPos = cameraPos;
         }
+    }
+    void _ChangeDistanceToCam(float delta)
+    {
+        Vector3 pos = canvasSecondLayer.localPosition;
+        pos.z += delta;
+        float z = pos.z;
+        //Only apply the change if it is within bounds
+        if (z >= distanceToCamBounds.x && z <= distanceToCamBounds.y)
+        {
+            canvasSecondLayer.localPosition = pos;
+        }
+    }
+    void _ChangeHeight(float delta)
+    {
+        Vector3 pos = canvasSecondLayer.localPosition;
+        pos.y += delta;
+        
+        float y = pos.y;
+        //Only move if new y is within the bounds
+        if (y >= heightBounds.x && y <= heightBounds.y)
+        {
+            canvasSecondLayer.localPosition = pos;
+
+        }
         
     }
-    
-    
 
-    
+
+
 }

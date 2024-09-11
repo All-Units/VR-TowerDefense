@@ -43,6 +43,9 @@ public class XRControllerTowerController : MonoBehaviour
     [SerializeField] private float bubbleMenuMaxAngle;
     [SerializeField] private XRControllerTowerPlacer towerPlacer;
 
+    [SerializeField] float _bubbleForwardOffset = 0.6f;
+    [SerializeField] float _bubbleVerticalOffset = -0.4f;
+
     private bool _selectorLock = false;
 
     [SerializeField] float deselectGracePeriod = 1f;
@@ -201,18 +204,31 @@ public class XRControllerTowerController : MonoBehaviour
         OnConfirm();
         _actionButtonCoroutine = null;
     }
-
+    Transform _cam => InventoryManager.instance.playerCameraTransform;
     private void OpenTowerBubbles(InputAction.CallbackContext obj)
     {
         if (XRPauseMenu.IsPaused) return;
+
+        //If there are already bubbles open, close
+        if (towersBubbleRoot.childCount > 0)
+        {
+            _CloseBubbles();
+            return;
+        }
+
         //print($"Trying to open tower bubbles, other interactors? {otherInteractors.Any(tor => tor.interactablesSelected.Any())}, " +
         //    $"tower placing? {towerPlacer.placing}, _selectorLock? {_selectorLock}");
         if(otherInteractors.Any(tor=> tor.interactablesSelected.Any()) || towerPlacer.placing || _selectorLock)
             return;
         
         towersBubbleRoot.DestroyChildren();
-        towersBubbleRoot.position = transform.position;
-        towersBubbleRoot.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y, 0);
+        Vector3 pos = _cam.position;
+        pos += _cam.forward * _bubbleForwardOffset;
+        pos.y += _bubbleVerticalOffset;
+        towersBubbleRoot.position = pos;
+        Vector3 euler = _cam.eulerAngles; 
+        euler.x = 0f; euler.z = 0f;
+        towersBubbleRoot.rotation = Quaternion.Euler(euler);
 
         var step = bubbleMenuMaxAngle / (availableTowers.Count - 1);
         var mainTransform = Camera.main.transform;

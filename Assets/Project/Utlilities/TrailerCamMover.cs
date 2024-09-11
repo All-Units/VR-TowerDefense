@@ -8,6 +8,7 @@ public class TrailerCamMover : MonoBehaviour
     public GameObject playerPref;
     public float moveSpeed;
     public Vector3 moveDir = new Vector3(1f, 0f, 0f);
+    public float fovDelta = 0f;
     public bool isMoving = false;
     // Start is called before the first frame update
     void Start()
@@ -18,8 +19,10 @@ public class TrailerCamMover : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
+        cam = GetComponent<Camera>();
         
     }
+    Camera cam;
 
     // Update is called once per frame
     void Update()
@@ -33,6 +36,10 @@ public class TrailerCamMover : MonoBehaviour
             Vector3 pos = transform.position;
             pos += (moveDir * moveSpeed * Time.deltaTime);
             transform.position = pos;
+            if (cam != null)
+            {
+                cam.fieldOfView += fovDelta * Time.deltaTime;
+            }
         }
     }
 }

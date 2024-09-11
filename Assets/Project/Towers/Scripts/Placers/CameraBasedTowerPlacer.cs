@@ -18,6 +18,7 @@ public class CameraBasedTowerPlacer : MonoBehaviour
 
     private void SelectATile()
     {
+        if (_camera == null) return;
         var ray = _camera.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out var hit, 1000, layerMask.value))
         {
