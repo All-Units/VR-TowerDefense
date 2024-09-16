@@ -616,7 +616,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.0024108887}
+  m_AnchoredPosition: {x: 0, y: 0.004425049}
   m_SizeDelta: {x: 0, y: -18.87}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2886532226922516626
@@ -4181,6 +4181,7 @@ GameObject:
   - component: {fileID: 449486757814874102}
   - component: {fileID: 7001807861039290624}
   - component: {fileID: 6170163825264263966}
+  - component: {fileID: 8382234808429214979}
   m_Layer: 5
   m_Name: SettingsCanvas
   m_TagString: Untagged
@@ -4230,7 +4231,7 @@ Canvas:
   m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
-  m_SortingLayerID: 0
+  m_SortingLayerID: 1945284265
   m_SortingOrder: 0
   m_TargetDisplay: 0
 --- !u!114 &8355366139815045944
@@ -4255,7 +4256,7 @@ MonoBehaviour:
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
-  m_PresetInfoIsWorld: 0
+  m_PresetInfoIsWorld: 1
 --- !u!114 &449486757814874102
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4306,6 +4307,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CheckForInvalids: 0
   CheckAudioSourceRate: 1
+--- !u!210 &8382234808429214979
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5947837448050196615}
+  m_Enabled: 1
+  m_SortingLayerID: 1945284265
+  m_SortingLayer: 1
+  m_SortingOrder: 0
+  m_SortAtRoot: 1
 --- !u!1 &6768053762685466982
 GameObject:
   m_ObjectHideFlags: 0

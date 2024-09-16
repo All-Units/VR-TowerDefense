@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 417758750176801239}
   - component: {fileID: 6383636920730843202}
   - component: {fileID: 5753130643944521405}
+  - component: {fileID: 5988363864971889462}
   m_Layer: 14
   m_Name: PauseBubbles
   m_TagString: Untagged
@@ -34246,6 +34247,18 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!210 &5988363864971889462
+SortingGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 56617418563762753}
+  m_Enabled: 1
+  m_SortingLayerID: 1945284265
+  m_SortingLayer: 1
+  m_SortingOrder: 0
+  m_SortAtRoot: 0
 --- !u!1 &4010863750808062868
 GameObject:
   m_ObjectHideFlags: 0
@@ -34316,8 +34329,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1945284265
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: b20473ecf58974c5abcf4763251e3acf, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -34408,8 +34421,8 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 1945284265
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!114 &5422243351478854223

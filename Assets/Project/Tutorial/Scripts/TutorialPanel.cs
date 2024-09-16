@@ -187,6 +187,11 @@ public class TutorialPanel : MonoBehaviour
     {
         while (true)
         {
+            if (DynamicMoveProvider.canMove == false) 
+            { 
+                yield return null;
+                continue;
+            }
             timeSpentFreeMoving += Time.deltaTime;
             yield return null;
             float percent = timeSpentFreeMoving / moveTimeThreshold;
@@ -233,11 +238,14 @@ public class TutorialPanel : MonoBehaviour
     IEnumerator _currentLockRemover = null;
     IEnumerator _RemoveLockAfter()
     {
+        input.started += FreeMovePressed;
+        input.canceled += FreeMoveReleased;
+
+
         yield return new WaitForSeconds(RemoveMoveLockTime);
         DynamicMoveProvider.RemoveMovementLock();
 
-        input.started += FreeMovePressed;
-        input.canceled += FreeMoveReleased;
+        
 
         
         _currentLockRemover = null;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,9 +22,12 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] InputActionReference moveInput;
     InputAction input => Utilities.GetInputAction(moveInput);
     static TutorialManager instance;
+    public static TutorialManager Instance => instance;
     private void Awake()
     {
         instance = this;
+
+        CenterCameraOnStart.OnCameraRecenter += _RecenterEvent;
     }
     // Start is called before the first frame update
     void Start()
@@ -103,11 +107,15 @@ public class TutorialManager : MonoBehaviour
     }
     Transform cam => InventoryManager.instance.playerCameraTransform;
     public static void RecenterGUI() { instance._RecenterGUI(); }
+
+    void _RecenterEvent()
+    {
+        _RecenterGUI();
+    }
     void _RecenterGUI()
     {
         gui.position = cam.position;
-        //Vector3 euler = new Vector3(0f, cam.eulerAngles.y, 0f);
-        //gui.eulerAngles = euler;
+        OnRecenter?.Invoke();
     }
     void _OnFirstRoundEnd()
     {
@@ -189,13 +197,15 @@ public class TutorialManager : MonoBehaviour
         _OnWin();
         XRPauseMenu.MainMenu();
     }
+    public Action OnRecenter;
     void _RecenterOnTP(LocomotionSystem system)
     {
         StartCoroutine(_RecenterAfter());
     }
     IEnumerator _RecenterAfter(float time = 0.01f)
     {
-        yield return new WaitForSeconds(time);
+        //yield return new WaitForSeconds(time);
+        yield return null;
         _RecenterGUI();
     }
 

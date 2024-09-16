@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Mathematics;
@@ -74,7 +75,9 @@ public class CenterCameraOnStart : MonoBehaviour
 
         
     }
-    #endif
+#endif
+
+    public static Action OnCameraRecenter;
     /// <summary>
     /// Centers the camera rotation based on the cached forward direction
     /// </summary>
@@ -92,5 +95,8 @@ public class CenterCameraOnStart : MonoBehaviour
             destinationRotation = Quaternion.Euler(euler)
         };
         teleporter.QueueTeleportRequest(request);
+
+        OnCameraRecenter?.Invoke();
+        OnCameraRecenter = null;
     }
 }
