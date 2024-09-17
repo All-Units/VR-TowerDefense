@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -29,7 +30,6 @@ public class GrabAndReposition : MonoBehaviour
         _InitComponents();
         _InitSimpleXREvents();
         
-        _SetColor(releasedColor);
         localRotStart = transform.localRotation;
         localStart = transform.localPosition;
 
@@ -70,7 +70,6 @@ public class GrabAndReposition : MonoBehaviour
     void _Grabbed(SelectEnterEventArgs a)
     {
         _currentTor = a.interactorObject;
-        _SetColor(grabbedColor);
         Transform hand = a.interactorObject.transform;
         Inventory2 i2 = GetInvByTransform(hand);
         InputActionReference moveRef = leftMove;
@@ -124,7 +123,6 @@ public class GrabAndReposition : MonoBehaviour
         _lastMove.canceled -= _JoystickReleased;
         _lastMove = null;
         _isGrabbed = false;
-        _SetColor(releasedColor);
         transform.localPosition = localStart;
         transform.localRotation = localRotStart;
         Quaternion rot = transform.rotation;
@@ -180,6 +178,10 @@ public class GrabAndReposition : MonoBehaviour
     }
     Transform cam => InventoryManager.instance.playerCameraTransform;
     IEnumerator _currentFollower = null;
+    /// <summary>
+    /// Called each time the tutorial GUI is rotated, float is change in y euler angles that frame
+    /// </summary>
+    public static Action<float> OnRotate;
     IEnumerator _FollowHandRoutine(Transform hand)
     {
         if (canvasParent == null) yield break;
@@ -202,7 +204,11 @@ public class GrabAndReposition : MonoBehaviour
             
             //Don't change to MASSIVE deltas
             if (Mathf.Abs(yDelta) <= 5f)
+            {
                 canvasParent.eulerAngles += new Vector3(0f, yDelta, 0f);
+                OnRotate?.Invoke(yDelta);
+            }
+                
 
             float verticalDelta = handPos.y - lastHandPos.y;
             verticalDelta *= (verticalSensitivity * Time.deltaTime);

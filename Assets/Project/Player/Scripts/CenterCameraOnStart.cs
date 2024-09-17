@@ -47,12 +47,12 @@ public class CenterCameraOnStart : MonoBehaviour
         float _startCamAngle = CenteredCamAngle;
         float t = 0f;
         float deltaY;
-        while (t < 1.2f)
+        while (t < 5.2f)
         {
             t += Time.deltaTime;
             yield return null;
             deltaY = math.abs(cam_y - _startCamAngle);
-            if (deltaY > 5f)
+            if (deltaY > 0.01f)
             {
                 RecenterCamera();
                 yield break;
@@ -69,11 +69,8 @@ public class CenterCameraOnStart : MonoBehaviour
 
     void _UpdateCamAngle()
     {
-
         if (EditorApplication.isPlaying) return;
         CenteredCamAngle = cam_y;
-
-        
     }
 #endif
 

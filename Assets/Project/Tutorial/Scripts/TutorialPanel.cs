@@ -5,6 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 
@@ -24,6 +25,9 @@ public class TutorialPanel : MonoBehaviour
     public TextMeshProUGUI displayText;
     public Color activeColor;
     public Color inactiveColor;
+
+    public Slider slider;
+
     HashSet<Tower_SO> _towerTargets;
     // Start is called before the first frame update
     void Start()
@@ -47,6 +51,7 @@ public class TutorialPanel : MonoBehaviour
 
         if (WaitUntilAction == _WaitUntilAction.FreeMove)
         {
+            slider.value = 0f;
             _currentLockRemover = _RemoveLockAfter();
             StartCoroutine(_currentLockRemover);
         }
@@ -96,6 +101,11 @@ public class TutorialPanel : MonoBehaviour
             XRSimpleInteractable simple = GetComponentInChildren<XRSimpleInteractable>();
             simple.activated.AddListener(_WelcomeToCastlePressed);
         }
+        if (WaitUntilAction == _WaitUntilAction.GrabWindow)
+        {
+            GrabAndReposition.OnRotate += _OnPlayerMoveGUI;
+            slider.value = 0f;
+        }
         
     }
 
@@ -140,6 +150,11 @@ public class TutorialPanel : MonoBehaviour
         if (WaitUntilAction == _WaitUntilAction.Pause)
             capturedInput.action.started -= _OnPausePressed;
 
+        if (WaitUntilAction == _WaitUntilAction.GrabWindow)
+        {
+            GrabAndReposition.OnRotate -= _OnPlayerMoveGUI;
+        }
+
     }
     int _pausePresses = 0;
     void _OnPausePressed(InputAction.CallbackContext obj)
@@ -165,6 +180,10 @@ public class TutorialPanel : MonoBehaviour
                 displayText.color = activeColor;
         }
         StartCoroutine(_RecenterAfter());
+    }
+    void SkipAfter(float seconds = 1f)
+    {
+        StartCoroutine(_SkipAfter(seconds));
     }
     bool _hasSkipped = false;
     IEnumerator _SkipAfter(float t = 2f)
@@ -199,9 +218,12 @@ public class TutorialPanel : MonoBehaviour
             string dots = string.Concat(Enumerable.Repeat(".", 10 - i));
             string xs = string.Concat(Enumerable.Repeat("X", i));
             displayText.text = $"[{xs}{dots}]";
+            slider.value = percent;
             if (timeSpentFreeMoving >= moveTimeThreshold)
             {
-                TutorialManager.SetSkip(true);
+                SkipAfter();
+                slider.fillRect.GetComponent<Image>().color = activeColor;
+                //TutorialManager.SetSkip(true);
                 input.started -= FreeMovePressed;
                 input.canceled -= FreeMoveReleased;
                 yield break;
@@ -333,8 +355,24 @@ public class TutorialPanel : MonoBehaviour
     
 
     void _Skip() { TutorialManager.SetSkip(); }
+    
 
     void _WelcomeToCastlePressed(ActivateEventArgs a) { TutorialManager.SetSkip(); }
+
+    float totalDelta = 0f;
+
+    void _OnPlayerMoveGUI(float yDelta)
+    {
+        totalDelta += Mathf.Abs(yDelta);
+        slider.value = (totalDelta / (float)PressThreshold);
+        if (totalDelta >= PressThreshold)
+        {
+            SkipAfter(1.5f);
+            displayText.text = "Nice job!";
+            displayText.color = activeColor;
+            slider.fillRect.GetComponent<Image>().color = activeColor;
+        }
+    }
 
 }
 
@@ -355,6 +393,6 @@ public enum _WaitUntilAction
     PressB,
     Pause,
     BasicSkip,
-    GrabCannonball,
+    GrabWindow,
 
 }

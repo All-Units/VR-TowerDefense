@@ -60,6 +60,12 @@ public class GrabTutorial : MonoBehaviour
         grabObjectsParent.SetActive(false);
         if (TutorialManager.Instance != null)
             TutorialManager.Instance.OnRecenter -= _RecenterGrabbables;
+
+        foreach (var spawned in spawnedAmmo)
+        {
+            if (spawned)
+                Destroy(spawned);
+        }
     }
     Transform cam => InventoryManager.instance?.playerCameraTransform;
     Transform parent => grabObjectsParent.transform;
@@ -130,7 +136,7 @@ public class GrabTutorial : MonoBehaviour
         }
             
     }
-
+    List<GameObject> spawnedAmmo = new List<GameObject>();
     void _SpawnNewAmmo()
     {
         //Spawn a new grenade
@@ -140,6 +146,7 @@ public class GrabTutorial : MonoBehaviour
         spawned.gameObject.SetActive(true);
         spawned.transform.localPosition = ammoStartLocalPos;
         spawned.transform.localRotation = Quaternion.identity;
+        spawnedAmmo.Add(spawned.gameObject);
 
     }
 }
