@@ -22,4 +22,9 @@ public class LevelPlayedTracker : LevelTracker
         total++;
         Serialize();
     }
+
+    public override void ClearTracker()
+    {
+        EnemyManager.OnGameStart.RemoveListener(OnLevelStarted);
+    }
 }

@@ -56,6 +56,12 @@ public class GameOverPanel : MonoBehaviour
         canvasTransform.gameObject.SetActive(false);
         GameStateManager.onGameWin += OnGameWin;
         GameStateManager.onGameLose += OnGameLose;
+
+        foreach (var stat in stats)
+        {
+            stat.Initialize(true);
+            
+        }
     }
 
     private void OnDestroy()
@@ -66,6 +72,11 @@ public class GameOverPanel : MonoBehaviour
         {
             input.started -= Input_started;
             input.canceled -= Input_canceled;
+        }
+
+        foreach (var stat in stats)
+        {
+            stat.ClearTracker();
         }
     }
 
@@ -78,7 +89,7 @@ public class GameOverPanel : MonoBehaviour
             
             var count = stat.total - stat.getSerializeValue;
 
-            print($"Trying to display: {stat.displayName} {stat.statName} : {count}");
+            //print($"Trying to display: {stat.displayName} {stat.statName} : {count}. Total? {stat.total}");
             if (count <= 0) continue;
             
             var prefab = Instantiate(statTextPrefab, contentParent);

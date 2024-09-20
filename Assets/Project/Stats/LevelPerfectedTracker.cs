@@ -19,4 +19,9 @@ public class LevelPerfectedTracker : LevelTracker
         if(Gate.IsFullHealth)
             total++;
     }
+
+    public override void ClearTracker()
+    {
+        GameStateManager.onGameWin -= OnLevelComplete;
+    }
 }

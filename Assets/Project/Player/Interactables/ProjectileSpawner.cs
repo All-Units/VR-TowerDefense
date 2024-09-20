@@ -21,7 +21,7 @@ public class ProjectileSpawner : MonoBehaviour
     [SerializeField] private GuidedMissileTargeter _targeter;
     private TowerPlayerWeapon _playerWeapon;
 
-    private void Start()
+    protected void Start()
     {
         _playerWeapon = GetComponent<TowerPlayerWeapon>();
     }
@@ -62,7 +62,6 @@ public class ProjectileSpawner : MonoBehaviour
                     guidedMissile.targeter = _targeter;
                     guidedMissile.index = i;
                 }
-                Debug.Log($"firing base", projectile.gameObject);
                 projectile.gameObject.DestroyAfter(15f);
                 fired++;
                 //Destroy(projectile, 15f);

@@ -760,9 +760,11 @@ public abstract class Enemy : MonoBehaviour, IPausable
         _IsFrozenAfterHit = false;
     }
     #endregion
-
+    bool _isDead = false;
     private void HealthControllerOnOnDeath()
     {
+        if (_isDead) return;
+        _isDead = true;
         OnDeath?.Invoke(this);
     }
 

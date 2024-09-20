@@ -18,4 +18,9 @@ public class TowerDestroyedTracker : TowerTracker
         if (obj.dto == _towerToTrack)
             total++;
     }
+
+    public override void ClearTracker()
+    {
+        Tower.OnTowerDestroy -= TowerOnTowerDestroy;
+    }
 }

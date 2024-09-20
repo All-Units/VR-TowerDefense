@@ -18,4 +18,9 @@ public class LevelWonTracker : LevelTracker
         total++;
         
     }
+
+    public override void ClearTracker()
+    {
+        GameStateManager.onGameWin -= OnLevelComplete;
+    }
 }

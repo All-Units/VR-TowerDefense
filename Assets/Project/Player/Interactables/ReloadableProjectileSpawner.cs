@@ -6,6 +6,15 @@ public class ReloadableProjectileSpawner : ProjectileSpawner
     [SerializeField] private int maxAmmo;
     private int _currentAmmo;
     [SerializeField] List<GameObject> _LoadedAmmoModels = new List<GameObject>();
+    protected new void Start()
+    {
+        base.Start();
+        foreach (GameObject model in _LoadedAmmoModels)
+        {
+            model.SetActive(false);
+        }
+
+    }
     public override void Fire()
     {
         if(CheckCantFireModules()) return;

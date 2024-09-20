@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
@@ -19,6 +20,14 @@ public class InventoryManager : MonoBehaviour
     public XRDirectInteractor playerRightHand;
     [SerializeField] private GameObject leftHandParent;
     [SerializeField] private GameObject rightHandParent;
+
+    [SerializeField] TextMeshProUGUI debugText;
+    public static void SetDebugText(string s)
+    {
+        if (instance == null || instance.debugText == null) return;
+        instance.debugText.text = s;
+    }
+
 
     #region Player Item Variables
 

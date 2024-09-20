@@ -22,4 +22,9 @@ public class TowerKillsTracker : TowerTracker
     {
         Debug.Log($"{_towerToTrack.name} placed: {total}");
     }
+
+    public override void ClearTracker()
+    {
+        ProjectileTower.onKill -= ProjectileTowerOnKill;
+    }
 }

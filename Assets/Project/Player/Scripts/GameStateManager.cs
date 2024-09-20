@@ -20,17 +20,19 @@ public class GameStateManager : MonoBehaviour
     public static Action onStartGameLose;
     
     public static Action onGameWin;
-    public static Action onGameLose;    
+    public static Action onGameLose;
+    public static bool IsGameOver = false;
 
     private void Awake()
     {
         instance = this;
-
+        IsGameOver = false;
         
     }
     
     public static void LoseGame()
     {
+        IsGameOver = true;
         if (instance)
             instance.PlayLoseSequence();
     }
@@ -68,6 +70,7 @@ public class GameStateManager : MonoBehaviour
 
     public static void WinGame()
     {
+        IsGameOver = true;
         if (instance)
             instance.PlayWinSequence();
     }

@@ -110,8 +110,13 @@ public class EnemyManager : MonoBehaviour
         skipRoundAction.canceled += SkipRoundAction_canceled;
 
     }
+    private void OnDestroy()
+    {
+        skipRoundAction.started -= SkipRoundAction_started;
+        skipRoundAction.canceled -= SkipRoundAction_canceled;
+    }
 
-    
+
 
     private void Update()
     {
@@ -419,7 +424,7 @@ public class EnemyManager : MonoBehaviour
     private void SkipRoundAction_started(InputAction.CallbackContext obj)
     {
         if (_currentWaveComplete == false) return;
-
+        if (GameStateManager.IsGameOver) return;
         //If we are the tutorial level but we haven't unlocked skipping level, don't do it accidentally
         if (IS_TUTORIAL && SKIP_TUTORIAL_IS_COMPLETE == false) return;
         XRPauseMenu.ForceResume();

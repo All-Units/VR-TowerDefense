@@ -22,4 +22,9 @@ public class TowerPlayerWeaponKillsTracker : StatTracker
             total++;
         }
     }
+
+    public override void ClearTracker()
+    {
+        TowerTakeoverObject.OnKillWithItem -= OnKill;
+    }
 }

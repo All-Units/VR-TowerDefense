@@ -8,6 +8,6 @@ public class VersionNumberDisplay : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        text.text = Application.version;
+        text.text = $"Version {Application.version}";
     }
 }

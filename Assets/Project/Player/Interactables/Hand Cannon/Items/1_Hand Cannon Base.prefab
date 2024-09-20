@@ -144,6 +144,7 @@ Transform:
   m_Children:
   - {fileID: 8149805852663075089}
   - {fileID: 5344279903402081205}
+  - {fileID: 4426742653444424102}
   m_Father: {fileID: 941280925213281268}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -197,6 +198,113 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &2439747299856092937
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4426742653444424102}
+  - component: {fileID: 3913156960075111938}
+  - component: {fileID: 8190968647008368692}
+  - component: {fileID: 9177516508114823300}
+  m_Layer: 0
+  m_Name: Loaded
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4426742653444424102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2439747299856092937}
+  m_LocalRotation: {x: 0.6238114, y: 0, z: 0, w: 0.7815749}
+  m_LocalPosition: {x: -0, y: -1.922, z: -1.294}
+  m_LocalScale: {x: 0.8, y: 0.6686, z: 0.8}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6467702324661282750}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 77.19, y: 0, z: 0}
+--- !u!33 &3913156960075111938
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2439747299856092937}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &8190968647008368692
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2439747299856092937}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 7211448773848044386, guid: 44f3430c585c6514985b591c28e05a78, type: 3}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!136 &9177516508114823300
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2439747299856092937}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3843774419124593202
 GameObject:
   m_ObjectHideFlags: 0
@@ -760,7 +868,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   table: {fileID: 851444326751890993}
   rb: {fileID: 5345556446942606926}
-  resetTime: 2
   offset: {x: 0, y: 3, z: 0.5}
   playerItem: {fileID: 0}
   CurrentPosition: {x: 0, y: 0, z: 0}
@@ -795,6 +902,8 @@ MonoBehaviour:
   overheatModule: {fileID: 2063788382864755783}
   _targeter: {fileID: 0}
   maxAmmo: 1
+  _LoadedAmmoModels:
+  - {fileID: 2439747299856092937}
 --- !u!114 &2405190930013075983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -820,6 +929,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8f76b04b8b44428d8ae723e9760da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MaxVelocity: 20
   shotsToOverheat: 3
   cooldownRate: 2
   OnOverHeat:
@@ -855,7 +965,8 @@ MonoBehaviour:
   OnHeatChange:
     m_PersistentCalls:
       m_Calls: []
-  CurrentHeat: 0
+  CurrentHeatDebug: 0
+  _LastVelocity: 0
 --- !u!1001 &4640072961347539784
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -19,4 +19,9 @@ public class TowerPlacedTracker : TowerTracker
         if (obj == _towerToTrack)
             total++;
     }
+
+    public override void ClearTracker()
+    {
+        TowerSpawnManager.OnTowerSpawned -= OnTowerSpawned;
+    }
 }
