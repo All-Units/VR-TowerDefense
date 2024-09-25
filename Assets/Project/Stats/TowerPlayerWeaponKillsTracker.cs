@@ -3,10 +3,10 @@
 [CreateAssetMenu(menuName = "SO/Stats/Tower Player Weapon Kills")]
 public class TowerPlayerWeaponKillsTracker : StatTracker
 {
-    [SerializeField] TowerTakeoverObject trackedTowerTakeoverObject;
+    [SerializeField] TowerPlayerWeapon trackedTowerTakeoverObject;
     protected override void InitTracker()
     {
-        TowerTakeoverObject.OnKillWithItem += OnKill;
+        TowerPlayerWeapon.onKill += OnKill;
     }
 
     public override void Print()
@@ -14,17 +14,29 @@ public class TowerPlayerWeaponKillsTracker : StatTracker
         Debug.Log($"{statName}: {total}");
     }
 
-    private void OnKill(TowerTakeoverObject towerTakeoverObject)
+    private void OnKill(TowerPlayerWeapon towerTakeoverObject, Enemy e)
     {
-        if(trackedTowerTakeoverObject == towerTakeoverObject)
+        if (trackedTowerTakeoverObject.Power != null && trackedTowerTakeoverObject.Power == towerTakeoverObject.Power)
         {
             Debug.Log($"OnKill: {trackedTowerTakeoverObject}");
             total++;
+            InventoryManager.SetDebugText($"Set {trackedTowerTakeoverObject} total to: {total}");
+            return;
+        }
+        else if(trackedTowerTakeoverObject.Data == towerTakeoverObject.Data)
+        {
+            Debug.Log($"OnKill: {trackedTowerTakeoverObject}");
+            total++;
+            InventoryManager.SetDebugText($"Set {trackedTowerTakeoverObject} total to: {total}");
+        }
+        else
+        {
+            InventoryManager.SetDebugText($"KILLED BY: {towerTakeoverObject}");
         }
     }
 
     public override void ClearTracker()
     {
-        TowerTakeoverObject.OnKillWithItem -= OnKill;
+        TowerPlayerWeapon.onKill -= OnKill;
     }
 }

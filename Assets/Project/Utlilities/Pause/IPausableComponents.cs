@@ -53,6 +53,8 @@ public static class IPExtenstions
         XRPauseMenu.OnPause += pausable.OnPause;
 
         XRPauseMenu.OnResume += pausable.OnResume;
+        
+        
     }
     public static void DestroyPausable(this IPausable pausable)
     {

@@ -16,7 +16,7 @@ public class StatsManager : MonoBehaviour
             yield return null;
             foreach (var stat in stats)
             {
-                stat.ResetTotal();
+                //stat.ResetTotal();
                 stat.Initialize(true);
             }
         }

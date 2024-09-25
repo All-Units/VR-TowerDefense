@@ -24,8 +24,10 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] TextMeshProUGUI debugText;
     public static void SetDebugText(string s)
     {
+#if UNITY_EDITOR
         if (instance == null || instance.debugText == null) return;
         instance.debugText.text = s;
+#endif
     }
 
 

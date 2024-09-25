@@ -187,6 +187,7 @@ public class ProjectileTower : PlayerControllableTower
         turretModel.SetActive(false);
         playerPlatform.SetActive(true);
         
+        
         switch (projectileTowerSo.playerItem_SO)
         {
             case PlayerItem_SO itemSo:

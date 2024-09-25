@@ -13,10 +13,12 @@ public class ArrowSpawner : MonoBehaviour
     private bool _arrowNotched = false;
     private GameObject _currentArrow;
 
+    TowerPlayerWeapon _weapon;
     private void Start()
     {
         // bow = GetComponentInParent<XRGrabInteractable>();
         PullInteraction.PullActionReleased += NotchEmpty;
+        _weapon = GetComponentInParent<TowerPlayerWeapon>();
     }
 
     private void OnDestroy()
@@ -60,6 +62,11 @@ public class ArrowSpawner : MonoBehaviour
             _currentArrow.transform.SetParent(notch.transform);
             _currentArrow.transform.localPosition = Vector3.forward * .05f;
             _currentArrow.transform.localRotation = Quaternion.identity;
+
+            if (_weapon != null)
+            {
+                arrow.playerWeapon = _weapon;
+            }
         }
     }
 

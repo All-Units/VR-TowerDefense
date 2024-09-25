@@ -74,7 +74,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     private void OnDestroy()
     {
         OnDestroyPausable();
-        OnTowerDestroy?.Invoke(this);
+        
     }
 
     #endregion
@@ -139,7 +139,7 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
 
     public virtual void Die()
     {
-        
+        OnTowerDestroy?.Invoke(this);
         TowerSpawnManager.PlayDeathSounds(transform.position);
 
         if (deathParticles == null)

@@ -30,8 +30,15 @@ public class HealthController : MonoBehaviour
     /// <param name="from"></param>
     public void TakeDamageFrom(int dmg, Vector3 from, DamageDealer damageDealer = null)
     {
-        if(TakeDamage(dmg) && damageDealer != null)
-            damageDealer.OnKill(GetComponent<Enemy>());
+        if (damageDealer == null)
+        {
+            Debug.Log($"No damage dealer on taking damage: {gameObject.name}", gameObject);
+        }
+        if (TakeDamage(dmg) && damageDealer != null)
+        {
+            Debug.Log($"Killed by: {damageDealer.GetType().Name}, {nameof(damageDealer)}", damageDealer);
+            damageDealer.OnKill(GetComponent<Enemy>()); 
+        }
             
         OnTakeDamageFrom?.Invoke(_currentHealth, from);
     }

@@ -24,6 +24,7 @@ public class BasicPausable : MonoBehaviour, IPausable
 
     public void OnInitPausable()
     {
+        var components = IPComponents;
         this.InitPausable();
     }
 

@@ -124,7 +124,7 @@ public class Projectile : DamageDealer, IPausable
     }
 
     public ProjectileTower tower { get; set; }
-    public TowerPlayerWeapon playerWeapon { get; set; }
+    
     bool _hasHitEnemy = false;
     protected virtual void OnCollision(Collider other)
     {
@@ -180,6 +180,7 @@ public class Projectile : DamageDealer, IPausable
         
         if(playerWeapon != null)
             playerWeapon.OnKill(enemy);
+        
     }
 
     void IPausable.OnPause()
@@ -202,6 +203,7 @@ public class DamageDealer : MonoBehaviour
     public int damage;
     public DamageType damageType;
     public StatusModifier statusModifier;
+    public TowerPlayerWeapon playerWeapon { get; set; }
 
     protected void ApplyDamage(HealthController healthController, int damageToApply, Vector3 pos)
     {
@@ -215,7 +217,16 @@ public class DamageDealer : MonoBehaviour
         {
             var statusEffectController = healthController.GetComponentInChildren<StatusEffectController>();
             if (statusEffectController)
-                statusModifier.ApplyStatus(statusEffectController);
+            {
+                statusEffectController.damageSource = this;
+                if (playerWeapon != null)
+                {
+                    statusEffectController.damageSource = playerWeapon.GetDamageDealer;
+                }
+                
+                statusModifier.ApplyStatus(statusEffectController); 
+            }
+
         }
     }
 

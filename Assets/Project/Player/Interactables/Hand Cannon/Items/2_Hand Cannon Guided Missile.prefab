@@ -1617,6 +1617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 763a976c21e044143bba925f76f25d14, type: 2}
+  Power: {fileID: 0}
 --- !u!114 &3148344954466204216
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1630,8 +1631,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxVelocity: 20
-  shotsToOverheat: 3
-  cooldownRate: 2
+  shotsToOverheat: 4
+  cooldownRate: 0.1
   OnOverHeat:
     m_PersistentCalls:
       m_Calls:

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 public enum StatusEffectType
@@ -19,10 +20,12 @@ public class StatusEffectController : MonoBehaviour
     private Coroutine _burnCoroutine = null;
     private Coroutine _poisonCoroutine = null;
     private HealthController _healthController;
+    public DamageDealer damageSource { get; set; }
 
     private void Awake()
     {
         _healthController = GetComponentInParent<HealthController>();
+        gameObject.AddComponent<BasicPausable>();
     }
     public void PointUpwards()
     {
@@ -54,7 +57,7 @@ public class StatusEffectController : MonoBehaviour
         }
         else
         {
-            _burnCountdown = 5f;
+            _burnCountdown = BaseBurnCountdown;
         }
     }
 
@@ -63,9 +66,11 @@ public class StatusEffectController : MonoBehaviour
     private int _burnLevel = 0;
     private float _burnTime = 0;
     public float burnTimeLevelUp = 3.5f;
+    const float BaseBurnCountdown = 5f;
+    
     private IEnumerator BurnEffect(int scalar = 1)
     {
-        _burnCountdown = 5f;
+        _burnCountdown = BaseBurnCountdown;
         _burnLevel = 1;
         bool first = true;
         foreach (ParticleSystem particles in burnedVFX.GetComponentsInChildren<ParticleSystem>())
@@ -92,12 +97,18 @@ public class StatusEffectController : MonoBehaviour
             yield return new WaitForSeconds(1f);
             Vector3 forward = _healthController.transform.position + _healthController.transform.forward;
             if (_healthController.isDead == false)
-                _healthController.TakeDamageFrom(5 * _burnLevel * scalar, forward);
+            {
+                _burnLevel = (int)((BaseBurnCountdown -  _burnTime) / BaseBurnCountdown * 5f);
+                _burnLevel = math.max(1, _burnLevel);
+                int damage = 2 * _burnLevel * scalar;
+                _healthController.TakeDamageFrom(damage, forward, damageSource);
+            }
             var elapsedTime = Time.time - startTime;
             _burnCountdown -= elapsedTime;
             _burnTime += elapsedTime;
             if (_burnTime >= burnTimeLevelUp)
             {
+                
                 _burnLevel++;
                 burnTimeLevelUp *= 2;
             }
@@ -153,7 +164,7 @@ public class StatusEffectController : MonoBehaviour
         switch (effectType)
         {
             case StatusEffectType.Burn:
-                ApplyBurn();
+                ApplyBurn(burnScalar);
                 break;
 
             case StatusEffectType.Burn2:

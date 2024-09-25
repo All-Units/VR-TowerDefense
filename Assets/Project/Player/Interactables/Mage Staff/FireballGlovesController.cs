@@ -126,11 +126,20 @@ public class FireballGlovesController : MonoBehaviour
         var go = Instantiate(throwable, firePoint.position, firePoint.rotation);
         go.interactionManager.SelectEnter((IXRSelectInteractor)hand, go);
         lastFireball = go.gameObject;
-        StopCoroutine(chargingCoroutine);
+        if (chargingCoroutine != null)
+            StopCoroutine(chargingCoroutine);
         chargingCoroutine = null;
         _lastFireball = go;
         HapticFeedback();
         go.selectExited.AddListener(_OnThrow);
+
+        Projectile projectile = go.GetComponent<Projectile>();
+        TowerPlayerWeapon weapon = throwable.GetComponent<TowerPlayerWeapon>();
+        if (projectile != null && weapon != null) 
+        {
+            projectile.playerWeapon = weapon;
+        }
+        
         
     }
     void _OnThrow(SelectExitEventArgs a)

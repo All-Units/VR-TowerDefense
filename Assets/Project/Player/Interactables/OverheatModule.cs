@@ -43,6 +43,7 @@ public class OverheatModule : MonoBehaviour
 
     Vector3 lastPos = Vector3.zero;
     const float MINIMUM_COOLDOWN = 1f;
+    float _overheatedTime = 0f;
     private void Update()
     {
         CurrentHeatDebug = currentHeat;
@@ -51,15 +52,14 @@ public class OverheatModule : MonoBehaviour
         magnitude = MathF.Min(magnitude, MaxVelocity);
         _LastVelocity = _rb.velocity.magnitude;
         var rate = (cooldownRate * Time.deltaTime * magnitude);
-
+        
         //var rate = 1 / cooldownRate * Time.deltaTime * deltaP;
         currentHeat = Mathf.Max(0, currentHeat - rate);
-        //print($"Started at {CurrentHeatDebug}, now at {currentHeat}. Magnitude: {magnitude}. Rate: {rate}");
         if (_isOverheated && currentHeat < shotsToOverheat / 3f)
         {
-            //print($"Cooling down, current heat: {currentHeat}, was less than {shotsToOverheat / 3f}");
             _isOverheated = false;
             OnCoolDown?.Invoke();
+            InventoryManager.SetDebugText($"Cooled down in: {Time.time - _overheatedTime}s");
         }
         CurrentHeatDebug = currentHeat;
     }
@@ -86,6 +86,8 @@ public class OverheatModule : MonoBehaviour
         {
             _isOverheated = true;
             OnOverHeat?.Invoke();
+            _overheatedTime = Time.time;
+            InventoryManager.SetDebugText($"");
         }
     }
 

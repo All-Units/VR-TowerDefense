@@ -15,8 +15,8 @@ public class StatDisplayController : MonoBehaviour
 
     private void OnEnable()
     {
-        foreach (var stat in statDisplayModel.statTrackers)
-            stat.SerializeIfChanged();
+        //foreach (var stat in statDisplayModel.statTrackers)
+        //    stat.SerializeIfChanged();
 
         if(statDisplayModel.statTrackers.All(stat => stat.getSerializeValue == 0))
             Destroy(transform.parent.gameObject);
