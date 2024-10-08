@@ -128,6 +128,7 @@ public class Projectile : DamageDealer, IPausable
     bool _hasHitEnemy = false;
     protected virtual void OnCollision(Collider other)
     {
+        if (other.isTrigger) return;
         var healthController = other.GetComponentInParent<HealthController>();
         if (healthController != null)
         {

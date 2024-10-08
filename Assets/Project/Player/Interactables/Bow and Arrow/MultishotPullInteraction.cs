@@ -29,11 +29,13 @@ public class MultishotPullInteraction : MonoBehaviour
     List<GameObject> _tempArrows = new List<GameObject>();
     private IEnumerator SpawnArrow()
     {
+        Arrow ourArrow = GetComponent<Arrow>();
         yield return new WaitForSeconds(initialWaitTime);
         var t = spawnTime;
         foreach (var spawnPoint in firstSpawnPoints)
         {
             var arrow = Instantiate(prefab, spawnPoint);
+            arrow.playerWeapon = ourArrow.playerWeapon;
         }
         Vector3 localScale = Vector3.zero;
         foreach (var spawnPoint in spawnPoints)
@@ -43,6 +45,7 @@ public class MultishotPullInteraction : MonoBehaviour
             if (localScale == Vector3.zero) 
                 localScale = arrow.transform.localScale;
             arrow.transform.localScale = Vector3.zero;
+            arrow.playerWeapon = ourArrow.playerWeapon;
         }
         while (t > 0)
         {

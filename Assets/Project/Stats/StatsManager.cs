@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class StatsManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class StatsManager : MonoBehaviour
     private void Start()
     {
         stats.AddRange(StatTrackerHolder.BaseStats.trackers);
+        //Remove duplicates
+        stats = stats.ToHashSet().ToList();
         IEnumerator _WaitToStart()
         {
             yield return null;

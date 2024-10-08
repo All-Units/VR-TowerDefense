@@ -29,6 +29,18 @@ public class InventoryManager : MonoBehaviour
         instance.debugText.text = s;
 #endif
     }
+    /// <summary>
+    /// ADDS to the current debug text
+    /// </summary>
+    /// <param name="s"></param>
+    public static void AppendDebugText(string s)
+    {
+#if UNITY_EDITOR
+        if (instance == null || instance.debugText == null) return;
+        string newline = $"\n{s.Trim()}";
+        instance.debugText.text += newline;
+#endif
+    }
 
 
     #region Player Item Variables
@@ -71,6 +83,19 @@ public class InventoryManager : MonoBehaviour
         _isLeftHanded = false;
         if (isLeft.Equals("true"))
             _isLeftHanded = true;
+    }
+    private void Start()
+    {
+        instance = this;
+        IEnumerator _SetInstance()
+        {
+            for (int i = 0; i < 3; i++) { 
+                yield return null;
+                instance = this;
+                SetDebugText("");
+            }
+        }
+        StartCoroutine(_SetInstance());
     }
 
     #endregion

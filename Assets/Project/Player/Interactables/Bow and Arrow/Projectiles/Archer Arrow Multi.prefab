@@ -149,6 +149,7 @@ MonoBehaviour:
   OnHit:
     m_PersistentCalls:
       m_Calls: []
+  _graceRadius: 0.1
   OnDrawnBack:
     m_PersistentCalls:
       m_Calls:
@@ -224,7 +225,7 @@ MonoBehaviour:
   - {fileID: 7005886171480246060}
   prefab: {fileID: 443011399475535242, guid: 532bcdbf8cd6d214cbbe804e7c989451, type: 3}
   spawnTime: 0.6
-  initialWaitTime: 0.15
+  initialWaitTime: 0.2
 --- !u!114 &7414160968426255016
 MonoBehaviour:
   m_ObjectHideFlags: 0

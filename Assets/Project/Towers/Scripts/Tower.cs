@@ -91,10 +91,11 @@ public class Tower : MonoBehaviour, IEnemyTargetable, IPausable
     [HideInInspector] public int _overrideStarterHealth = -1;
     private IEnumerator PlayBuildingAnimation()
     {
+        healthController.SetMaxHealth(dto.maxHeath);
         transform.localScale = Vector3.one;
         _lastHealth = dto.maxHeath;
         var director = GetComponentInChildren<PlayableDirector>();
-        healthController.SetMaxHealth(dto.maxHeath / 2);
+        //healthController.SetMaxHealth(dto.maxHeath / 2);
         if (director != null )
             yield return new WaitForSeconds((float)director.duration);
         _lastHealth = dto.maxHeath;

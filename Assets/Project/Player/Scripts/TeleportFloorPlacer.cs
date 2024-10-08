@@ -37,10 +37,19 @@ public class TeleportFloorPlacer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (player == null && InventoryManager.instance != null)
-            player = InventoryManager.instance.playerTransform;
+        //if (player == null && InventoryManager.instance != null)
+        //    player = InventoryManager.instance.playerTransform;
         StartCoroutine(_RefreshTeleportHeightsLoop());
-        instance = this;
+        IEnumerator _SetInstance()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                yield return null;
+                instance = this;
+                player = InventoryManager.instance.playerTransform;
+            }
+        }
+        StartCoroutine(_SetInstance());
     }
 
     public static void ManualRefresh()
@@ -53,8 +62,8 @@ public class TeleportFloorPlacer : MonoBehaviour
     {
         while (true)
         {
-            _RepositionSquares();
             yield return new WaitForSeconds(refreshRate);
+            _RepositionSquares();
         }
     }
 

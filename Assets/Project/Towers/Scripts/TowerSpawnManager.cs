@@ -154,6 +154,7 @@ namespace Project.Towers.Scripts
             // End refactor needed
 
             tower.SpawnTower();
+            OnTowerSpawned?.Invoke(targetTower);
             return tower;
         }
 

@@ -36,6 +36,16 @@ public class FireballGlovesController : MonoBehaviour
         }
         XRPauseMenu.OnPause += DestroyFireballOnPause;
     }
+    private void OnDestroy()
+    {
+        var createFireballAction = Utilities.GetInputAction(createFireballActionReference);
+        if (createFireballAction != null)
+        {
+            createFireballAction.started -= createFireballActionOnStarted;
+            createFireballAction.canceled -= createFireballActionOnReleased;
+        }
+        XRPauseMenu.OnPause -= DestroyFireballOnPause;
+    }
 
     void DestroyFireballOnPause()
     {

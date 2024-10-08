@@ -8,6 +8,9 @@ using Vector3 = UnityEngine.Vector3;
 
 public class PlayerControllableTower : Tower
 {
+    /// <summary>
+    /// If the tower is currently controlled by the player
+    /// </summary>
     public bool isPlayerControlled { get; private set; } = false;
     [SerializeField] private Transform playerControlPosition;
     
@@ -16,6 +19,7 @@ public class PlayerControllableTower : Tower
 
     public override void Die()
     {
+        base.Die();
         if (isPlayerControlled)
         {
             PlayerStateController.DiedInTower();
@@ -24,7 +28,7 @@ public class PlayerControllableTower : Tower
             InventoryManager.instance.ReleaseAllItems();
         }
         
-        base.Die();
+        
     }
     public virtual void PlayerTakeControl()
     {

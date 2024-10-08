@@ -148,11 +148,11 @@ namespace UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets
                 teleportModeCancelAction.performed -= OnCancelTeleport;
             }
         }
-
         void OnStartTeleport(InputAction.CallbackContext context)
         {
             m_Teleporting = true;
-
+            
+            
             if (m_TeleportInteractor != null)
                 m_TeleportInteractor.gameObject.SetActive(true);
 

@@ -82,6 +82,7 @@ public class ResetOnDrop : MonoBehaviour
     private void OnDisable()
     {
         InventoryManager.OnItemsHidden.RemoveListener(_OnAllItemsHidden);
+        PlayerStateController.OnStateChange -= _OnStateChange;
     }
 
     void _OnAllItemsHidden()

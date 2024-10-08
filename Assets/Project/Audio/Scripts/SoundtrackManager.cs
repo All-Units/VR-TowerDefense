@@ -32,6 +32,7 @@ public class SoundtrackManager : MonoBehaviour
     {
         EnemyManager.OnRoundEnded.AddListener(PlayBetweenRounds);
         EnemyManager.OnRoundStarted.AddListener(PlayCombat);
+        GameStateManager.onGameLose += PlayMenu;
     }
 
     public static void PlayMenu()
