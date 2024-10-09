@@ -59,7 +59,6 @@ public class OverheatModule : MonoBehaviour
         {
             _isOverheated = false;
             OnCoolDown?.Invoke();
-            InventoryManager.SetDebugText($"Cooled down in: {Time.time - _overheatedTime}s");
         }
         CurrentHeatDebug = currentHeat;
     }
@@ -87,7 +86,6 @@ public class OverheatModule : MonoBehaviour
             _isOverheated = true;
             OnOverHeat?.Invoke();
             _overheatedTime = Time.time;
-            InventoryManager.SetDebugText($"");
         }
     }
 

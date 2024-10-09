@@ -51,6 +51,8 @@ public class StatDisplayController : MonoBehaviour
         {
             var text = Instantiate(valueText, titleText.transform.parent);
             text.text = $"{tracker.statName}: {tracker.getSerializeValue}";
+            if (tracker.displayTextColor != Color.clear)
+                text.color = tracker.displayTextColor;
             if (tracker is TowerDestroyedTracker towerDestroyedTracker)
             {
                 //text = Instantiate(valueText, titleText.transform.parent);
@@ -129,6 +131,7 @@ public class StatDisplayController : MonoBehaviour
         _currentDelayRoutine = null; }
     void RestartBuildAfter(float time = 0f)
     {
+        if (gameObject.activeInHierarchy == false) return;
         if (_currentDelayRoutine != null) StopCoroutine(_currentDelayRoutine);
         _currentDelayRoutine = delayAnim(time);
         StartCoroutine(_currentDelayRoutine);
@@ -143,9 +146,9 @@ public class StatDisplayController : MonoBehaviour
     }
     void _RestartBuildAnim()
     {
-        if (TowerDirector == null) { Debug.Log($"No TowerDirector on me: {gameObject.name}", this); }
+        //if (TowerDirector == null) { Debug.Log($"No TowerDirector on me: {gameObject.name}", this); }
         if (TowerDirector == null) return;
-        Debug.Log($"Restarting director {TowerDirector.gameObject.name}", TowerDirector);
+        //Debug.Log($"Restarting director {TowerDirector.gameObject.name}", TowerDirector);
         TowerDirector.Stop();
         TowerDirector.time = 0;
         TowerDirector.Play();

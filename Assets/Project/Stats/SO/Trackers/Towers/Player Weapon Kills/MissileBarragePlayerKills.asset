@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61dd0d90de69411f8c5179e8c0d76b3b, type: 3}
+  m_Name: MissileBarragePlayerKills
+  m_EditorClassIdentifier: 
+  key: missileBarragePlayerWeapon
+  displayName: Player Kills
+  statName: Player Kills
+  total: 5
+  _isInitialized: 1
+  displayTextColor: {r: 0.8941177, g: 0.2627451, b: 0.121568635, a: 1}
+  trackedTowerTakeoverObject: {fileID: 2405190930013075983, guid: d0fbb121fd128084cab9ea932d22228d,
+    type: 3}

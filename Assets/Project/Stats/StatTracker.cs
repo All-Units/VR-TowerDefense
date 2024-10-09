@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using UnityEditor;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 #if UNITY_EDITOR
 
@@ -15,11 +17,10 @@ public class StatTrackerEditor : Editor
             foreach (var obj in Selection.objects)
             {
                 if (obj != null && obj is StatTracker stat)
-                { 
-                    stat.ResetTotal(); 
-                    Debug.Log($"Zeroing: {stat.name}");}
+                {
+                    stat.ResetTotal();
+                    Debug.Log($"Zeroing: {stat.name}"); }
             }
-            //s.ResetTotal();
 
         }
         if (GUILayout.Button("Force Serialize"))
@@ -29,11 +30,20 @@ public class StatTrackerEditor : Editor
                 if (obj != null && obj is StatTracker stat)
                 {
                     stat.Serialize();
-                    Debug.Log($"Serializing: {stat.name}");
+                    //Debug.Log($"Serializing: {stat.name}");
                 }
             }
-            //s.Serialize();
-            //Debug.Log($"Serialized: {s.name}");
+        }
+        if (GUILayout.Button("Force Deserialize"))
+        {
+            foreach (var obj in Selection.objects)
+            {
+                if (obj != null && obj is StatTracker stat)
+                {
+                    stat.Deserialize();
+                    //Debug.Log($"Serializing: {stat.name}");
+                }
+            }
         }
         bool _NoSpaces = true;
         foreach (var obj in Selection.objects)
@@ -53,6 +63,10 @@ public class StatTrackerEditor : Editor
                 }
             }
         }
+
+
+
+
         /*
         bool bttn = s.prefabs;
 
@@ -86,7 +100,40 @@ public class StatTrackerEditor : Editor
         }*/
         base.OnInspectorGUI();
 
+        if (BaseStats == null) return;
+        bool _isInBaseStats = false;
+        foreach (var stat in _SelectedStats())
+            _isInBaseStats = _isInBaseStats || BaseStats.trackers.Contains(stat);
+        if (_isInBaseStats == false && GUILayout.Button($"Add to Base Stats"))
+        {
+            foreach (var obj in Selection.objects)
+            {
+                if (obj != null && obj is StatTracker stat)
+                    BaseStats.trackers.Add(stat);
+            }
+        }
+
     }
+    List<StatTracker> _SelectedStats()
+    {
+        List<StatTracker> _selected = new List<StatTracker>();
+        foreach (var obj in Selection.objects)
+        {
+            if (obj != null && obj is StatTracker stat)
+                _selected.Add(stat);
+        }
+        return _selected;
+    }
+    StatTrackerHolder BaseStats { 
+        get 
+        {
+            if (_baseStats == null)
+                _baseStats = Resources.Load<StatTrackerHolder>("Base Stats");
+            return _baseStats;
+        } 
+        }
+    StatTrackerHolder _baseStats;
+
 
     protected virtual void OnSceneGUI()
     {
@@ -110,6 +157,7 @@ public abstract class StatTracker : ScriptableObject
 
     public int total = 0;
     [SerializeField] private bool _isInitialized = false;
+    public Color displayTextColor = Color.clear;
 
     public void Initialize(bool _force = false)
     {

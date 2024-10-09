@@ -222,7 +222,7 @@ public class DamageDealer : MonoBehaviour
                 statusEffectController.damageSource = this;
                 if (playerWeapon != null)
                 {
-                    statusEffectController.damageSource = playerWeapon.GetDamageDealer;
+                    //statusEffectController.damageSource = playerWeapon.GetDamageDealer;
                 }
                 
                 statusModifier.ApplyStatus(statusEffectController); 

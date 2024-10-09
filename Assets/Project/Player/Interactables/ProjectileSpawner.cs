@@ -19,7 +19,7 @@ public class ProjectileSpawner : MonoBehaviour
 
     [SerializeField] protected OverheatModule overheatModule;
     [SerializeField] private GuidedMissileTargeter _targeter;
-    private TowerPlayerWeapon _playerWeapon;
+    protected TowerPlayerWeapon _playerWeapon;
 
     protected void Start()
     {

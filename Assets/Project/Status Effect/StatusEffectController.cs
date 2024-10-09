@@ -67,6 +67,8 @@ public class StatusEffectController : MonoBehaviour
     private float _burnTime = 0;
     public float burnTimeLevelUp = 3.5f;
     const float BaseBurnCountdown = 5f;
+
+    public float EffectDuration => BaseBurnCountdown;
     
     private IEnumerator BurnEffect(int scalar = 1)
     {

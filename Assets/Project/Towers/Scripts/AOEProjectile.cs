@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -46,6 +47,7 @@ public class AOEProjectile : Projectile
         Vector3 pos = transform.position;
         var hits = Physics.OverlapSphere(pos, splashRadius, LayerMask.GetMask(TargetLayer, "Ragdoll"));
         HashSet<HealthController> hcs = new HashSet<HealthController>();
+        float _DestroyDelay = 0f;
         foreach (var hit in hits)
         {
             //Don't care about triggers
@@ -61,6 +63,11 @@ public class AOEProjectile : Projectile
                 var radius = distance/splashRadius;
                 var dmg = Mathf.FloorToInt(damage * damageDropOff.Evaluate(Mathf.Clamp01(radius)));
                 ApplyDamage(healthController, dmg, pos);
+                StatusEffectController controller = healthController.GetComponentInChildren<StatusEffectController>();
+                if (controller != null)
+                {
+                    _DestroyDelay = Math.Max(controller.EffectDuration, _DestroyDelay);
+                }
                 ApplyEffects(healthController);
             }
             BasicEnemy.FlingRagdoll(colliderGameObject, pos);
@@ -72,11 +79,44 @@ public class AOEProjectile : Projectile
             particles.DestroyAfter(2f);
             //Destroy(particles, 2f);
         }
+        //Turn
+        if (_DestroyDelay != 0)
+        {
+            transform.position = new Vector3(0f, -8000f, 0f);
+            //Go through reversed first, to check if dependencies?
+            foreach (var comp in GetComponentsInChildren<Component>().Reverse())
+            {
+                //Early out
+                if (comp is Transform) continue;
+                if (comp == this) continue;
+                if (comp is TowerPlayerWeapon) continue;
+                try
+                {
+                    Destroy(comp);
+                }
+                catch { }
+                
+            }
+            foreach (var comp in GetComponentsInChildren<Component>())
+            {
+                //Early out
+                if (comp is Transform) continue;
+                if (comp == this) continue;
+                if (comp is TowerPlayerWeapon) continue;
 
+                try
+                {
+                    Destroy(comp);
+                }
+                catch { }
+            }
+            Debug.Log($"Made Projectile empty: {gameObject.name}", this);
+
+        }
         validDestroy = true;
         OnHit?.Invoke();
         isDestroying = true;
-        Destroy(gameObject);
+        Destroy(gameObject, _DestroyDelay);
     }
 
     public void ManualExplode()
