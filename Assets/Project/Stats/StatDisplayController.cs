@@ -17,6 +17,10 @@ public class StatDisplayController : MonoBehaviour
     [SerializeField] private Animator animator;
 
     [SerializeField] private PlayableAsset TowerBuildTimeline;
+
+    [SerializeField] Transform PanelTransform;
+    [SerializeField] Vector3 _heldOffset = new Vector3(0f, 0.3f, -0.4f);
+
     PlayableDirector TowerDirector { get {
             if (_towerDirector == null && _checkedTowerDirector == false) 
             {
@@ -69,6 +73,8 @@ public class StatDisplayController : MonoBehaviour
 
         if (animator != null)
             _CloseDisplay();
+        if (PanelTransform)
+            _startPanelPos = PanelTransform.localPosition;
 
     }
     Vector3 _startPos;
@@ -92,10 +98,14 @@ public class StatDisplayController : MonoBehaviour
     {
         _OpenDisplay();
         _held = true;
+        
+        PanelTransform.localPosition = _startPanelPos + _heldOffset;
     }
+    Vector3 _startPanelPos = Vector3.zero;
 
     public void OnDropItem(SelectExitEventArgs a)
     {
+        PanelTransform.localPosition = _startPanelPos;
         _held = false;
         _CloseDisplay();
         if (_currentResetter != null) StopCoroutine(_currentResetter );

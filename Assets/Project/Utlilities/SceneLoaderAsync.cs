@@ -35,7 +35,6 @@ public class SceneLoaderAsync : MonoBehaviour
         {
             yield return null;
         }
-        print($"Finished loading: {_currentScene}");
         yield return new WaitForSeconds(0.1f);
         GameObject toDestroy = instance.gameObject;
         instance = null;

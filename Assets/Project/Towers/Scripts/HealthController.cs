@@ -36,7 +36,6 @@ public class HealthController : MonoBehaviour
         }
         if (TakeDamage(dmg) && damageDealer != null)
         {
-            Debug.Log($"Killed by: {damageDealer.GetType().Name}, {nameof(damageDealer)}", damageDealer);
             damageDealer.OnKill(GetComponent<Enemy>()); 
         }
             

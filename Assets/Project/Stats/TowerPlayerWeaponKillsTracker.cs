@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/Stats/Tower Player Weapon Kills")]
 public class TowerPlayerWeaponKillsTracker : StatTracker
@@ -18,21 +19,23 @@ public class TowerPlayerWeaponKillsTracker : StatTracker
     {
         if (trackedTowerTakeoverObject.Power != null && trackedTowerTakeoverObject.Power == towerTakeoverObject.Power)
         {
-            Debug.Log($"OnKill: {trackedTowerTakeoverObject}");
             total++;
-            InventoryManager.SetDebugText($"Set {trackedTowerTakeoverObject} total to: {total}");
+            //Debug.Log($"A MATCHING POWER: {trackedTowerTakeoverObject.Power} to {towerTakeoverObject.gameObject.name}", towerTakeoverObject);
             return;
         }
-        else if(trackedTowerTakeoverObject.Data == towerTakeoverObject.Data)
+        else if(trackedTowerTakeoverObject.Data != null && trackedTowerTakeoverObject.Data == towerTakeoverObject.Data)
         {
-            Debug.Log($"OnKill: {trackedTowerTakeoverObject}");
             total++;
-            InventoryManager.SetDebugText($"Set {trackedTowerTakeoverObject} total to: {total}");
+            return;
         }
-        else
-        {
-            InventoryManager.SetDebugText($"KILLED BY: {towerTakeoverObject}");
-        }
+
+        return;
+        InventoryManager.SetDebugText($"KILLED BY: {towerTakeoverObject}.\n" +
+            $"THIS IS AN ERROR!");
+        Debug.LogError($"No data or power on {towerTakeoverObject.transform.FullPath()}. We are {trackedTowerTakeoverObject.name}. \t" +
+            $"TrackedTowerPower == null? {trackedTowerTakeoverObject.Power == null}. " +
+            $"was TowerData null? {trackedTowerTakeoverObject.Data == null} ", towerTakeoverObject);
+        
     }
 
     public override void ClearTracker()

@@ -9,8 +9,10 @@ public class StatusModifier : ScriptableObject
     public Color AltBurnColor = Color.white;
     public void ApplyStatus(StatusEffectController controller)
     {
-        controller.BurnColor = BurnColor;
-        controller.AltBurnColor = AltBurnColor;
-        controller.ApplyStatus(effectType, BurnScalar);
+        //controller.BurnColor = BurnColor;
+        //controller.AltBurnColor = AltBurnColor;
+
+        if (controller.SetBurn(this) == false)
+            controller.ApplyStatus(effectType, BurnScalar);
     }
 }

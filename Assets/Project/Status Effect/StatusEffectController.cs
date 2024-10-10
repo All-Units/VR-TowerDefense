@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -50,10 +51,13 @@ public class StatusEffectController : MonoBehaviour
 
     public void ApplyBurn(int scalar = 1)
     {
+        Debug.LogError($"REACHED LEGACY BURN FUNC, DOING NOTHING");
+        return;
         if (_burnCoroutine == null)
         {
             _burnTime = 0;
-            _burnCoroutine = StartCoroutine(BurnEffect(scalar));
+            //_burnCoroutine = StartCoroutine(BurnEffect(scalar));
+            _burnCoroutine = StartCoroutine(BurnEffect());
         }
         else
         {
@@ -69,11 +73,9 @@ public class StatusEffectController : MonoBehaviour
     const float BaseBurnCountdown = 5f;
 
     public float EffectDuration => BaseBurnCountdown;
-    
-    private IEnumerator BurnEffect(int scalar = 1)
+
+    void _SetBurnColor()
     {
-        _burnCountdown = BaseBurnCountdown;
-        _burnLevel = 1;
         bool first = true;
         foreach (ParticleSystem particles in burnedVFX.GetComponentsInChildren<ParticleSystem>())
         {
@@ -88,21 +90,28 @@ public class StatusEffectController : MonoBehaviour
         Light light = burnedVFX.GetComponentInChildren<Light>();
         if (light != null)
             light.color = BurnColor;
+    }
+    
+    private IEnumerator BurnEffect()
+    {
+        _burnCountdown = BaseBurnCountdown;
+        _burnLevel = 1;
+        _SetBurnColor();
 
         burnedVFX.SetActive(true);
 
         while (_burnCountdown > 0)
         {
-            if (XRPauseMenu.IsPaused) { yield return null; continue; }
-            
             var startTime = Time.time;
             yield return new WaitForSeconds(1f);
+            if (XRPauseMenu.IsPaused) { yield return null; continue; }
             Vector3 forward = _healthController.transform.position + _healthController.transform.forward;
             if (_healthController.isDead == false)
             {
+                //(BaseBurnCountdown -  _burnTime) is to countdown 
                 _burnLevel = (int)((BaseBurnCountdown -  _burnTime) / BaseBurnCountdown * 5f);
                 _burnLevel = math.max(1, _burnLevel);
-                int damage = 2 * _burnLevel * scalar;
+                int damage = 2 * _burnLevel * _currentBurnScalar;
                 _healthController.TakeDamageFrom(damage, forward, damageSource);
             }
             var elapsedTime = Time.time - startTime;
@@ -161,6 +170,46 @@ public class StatusEffectController : MonoBehaviour
     #endregion
     public Color BurnColor = Color.blue;
     public Color AltBurnColor = Color.white;
+    //public void SetBurn(StatusEffectType effectType, int burnScalar = 1, Color primaryColor = new Color(), Color alternateColor = new Color())
+    /// <summary>
+    /// Tries to apply burn effect. Returns false if that fails
+    /// </summary>
+    /// <param name="mod"></param>
+    /// <returns></returns>
+    public bool SetBurn(StatusModifier mod)
+    {
+        HashSet<StatusEffectType> burnEffects = new HashSet<StatusEffectType>()
+        { StatusEffectType.Burn, StatusEffectType.Burn2, StatusEffectType.Burn3};
+        //Do nothing if we aren't a burn effect
+        if (burnEffects.Contains(mod.effectType) == false)
+            return false;
+        int scalar = _currentBurnScalar;
+        //Always resent burn timer / countdown
+        _burnCountdown = BaseBurnCountdown;
+        _burnTime = 0;
+
+        //If our burn scalar is higher, override data
+        if (mod.BurnScalar > _currentBurnScalar)
+        {
+            BurnColor = mod.BurnColor;
+            AltBurnColor = mod.AltBurnColor;
+            _currentBurnScalar = mod.BurnScalar;
+            
+            _SetBurnColor();
+            
+        }
+
+        //There is not a current burn active, start one
+        if (_burnCoroutine == null)
+        {
+            _burnCoroutine = StartCoroutine(BurnEffect());
+        } 
+        
+
+        return true;
+    }
+    int _currentBurnScalar = -1;
+    DamageDealer _currentDamageSource = null;
     public void ApplyStatus(StatusEffectType effectType, int burnScalar = 1)
     {
         switch (effectType)

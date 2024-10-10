@@ -79,7 +79,7 @@ public class AOEProjectile : Projectile
             particles.DestroyAfter(2f);
             //Destroy(particles, 2f);
         }
-        //Turn
+        //Turn obj into empty holder of Projectile
         if (_DestroyDelay != 0)
         {
             transform.position = new Vector3(0f, -8000f, 0f);
@@ -110,12 +110,12 @@ public class AOEProjectile : Projectile
                 }
                 catch { }
             }
-            Debug.Log($"Made Projectile empty: {gameObject.name}", this);
 
         }
         validDestroy = true;
         OnHit?.Invoke();
         isDestroying = true;
+        Debug.Log($"Destroying {gameObject.name} after {_DestroyDelay}s");
         Destroy(gameObject, _DestroyDelay);
     }
 

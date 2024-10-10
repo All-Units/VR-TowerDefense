@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 7184036440039440407}
   - component: {fileID: 2872828575579571665}
   - component: {fileID: 1394862805575704577}
+  - component: {fileID: 6257201249013800306}
   m_Layer: 8
   m_Name: 2_Mage Blue Fireball Throwable
   m_TagString: Untagged
@@ -53,12 +54,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 16
-  speed: 20
   damageType: {fileID: 0}
   statusModifier: {fileID: 11400000, guid: 391eea901cf141348be927ae6a76e65b, type: 2}
+  speed: 20
   _hitEnemy: {fileID: 1806234328444671963}
   _hitGround: {fileID: 1806234328444671963}
   flyingVFX: {fileID: 0}
+  particles: {fileID: 0}
   OnFire:
     m_PersistentCalls:
       m_Calls: []
@@ -89,6 +91,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 1
         m_CallState: 2
+  _graceRadius: 0.1
   splashRadius: 10
   hitParticles: {fileID: 8194992990867289339, guid: 6734f2b8a5298a24392b84eddd25988e,
     type: 3}
@@ -496,6 +499,20 @@ MonoBehaviour:
   m_StartingSingleGrabTransformers: []
   m_StartingMultipleGrabTransformers: []
   m_AddDefaultGrabTransformers: 1
+--- !u!114 &6257201249013800306
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8805872072579189874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a21466abb1fef1140bc4d3a668c567da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data: {fileID: 0}
+  Power: {fileID: 11400000, guid: 141e15234838008448fbcc2e35007bf2, type: 2}
 --- !u!1001 &2759501482039852842
 PrefabInstance:
   m_ObjectHideFlags: 0
