@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Linq;
 using TMPro;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Serialization;
@@ -20,6 +19,7 @@ public class StatDisplayController : MonoBehaviour
 
     [SerializeField] Transform PanelTransform;
     [SerializeField] Vector3 _heldOffset = new Vector3(0f, 0.3f, -0.4f);
+
 
     PlayableDirector TowerDirector { get {
             if (_towerDirector == null && _checkedTowerDirector == false) 
@@ -54,13 +54,14 @@ public class StatDisplayController : MonoBehaviour
         foreach (var tracker in statDisplayModel.statTrackers)
         {
             var text = Instantiate(valueText, titleText.transform.parent);
-            text.text = $"{tracker.statName}: {tracker.getSerializeValue}";
+            text.gameObject.SetActive(true);
+            text.text = tracker.GetDisplayString();//$"{tracker.statName}: {tracker.getSerializeValue}";
             if (tracker.displayTextColor != Color.clear)
                 text.color = tracker.displayTextColor;
-            if (tracker is TowerDestroyedTracker towerDestroyedTracker)
+            if (tracker is TowerDestroyedTracker towerDestroyedTracker && towerDestroyedTracker.DestroyedAsPlayerCount > 0)
             {
                 //text = Instantiate(valueText, titleText.transform.parent);
-                text.text += $"\t{towerDestroyedTracker.LostAsPlayerSuffix}: {towerDestroyedTracker.DestroyedAsPlayerCount}";
+                //text.text += $"\t{towerDestroyedTracker.LostAsPlayerSuffix}: {towerDestroyedTracker.DestroyedAsPlayerCount}";
             }
         }
 
@@ -75,7 +76,7 @@ public class StatDisplayController : MonoBehaviour
             _CloseDisplay();
         if (PanelTransform)
             _startPanelPos = PanelTransform.localPosition;
-
+        
     }
     Vector3 _startPos;
     Quaternion _startRot;

@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEditor;
 using UnityEngine;
+
+#if UNITY_EDITOR
+using UnityEditor;
+
 [CustomEditor(typeof(StatTrackerHolder))]
 
 public class StatTrackerHolderEditor : Editor
@@ -33,6 +36,7 @@ public class StatTrackerHolderEditor : Editor
         
     }
 }
+#endif
 
 [CreateAssetMenu(menuName = "SO/Stats/Tracker Holder")]
 public class StatTrackerHolder : ScriptableObject

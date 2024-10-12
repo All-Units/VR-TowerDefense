@@ -341,4 +341,64 @@ public static partial class Utilities
             Random.Range(bounds.min.z, bounds.max.z)
         );
     }
+    /// <summary>
+    /// Gets a string of less than 1000 and adds leading zeroes, so 1 becomes 001, 27 => 027 etc
+    /// </summary>
+    /// <param name="i"></param>
+    /// <returns></returns>
+    static string _HundredsString(int i)
+    {
+        int mod = i % 1000;
+        string zero = "";
+        //Append a zero in front if less than 100
+        if (mod < 100) zero = "0";
+        if (mod < 10) zero += "0";
+        string s = $"{zero}{mod}";
+
+        return s;
+    }
+    /// <summary>
+    /// Returns a pretty, comma separated repr of an integer, so 2098765432 reads as 2,098,765,432
+    /// </summary>
+    /// <param name="i">The integer to separate into hundreds, thousands, etc</param>
+    /// <param name="sep">Default single comma, can override with space, for ex.</param>
+    /// <returns></returns>
+    public static string PrettyNumber(this int i, string sep = ",")
+    {
+        //If we're less than 1,000, already pretty :)
+        if (i < 1000)
+            return $"{i}";
+        int mod = i % 1000;
+        string pretty = $"{_HundredsString(mod)}";
+        int num = i / 1000;
+        do
+        {
+            if (i < 1000) break;
+            mod = num % 10000;
+            string first = _HundredsString(mod);
+            if (mod < 1000)
+                first = $"{mod}";
+            pretty = $"{first}{sep}{pretty}";
+            num = num / 1000;
+        } while (num > 1000) ;
+        if (num != 0 && num < 1000 && num != i)
+            pretty = $"{num}{sep}{pretty}";
+        return pretty;
+    }
+    /// <summary>
+    /// TODO : UNTESTED!!!
+    /// </summary>
+    /// <param name="f"></param>
+    /// <param name="sep"></param>
+    /// <returns></returns>
+    public static string PrettyNumber(this float f, string sep = ",")
+    {
+        string s = PrettyNumber((int)f, sep);
+        //if (f == (int)f) return s;
+        int first_two = (int)((f * 100f) % 100);
+        //If the first two decimals are zero, just return PrettyNumber(int(f))
+        if (first_two == 0) return s;
+        s = $"{s}.{first_two}";
+        return s;
+    }
 }

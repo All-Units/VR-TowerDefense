@@ -115,7 +115,6 @@ public class AOEProjectile : Projectile
         validDestroy = true;
         OnHit?.Invoke();
         isDestroying = true;
-        Debug.Log($"Destroying {gameObject.name} after {_DestroyDelay}s");
         Destroy(gameObject, _DestroyDelay);
     }
 

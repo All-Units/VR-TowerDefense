@@ -27,6 +27,9 @@ public class InventoryManager : MonoBehaviour
 #if UNITY_EDITOR
         if (instance == null || instance.debugText == null) return;
         instance.debugText.text = s;
+#else
+        if (instance == null || instance.debugText == null) return;
+        Destroy(instance.debugText.gameObject);
 #endif
     }
     /// <summary>
@@ -40,6 +43,21 @@ public class InventoryManager : MonoBehaviour
         string newline = $"\n{s.Trim()}";
         instance.debugText.text += newline;
 #endif
+    }
+    static HashSet<StatTracker> _trackedStats = new HashSet<StatTracker>();
+    public static void UpdateStats(StatTracker toAdd = null)
+    {
+        if (toAdd != null && _trackedStats.Contains(toAdd) == false) 
+            _trackedStats.Add(toAdd);
+        if (_trackedStats.Count == 0 ) return;
+        string output = "";
+        foreach (var stat in _trackedStats)
+        {
+            output += $"{stat.name}: {stat.GetDisplayString().Trim()}";
+            output += "\n";
+        }
+        output = output.Trim();
+        SetDebugText(output);
     }
 
 
@@ -92,7 +110,6 @@ public class InventoryManager : MonoBehaviour
             for (int i = 0; i < 3; i++) { 
                 yield return null;
                 instance = this;
-                SetDebugText("");
             }
         }
         StartCoroutine(_SetInstance());

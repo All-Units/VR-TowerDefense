@@ -99,6 +99,7 @@ public class StatTrackerEditor : Editor
             s.ToggleColliders();
         }*/
         base.OnInspectorGUI();
+        GUILayout.Label($"Display: '{s.GetDisplayString()}'");
 
         if (BaseStats == null) return;
         bool _isInBaseStats = false;
@@ -110,6 +111,7 @@ public class StatTrackerEditor : Editor
             {
                 if (obj != null && obj is StatTracker stat)
                     BaseStats.trackers.Add(stat);
+                EditorUtility.SetDirty(BaseStats);
             }
         }
 
@@ -157,16 +159,23 @@ public abstract class StatTracker : ScriptableObject
 
     public int total = 0;
     [SerializeField] private bool _isInitialized = false;
+    public bool IsInitialized => _isInitialized;
     public Color displayTextColor = Color.clear;
-
+    public virtual string GetDisplayString()
+    {
+        string num = getSerializeValue.PrettyNumber();
+        if (_isInitialized)
+            num = total.PrettyNumber();
+        return $"{this.statName}: {num}";
+    }
     public void Initialize(bool _force = false)
     {
         if (_force)
             _isInitialized = false;
         if (_isInitialized) return;
-
-        InitTracker();
         _isInitialized = true;
+        InitTracker();
+        
     }
 
     protected abstract void InitTracker();

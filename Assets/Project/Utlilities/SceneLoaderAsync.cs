@@ -15,7 +15,8 @@ public class SceneLoaderAsync : MonoBehaviour
         //Do nothing if there is already a scene loader in existence
         if (instance != null)
         {
-            Debug.LogError($"Error loading: {sceneName}, a scene loader already exists! Loading: {_currentScene}");
+            //UNCOMMENT TO DEBUG
+            //Debug.LogError($"Error loading: {sceneName}, a scene loader already exists! Loading: {_currentScene}");
             return;
         }
         _currentScene = sceneName;

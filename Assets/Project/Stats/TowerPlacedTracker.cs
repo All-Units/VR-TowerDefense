@@ -17,7 +17,11 @@ public class TowerPlacedTracker : TowerTracker
     private void OnTowerSpawned(Tower_SO obj)
     {
         if (obj == _towerToTrack)
+        {
             total++;
+            InventoryManager.UpdateStats(this);
+        }
+            
     }
 
     public override void ClearTracker()
