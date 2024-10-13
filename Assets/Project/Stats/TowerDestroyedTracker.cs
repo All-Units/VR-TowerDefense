@@ -21,12 +21,23 @@ public class TowerDestroyedTracker : TowerTracker
     const string _playerSuffix = "_Player";
     public override void Serialize()
     {
+        //If we aren't player controller, don't track that and override anything that did (some legacy saves)
+        if (_towerToTrack.towerPrefab != null && (_towerToTrack.towerPrefab is PlayerControllableTower) == false)
+        {
+            DestroyedAsPlayerCount = 0;
+        }
         PlayerPrefs.SetInt($"{key}{_playerSuffix}", DestroyedAsPlayerCount);
         base.Serialize();
     }
     public override void Deserialize()
     {
         DestroyedAsPlayerCount = PlayerPrefs.GetInt($"{key}{_playerSuffix}", 0);
+        //If we aren't player controller, don't track that and override anything that did (some legacy saves)
+        if (_towerToTrack.towerPrefab != null && (_towerToTrack.towerPrefab is PlayerControllableTower) == false)
+        {
+            DestroyedAsPlayerCount = 0;
+            PlayerPrefs.SetInt($"{key}{_playerSuffix}", 0);
+        }
         base.Deserialize();
     }
     protected override void InitTracker()
