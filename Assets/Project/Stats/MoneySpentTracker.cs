@@ -17,13 +17,9 @@ public class MoneySpentTracker : MoneyTracker
     {
         int delta = NewCashTotal - _lastMoneyTotal;
         //Now do nothing if POSITIVE
-        Debug.Log($"Money went from {_lastMoneyTotal} to {NewCashTotal}, a change of {delta}");
-        InventoryManager.UpdateStats(this);
         _lastMoneyTotal = NewCashTotal;
         if (delta >= 0) return;
         total += Math.Abs(delta);
         
-        Debug.Log($"Total money spent is now: {total}, was {total - MathF.Abs(delta)}");
-        InventoryManager.UpdateStats(this);
     }
 }

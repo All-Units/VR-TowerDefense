@@ -18,6 +18,8 @@ GameObject:
   - component: {fileID: 2872828575579571665}
   - component: {fileID: 1394862805575704577}
   - component: {fileID: 6257201249013800306}
+  - component: {fileID: 3782063670747694226}
+  - component: {fileID: 2914081528138246592}
   m_Layer: 8
   m_Name: 2_Mage Blue Fireball Throwable
   m_TagString: Untagged
@@ -53,10 +55,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c1effb66f9c45849ad1e68050fb9cce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 16
+  damage: 65
   damageType: {fileID: 0}
   statusModifier: {fileID: 11400000, guid: 391eea901cf141348be927ae6a76e65b, type: 2}
-  speed: 20
+  speed: 25
   _hitEnemy: {fileID: 1806234328444671963}
   _hitGround: {fileID: 1806234328444671963}
   flyingVFX: {fileID: 0}
@@ -513,6 +515,313 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   data: {fileID: 0}
   Power: {fileID: 11400000, guid: 141e15234838008448fbcc2e35007bf2, type: 2}
+--- !u!114 &3782063670747694226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8805872072579189874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 37911110bba4f43438eb6cb2d2f33407, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  VFX: {fileID: 3960317967929362415}
+  _chargeTime: 0.3
+  MaxFireballCharge: 3
+  vfxSizes:
+  - 0.5
+  - 1.5
+  - 3
+  - 4.5
+  vfxChargeLevels:
+  - gradient:
+      m_Mode: 1
+      m_GradientMin:
+        serializedVersion: 2
+        key0: {r: 0, g: 0, b: 0, a: 0}
+        key1: {r: 0, g: 0, b: 0, a: 0}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 0
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 2
+      m_GradientMax:
+        serializedVersion: 2
+        key0: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 0.30588233, g: 0.47129592, b: 1, a: 1}
+        key2: {r: 0.24012107, g: 0.42348766, b: 0.7169812, a: 0}
+        key3: {r: 0, g: 0, b: 0.8113208, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 7050
+        ctime1: 21246
+        ctime2: 41484
+        ctime3: 51076
+        ctime4: 65535
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 0
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: 0
+        m_NumColorKeys: 5
+        m_NumAlphaKeys: 2
+      m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
+      m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
+    chargeSize: 0.5
+    speed: 25
+  - gradient:
+      m_Mode: 1
+      m_GradientMin:
+        serializedVersion: 2
+        key0: {r: 0, g: 0, b: 0, a: 0}
+        key1: {r: 0, g: 0, b: 0, a: 0}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 0
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 2
+      m_GradientMax:
+        serializedVersion: 2
+        key0: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 0.30588233, g: 0.47129592, b: 1, a: 1}
+        key2: {r: 0, g: 0.060507547, b: 0.5849056, a: 0}
+        key3: {r: 0, g: 0, b: 0.8113208, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 7050
+        ctime1: 21246
+        ctime2: 32564
+        ctime3: 38127
+        ctime4: 65535
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 0
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 5
+        m_NumAlphaKeys: 2
+      m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
+      m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
+    chargeSize: 1.5
+    speed: 28
+  - gradient:
+      m_Mode: 1
+      m_GradientMin:
+        serializedVersion: 2
+        key0: {r: 0, g: 0, b: 0, a: 0}
+        key1: {r: 0, g: 0, b: 0, a: 0}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 0
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: 0
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 2
+      m_GradientMax:
+        serializedVersion: 2
+        key0: {r: 1, g: 1, b: 1, a: 1}
+        key1: {r: 0.30588233, g: 0.47129592, b: 1, a: 1}
+        key2: {r: 0, g: 0.060507547, b: 0.5849056, a: 1}
+        key3: {r: 0, g: 0.001256898, b: 0.01214999, a: 1}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 4921
+        ctime1: 16384
+        ctime2: 32564
+        ctime3: 34338
+        ctime4: 65535
+        ctime5: 65535
+        ctime6: 65535
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 65535
+        atime3: 65535
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: 0
+        m_NumColorKeys: 5
+        m_NumAlphaKeys: 2
+      m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
+      m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
+    chargeSize: 3
+    speed: 30
+  - gradient:
+      m_Mode: 1
+      m_GradientMin:
+        serializedVersion: 2
+        key0: {r: 0, g: 0, b: 0, a: 0}
+        key1: {r: 0, g: 0, b: 0, a: 0}
+        key2: {r: 0, g: 0, b: 0, a: 0}
+        key3: {r: 0, g: 0, b: 0, a: 0}
+        key4: {r: 0, g: 0, b: 0, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 0
+        ctime1: 65535
+        ctime2: 0
+        ctime3: 0
+        ctime4: 0
+        ctime5: 0
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 0
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: 0
+        m_NumColorKeys: 2
+        m_NumAlphaKeys: 2
+      m_GradientMax:
+        serializedVersion: 2
+        key0: {r: 0.48616055, g: 0.68151796, b: 0.8962264, a: 1}
+        key1: {r: 0.15477037, g: 0.37885883, b: 0.8867924, a: 1}
+        key2: {r: 0, g: 0.18580098, b: 0.7830189, a: 0}
+        key3: {r: 0, g: 0.060507547, b: 0.5849056, a: 0}
+        key4: {r: 0, g: 0.001256898, b: 0.01214999, a: 0}
+        key5: {r: 0, g: 0, b: 0, a: 0}
+        key6: {r: 0, g: 0, b: 0, a: 0}
+        key7: {r: 0, g: 0, b: 0, a: 0}
+        ctime0: 4921
+        ctime1: 11270
+        ctime2: 18704
+        ctime3: 28343
+        ctime4: 32995
+        ctime5: 65535
+        ctime6: 0
+        ctime7: 0
+        atime0: 0
+        atime1: 65535
+        atime2: 0
+        atime3: 0
+        atime4: 0
+        atime5: 0
+        atime6: 0
+        atime7: 0
+        m_Mode: 0
+        m_ColorSpace: -1
+        m_NumColorKeys: 6
+        m_NumAlphaKeys: 2
+      m_ColorMin: {r: 0, g: 0, b: 0, a: 0}
+      m_ColorMax: {r: 0, g: 0, b: 0, a: 0}
+    chargeSize: 4.5
+    speed: 33
+  rollingDistanceDeltaTime: 0.5
+--- !u!135 &2914081528138246592
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8805872072579189874}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 256
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.2
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &2759501482039852842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -521,10 +830,70 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6856061454500118977}
     m_Modifications:
+    - target: {fileID: 1206498299248906752, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: InitialModule.size3D
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: InitialModule.startSize.scalar
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.atime3
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.ctime0
-      value: 4921
+      value: 7050
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime1
+      value: 21246
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime2
+      value: 41484
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime3
+      value: 51076
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime4
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.ctime6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
@@ -543,28 +912,38 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key2.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key2.b
-      value: 0.9843137
+      value: 0.7169812
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key2.g
-      value: 0.37326625
+      value: 0.42348766
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key2.r
-      value: 0.30196083
+      value: 0.24012107
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key3.a
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key3.b
-      value: 0.1882353
+      value: 0.8113208
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
       propertyPath: ColorModule.gradient.maxGradient.key3.g
-      value: 0.1720205
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
@@ -573,8 +952,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
         type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key4.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.key4.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
       propertyPath: ColorModule.gradient.maxGradient.m_ColorSpace
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1206498299807332549, guid: c3587657cb9c77b4098934f232971851,
+        type: 3}
+      propertyPath: ColorModule.gradient.maxGradient.m_NumColorKeys
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1206498299807332550, guid: c3587657cb9c77b4098934f232971851,
         type: 3}

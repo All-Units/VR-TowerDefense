@@ -209,7 +209,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunParent: {fileID: 5189835444252146732}
   CalculateArc: 1
+  LeadThresholdDistance: 50
+  LeadScalar: 1
   CurrentTarget: {x: 0, y: 0, z: 0}
+  DebugDistance: 0
 --- !u!1 &6139709382012762173
 GameObject:
   m_ObjectHideFlags: 0
@@ -483,11 +486,31 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3643351647694275510}
     m_Modifications:
+    - target: {fileID: 2025900739451951983, guid: 2b48c333b3668754b99d3a25d7bed459,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 408f4ac95cdc9654ab73c377378ac907, type: 2}
     - target: {fileID: 2412476538566880906, guid: 2b48c333b3668754b99d3a25d7bed459,
         type: 3}
       propertyPath: m_Name
       value: Weapon_Blueflame
       objectReference: {fileID: 0}
+    - target: {fileID: 2663297016576260900, guid: 2b48c333b3668754b99d3a25d7bed459,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 408f4ac95cdc9654ab73c377378ac907, type: 2}
+    - target: {fileID: 2686235743542986528, guid: 2b48c333b3668754b99d3a25d7bed459,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 408f4ac95cdc9654ab73c377378ac907, type: 2}
+    - target: {fileID: 2722195129423897872, guid: 2b48c333b3668754b99d3a25d7bed459,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 408f4ac95cdc9654ab73c377378ac907, type: 2}
     - target: {fileID: 4241946781549344382, guid: 2b48c333b3668754b99d3a25d7bed459,
         type: 3}
       propertyPath: m_RootOrder
@@ -543,6 +566,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9169523478958934258, guid: 2b48c333b3668754b99d3a25d7bed459,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 408f4ac95cdc9654ab73c377378ac907, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

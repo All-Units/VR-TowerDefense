@@ -35,6 +35,7 @@ public class FireballGlovesController : MonoBehaviour
                 createFireballAction.canceled += createFireballActionOnReleased;
         }
         XRPauseMenu.OnPause += DestroyFireballOnPause;
+        i2 = GetComponentInParent<Inventory2>();
     }
     private void OnDestroy()
     {
@@ -117,11 +118,15 @@ public class FireballGlovesController : MonoBehaviour
     {
             spellVFX.transform.localScale = Vector3.one * Mathf.Max(0, chargeTime);
     }
-
+    Inventory2 i2 = null;
     public void Fire()
     {
         lastFireball = null;
         var go = Instantiate(projectile, firePoint.position, firePoint.rotation);
+        if (i2 != null)
+        {
+            go.name = go.name.Replace("(Clone)", "") + i2.whichHand.ToString();
+        }
         go.damage = Mathf.FloorToInt(go.damage * chargeTime);
         int dmg = go.damage;
         go.damage = dmg;
@@ -134,6 +139,10 @@ public class FireballGlovesController : MonoBehaviour
     private void SpawnAndGrabObject()
     {
         var go = Instantiate(throwable, firePoint.position, firePoint.rotation);
+        if (i2 != null)
+        {
+            go.name = go.name.Replace("(Clone)", "") + i2.whichHand.ToString();
+        }
         go.interactionManager.SelectEnter((IXRSelectInteractor)hand, go);
         lastFireball = go.gameObject;
         if (chargingCoroutine != null)

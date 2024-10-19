@@ -52,19 +52,16 @@ public class TowerDestroyedTracker : TowerTracker
 
     private void TowerOnTowerDestroy(Tower obj)
     {
-        
         if (obj.dto == _towerToTrack && obj.healthController.CurrentHealth <= 0)
         {
             total++;
-            InventoryManager.UpdateStats(this);
             if ((_towerToTrack.towerPrefab is PlayerControllableTower) == false) {
-                Debug.Log($"{_towerToTrack.towerPrefab} is not a PCT, doing nothing"); return; }
+                //Debug.Log($"{_towerToTrack.towerPrefab} is not a PCT, doing nothing");
+                return; }
             if (obj is PlayerControllableTower pct && pct.isPlayerControlled)
             {
                 DestroyedAsPlayerCount++;
-                Debug.Log($"{_towerToTrack.towerPrefab} IS a PCT, total now: {DestroyedAsPlayerCount}");
             }
-            InventoryManager.UpdateStats(this);
         }
             
     }

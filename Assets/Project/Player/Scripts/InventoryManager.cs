@@ -101,6 +101,8 @@ public class InventoryManager : MonoBehaviour
         _isLeftHanded = false;
         if (isLeft.Equals("true"))
             _isLeftHanded = true;
+        if (debugText != null)
+            debugText.text = "";
     }
     private void Start()
     {
