@@ -44,6 +44,18 @@ class ScriptablePrefabPlacerEditor : Editor
         {
             p.ToggleColliders();
         }
+        if (bttn && GUILayout.Button("Clear Children"))
+        {
+            for (int i = p.transform.childCount -1; i >= 0; i--)
+            {
+                DestroyImmediate(p.transform.GetChild(i).gameObject);
+            }
+            foreach (Transform t in p.transform)
+            {
+                DestroyImmediate(t.gameObject);
+            }
+            EditorUtility.SetDirty(p);
+        }
         base.OnInspectorGUI();
     }
 
@@ -61,6 +73,7 @@ class ScriptablePrefabPlacerEditor : Editor
 public class ScriptablePrefabPlacer : MonoBehaviour
 {
     public PrefabList_SO prefabs;
+    [Range(1f, 900f)]
     public float SpawnRadius = 50f;
     public int NumberToSpawn = 75;
     public bool ClearOnSpawn = true;

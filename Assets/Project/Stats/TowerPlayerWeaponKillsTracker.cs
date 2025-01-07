@@ -20,7 +20,6 @@ public class TowerPlayerWeaponKillsTracker : StatTracker
         if (trackedTowerTakeoverObject.Power != null && trackedTowerTakeoverObject.Power == towerTakeoverObject.Power)
         {
             total++;
-            //Debug.Log($"A MATCHING POWER: {trackedTowerTakeoverObject.Power} to {towerTakeoverObject.gameObject.name}", towerTakeoverObject);
             return;
         }
         else if(trackedTowerTakeoverObject.Data != null && trackedTowerTakeoverObject.Data == towerTakeoverObject.Data)
@@ -30,11 +29,7 @@ public class TowerPlayerWeaponKillsTracker : StatTracker
         }
 
         return;
-        InventoryManager.SetDebugText($"KILLED BY: {towerTakeoverObject}.\n" +
-            $"THIS IS AN ERROR!");
-        Debug.LogError($"No data or power on {towerTakeoverObject.transform.FullPath()}. We are {trackedTowerTakeoverObject.name}. \t" +
-            $"TrackedTowerPower == null? {trackedTowerTakeoverObject.Power == null}. " +
-            $"was TowerData null? {trackedTowerTakeoverObject.Data == null} ", towerTakeoverObject);
+        
         
     }
 

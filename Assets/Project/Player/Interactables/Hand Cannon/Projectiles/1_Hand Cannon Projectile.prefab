@@ -125,18 +125,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 35
-  speed: 20
   damageType: {fileID: 0}
   statusModifier: {fileID: 0}
+  speed: 24
   _hitEnemy: {fileID: 0}
   _hitGround: {fileID: 0}
   flyingVFX: {fileID: 0}
+  particles: {fileID: 0}
   OnFire:
     m_PersistentCalls:
       m_Calls: []
   OnHit:
     m_PersistentCalls:
       m_Calls: []
+  _graceRadius: 0.1
   splashRadius: 9
   hitParticles: {fileID: 9017217224775942394, guid: cd03c451aeb0c3a4d8851abaefc58ab0,
     type: 3}
@@ -173,7 +175,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _audioClipController: {fileID: 6201493727034460570}
+  TargetLayer: Enemy
 --- !u!54 &7664821632243669412
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -22,12 +22,9 @@ public class MoneyTracker : StatTracker
         _lastMoneyTotal = CurrencyManager.CurrentCash;
         if (CurrencyManager.CurrentCash > 0 && _giveMoneyOnStart)
         {
-            //
             total += CurrencyManager.CurrentCash;
-            Debug.Log($"Started wif money, now have {total}");
             InventoryManager.UpdateStats(this);
             _lastMoneyTotal = CurrencyManager.CurrentCash;
-            //_lastMoneyTotal = total;
         }
 
 
@@ -36,7 +33,6 @@ public class MoneyTracker : StatTracker
     protected virtual void _OnCurrencyChange(int newTotal)
     {
         int delta = newTotal - _lastMoneyTotal;
-        Debug.Log($"MONEY CHANGED from {_lastMoneyTotal} to {newTotal}, a change of {delta}");
         InventoryManager.UpdateStats(this);
         _lastMoneyTotal = newTotal;
         if (delta <= 0) return;

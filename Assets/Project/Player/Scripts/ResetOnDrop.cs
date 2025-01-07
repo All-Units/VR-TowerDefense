@@ -188,6 +188,9 @@ public class ResetOnDrop : MonoBehaviour
         Vector3 forward = cameraTransform.forward; forward.y = 0f;
         forward = forward.normalized;
         pos += (forward * 0.6f);
+        //Lower height
+        pos.y -= 0.6f;
+
         t.position = pos;
         t.rotation = startRot;
         //Have to set RIGIDBODY rotation, not transform. Above line is for safety (should be redudant)

@@ -57,7 +57,7 @@ public class InventoryManager : MonoBehaviour
             output += "\n";
         }
         output = output.Trim();
-        SetDebugText(output);
+        //SetDebugText(output);
     }
 
 

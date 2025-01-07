@@ -1456,7 +1456,7 @@ PrefabInstance:
     - target: {fileID: 5148909533710890807, guid: f49dc5cd64a1e004c988509fc919b348,
         type: 3}
       propertyPath: m_Name
-      value: 2_Hand Cannon Guided Missile
+      value: 2_Guided Missile
       objectReference: {fileID: 0}
     - target: {fileID: 5148909533710890807, guid: f49dc5cd64a1e004c988509fc919b348,
         type: 3}
@@ -1630,9 +1630,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f8f76b04b8b44428d8ae723e9760da2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MaxVelocity: 20
+  MaxVelocity: 30
   shotsToOverheat: 4
-  cooldownRate: 0.1
+  cooldownRate: 0.4
   OnOverHeat:
     m_PersistentCalls:
       m_Calls:

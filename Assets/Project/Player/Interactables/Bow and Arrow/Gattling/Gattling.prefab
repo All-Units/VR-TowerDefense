@@ -11527,6 +11527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data: {fileID: 11400000, guid: 7587d174894318f47a31ac7920d26fc8, type: 2}
+  Power: {fileID: 0}
 --- !u!65 &543670844771645246
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -11562,7 +11563,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MaxVelocity: 20
   shotsToOverheat: 100
-  cooldownRate: 2
+  cooldownRate: 7
   OnOverHeat:
     m_PersistentCalls:
       m_Calls:
@@ -11698,7 +11699,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   table: {fileID: 3826609837220626509}
   rb: {fileID: 8799213642573837017}
-  resetTime: 2
   offset: {x: 0, y: 2, z: 0.5}
   playerItem: {fileID: 0}
   CurrentPosition: {x: 0, y: 0, z: 0}
