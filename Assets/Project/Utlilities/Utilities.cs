@@ -401,4 +401,16 @@ public static partial class Utilities
         s = $"{s}.{first_two}";
         return s;
     }
+    /// <summary>
+    /// Formats a string to unity RichText color format
+    /// </summary>
+    /// <param name="s">The base string to add color to</param>
+    /// <param name="color"></param>
+    /// <returns></returns>
+    public static string ColorString(this string s, Color color)
+    {
+        string html = ColorUtility.ToHtmlStringRGBA(color);
+        string output = $"<color=#{html}>{s}</color>";
+        return output;
+    }
 }

@@ -19,6 +19,8 @@ public class BubbleMenuController : MonoBehaviour
     [SerializeField] private BubbleMenuOption repairOption;
     [SerializeField] private SliderController healthbarController;
     [SerializeField] private int repairCost;
+    [SerializeField] Transform Display;
+    [SerializeField] Transform displaySecondPos;
     
     [SerializeField] [Tooltip("The reference to the action to confirm tower takeover selection.")]
     private InputActionReference closeMenuActionReference;
@@ -28,6 +30,7 @@ public class BubbleMenuController : MonoBehaviour
     {
         _instance = this;
         _Hide();
+        startDisplayPos = Display.localPosition;
         
         PlayerStateController.OnStateChange += PlayerStateControllerOnOnStateChange;
         CurrencyManager.OnChangeMoneyAmount += CurrencyManagerOnChangeMoneyAmount;
@@ -37,6 +40,7 @@ public class BubbleMenuController : MonoBehaviour
         if (closeBubbleMenuAction != null)
             closeBubbleMenuAction.started += CloseTowerBubbles;
     }
+    Vector3 startDisplayPos;
 
 
 
@@ -63,7 +67,8 @@ public class BubbleMenuController : MonoBehaviour
 
     private void Initialize(Tower t)
     {
-        if(_currentTower)
+        upgradeOption2.IsUpgrade = true;
+        if (_currentTower)
         {
             _currentTower.EndFocus();
             _currentTower.healthController.onTakeDamage.RemoveListener(healthbarController.UpdateValue);
@@ -154,7 +159,7 @@ public class BubbleMenuController : MonoBehaviour
         
         var towerUpgrades = _currentTower.dto.GetUpgrades();
         TowerUpgrade upgrade;
-        if(towerUpgrades.InRange(0))
+        if(towerUpgrades.InRange(0) && false)
         {
             var unlocked = towerUpgrades[0].upgrade.IsUnlocked;
             
@@ -176,10 +181,13 @@ public class BubbleMenuController : MonoBehaviour
             upgradeOption2.Initialize(() => Upgrade(upgrade), upgrade.upgrade.name, upgrade.upgrade.cost, upgrade.upgrade.description);
             _Lock(upgradeOption2, unlocked);
             upgradeOption2._upgradeDTO = upgrade.upgrade;
+            Display.localPosition = startDisplayPos;
+            upgradeOption2.IsUpgrade = true;
         }   
         else
         {
             upgradeOption2.Hide();
+            Display.localPosition = displaySecondPos.localPosition;
         }
     }
     #endregion
