@@ -21,6 +21,7 @@ public class TrailerCamMover : MonoBehaviour
         if (playerPref.activeInHierarchy)
         {
             gameObject.SetActive(false);
+            return;
         }
         cam = GetComponent<Camera>();
         StartCoroutine(_DelayMove());
