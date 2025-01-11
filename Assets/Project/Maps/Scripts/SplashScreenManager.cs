@@ -111,7 +111,7 @@ public class SplashScreenManager : MonoBehaviour
             yield return null;
             StopCoroutine(_loader);
             FadeScreen.Fade_Out(0.5f);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.9f);
             LoadScene();
         }
 
