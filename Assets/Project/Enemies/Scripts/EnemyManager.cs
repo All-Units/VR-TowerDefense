@@ -25,6 +25,10 @@ public class EnemyManager : MonoBehaviour
     /// Null-safe
     /// </summary>
     public static int CurrentEnemyCount => (instance != null) ? instance.Enemies.Count : 0;
+    /// <summary>
+    /// Total number of waves the player will be facing
+    /// </summary>
+    public static int WaveCountTotal => (instance != null) ? instance.levelData.waveStructs.Count : 0;
     
     /// <summary>
     /// Player-facing wave count, offset by 1

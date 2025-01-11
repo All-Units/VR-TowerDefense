@@ -211,7 +211,7 @@ public class LevelSelectRefactor : MonoBehaviour
     IEnumerator _SelectAfter(float t)
     {
         yield return new WaitForSeconds(t);
-        SceneLoaderAsync.LoadScene(levelSelectData.sceneName);
+        SceneLoaderAsync.LoadScene(levelSelectData.sceneName, levelSelectData.title);
         //SceneManager.LoadSceneAsync(levelSelectData.sceneName);
     }
 

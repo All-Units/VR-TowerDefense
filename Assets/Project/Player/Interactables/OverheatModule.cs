@@ -53,6 +53,9 @@ public class OverheatModule : MonoBehaviour
         //print(output);
         CurrentHeatDebug = currentHeat;
         if (currentHeat <= 0.01) return;
+
+        //Don't cool down if it's been too close since our last shot
+        if (Time.time - _lastFireTime <= 0.5f) return;
         float magnitude = Mathf.Max(_rb.velocity.magnitude, MINIMUM_COOLDOWN);
         _maxVelocity = Mathf.Max(_rb.velocity.magnitude, _maxVelocity);
         magnitude = MathF.Min(magnitude, MaxVelocity);
@@ -85,11 +88,11 @@ public class OverheatModule : MonoBehaviour
         for (int i = 0; i < count; i++)
             ProjectileSpawnerOnFire();
     }
-        
+    float _lastFireTime = 0f;    
     public void ProjectileSpawnerOnFire()
     {
         currentHeat += 1;
-        
+        _lastFireTime = Time.time;
         if (currentHeat >= shotsToOverheat)
         {
             _isOverheated = true;

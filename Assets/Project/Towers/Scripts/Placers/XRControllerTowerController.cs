@@ -239,6 +239,7 @@ public class XRControllerTowerController : MonoBehaviour
             var position = Quaternion.Euler(0f, angle, 0f) * Vector3.forward * bubbleMenuRadius;
 
             var newBubble = Instantiate(towersBubblePrefab, towersBubbleRoot);
+            newBubble.IsTower = true;
             newBubble.transform.localPosition = position;
             newBubble.transform.LookAt(mainTransform, Vector3.up);
             var towerSo = availableTowers[i];
@@ -247,6 +248,7 @@ public class XRControllerTowerController : MonoBehaviour
             icon.transform.rotation = Quaternion.identity;
             icon.transform.localScale *= 2;
             newBubble.Initialize(()=>SetTowerToPlace(towerSo), towerSo.name, towerSo.cost, towerSo.description);
+            
         }
         
         var currencyBubble = Instantiate(currencyBubblePrefab, towersBubbleRoot);

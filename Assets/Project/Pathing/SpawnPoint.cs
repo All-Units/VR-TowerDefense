@@ -89,7 +89,7 @@ public class SpawnPoint : PathPoint
         {
             if (hit.collider.name.ToLower().Contains("water"))
                 return;
-
+            if (hit.collider.gameObject.CompareTag("Walkway")) return;
 
             GameObject spawned = Instantiate(roadTilePrefab, _roadParent);
             spawned.name = spawned.name.Replace("(Clone)", "");

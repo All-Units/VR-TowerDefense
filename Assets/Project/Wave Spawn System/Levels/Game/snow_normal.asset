@@ -41,19 +41,28 @@ MonoBehaviour:
     subWaves: []
     WaveCompleteBounty: 100
     preWaveDelay: 30
-    groupSizes: {x: 1, y: 4}
+    groupSizes: {x: 3, y: 7}
     spawnRate: 20
     spawnPoints:
-    - {fileID: 11400000, guid: 59de5dc537600be4cb6fd455afaed267, type: 2}
+    - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
   - enemies:
     - enemyType: 1
       amountToSpawn: {x: 10, y: 12}
     - enemyType: 6
       amountToSpawn: {x: 5, y: 7}
-    subWaves: []
+    subWaves:
+    - enemies:
+      - enemyType: 6
+        amountToSpawn: {x: 10, y: 10}
+      delayType: 0
+      DelayCount: 90
+      groupSizes: {x: 10, y: 10}
+      spawnRate: 0
+      spawnPoints:
+      - {fileID: 11400000, guid: 1e59ce82f726d234b8537650ffe71a79, type: 2}
     WaveCompleteBounty: 175
     preWaveDelay: 30
-    groupSizes: {x: 3, y: 7}
+    groupSizes: {x: 6, y: 10}
     spawnRate: 16
     spawnPoints: []
   - enemies:

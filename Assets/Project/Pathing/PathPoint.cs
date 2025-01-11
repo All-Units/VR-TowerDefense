@@ -75,11 +75,13 @@ public class PathPoint : MonoBehaviour
     {
         PathPoint spawn = _SpawnPoint();
         if (spawn == null) return;
-        string direction = spawn.gameObject.name.Replace("Spawn Point Path", "");
-        if (direction.Trim() == "") return;
+        string direction = spawn.gameObject.name.Replace("Spawn Point", "").Trim();
+        direction = direction.Replace("Path", "").Trim();
+        if (direction == "") return;
         direction = direction.Substring(0, 1);
 
         gameObject.name = $"Path point {transform.GetSiblingIndex() + 1}{direction}";
+        //gameObject.name = $"{spawn.gameObject.name}";
         this.position = transform.position;
         var pos = position;
         if (nextPoint == null)

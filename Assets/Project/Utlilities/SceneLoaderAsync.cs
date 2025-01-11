@@ -10,7 +10,7 @@ public class SceneLoaderAsync : MonoBehaviour
     /// Only one scene loader can exist at a time
     /// </summary>
     /// <param name="sceneName"></param>
-    public static void LoadScene(string sceneName)
+    public static void LoadScene(string sceneName, string levelTitle = "")
     {
         //Do nothing if there is already a scene loader in existence
         if (instance != null)
@@ -19,6 +19,8 @@ public class SceneLoaderAsync : MonoBehaviour
             //Debug.LogError($"Error loading: {sceneName}, a scene loader already exists! Loading: {_currentScene}");
             return;
         }
+        if (levelTitle != "") 
+            StartGamePanel.MapName = levelTitle;
         _currentScene = sceneName;
         var go = new GameObject("SceneLoader");
         DontDestroyOnLoad(go);

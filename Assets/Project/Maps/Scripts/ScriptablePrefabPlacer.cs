@@ -56,6 +56,22 @@ class ScriptablePrefabPlacerEditor : Editor
             }
             EditorUtility.SetDirty(p);
         }
+        if (bttn && GUILayout.Button("Destroy LODs & Colliders"))
+        {
+            
+            foreach (Transform child in p.transform.GetAllDescendants())
+            {
+                //Transform child = p.transform.GetChild(i);
+                LODGroup lod = child.GetComponent<LODGroup>();
+                if (lod) DestroyImmediate(lod);
+                Collider col = child.GetComponent<Collider>();
+                if (col != null) { DestroyImmediate(col); }
+                EditorUtility.SetDirty(child);
+                //DestroyImmediate(p.transform.GetChild(i).gameObject);
+            }
+            
+            //EditorUtility.SetDirty(p);
+        }
         base.OnInspectorGUI();
     }
 

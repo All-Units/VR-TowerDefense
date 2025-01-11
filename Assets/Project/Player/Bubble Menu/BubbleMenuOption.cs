@@ -68,16 +68,20 @@ public class BubbleMenuOption : MonoBehaviour
 
     private void CanAfford(int cash)
     {
-        if (IsUpgrade == false) return;
+        if (IsUpgrade == false && IsTower == false) return;
         Color c = cash < cost ? cannotAffordTextColor : canAffordTextColor;
         string cashTotal = $"${cost}".ColorString(c);
-        title.text = $"{cashTotal} - {baseDisplayText}";
+        if (IsUpgrade)
+            title.text = $"{cashTotal} - {baseDisplayText}";
+        if (IsTower)
+            title.text = $"{cashTotal}\n{baseDisplayText}";
         //title.color = cash < cost ? cantAffordTextColor : Color.white;
     }
 
     [HideInInspector] public Tower_SO _upgradeDTO = null;
     string baseDisplayText = "";
     public bool IsUpgrade = false;
+    public bool IsTower = false;
     public void Initialize(Action ctx, string displayText, int cost, string description = "")
     {
         Initialize(ctx, $"{displayText}", description);
