@@ -28,6 +28,15 @@ public class BubbleMenuOption : MonoBehaviour
         interactable.firstHoverEntered.AddListener(_FirstHoverEntered);
         interactable.lastHoverExited.AddListener(_LastHoverExited);
     }
+    bool _IsLocked()
+    {
+        //We can not be locked in tutorial
+        if ((bool)(EnemyManager.instance?.IS_TUTORIAL)) return false;
+
+        if (_upgradeDTO && _upgradeDTO.IsUnlocked == false) return true;
+
+        return false;
+    }
 
     private void OnDestroy()
     {
@@ -60,6 +69,7 @@ public class BubbleMenuOption : MonoBehaviour
         if (descriptionText != null)
         {
             descriptionText.text = description;
+            _SetLockedText();
             descriptionText.gameObject.SetActive(false);
         }
         //print($"Initialized OPTION: {gameObject.name} to : {displayText}");
@@ -82,6 +92,11 @@ public class BubbleMenuOption : MonoBehaviour
     string baseDisplayText = "";
     public bool IsUpgrade = false;
     public bool IsTower = false;
+    void _SetLockedText()
+    {
+        if (_IsLocked())
+            descriptionText.text = "Purchase full game to unlock";
+    }
     public void Initialize(Action ctx, string displayText, int cost, string description = "")
     {
         Initialize(ctx, $"{displayText}", description);
@@ -91,8 +106,9 @@ public class BubbleMenuOption : MonoBehaviour
         CurrencyManager.OnChangeMoneyAmount += CanAfford;
         if (descriptionText == null) return;
         descriptionText.text = description;
+        
         descriptionText.gameObject.SetActive(false);
-
+        _SetLockedText();
         StartCoroutine(_delayEnableUpgradeGO());
 
     }
@@ -115,6 +131,7 @@ public class BubbleMenuOption : MonoBehaviour
 
     public void PerformOption()
     {
+        if (_IsLocked()) return;
         if (_upgradeDTO != null)
         {
             _callback = () => BubbleMenuController.Upgrade(_upgradeDTO);
@@ -144,6 +161,7 @@ public class BubbleMenuOption : MonoBehaviour
     void _FirstHoverEntered(HoverEnterEventArgs a)
     {
         if (descriptionText == null) return;
+        _SetLockedText();
         descriptionText.gameObject.SetActive(true);
     }
     void _LastHoverExited(HoverExitEventArgs a)

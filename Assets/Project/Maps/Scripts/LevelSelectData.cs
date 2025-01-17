@@ -7,4 +7,5 @@ public class LevelSelectData : ScriptableObject
     public string sceneName;
     public string title;
     public Material OverrideTowerColor;
+    public bool IsLocked;
 }

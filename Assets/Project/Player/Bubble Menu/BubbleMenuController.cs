@@ -159,6 +159,8 @@ public class BubbleMenuController : MonoBehaviour
         
         var towerUpgrades = _currentTower.dto.GetUpgrades();
         TowerUpgrade upgrade;
+        //WILL ALWAYS BE FALSE !! HARDCODED
+        // !!!!!!!!
         if(towerUpgrades.InRange(0) && false)
         {
             var unlocked = towerUpgrades[0].upgrade.IsUnlocked;
@@ -176,7 +178,7 @@ public class BubbleMenuController : MonoBehaviour
         if(towerUpgrades.InRange(1))
         {
             var unlocked = towerUpgrades[1].upgrade.IsUnlocked;
-
+            if (EnemyManager.instance && EnemyManager.instance.IS_TUTORIAL) unlocked = true;
             upgrade = towerUpgrades[1];
             upgradeOption2.Initialize(() => Upgrade(upgrade), upgrade.upgrade.name, upgrade.upgrade.cost, upgrade.upgrade.description);
             _Lock(upgradeOption2, unlocked);
@@ -248,9 +250,11 @@ public class BubbleMenuController : MonoBehaviour
         TowerUpgrade upgrade = new TowerUpgrade(dto);
         _instance.Upgrade(upgrade);
     }
+    bool _isTutorial => (bool)(EnemyManager.instance?.IS_TUTORIAL);
     public void Upgrade(TowerUpgrade towerUpgrade)
     {
-        if (towerUpgrade.upgrade.IsUnlocked == false) return;
+        //We have to be locked AND not the tutorial
+        if (towerUpgrade.upgrade.IsUnlocked == false && _isTutorial == false) return;
         if (CurrencyManager.CanAfford(towerUpgrade.upgrade.cost) == false)
         {
             return;

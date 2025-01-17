@@ -27,6 +27,7 @@ public class LevelSelectRefactor : MonoBehaviour
 
     [SerializeField] XRSimpleInteractable LoadLevelBubble;
     [SerializeField] XRSimpleInteractable NewLevelBubble;
+    [SerializeField] GameObject LockedIcon;
 
     private void OnDrawGizmos()
     {
@@ -71,6 +72,9 @@ public class LevelSelectRefactor : MonoBehaviour
         LoadLevelBubble.activated.AddListener(OnActivateLoad);
 
         NewLevelBubble.activated.AddListener(_StartLoadLevel);
+
+        //If we are locked, turn on lock icon
+        LockedIcon.gameObject.SetActive(levelSelectData.IsLocked);
 
     }
     MeshRenderer mr;
@@ -170,6 +174,9 @@ public class LevelSelectRefactor : MonoBehaviour
     bool _AreBubblesActive => LoadLevelBubble.gameObject.activeInHierarchy || NewLevelBubble.gameObject.activeInHierarchy;
     void _ActivateBubbles(bool active)
     {
+        //Do nothing if we are locked
+        if (levelSelectData.IsLocked) return;
+
         if (_bubblesDirector == null)
             _bubblesDirector = LoadLevelBubble.GetComponentInParent<PlayableDirector>();
         if (_bubblesDirector != null)
@@ -200,6 +207,8 @@ public class LevelSelectRefactor : MonoBehaviour
     }
     void _StartLoadLevel(ActivateEventArgs args = null)
     {
+        //Do nothing if we are locked
+        if (levelSelectData.IsLocked) return;
         if (levelSelectData == null)
         {
             Debug.LogError($"No level data assigned to {gameObject.name}", gameObject);
