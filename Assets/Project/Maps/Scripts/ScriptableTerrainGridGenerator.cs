@@ -67,6 +67,10 @@ public class ScriptableTerrainGridGenerator : MonoBehaviour
     }
     void _SpawnWater(MeshFilter mf)
     {
+        if (waterPrefab == null)
+        {
+            return;
+        }
         Transform offset = mf.transform.parent.parent;
         //We don't have a water prefab yet
         if (offset.Find("water") == null)

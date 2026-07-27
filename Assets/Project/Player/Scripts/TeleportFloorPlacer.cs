@@ -46,7 +46,8 @@ public class TeleportFloorPlacer : MonoBehaviour
             {
                 yield return null;
                 instance = this;
-                player = InventoryManager.instance.playerTransform;
+                if (player == null)
+                    player = InventoryManager.instance.playerTransform;
             }
         }
         StartCoroutine(_SetInstance());
