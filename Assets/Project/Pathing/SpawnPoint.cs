@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
@@ -76,7 +77,7 @@ public class SpawnPoint : PathPoint
     }
     void _SpawnTile(Vector3 pos, bool left = false)
     {
-
+        convexAll(pos, false);
         //pos.x += Random.Range((SpawnRadius * -1), SpawnRadius);
         //pos.z += Random.Range((SpawnRadius * -1), SpawnRadius);
         RaycastHit hit;
@@ -91,7 +92,7 @@ public class SpawnPoint : PathPoint
                 return;
             if (hit.collider.gameObject.CompareTag("Walkway")) return;
 
-            GameObject spawned = Instantiate(roadTilePrefab, _roadParent);
+            GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(roadTilePrefab, _roadParent);
             spawned.name = spawned.name.Replace("(Clone)", "");
             spawned.transform.position = hit.point;
             Vector3 rot = spawned.transform.localEulerAngles;
@@ -100,7 +101,31 @@ public class SpawnPoint : PathPoint
             points.Add(hit.point, hit.point + hit.normal);
             spawned.transform.LookAt(hit.point + hit.normal);
         }
+
+        convexAll(pos, true);
+        wasConvex.Clear();
     }
+
+    Dictionary<MeshCollider, bool> wasConvex = new Dictionary<MeshCollider, bool>();
+    void convexAll(Vector3 pos, bool isConvex = false){
+        Ray ray = new Ray(pos, Vector3.down);
+        RaycastHit[] hits = Physics.RaycastAll(ray, Mathf.Infinity, groundLayers);
+        foreach (RaycastHit hit in hits){
+            MeshCollider mc = hit.transform.GetComponent<MeshCollider>();
+            if (mc){
+                if (isConvex == false){
+                    wasConvex[mc] = mc.convex;
+                    mc.convex = false;
+                    print($"Set {mc.name} to NOT convex before placing tile");
+                }
+                    
+                else
+                    mc.convex = wasConvex.ContainsKey(mc) ? wasConvex[mc] : true;
+                //mc.convex = isConvex;
+            }
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         foreach (var p in points)

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 #if UNITY_EDITOR
@@ -59,6 +60,7 @@ public class PathPoint : MonoBehaviour
     Vector3 lastPoint = Vector3.zero;
 
 #if UNITY_EDITOR
+   
 
     PathPoint _SpawnPoint()
     {
