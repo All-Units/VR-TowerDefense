@@ -26,6 +26,8 @@ public class MakeAllConvex : MonoBehaviour
 {
     #if UNITY_EDITOR
 
+    public bool SetAllConvexTo = true;
+
     public void makeAllConvex()
     {
         foreach (Transform c in GetComponent<Transform>().GetAllDescendants()){
@@ -36,7 +38,7 @@ public class MakeAllConvex : MonoBehaviour
                     EditorUtility.SetDirty(mc);
                     Undo.RecordObject(mc, $"Set {mc.name} to convex");
                 }
-                mc.convex = true;
+                mc.convex = SetAllConvexTo;
             }
         }
 

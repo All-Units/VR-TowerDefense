@@ -8,18 +8,15 @@ public class DoorHandle : MonoBehaviour
 
     [SerializeField] GameObject leftHinge;
     [SerializeField] GameObject rightHinge;
+
+    [SerializeField] Transform runeParent;
     
     [SerializeField] float leftOpenAngle;
     [SerializeField] float rightOpenAngle;
 
-    float leftClosedAngle;
-    float rightClosedAngle;
-    // Start is called before the first frame update
-    void Start()
-    {
-        leftClosedAngle = leftHinge.transform.eulerAngles.y;
-        rightClosedAngle = rightHinge.transform.eulerAngles.y;
-    }
+    float leftClosedAngle =-1f;
+    float rightClosedAngle = -1f;
+    
 
     
     IEnumerator currentDoorOpener = null;
@@ -45,7 +42,17 @@ public class DoorHandle : MonoBehaviour
         t.eulerAngles = euler;
     }
 
+    [SerializeField] float howFarToOpen = 100f;
     void startOpenDoor(bool isOpening = true){
+        if (leftClosedAngle == -1){ 
+            leftClosedAngle = leftHinge.transform.eulerAngles.y;
+            rightClosedAngle = rightHinge.transform.eulerAngles.y;
+
+            float openAngle = howFarToOpen;
+            leftOpenAngle = leftClosedAngle + openAngle;
+            rightOpenAngle = rightClosedAngle - openAngle;
+        }
+
         if (currentDoorOpener != null){
             StopCoroutine(currentDoorOpener);
         }
@@ -63,7 +70,6 @@ public class DoorHandle : MonoBehaviour
             rightStart = rightOpenAngle;
         }
 
-        print($"Going to {(isOpening ? "Open" : "Closed")}, left target: {leftTarget}, start: {leftStart}, right target: {rightTarget}, start: {rightStart}");
 
         currentDoorOpener = openDoorRoutine();
         StartCoroutine(currentDoorOpener);
@@ -72,10 +78,19 @@ public class DoorHandle : MonoBehaviour
 
     public void OnHandleClose(){
         startOpenDoor(false);
+        runeParent.gameObject.SetActive(false);
     }
 
     public void OnHandleOpen(){
         startOpenDoor();
+
+        runeParent.gameObject.SetActive(true);
+        foreach (Transform t in runeParent.GetAllDescendants()){
+            ParticleSystem p = t.GetComponent<ParticleSystem>();
+            if (p){
+                p.Play();
+            }
+        }
     }
 
 }
