@@ -269,7 +269,15 @@ public static partial class Utilities
             var child = oldChildren[0];
             oldChildren.RemoveAt(0);
             child.transform.parent = null;
-            Object.Destroy(child);
+            if (Application.isEditor)
+            {
+                Object.DestroyImmediate(child);
+            }
+            else
+            {
+                Object.Destroy(child);
+            }
+            
         }
     }    
     
