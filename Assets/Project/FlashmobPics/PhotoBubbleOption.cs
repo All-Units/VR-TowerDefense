@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
+using UnityEngine.Video;
 
 [CustomEditor(typeof(PhotoBubbleOption))]
 [CanEditMultipleObjects]
@@ -22,12 +23,16 @@ class PhotoBubbleEditor : Editor
 
 public class PhotoBubbleOption : MonoBehaviour
 {
-    [SerializeField] Texture pictureToDisplay;
+    
+    [SerializeField] MediaSO mediaToDisplay;
     
     [SerializeField] Transform bubbleParent;
     [SerializeField] MeshRenderer photoMesh;
     [SerializeField] Transform displayParent;
     Material mat;
+    VideoPlayer videoPlayer;
+
+    [SerializeField] Material blankVideoTexture;
     // Start is called before the first frame update
     void Start()
     {
@@ -39,6 +44,7 @@ public class PhotoBubbleOption : MonoBehaviour
     public void Resize()
     {
         
+
         if (Application.isEditor && false)
         {
             mat = photoMesh.sharedMaterial;
@@ -47,16 +53,32 @@ public class PhotoBubbleOption : MonoBehaviour
         {
             mat = photoMesh.material;
         }
-            
-        mat.mainTexture = pictureToDisplay;
+        if (mediaToDisplay.video != null)
+        {
+            photoMesh.material = blankVideoTexture;
+        }
 
-        float h = (float)pictureToDisplay.height;
-        float w = (float)pictureToDisplay.width;
+
+        if (mediaToDisplay.picture)   
+            mat.mainTexture = mediaToDisplay.picture;
+        else if (mediaToDisplay.video)
+        {
+            if (photoMesh.GetComponent<VideoPlayer>() == null)
+                videoPlayer = photoMesh.gameObject.AddComponent<VideoPlayer>();
+            videoPlayer.clip = mediaToDisplay.video;
+            videoPlayer.playOnAwake = true;
+            videoPlayer.isLooping = true;
+            // Direct if uses sound, otherwise nothing
+            videoPlayer.audioOutputMode = mediaToDisplay.usesSound ?
+                VideoAudioOutputMode.Direct : VideoAudioOutputMode.None;
+        }
+
+        float h = (float)mediaToDisplay.height;
+        float w = (float)mediaToDisplay.width;
         float ratio = Math.Min(h, w) / Math.Max(h, w);
 
         Vector3 scale = new Vector3(1f,1f,1f);
-        //float radius = 0.5f * Mathf.Sqrt(1 + (ratio * ratio));
-        //float zero_radius = 0.7071067811865475f;
+        
         
         bubbleParent.localScale = new Vector3(1f, 1f, 1f);
         //If TALLER than WIDE, make X small (skinny)
@@ -74,9 +96,9 @@ public class PhotoBubbleOption : MonoBehaviour
         photoMesh.transform.localScale = scale;
     }
 
-    public void PlacePhoto(Texture photo, float radius, float angle)
+    public void PlacePhoto(MediaSO media, float radius, float angle)
     {
-        pictureToDisplay = photo;
+        mediaToDisplay = media;
         Resize();
 
         displayParent.localPosition = new Vector3(0f, radius, 0f);

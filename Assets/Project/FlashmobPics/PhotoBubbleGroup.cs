@@ -10,19 +10,49 @@ using System.Linq;
 [CanEditMultipleObjects]
 class PhotoGroupEditor : Editor
 {
+    int ROW_SIZE = 3;
     private PhotoBubbleGroup p => ((PhotoBubbleGroup)target);
     public override void OnInspectorGUI()
     {
+        if (GUILayout.Button("Populate MediaSO list"))
+        {
+            for (int i = 0; i < p.media.Count; i++)
+            {
+                if (p.media[i] == null)
+                {
+                    p.media[i] = new MediaSO();
+                }
+            }
+        }
         if (GUILayout.Button("Place All"))
         {
             p.PlaceAllBubbles();
         }
         base.OnInspectorGUI();
+        EditorGUILayout.BeginHorizontal();
+        int row = 0;
+        
+        foreach (MediaSO media in p.media)
+        {
+            if (media == null || media.PreviewIcon == null)
+                continue;
+            GUILayout.Label(media.PreviewIcon);
+            row++;
+            if (row >= ROW_SIZE)
+            {
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                row = 0;
+            }
+            
+        }
+        EditorGUILayout.EndHorizontal();
     }
 }
 
 public class PhotoBubbleGroup : MonoBehaviour
 {
+    public List<MediaSO> media = new List<MediaSO>();
     [SerializeField] List<Texture> pictures = new List<Texture>();
     [SerializeField] GameObject bubblePrefab;
 
@@ -47,19 +77,19 @@ public class PhotoBubbleGroup : MonoBehaviour
         float i = 0;
         GameObject bubble;
         PhotoBubbleOption option;
-        foreach (Texture t in pictures)
+        foreach (MediaSO t in media)
         {
             i += 1;
             bubble = (GameObject)PrefabUtility.InstantiatePrefab(bubblePrefab, transform);
             option = bubble.GetComponent<PhotoBubbleOption>();
-            float angle = i / (float)pictures.Count;
+            float angle = i / (float)media.Count;
             angle *= 360f;
             
             option.PlacePhoto(t, radius, angle);
         }
         bubble = (GameObject)PrefabUtility.InstantiatePrefab(bubblePrefab, transform);
         option = bubble.GetComponent<PhotoBubbleOption>();
-        option.PlacePhoto(pictures.Last(), 0f, 0f);
+        option.PlacePhoto(media.Last(), 0f, 0f);
         bubble.transform.localScale *= 2f;
 
     }
