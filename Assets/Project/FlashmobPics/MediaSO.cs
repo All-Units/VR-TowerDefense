@@ -51,6 +51,7 @@ public class MediaSOEditor : Editor
             m.picture = null;
             m.usesSound = false;
         }
+        
 
         base.OnInspectorGUI();
     }
@@ -64,7 +65,6 @@ public class MediaSOEditor : Editor
         // Alpha8 or one of float formats
         Texture2D tex = new Texture2D (width, height);
         EditorUtility.CopySerialized (m.PreviewIcon, tex);
-        Debug.Log("Returning tex");
         return tex;
     }
 }
@@ -108,6 +108,21 @@ public class MediaSO : ScriptableObject
             else if (video)
                 return Convert.ToInt32(video.width);
             return -1;
+        }
+    }
+    public void UpdateName()
+    {
+        if (picture)
+        {
+            name = picture.name;
+        }
+        else if (video)
+        {
+            name = video.name;
+        }
+        else
+        {
+            name = "(empty)";
         }
     }
 

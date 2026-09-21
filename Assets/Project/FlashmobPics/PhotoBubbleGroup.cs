@@ -34,7 +34,10 @@ class PhotoGroupEditor : Editor
         
         foreach (MediaSO media in p.media)
         {
-            if (media == null || media.PreviewIcon == null)
+            if (media == null)
+                continue;
+            media.UpdateName();
+            if (media.PreviewIcon == null)
                 continue;
             GUILayout.Label(media.PreviewIcon);
             row++;
@@ -44,6 +47,7 @@ class PhotoGroupEditor : Editor
                 EditorGUILayout.BeginHorizontal();
                 row = 0;
             }
+            
             
         }
         EditorGUILayout.EndHorizontal();
@@ -57,10 +61,19 @@ public class PhotoBubbleGroup : MonoBehaviour
     [SerializeField] GameObject bubblePrefab;
 
     [SerializeField] float radius = 2f;
+    List<PhotoBubbleOption> bubbles = new List<PhotoBubbleOption>();
     // Start is called before the first frame update
     void Start()
     {
-       
+       bubbles = GetComponentsInChildren<PhotoBubbleOption>().ToList();
+       foreach (PhotoBubbleOption b in bubbles)
+        {
+            if (b.IS_CENTER)
+                centerBubble = b;
+        }
+        if (centerBubble == null)
+            Debug.LogError("WHY NO CENTER BUBBLE WTFFFFF");
+
        
     }
 
@@ -70,7 +83,18 @@ public class PhotoBubbleGroup : MonoBehaviour
     {
         
     }
+    public void SetCenterPicture(MediaSO media)
+    {
+        if (centerBubble == null)
+        {
+            Debug.LogError("No center bubble???", gameObject);
+            return;
+        }
+        centerBubble.media = media;
+        centerBubble.Resize();
+    }
 
+    PhotoBubbleOption centerBubble;
     public void PlaceAllBubbles()
     {
         transform.DestroyChildren();
@@ -86,11 +110,13 @@ public class PhotoBubbleGroup : MonoBehaviour
             angle *= 360f;
             
             option.PlacePhoto(t, radius, angle);
+            option.parentGroup = this;
         }
         bubble = (GameObject)PrefabUtility.InstantiatePrefab(bubblePrefab, transform);
         option = bubble.GetComponent<PhotoBubbleOption>();
         option.PlacePhoto(media.Last(), 0f, 0f);
         bubble.transform.localScale *= 2f;
-
+        centerBubble = option;
+        centerBubble.IS_CENTER = true;
     }
 }
