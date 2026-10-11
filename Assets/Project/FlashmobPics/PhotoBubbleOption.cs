@@ -159,9 +159,18 @@ public class PhotoBubbleOption : MonoBehaviour
                 videoPlayer.audioOutputMode = (media.usesSound && IS_CENTER) ?
                     VideoAudioOutputMode.AudioSource : VideoAudioOutputMode.None;
                 if (IS_CENTER)
+                {
+                    videoPlayer.SetTargetAudioSource(0, videoPlayer.GetComponent<AudioSource>());
                     Debug.Log($"Setting audio to: {videoPlayer.audioOutputMode}");
-                videoPlayer.SetTargetAudioSource(0, videoPlayer.GetComponent<AudioSource>());
+
+                }
+                else if (videoPlayer.GetComponent<AudioSource>() != null && IS_CENTER == false)
+                {
+                    videoPlayer.GetComponent<AudioSource>().enabled = false;
+                }
+                
                 videoPlayer.Play();
+                print($"Video audio mode: {videoPlayer.audioOutputMode}");
             }
             StartCoroutine(_setNull());
             
