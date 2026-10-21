@@ -57,7 +57,7 @@ public class CloudMover : MonoBehaviour
         GameObject cloud = Instantiate(cloudPrefabs.GetRandom(), transform);
         float x = Random.Range(-MaxDistanceFromCenter, MaxDistanceFromCenter);
         float z = Random.Range(-MaxDistanceFromCenter, MaxDistanceFromCenter);
-        cloud.transform.position = new Vector3(x, CloudHeight, z);
+        cloud.transform.position = new Vector3(x, CloudHeight + Random.Range(-1f * CloudHeightOffset, CloudHeightOffset), z);
         
         if (first == false)
         {
