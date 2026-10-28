@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6050477204479280928}
+  - component: {fileID: 4683997114342260740}
   m_Layer: 0
   m_Name: PaintingOnWall
   m_TagString: Untagged
@@ -31,8 +32,25 @@ Transform:
   - {fileID: 8503399798459196894}
   - {fileID: 3582277195797517744}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 90, y: -90, z: 0}
+--- !u!114 &4683997114342260740
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3974159032322830359}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49fae7707d24b354883b32b47658d086, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  media: {fileID: 0}
+  paintingParent: {fileID: 0}
+  paintingRenderer: {fileID: 0}
+  blankVideoTexture: {fileID: 0}
+  basePhotoTexture: {fileID: 0}
 --- !u!1 &5455284215269894536
 GameObject:
   m_ObjectHideFlags: 0
