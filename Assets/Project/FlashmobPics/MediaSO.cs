@@ -126,6 +126,7 @@ public class MediaSO : ScriptableObject
         }
     }
 
+    public bool HasMedia => picture != null || video != null;
 
     [SerializeField] public Texture picture;
     [SerializeField] public VideoClip video;

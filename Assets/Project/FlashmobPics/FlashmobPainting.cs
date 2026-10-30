@@ -3,10 +3,13 @@ using System;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Video;
+using System.Collections.Generic;
+using System.Linq;
 
 [CustomEditor(typeof(FlashmobPainting))]
 public class PaintingEditor : Editor
 {
+    int ROW_SIZE = 3;
     FlashmobPainting p => (FlashmobPainting)target;
     public override void OnInspectorGUI()
     {
@@ -17,8 +20,29 @@ public class PaintingEditor : Editor
         }
         else if (p && p.HasPainting == false)
         {
-            GUILayout.Label("\n\n\t\tNO MEDIA\n\n");
+            GUILayout.Label("(NO MEDIA)");
         }
+        int row = 0;
+        GUILayout.Label("\n\n>>> PAINTINGS MASTER LIST: <<<");
+        EditorGUILayout.BeginHorizontal();
+        foreach (MediaSO media in p.paintingsList)
+        {
+            if (media == null)
+                continue;
+            media.UpdateName();
+            if (media.PreviewIcon == null)
+                continue;
+            GUILayout.Label(media.PreviewIcon);
+            row++;
+            if (row >= ROW_SIZE)
+            {
+                EditorGUILayout.EndHorizontal();
+                EditorGUILayout.BeginHorizontal();
+                row = 0;
+            }
+        }
+        EditorGUILayout.EndHorizontal();
+
     }
 }
 
@@ -34,6 +58,12 @@ public class FlashmobPainting : MonoBehaviour
     [SerializeField] MeshRenderer paintingRenderer;
     [SerializeField] Material blankVideoTexture;
     [SerializeField] Material basePhotoTexture;
+
+    [Tooltip("Multiplies the paintings local scale by a float with these bounds, inclusive")]
+    [SerializeField] Vector2 paintingSizeBounds = new Vector2(1f, 3f);
+
+    [SerializeField] public List<MediaSO> paintingsList = new List<MediaSO>();
+
     VideoPlayer videoPlayer
     {
         get
@@ -64,6 +94,13 @@ public class FlashmobPainting : MonoBehaviour
     }
     public void Resize()
     {
+        
+        Vector3 ls = transform.localScale;
+        transform.localScale *= UnityEngine.Random.Range(paintingSizeBounds.x, paintingSizeBounds.y);
+        print($"Scale was: {ls}, is now {transform.localScale}");
+
+        if (media.HasMedia == false)
+            return;
         if (media.video != null)
         {
             paintingRenderer.material = blankVideoTexture;
@@ -145,6 +182,16 @@ public class FlashmobPainting : MonoBehaviour
             EditorUtility.SetDirty(gameObject);
             
         }
+        // Init paintings list with a dozen empty MediaSOs
+        if (paintingsList.Count == 0 || paintingsList.First() == null)
+        {
+            for (int _i = 0; _i < 12; _i++)
+            {
+                paintingsList.Add(ScriptableObject.CreateInstance<MediaSO>());
+            }
+            EditorUtility.SetDirty(gameObject);
+        }
+
     }
 
     // Update is called once per frame
