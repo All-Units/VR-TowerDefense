@@ -11,10 +11,9 @@ public class PaintingEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
-        return;
         if (p && p.HasPainting)
         {
-            //GUILayout.Label(p.previewIcon);
+            GUILayout.Label(p.previewIcon);
         }
         else if (p && p.HasPainting == false)
         {
@@ -39,7 +38,6 @@ public class FlashmobPainting : MonoBehaviour
     {
         get
         {
-            return null;
             if (_player == null)
             {
                 _player = paintingRenderer.GetComponent<VideoPlayer>();
