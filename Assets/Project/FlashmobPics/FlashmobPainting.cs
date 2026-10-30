@@ -53,14 +53,17 @@ public class FlashmobPainting : MonoBehaviour
     void Start()
     {
         StartCoroutine(_initMedia());
-        if (Application.isEditor == false)
+        if (Application.isPlaying)
         {
-            //Resize();
+            print("Running because play mode");
+            Resize();
+
+            return;
         }
+        print("not running because editor!");
     }
     public void Resize()
     {
-        return;
         if (media.video != null)
         {
             paintingRenderer.material = blankVideoTexture;
@@ -117,16 +120,17 @@ public class FlashmobPainting : MonoBehaviour
         //If TALLER than WIDE, make X small (skinny)
         if (h > w){
             scale = new Vector3(ratio, 1f, 1f);
-            paintingParent.localScale = new Vector3(ratio, 1f, 1f);
+            //paintingParent.localScale = new Vector3(ratio, 1f, 1f);
         }
 
         //Else if WIDER than TALL, make Z small (portrait orientation)
         else if (w > h){
             scale = new Vector3(1f, 1f, ratio);
-            paintingParent.localScale = new Vector3(1f, ratio, 1f);
+            //paintingParent.localScale = new Vector3(1f, ratio, 1f);
         }
-
-        paintingRenderer.transform.localScale = scale;
+        Vector3 local = paintingParent.transform.localScale;
+        scale = new Vector3(scale.x * local.x, scale.y * local.y, local.z);
+        paintingParent.transform.localScale = scale;
     }
     IEnumerator _initMedia()
     {
