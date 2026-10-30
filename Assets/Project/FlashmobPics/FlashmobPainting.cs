@@ -14,6 +14,21 @@ public class PaintingEditor : Editor
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
+        if (GUILayout.Button("Populate painting list"))
+        {
+            // Init paintings list with a dozen empty MediaSOs
+            if (p.paintingsList.Count == 0 || p.paintingsList.First() == null)
+            {
+                p.paintingsList.Clear();
+                for (int _i = 0; _i < 12; _i++)
+                {
+                    MediaSO m = new MediaSO();
+                    EditorUtility.SetDirty(m);
+                    p.paintingsList.Add(m);
+                }
+                EditorUtility.SetDirty(p.gameObject);
+            }
+        }
         if (p && p.HasPainting)
         {
             GUILayout.Label(p.previewIcon);
@@ -182,15 +197,7 @@ public class FlashmobPainting : MonoBehaviour
             EditorUtility.SetDirty(gameObject);
             
         }
-        // Init paintings list with a dozen empty MediaSOs
-        if (paintingsList.Count == 0 || paintingsList.First() == null)
-        {
-            for (int _i = 0; _i < 12; _i++)
-            {
-                paintingsList.Add(ScriptableObject.CreateInstance<MediaSO>());
-            }
-            EditorUtility.SetDirty(gameObject);
-        }
+        
 
     }
 
