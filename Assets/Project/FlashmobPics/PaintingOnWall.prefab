@@ -23,8 +23,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1372234334527896980}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.011, z: 0.004}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.010999925, z: 0.0039999876}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -84,20 +84,22 @@ MonoBehaviour:
   paintingRenderer: {fileID: 7415941004813904358}
   blankVideoTexture: {fileID: 2100000, guid: fb3df4a70040e294d8b68f9dd6d0b5a2, type: 2}
   basePhotoTexture: {fileID: 2100000, guid: 651884bd214f0cd44bdadfecef324369, type: 2}
-  paintingSizeBounds: {x: 1, y: 3}
+  paintingSocketAttach: {fileID: 890633083256472373}
+  paintingSizeBounds: {x: 1, y: 2.4}
   paintingsList:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 6569f24bb0b276a4fbba70d7ea683a25, type: 2}
+  - {fileID: 11400000, guid: 854a72e3a82639142b1f0ae5ed063f9e, type: 2}
+  - {fileID: 11400000, guid: d6e74341cfe60a9498d34e9e113d864a, type: 2}
+  - {fileID: 11400000, guid: 15c9c29a91bf6e94aad300fbb38998f1, type: 2}
+  - {fileID: 11400000, guid: 7d5e90b6a6e6de04d99517aff5a8cbb6, type: 2}
+  - {fileID: 11400000, guid: 7bc74bc00aac2ea469a4639bf88e6d7d, type: 2}
+  - {fileID: 11400000, guid: 335a018c94069e34da7df917b056627a, type: 2}
+  - {fileID: 11400000, guid: 599ab1216b5786e48acda20e6608dec7, type: 2}
+  - {fileID: 11400000, guid: 9c3f8d4ef5aa6aa458ede6c4e6d7d995, type: 2}
+  - {fileID: 11400000, guid: d465507c33546a244807fc3fbd271194, type: 2}
+  - {fileID: 11400000, guid: 4cd2b8a0abbceb14ca7cc06a42504f40, type: 2}
+  - {fileID: 11400000, guid: b852d40190dd1bb48b5b457952212d83, type: 2}
+  _chosenRandomScale: 0
 --- !u!1 &5455284215269894536
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,8 +783,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.8258746, y: 1.7804948, z: 4.0752635}
-  m_Center: {x: -0.34689924, y: -0.050253004, z: 0.1350069}
+  m_Size: {x: 0.8258748, y: 1.885999, z: 4.0752635}
+  m_Center: {x: -0.34689933, y: 0.0024992817, z: 0.13500695}
 --- !u!1 &7990306991734778459
 GameObject:
   m_ObjectHideFlags: 0

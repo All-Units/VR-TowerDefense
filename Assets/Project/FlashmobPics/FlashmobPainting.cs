@@ -22,11 +22,14 @@ public class PaintingEditor : Editor
                 p.paintingsList.Clear();
                 for (int _i = 0; _i < 12; _i++)
                 {
-                    MediaSO m = new MediaSO();
+                    MediaSO m = ScriptableObject.CreateInstance<MediaSO>();
                     EditorUtility.SetDirty(m);
                     p.paintingsList.Add(m);
+                    p.paintingsList[_i] = m;
+                    AssetDatabase.CreateAsset(m, $"Assets/Project/FlashmobPics/SOs/Paintings01/Painting{_i}.asset");
                 }
                 EditorUtility.SetDirty(p.gameObject);
+                AssetDatabase.SaveAssets();
             }
         }
         if (p && p.HasPainting)
@@ -73,11 +76,12 @@ public class FlashmobPainting : MonoBehaviour
     [SerializeField] MeshRenderer paintingRenderer;
     [SerializeField] Material blankVideoTexture;
     [SerializeField] Material basePhotoTexture;
+    [SerializeField] Transform paintingSocketAttach;
 
     [Tooltip("Multiplies the paintings local scale by a float with these bounds, inclusive")]
     [SerializeField] Vector2 paintingSizeBounds = new Vector2(1f, 3f);
 
-    [SerializeField] public List<MediaSO> paintingsList = new List<MediaSO>();
+    public List<MediaSO> paintingsList = new List<MediaSO>();
 
     VideoPlayer videoPlayer
     {
@@ -87,12 +91,18 @@ public class FlashmobPainting : MonoBehaviour
             {
                 _player = paintingRenderer.GetComponent<VideoPlayer>();
                 if (_player == null)
+                {
                     _player = paintingRenderer.gameObject.AddComponent<VideoPlayer>();
+                    Debug.Log("Created video player", _player);
+                }
+                    
             }
             return _player;
         }
     }
     VideoPlayer _player;
+
+    static List<MediaSO> availablePaintings = new List<MediaSO>();
 
     // Start is called before the first frame update
     void Start()
@@ -101,18 +111,44 @@ public class FlashmobPainting : MonoBehaviour
         if (Application.isPlaying)
         {
             print("Running because play mode");
+            _selectPainting();
             Resize();
+
+            IEnumerator _reparent()
+            {
+                yield return new WaitForEndOfFrame();
+                yield return new WaitForEndOfFrame();
+                paintingParent.transform.SetParent(paintingSocketAttach);
+            }
+            StartCoroutine(_reparent());
 
             return;
         }
-        print("not running because editor!");
     }
+
+    void _selectPainting()
+    {
+        if (availablePaintings.Count == 0)
+        {
+            print("First! random list of paintings initting");
+            foreach (var m in paintingsList)
+            {
+                availablePaintings.Add(m);
+            }
+        }
+        int i = UnityEngine.Random.Range(0, availablePaintings.Count);
+        media = availablePaintings[i];
+        availablePaintings.RemoveAt(i);
+        Debug.Log($"We chose painting #{i} / {availablePaintings.Count}", gameObject);
+
+    }
+    [SerializeField] float _chosenRandomScale = 0f;
     public void Resize()
     {
         
         Vector3 ls = transform.localScale;
-        transform.localScale *= UnityEngine.Random.Range(paintingSizeBounds.x, paintingSizeBounds.y);
-        print($"Scale was: {ls}, is now {transform.localScale}");
+        _chosenRandomScale = UnityEngine.Random.Range(paintingSizeBounds.x, paintingSizeBounds.y);
+        transform.localScale *= _chosenRandomScale;
 
         if (media.HasMedia == false)
             return;
@@ -144,7 +180,7 @@ public class FlashmobPainting : MonoBehaviour
         }
         else if (media.video)
         {
-            Destroy(_player);
+            //Destroy(_player);
             IEnumerator _setNull()
             {
                 yield return new WaitForEndOfFrame();

@@ -170,7 +170,6 @@ public class PhotoBubbleOption : MonoBehaviour
                 }
                 
                 videoPlayer.Play();
-                print($"Video audio mode: {videoPlayer.audioOutputMode}");
             }
             StartCoroutine(_setNull());
             
