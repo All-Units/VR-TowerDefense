@@ -93,7 +93,7 @@ public class FlashmobPainting : MonoBehaviour
                 if (_player == null)
                 {
                     _player = paintingRenderer.gameObject.AddComponent<VideoPlayer>();
-                    Debug.Log("Created video player", _player);
+                    //Debug.Log("Created video player", _player);
                 }
                     
             }
