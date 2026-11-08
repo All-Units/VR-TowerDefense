@@ -6,7 +6,6 @@ using UnityEngine;
 public class Compass : MonoBehaviour
 {
     [SerializeField] Transform needle;
-    [SerializeField] float angleOffset = 90f;
     /// <summary>
     /// The Anvil class either returns its pos, or "North"
     /// </summary>
@@ -24,16 +23,10 @@ public class Compass : MonoBehaviour
     }
     void _pointNeedle()
     {
-        Vector3 dir = transform.position - north;
-        dir.y = 0f;
-        float angle = Mathf.Atan2(dir.z, dir.x) * Mathf.Rad2Deg;
-        angle += angleOffset;
-        
-        //dir = north;
-        //dir.y = needle.position.y;
-        print($"Angle was: {needle.localEulerAngles.y}, changing to {angle} bc of dir {dir} ({transform.position} - {north})");
-        needle.localEulerAngles = new Vector3(0f, angle, 0f);
-        //needle.LookAt(dir, Vector3.up);
-
+        // We point at "North" - in this case, the world position of the anvil
+        needle.LookAt(north);
+        // We only want it rotating along its Y axis, so we remove the other rotation
+        needle.localEulerAngles = new Vector3(0f, needle.localEulerAngles.y, 0f);
+        // And that's it :)
     }
 }

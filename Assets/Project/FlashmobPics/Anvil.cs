@@ -24,17 +24,24 @@ public class Anvil : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        _setAnvil();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (Application.isPlaying == false && anvil == null)
+        {
+            _setAnvil();
+        }
+    }
+    void _setAnvil()
+    {
         if (anvil != null && anvil != this)
         {
             Destroy(anvil);
             anvil = null;
         }
         anvil = this;
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }

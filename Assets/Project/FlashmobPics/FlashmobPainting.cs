@@ -139,7 +139,6 @@ public class FlashmobPainting : MonoBehaviour
         int i = UnityEngine.Random.Range(0, availablePaintings.Count);
         media = availablePaintings[i];
         availablePaintings.RemoveAt(i);
-        Debug.Log($"We chose painting #{i} / {availablePaintings.Count}", gameObject);
 
     }
     [SerializeField] float _chosenRandomScale = 0f;
