@@ -5,17 +5,17 @@ using UnityEngine;
 public class BooklistSO : ScriptableObject
 {
     [SerializeField]
-    public List<Book> booklist = new List<Book>();
-
-    [System.Serializable]
-    public struct Book
+    public List<BookStruct> booklist = new List<BookStruct>();    
+}
+[System.Serializable]
+public struct BookStruct
     {
         public string name => title;
         public string title;
         public string author;
+        public string series;
         public string bookDescription;
-        public Texture2D cover;
+        public Sprite cover;
         public Color coverColor;
         public bool DisplayBookDetails;
     }
-}

@@ -32,13 +32,12 @@ public class BookshelfGenerator : MonoBehaviour
 {
     public Transform booksParent;
     public Transform rightBound;
-    public List<Book> bookPrefabs = new List<Book>(4);
+    [SerializeField] GameObject bookPrefab;
     public int skipPercent = 40;
     [Tooltip("Lower and upper bounds for distance between books")]
     public Vector2 lerpRange = new Vector2(.1f, .2f);
-    [SerializeField] private TextAsset booklist;
+    [SerializeField] private BooklistSO booklist;
 
-    private List<string> lines = new List<string>();
 #if UNITY_EDITOR
     public void RegenAllShelving()
     {
@@ -52,7 +51,7 @@ public class BookshelfGenerator : MonoBehaviour
 
     public void RegenShelves()
     {
-        parseBooklist();
+        print("Regen shelving CLICKED");
         _clearShelves();
         foreach (Transform shelf in booksParent)
             _generateShelf(shelf);
@@ -70,8 +69,11 @@ public class BookshelfGenerator : MonoBehaviour
     }
 
     private List<int> angleOffsets = new List<int>() { -10, 0, 0, 0, 10 };
+
+    int i = 0;
     void _generateShelf(Transform shelf)
     {
+        print("Generating shelf");
         Vector3 start = shelf.position;
         Vector3 end = rightBound.position;
         end.y = start.y;
@@ -86,7 +88,7 @@ public class BookshelfGenerator : MonoBehaviour
             if (skipPercent >= Random.Range(0, 100))
                 continue;
             Vector3 pos = Vector3.Lerp(start, end, t);
-            GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(bookPrefabs.GetRandom().gameObject, shelf);
+            GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(bookPrefab, shelf);
             // Instantiate();
             spawned.transform.position = pos;
             Vector3 angle = spawned.transform.localEulerAngles;
@@ -98,36 +100,12 @@ public class BookshelfGenerator : MonoBehaviour
         }
     }
 
-    void PopulateBook(GameObject prefab)
+    void PopulateBook(GameObject spawned)
     {
-        var book = prefab.GetComponent<Book>();
-        string line = lines.GetRandom();
-        var split = line.Split("|");
-        try
-        {
-        book.title = split[0].Trim();
-        book.author = split[1].Trim();
-        book.description = split[2].Trim();
-        }
-        catch (Exception e)
-        {
-            print($"{line} threw exception when split");
-            throw;
-        }
-        
-        book.populateCover();
-    }
-
-    void parseBooklist()
-    {
-        lines = new List<string>();
-        foreach (string line in booklist.text.Split("\n"))
-        {
-            if (line.Trim() == "") continue;
-            if (line.StartsWith("#")) continue;
-
-            lines.Add(line);
-        }
+        FlashmobBook book = spawned.GetComponent<FlashmobBook>();
+        if (book == null){ return; }
+        BookStruct bookStruct = booklist.booklist[i];
+        book.SetBook(bookStruct);
     }
     #endif
 }
