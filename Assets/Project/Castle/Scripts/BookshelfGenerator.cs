@@ -48,9 +48,10 @@ public class BookshelfGenerator : MonoBehaviour
             gen.RegenShelves();
         }
     }
-
+    Transform tempParent;
     public void RegenShelves()
     {
+        i = 0;
         print("Regen shelving CLICKED");
         _clearShelves();
         foreach (Transform shelf in booksParent)
@@ -61,9 +62,12 @@ public class BookshelfGenerator : MonoBehaviour
     {
         foreach (Transform shelf in booksParent)
         {
-            foreach (Transform book in shelf)
+            int i = shelf.childCount - 1;
+            while (i >= 0)
             {
+                Transform book = shelf.GetChild(i);
                 DestroyImmediate(book.gameObject);
+                i = shelf.childCount - 1;
             }
         }
     }
@@ -73,7 +77,6 @@ public class BookshelfGenerator : MonoBehaviour
     int i = 0;
     void _generateShelf(Transform shelf)
     {
-        print("Generating shelf");
         Vector3 start = shelf.position;
         Vector3 end = rightBound.position;
         end.y = start.y;
@@ -93,8 +96,9 @@ public class BookshelfGenerator : MonoBehaviour
             spawned.transform.position = pos;
             Vector3 angle = spawned.transform.localEulerAngles;
 
-            angle.z += angleOffsets.GetRandom();
+            angle.x += angleOffsets.GetRandom();
             spawned.transform.localEulerAngles = angle;
+            //spawned.transform.SetParent(tempParent);
             
             PopulateBook(spawned);
         }
@@ -106,6 +110,11 @@ public class BookshelfGenerator : MonoBehaviour
         if (book == null){ return; }
         BookStruct bookStruct = booklist.booklist[i];
         book.SetBook(bookStruct);
+        i++;
+        if (i >= booklist.booklist.Count)
+        {
+            i = 0;
+        }
     }
     #endif
 }

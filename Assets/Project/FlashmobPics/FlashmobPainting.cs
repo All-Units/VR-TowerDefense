@@ -110,7 +110,6 @@ public class FlashmobPainting : MonoBehaviour
         StartCoroutine(_initMedia());
         if (Application.isPlaying)
         {
-            print("Running because play mode");
             _selectPainting();
             Resize();
 
