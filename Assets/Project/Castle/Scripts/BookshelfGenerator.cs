@@ -37,11 +37,16 @@ public class BookshelfGenerator : MonoBehaviour
     [Tooltip("Lower and upper bounds for distance between books")]
     public Vector2 lerpRange = new Vector2(.1f, .2f);
     [SerializeField] private BooklistSO booklist;
+    void Start()
+    {
+        _loadSeriesData();
+    }
 
 #if UNITY_EDITOR
     static bool regeneratingAllShelving = false;
     public void RegenAllShelving()
     {
+        _loadSeriesData();
         regeneratingAllShelving = true;
         i = 0;
         var shelves = transform.root.GetComponentsInChildren<BookshelfGenerator>();
@@ -55,6 +60,7 @@ public class BookshelfGenerator : MonoBehaviour
     Transform tempParent;
     public void RegenShelves()
     {
+        _loadSeriesData();
         if (regeneratingAllShelving == false)
         {
             i = 0;
@@ -64,6 +70,17 @@ public class BookshelfGenerator : MonoBehaviour
         _clearShelves();
         foreach (Transform shelf in booksParent)
             _generateShelf(shelf);
+    }
+    public static Dictionary<String, SeriesStruct> seriesData = new Dictionary<string, SeriesStruct>();
+    void _loadSeriesData()
+    {
+        // Do nothing if we're already loaded
+        if (seriesData.Count > 0) 
+            { return; }
+        foreach (SeriesStruct s in booklist.seriesData)
+        {
+            seriesData[s.seriesName] = s;
+        }
     }
 
     void _clearShelves()
@@ -99,12 +116,7 @@ public class BookshelfGenerator : MonoBehaviour
             float rolled = Random.Range(0, 100);
             if (skipPercent >= rolled)
             {
-                print($"Skip percentage: {skipPercent}, rolled: {rolled}, continuing: T: {t}");
                 continue;
-            }
-            else
-            {
-                print($"NOT SKIPPING: Skip percentage: {skipPercent}, rolled: {rolled}, continuing: T: {t}");
             }
                 
             Vector3 pos = Vector3.Lerp(start, end, t);

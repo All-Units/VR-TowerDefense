@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "SO/BooklistSO", fileName = "Booklist")]
@@ -14,7 +15,6 @@ public class BooklistSO : ScriptableObject
 [System.Serializable]
 public struct SeriesStruct
 {
-    public string name => seriesName;
     public string seriesName;
     public Color seriesColor;
     public float coverSizeScalar;
