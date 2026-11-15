@@ -14,7 +14,7 @@ public class FlashmobBook : MonoBehaviour
     [SerializeField] BookStruct book;
     public void SetBook(BookStruct bookStruct)
     {
-        Debug.Log($"setting: {bookStruct.title}", gameObject);
+        //Debug.Log($"setting: {bookStruct.title}", gameObject);
         spineTitle.text = $"{bookStruct.title} - {bookStruct.author}";
         description.text = bookStruct.bookDescription;
         cover.sprite = bookStruct.cover;

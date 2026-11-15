@@ -39,19 +39,27 @@ public class BookshelfGenerator : MonoBehaviour
     [SerializeField] private BooklistSO booklist;
 
 #if UNITY_EDITOR
+    static bool regeneratingAllShelving = false;
     public void RegenAllShelving()
     {
+        regeneratingAllShelving = true;
+        i = 0;
         var shelves = transform.root.GetComponentsInChildren<BookshelfGenerator>();
         foreach (var gen in shelves)
         {
             //BookshelfGenerator gen = c.GetComponent<BookshelfGenerator>();
             gen.RegenShelves();
         }
+        regeneratingAllShelving = false;
     }
     Transform tempParent;
     public void RegenShelves()
     {
-        i = 0;
+        if (regeneratingAllShelving == false)
+        {
+            i = 0;
+        }
+        
         print("Regen shelving CLICKED");
         _clearShelves();
         foreach (Transform shelf in booksParent)
@@ -74,7 +82,7 @@ public class BookshelfGenerator : MonoBehaviour
 
     private List<int> angleOffsets = new List<int>() { -10, 0, 0, 0, 10 };
 
-    int i = 0;
+    static int i = 0;
     void _generateShelf(Transform shelf)
     {
         Vector3 start = shelf.position;
@@ -88,8 +96,17 @@ public class BookshelfGenerator : MonoBehaviour
                 break;
             //Skip some of our placements
             skipPercent = Mathf.Clamp(skipPercent, 0, 100);
-            if (skipPercent >= Random.Range(0, 100))
+            float rolled = Random.Range(0, 100);
+            if (skipPercent >= rolled)
+            {
+                print($"Skip percentage: {skipPercent}, rolled: {rolled}, continuing: T: {t}");
                 continue;
+            }
+            else
+            {
+                print($"NOT SKIPPING: Skip percentage: {skipPercent}, rolled: {rolled}, continuing: T: {t}");
+            }
+                
             Vector3 pos = Vector3.Lerp(start, end, t);
             GameObject spawned = (GameObject)PrefabUtility.InstantiatePrefab(bookPrefab, shelf);
             // Instantiate();

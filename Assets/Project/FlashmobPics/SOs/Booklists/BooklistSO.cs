@@ -6,7 +6,20 @@ public class BooklistSO : ScriptableObject
 {
     [SerializeField]
     public List<BookStruct> booklist = new List<BookStruct>();    
+
+    [SerializeField]
+    public List<SeriesStruct> seriesData = new List<SeriesStruct>();
 }
+
+[System.Serializable]
+public struct SeriesStruct
+{
+    public string name => seriesName;
+    public string seriesName;
+    public Color seriesColor;
+    public float coverSizeScalar;
+}
+
 [System.Serializable]
 public struct BookStruct
     {
