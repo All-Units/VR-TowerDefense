@@ -4,6 +4,7 @@ using UnityEditor;
 
 using Random = UnityEngine.Random;
 using UnityEngine;
+using System.Linq;
 #if UNITY_EDITOR
 
 
@@ -55,6 +56,7 @@ public class BookshelfGenerator : MonoBehaviour
             //BookshelfGenerator gen = c.GetComponent<BookshelfGenerator>();
             gen.RegenShelves();
         }
+        print($"Regened {shelves.Length} shelves");
         regeneratingAllShelving = false;
     }
     Transform tempParent;
@@ -64,9 +66,10 @@ public class BookshelfGenerator : MonoBehaviour
         if (regeneratingAllShelving == false)
         {
             i = 0;
+            print("Regen shelving CLICKED");
         }
         
-        print("Regen shelving CLICKED");
+        
         _clearShelves();
         foreach (Transform shelf in booksParent)
             _generateShelf(shelf);

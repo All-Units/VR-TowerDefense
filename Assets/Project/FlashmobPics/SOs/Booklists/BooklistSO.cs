@@ -30,5 +30,6 @@ public struct BookStruct
         public string bookDescription;
         public Sprite cover;
         public Color coverColor;
-        public bool DisplayBookDetails;
+        public bool DisplayTitle;
+        public bool DisplayAuthor;
     }

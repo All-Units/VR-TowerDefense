@@ -8,6 +8,7 @@ public class KeepPlayerInTower : MonoBehaviour
     public TeleportationProvider teleportationProvider;
     public float LeashLength = 20f;
     public float currentDistance;
+    public static Vector3 playerPos;
     public Transform player;
     Vector3 startPos;
     Quaternion startRot;
@@ -27,6 +28,7 @@ public class KeepPlayerInTower : MonoBehaviour
         {
             TeleportPlayerToTower();
         }
+        playerPos = player.position;
 
     }
     private void TeleportPlayerToTower()

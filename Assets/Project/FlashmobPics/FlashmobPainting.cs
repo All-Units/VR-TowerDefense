@@ -129,7 +129,6 @@ public class FlashmobPainting : MonoBehaviour
     {
         if (availablePaintings.Count == 0)
         {
-            print("First! random list of paintings initting");
             foreach (var m in paintingsList)
             {
                 availablePaintings.Add(m);
