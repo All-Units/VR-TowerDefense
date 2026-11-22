@@ -18,6 +18,7 @@ public class FlashmobBook : MonoBehaviour
     [HideInInspector]
     [SerializeField] BookStruct book;
     [SerializeField] SeriesStruct seriesData;
+    [SerializeField] MeshRenderer emptyBook;
     public void SetBook(BookStruct bookStruct)
     {
         //Debug.Log($"setting: {bookStruct.title}", gameObject);
@@ -46,8 +47,10 @@ public class FlashmobBook : MonoBehaviour
     void Start()
     {
         bookRenderer.materials[2].color = book.coverColor;
+        emptyBook.materials[2].color = book.coverColor;
         if (seriesData.seriesName != default(SeriesStruct).seriesName)
         {
+            emptyBook.materials[0].color = seriesData.seriesColor;
             bookRenderer.materials[0].color = seriesData.seriesColor;
         }
         grab = GetComponentInChildren<XRGrabInteractable>();
@@ -55,7 +58,7 @@ public class FlashmobBook : MonoBehaviour
         canvas = GetComponentInChildren<Canvas>();
         meshCollider = GetComponentInChildren<MeshCollider>();
         startConstraints = rb.constraints;
-
+        emptyBook.gameObject.SetActive(false);
         StartCoroutine(_LODLoop());
     }
     RigidbodyConstraints startConstraints;
@@ -76,6 +79,12 @@ public class FlashmobBook : MonoBehaviour
             rb.useGravity = active;
             rb.constraints = active ? startConstraints : RigidbodyConstraints.FreezeAll;
             meshCollider.enabled = active;
+
+            bookRenderer.gameObject.SetActive(active);
+            emptyBook.gameObject.SetActive(!active);
+            emptyBook.transform.position = bookRenderer.transform.position;
+            emptyBook.transform.rotation = bookRenderer.transform.rotation;
+
             canvas.gameObject.SetActive(active);
             yield return new WaitForSeconds(lodUpdateTime);
         }
