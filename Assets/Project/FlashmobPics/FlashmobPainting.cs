@@ -93,9 +93,15 @@ public class FlashmobPainting : MonoBehaviour
                 if (_player == null)
                 {
                     _player = paintingRenderer.gameObject.AddComponent<VideoPlayer>();
+                    
                     //Debug.Log("Created video player", _player);
                 }
                     
+            }
+            _player.audioOutputMode = VideoAudioOutputMode.Direct;
+            for (ushort i = 0; i < _player.audioTrackCount; i++)
+            {
+                _player.SetDirectAudioMute(i, true);
             }
             return _player;
         }
@@ -165,7 +171,7 @@ public class FlashmobPainting : MonoBehaviour
         {
             mat.mainTexture = media.picture;
             videoPlayer.enabled = false;
-            videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
+            //videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
             videoPlayer.Stop();
             Destroy(_player);
             IEnumerator _setNull()
@@ -186,7 +192,7 @@ public class FlashmobPainting : MonoBehaviour
                 videoPlayer.clip = media.video;
                 videoPlayer.playOnAwake = true;
                 videoPlayer.isLooping = true;
-                videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
+                //videoPlayer.audioOutputMode = VideoAudioOutputMode.None;
                 videoPlayer.Play();
             }
             StartCoroutine(_setNull());

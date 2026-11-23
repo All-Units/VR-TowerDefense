@@ -1,5 +1,7 @@
 ﻿#pragma warning disable 0649
 
+using System.Collections;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace UnitySimpleLiquid
@@ -42,6 +44,7 @@ namespace UnitySimpleLiquid
         private float volume = 1f;
 
         public bool RefillOnEmpty = false;
+        [SerializeField] float refillTime = 1.5f;
 
         private SplitController splitController;
         public SplitController GetSplitController
@@ -52,7 +55,33 @@ namespace UnitySimpleLiquid
         private void Start()
         {
             splitController = GetComponent<SplitController>();
+            particles = GetComponentInChildren<ParticleSystem>();
+            slurpSound = GetComponent<AudioSource>();
+            _DEBUG_TRIGGER_SPHERE?.SetActive(false);
         }
+        ParticleSystem particles;
+        AudioSource slurpSound;
+        bool IsTouchingPlayer = false;
+        [SerializeField] GameObject _DEBUG_TRIGGER_SPHERE;
+
+        void OnTriggerEnter(Collider other)
+        {
+            if (!other.CompareTag("MainCamera")) { return; }
+            IsTouchingPlayer = true;
+            particles.gameObject.SetActive(false);
+            _OnChangeState();
+            //_DEBUG_TRIGGER_SPHERE?.SetActive(true);
+        }
+        void OnTriggerExit(Collider other)
+        {
+            if (!other.CompareTag("MainCamera")) { return; }
+            IsTouchingPlayer = false;
+            particles.gameObject.SetActive(true);
+            slurpSound.Stop();
+            _OnChangeState();
+            //_DEBUG_TRIGGER_SPHERE?.SetActive(false);
+        }
+
 
         #region Liquid Amount
         // After this values shader might become unstable
@@ -360,6 +389,10 @@ namespace UnitySimpleLiquid
         {
             if (liquidRender == null)
                 return;
+            if (IsTouchingPlayer == false || fillAmountPercent <= 0.01)
+            {
+                slurpSound?.Stop();
+            }
 
             // Update surface volume
             UpdateSurfacePos();
@@ -375,6 +408,31 @@ namespace UnitySimpleLiquid
                 fillAmountPercent = 0.95f;
         }
 
+        public void ManualRefill()
+        {
+            StartCoroutine(_refillAnim());
+        }
+        bool _isRefilling = false;
+        IEnumerator _refillAnim()
+        {
+            if (_isRefilling)
+            {
+                yield break;
+            }
+            _isRefilling = true;
+            float time = 0f;
+            float startFill = fillAmountPercent;
+            float target = 0.95f;
+            while (time <= refillTime)
+            {
+                yield return new WaitForEndOfFrame();
+                float t = time / refillTime;
+                fillAmountPercent = math.lerp(startFill, target, t);
+                time += Time.deltaTime;
+            }
+            _isRefilling = false;
+        }
+
         private void OnValidate()
         {
             if (liquidRender == null)
@@ -388,11 +446,13 @@ namespace UnitySimpleLiquid
         public void _OnStartTilt()
         {
             _IsTilting = true;
+            
             _OnChangeState();
         }
         public void _OnEndTilt()
         {
             _IsTilting = false;
+            slurpSound.Stop();
             _OnChangeState();
         }
         bool _hasCap = true;
@@ -400,6 +460,7 @@ namespace UnitySimpleLiquid
         {
             _hasCap = true;
             _OnChangeState();
+            slurpSound.Stop();
         }
         public void _OnRemoveCap()
         {
@@ -414,6 +475,11 @@ namespace UnitySimpleLiquid
             }
             else
                 isOpen = false;
+            if (_IsTilting && _hasCap == false && _IsTilting)
+            {
+                slurpSound.Play();
+            }
+            
         }
 
 

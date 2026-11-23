@@ -35,10 +35,11 @@ public class InstaGrowFlowers : MonoBehaviour
         Vector3 target = flower.localScale;
         flower.localScale = small;
         flower.localEulerAngles = new Vector3(0f, Random.Range(0f, 360f), 0f);
-        while (t <= timeToGrow)
+        float targetTime = Random.Range(timeToGrow, timeToGrow * 2f);
+        while (t <= targetTime)
         {
             yield return new WaitForEndOfFrame();
-            flower.localScale = Vector3.Lerp(small, target, t / timeToGrow);
+            flower.localScale = Vector3.Lerp(small, target, t / targetTime);
             t += Time.deltaTime;
         }
     }
