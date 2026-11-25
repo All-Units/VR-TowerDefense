@@ -128,7 +128,8 @@ public class BookshelfGenerator : MonoBehaviour
             spawned.transform.position = pos;
             Vector3 angle = spawned.transform.localEulerAngles;
 
-            angle.x += angleOffsets.GetRandom();
+            //angle.x += angleOffsets.GetRandom();
+            angle.y = 45f;
             spawned.transform.localEulerAngles = angle;
             //spawned.transform.SetParent(tempParent);
             

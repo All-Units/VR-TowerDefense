@@ -27,6 +27,7 @@ public struct BookStruct
         public string title;
         public string author;
         public string series;
+        [TextArea(2, 10)]
         public string bookDescription;
         public Sprite cover;
         public Color coverColor;

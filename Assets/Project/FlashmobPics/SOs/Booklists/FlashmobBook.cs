@@ -81,7 +81,10 @@ public class FlashmobBook : MonoBehaviour
             meshCollider.enabled = active;
 
             bookRenderer.gameObject.SetActive(active);
-            emptyBook.gameObject.SetActive(!active);
+            bool emptyActive = !active;
+            //if (distance >= minDistanceToPlayer * 2f)
+            //    emptyActive = false;
+            emptyBook.gameObject.SetActive(emptyActive);
             emptyBook.transform.position = bookRenderer.transform.position;
             emptyBook.transform.rotation = bookRenderer.transform.rotation;
 
